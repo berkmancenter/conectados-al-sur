@@ -8,7 +8,7 @@ composer install
 
 ## Database
 
-#```sql
+```sql
 
 -- DROP tables if exist
 DROP TABLE genres CASCADE;
@@ -152,7 +152,7 @@ INSERT INTO project_stages (name) VALUES
  ('aborted');
 
 
-#```
+```
 
 
 ```bash
