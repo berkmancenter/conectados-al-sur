@@ -48,24 +48,22 @@ CREATE TABLE project_stages (
 
 -- countries
 CREATE TABLE countries (
-    id    SERIAL PRIMARY KEY,
-    name  VARCHAR(255) NOT NULL
+    id      INT PRIMARY KEY,
+    cod_n3  CHAR(3) NOT NULL,
+    latitude  DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    name_en VARCHAR(255) NOT NULL,
+    name_es VARCHAR(255) NOT NULL
 );
-
 -- cities
 CREATE TABLE cities (
     id    SERIAL PRIMARY KEY,
-    name  VARCHAR(255) NOT NULL,
-    country_id INT NOT NULL REFERENCES countries(id)
-);
-
--- country capitals
-CREATE TABLE cities_countries (
+    name_en  VARCHAR(255) NOT NULL,
+    name_es  VARCHAR(255) NOT NULL,
     country_id INT NOT NULL REFERENCES countries(id),
-    city_id    INT NOT NULL REFERENCES cities(id),
-    PRIMARY KEY (country_id)
+    latitude  DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
 );
-
 
 -- users
 CREATE TABLE users (
