@@ -8,7 +8,7 @@ composer install
 
 ## Database
 
-#```sql
+```sql
 
 -- DROP tables if exist
 DROP TABLE genres CASCADE;
@@ -17,7 +17,6 @@ DROP TABLE categories CASCADE;
 DROP TABLE project_stages CASCADE;
 DROP TABLE countries CASCADE;
 DROP TABLE cities CASCADE;
-DROP TABLE cities_countries CASCADE;
 DROP TABLE users CASCADE;
 DROP TABLE projects CASCADE;
 DROP TABLE categories_projects CASCADE;
@@ -48,24 +47,23 @@ CREATE TABLE project_stages (
 
 -- countries
 CREATE TABLE countries (
-    id    SERIAL PRIMARY KEY,
-    name  VARCHAR(255) NOT NULL
+    id      INT PRIMARY KEY,
+    cod_n3  CHAR(3) NOT NULL,
+    latitude  DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    name_en VARCHAR(255) NOT NULL,
+    name_es VARCHAR(255) NOT NULL
 );
 
 -- cities
 CREATE TABLE cities (
     id    SERIAL PRIMARY KEY,
-    name  VARCHAR(255) NOT NULL,
-    country_id INT NOT NULL REFERENCES countries(id)
-);
-
--- country capitals
-CREATE TABLE cities_countries (
+    name_en  VARCHAR(255) NOT NULL,
+    name_es  VARCHAR(255) NOT NULL,
     country_id INT NOT NULL REFERENCES countries(id),
-    city_id    INT NOT NULL REFERENCES cities(id),
-    PRIMARY KEY (country_id)
+    latitude  DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL
 );
-
 
 -- users
 CREATE TABLE users (
@@ -92,12 +90,12 @@ CREATE TABLE projects (
     organization VARCHAR(255) NOT NULL,
     organization_type_id INT NOT NULL REFERENCES organization_types(id),
     project_stage_id     INT NOT NULL REFERENCES project_stages(id),
-    city_id              INT NOT NULL REFERENCES countries(id),
+    country_id           INT NOT NULL REFERENCES countries(id),
+    city_id              INT NOT NULL REFERENCES cities(id),
     created  TIMESTAMP,
     modified TIMESTAMP,
     start_date   DATE,
     finish_date  DATE
-
 );
 
 -- belongsToMany Join
@@ -152,7 +150,7 @@ INSERT INTO project_stages (name) VALUES
  ('aborted');
 
 
-#```
+```
 
 
 ```bash
