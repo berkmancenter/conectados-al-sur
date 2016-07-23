@@ -3,11 +3,12 @@
 /* = = = = = = = = = = = =  map = = = = = = = = = = = = */
 
 .svg-background {
-  fill: #3399ff;
+  /*fill: #3399ff;*/
+  fill: lightblue;
 }
 
 .country {
-  fill: white;
+  fill: #ddffcc;
 }
 
 .country-boundary {
@@ -74,6 +75,18 @@
 
 <script>
 
+// d3 hook
+// moves a child element to the front
+// useful when displaying ocluded data
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
+
+
+
+
 var projects = <?php echo json_encode($projects); ?>;
 //console.log(projects);
 
@@ -89,7 +102,6 @@ Object.keys(_map_by_country).map(function(value, index) {
     map_by_country.push({'id':value, 'projects':_map_by_country[value]});
 })
 //console.log(map_by_country);
-
 
 d3.select("#info-nprojects")
     .text("# projects: " + projects.length);
@@ -145,12 +157,19 @@ d3.queue()
     .defer(d3.csv , "files/cow.csv")
     .await(ready);
 
-function ready(error, world, names) {
+
+var countries_data;
+function ready(error, world, cow) {
     if (error) return console.error(error);
 
+    ///// data preparation
+    ///////////////////////////////////////////
+
+    // countries of the world (make global)
+    countries_data = cow;
+
     // topojson to geojson
-    // var land      = topojson.feature(world, world.objects.land);
-    var countries = topojson.feature(world, world.objects.countries);
+    var countries_geojson = topojson.feature(world, world.objects.countries).features;
 
     // country boundaries
     // filter to reduce the number of boundaries
@@ -164,55 +183,39 @@ function ready(error, world, names) {
         function(a, b) { return a === b; }
     )
 
-    // add feature property 'name' to each corresponding country
-    countries = countries.features.filter(function(d) {
-        // returns true/false if condition is met
-        return names.some(function(n) {
-            if (d.id == n.codN3) {
-                d.properties = n;
-                return true;
-            }
-        });
-    })
-    // console.log(countries);
-
-    // select countries and:
-    // - set class to: .country
-    // - set the drawer "d" to: path 
-    g.selectAll("path")
-            .data(countries)
+    ///// countries
+    ///////////////////////////////////////////
+    // add countries
+    g.selectAll(".country")
+            .data(countries_geojson)
         .enter().append("path")
-            .attr("class", "country")
+            .attr("class", "country")       // class: "country"
+            .attr("id", function(d,i) {     // id   : "country-<codN3>"
+                return "country-" + d.id;
+            })
             .attr("d", path)
             .on("click", countryClickListener)
             .on("mouseover", countryMouseOverListener)
             .on("mouseout", countryMouseOutListener);
 
-    // set .country-boundary and .country-coastline class to borders
+    // add countries country boundaries
     g.append("path")
         .datum(borders)
         .attr("d", path)
         .attr("class", "country-boundary");
-
     g.append("path")
         .datum(borders_coast)
         .attr("d", path)
         .attr("class", "country-coastline");
 
-    // country name tooltip 
-    var tooltip = g.append("g")
-        .attr("class", "country_tooltip")
-        .style("opacity", 0);
-    // tooltip.append("rect")
-    //     .attr("id", "country_tooltip_rect");
-    tooltip.append("text")
-        .attr("id", "country_tooltip_text");
 
 
-    // pines
+    ///// pins
+    ///////////////////////////////////////////
     var pins = g.selectAll(".project_pin")
-            .data(map_by_country)
+            .data(map_by_country, function(d) { return d.id; })
         .enter().append("circle")
+            .attr("class","project_pin")
             .attr("cx", function(d,i) {
                 var country_id = d.id;
                 var sample_proj_id = d.projects[0];
@@ -226,20 +229,72 @@ function ready(error, world, names) {
                 return projection(coords)[1];
             })
             .attr("r" , function(d,i) {
-                return 5;
+                var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
+                return 9*scale;
             })
-            .style("fill","red")
+            .style("fill", function(d,i) {
+                var max_projs = 10.0;
+                var h_maxcolor = 0;
+                var h_mincolor = 60;
+
+                var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
+                var n = h_mincolor - m*1;
+
+                var h_value = Math.min(d.projects.length, max_projs);
+                h_value = m*h_value + n;
+                return "hsl(" + h_value + ", 60%, 50%)";
+            })
+            .style("stroke", "black")
+            .style("stroke-width", 1)
             .on("mouseover", pinMouseOverListener)
             .on("mouseout", pinMouseOutListener);
 
+
+    ///// tooltip 
+    ///////////////////////////////////////////
+    var tooltip = g.append("g")
+        .attr("class", "country_tooltip")
+        .style("opacity", 0);
+    tooltip.append("rect")
+        .attr("id", "country_tooltip_rect");
+    tooltip.append("text")
+        .attr("id", "country_tooltip_text");
+
+
 }
 
-var preClickTransform;
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////// LISTENERS  ///////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 // Zoom Function Event Listener
 function zoomed() {
     g.attr("transform", d3.event.transform);
+
+    // update pins
+    pin_drawer_zoom_update(d3.event.transform);
+
+
+    var offsets = [30, -30];
+    // d3.select("#country_tooltip_text")
+    //     .attr("x", proj_coords[0]+offsets[0])
+    //     .attr("y", proj_coords[1]+offsets[1]);
+
+    // d3.select("#country_tooltip_rect")
+    //     .attr("transform", d3.zoomIdentity);
+        // .attr("x", function(d,i) {
+        // //     return 0;
+        // //  })
+        // .attr("width", function(d,i) {
+        //     return d3.select(this).attr("_width")/k;
+        // })
+        // .attr("height", function(d,i) {
+        //     return d3.select(this).attr("_height")/k;
+        // });
 }
+
+////////// COUNTRY LISTENERS //////////////////////////////////////////////////
 
 function countryClickListener(d) {
     // if (active.node() === this) return countryClickListenerReset();
@@ -251,54 +306,31 @@ function countryClickListenerReset() {
     // active = d3.select(null);
 }
 
-function countryMouseOverListener(d) {
-    d3.select(this)
-        .transition()
-                .duration(1000)
-                .style("fill", "#ffff99");
-
-    
-    // centroid coordinates
-    var coords = [Number(d.properties.lon), Number(d.properties.lat)];
-    var proj_coords = projection(coords);
-
-    // draw tooltip
-    d3.select("#country_tooltip_text")
-        .text(d.properties.codA3)
-        .attr("x", proj_coords[0])
-        .attr("y", proj_coords[1]);
-
-    // d3.select("#country_tooltip_rect")
-    //     .attr("x", proj_coords[0]-10)
-    //     .attr("y", proj_coords[1]-20)
-    //     .attr("width", 55)
-    //     .attr("height", 30);
-
-    d3.select(".country_tooltip")
-        .style("opacity", 1);
-
+function countryMouseOverListener(d) {    
+    country_drawer_paint_active(d.id);
+    tooltip_drawer_draw(d.id);    
 }
 
 // todo: no desaparecer en caso de estar sobre el tooltip
 function countryMouseOutListener(d) {
-    d3.select(this)
-        .transition()
-                .duration(1000)
-                .style("fill", "white");
-
-    d3.select(".country_tooltip").style("opacity", 1e-6);
+    country_drawer_paint_normal(d.id);
+    tooltip_drawer_remove();
 }
+
+
+
+////////// PIN LISTENERS //////////////////////////////////////////////////////
 
 function pinMouseOverListener(d) {
     d3.select(this)
+        .moveToFront()
         .transition()
-            .style("fill", "green");
+            .style("stroke", "blue")
+            .style("stroke-width", 5);
     
     // display info
     var infolist = d3.select(".side-nav-info")
         .append("ul").attr("id","country-info")
-
-    console.log(d);
 
     var country_id = d.id;
     var sample_proj_id = d.projects[0];
@@ -333,15 +365,132 @@ function pinMouseOverListener(d) {
             cats.append("li").text("#" + (index + 1) + ": " + item.name);
         });
     };
+
+    // lookup country information
+    tooltip_drawer_draw(d.id);
+    country_drawer_paint_active(d.id);
 }
 
 // todo: no desaparecer en caso de estar sobre el tooltip
 function pinMouseOutListener(d) {
     d3.select(this)
         .transition()
-            .style("fill", "red");
+            .style("stroke", "black")
+            .style("stroke-width", 1);
 
     d3.select("#country-info").remove();
+
+    tooltip_drawer_remove();
+    country_drawer_paint_normal(d.id);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////// DATA    HELPERS //////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function getCountryByN3(codN3) {
+
+    // lookup country information
+    var matches = $.grep(countries_data, 
+        function(e){
+            return e.codN3 == codN3;
+        }
+    );
+    // countries codes are unique! so there should be a single match
+    // otherwise, returns 'undefined'
+    return matches[0];
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////// DRAWER  HELPERS //////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//////////////////////////////////////////////////////
+// COUNTRY HELPERS
+
+// highlights the country
+function country_drawer_paint_active(codN3) {
+    d3.select("#country-" + codN3)
+        .transition()
+            .duration(250)
+            .style("fill", "#99ff66");
+}
+
+// resets the country colour
+function country_drawer_paint_normal(codN3) {
+    d3.select("#country-" + codN3)
+        .transition()
+            .duration(250)
+            .style("fill", "#ddffcc");
+}
+
+
+
+//////////////////////////////////////////////////////
+// TOOLTIP HELPERS
+
+// draws a tooltip with updated data
+function tooltip_drawer_draw(codN3) {
+
+    // retrieve country
+    country = getCountryByN3(codN3);
+
+    // centroid coordinates
+    var coords = [Number(country.lon), Number(country.lat)];
+    var proj_coords = projection(coords);
+
+    // draw tooltip
+    var offsets = [30, -30];
+    d3.select("#country_tooltip_text")
+        // .text(country.codA3 + " " + country.codN3)
+        .text(country.codA3)
+        .attr("x", proj_coords[0]+offsets[0])
+        .attr("y", proj_coords[1]+offsets[1]);
+
+    d3.select("#country_tooltip_rect")
+        .attr("x", proj_coords[0]-10+offsets[0])
+        .attr("y", proj_coords[1]-20+offsets[1])
+        .attr("width", 55)
+        .attr("height", 30)
+        .attr("_x", proj_coords[0]-10+offsets[0])
+        .attr("_y", proj_coords[1]-20+offsets[1])
+        .attr("_width", 55)
+        .attr("_height", 30);
+
+    d3.select(".country_tooltip")
+        .style("opacity", 1)
+        .moveToFront();
+}
+
+// disapears the tooltip
+function tooltip_drawer_remove() {
+    d3.select(".country_tooltip")
+        .style("opacity", 1e-6);
+}
+
+
+//////////////////////////////////////////////////////
+// PIN HELPERS
+
+function pin_drawer_zoom_update(transform) {
+
+    var k = d3.event.transform.k;
+
+    g.selectAll(".project_pin")
+        .attr("r" , function(d,i) {
+                var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
+                return 9*scale/k;
+        })
+        .attr("stroke-width" , function(d,i) {
+                return 1/k;
+        });
 }
 
 </script>
