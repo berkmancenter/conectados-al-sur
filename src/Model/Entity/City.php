@@ -7,10 +7,13 @@ use Cake\ORM\Entity;
  * City Entity
  *
  * @property int $id
- * @property string $name
+ * @property string $name_en
+ * @property string $name_es
  * @property int $country_id
+ * @property float $latitude
+ * @property float $longitude
  *
- * @property \App\Model\Entity\Country[] $countries
+ * @property \App\Model\Entity\Country $country
  * @property \App\Model\Entity\Project[] $projects
  */
 class City extends Entity

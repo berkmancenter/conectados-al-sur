@@ -26,6 +26,7 @@
                 <th><?= $this->Paginator->sort('organization') ?></th>
                 <th><?= $this->Paginator->sort('organization_type_id') ?></th>
                 <th><?= $this->Paginator->sort('project_stage_id') ?></th>
+                <th><?= $this->Paginator->sort('country_id') ?></th>
                 <th><?= $this->Paginator->sort('city_id') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
                 <th><?= $this->Paginator->sort('modified') ?></th>
@@ -44,6 +45,7 @@
                 <td><?= h($project->organization) ?></td>
                 <td><?= $project->has('organization_type') ? $this->Html->link($project->organization_type->name, ['controller' => 'OrganizationTypes', 'action' => 'view', $project->organization_type->id]) : '' ?></td>
                 <td><?= $project->has('project_stage') ? $this->Html->link($project->project_stage->name, ['controller' => 'ProjectStages', 'action' => 'view', $project->project_stage->id]) : '' ?></td>
+                <td><?= $this->Number->format($project->country_id) ?></td>
                 <td><?= $project->has('city') ? $this->Html->link($project->city->name, ['controller' => 'Cities', 'action' => 'view', $project->city->id]) : '' ?></td>
                 <td><?= h($project->created) ?></td>
                 <td><?= h($project->modified) ?></td>

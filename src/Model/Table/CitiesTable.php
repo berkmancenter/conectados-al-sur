@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Countries
  * @property \Cake\ORM\Association\HasMany $Projects
- * @property \Cake\ORM\Association\BelongsToMany $Countries
  *
  * @method \App\Model\Entity\City get($primaryKey, $options = [])
  * @method \App\Model\Entity\City newEntity($data = null, array $options = [])
@@ -45,11 +44,6 @@ class CitiesTable extends Table
         $this->hasMany('Projects', [
             'foreignKey' => 'city_id'
         ]);
-        $this->belongsToMany('Countries', [
-            'foreignKey' => 'city_id',
-            'targetForeignKey' => 'country_id',
-            'joinTable' => 'cities_countries'
-        ]);
     }
 
     /**
@@ -65,8 +59,22 @@ class CitiesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->requirePresence('name_en', 'create')
+            ->notEmpty('name_en');
+
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es');
+
+        $validator
+            ->numeric('latitude')
+            ->requirePresence('latitude', 'create')
+            ->notEmpty('latitude');
+
+        $validator
+            ->numeric('longitude')
+            ->requirePresence('longitude', 'create')
+            ->notEmpty('longitude');
 
         return $validator;
     }

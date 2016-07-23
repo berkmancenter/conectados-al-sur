@@ -2,10 +2,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Cities'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Countries'), ['controller' => 'Countries', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Country'), ['controller' => 'Countries', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="cities form large-9 medium-8 columns content">
@@ -13,9 +13,11 @@
     <fieldset>
         <legend><?= __('Add City') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('country_id');
-            echo $this->Form->input('countries._ids', ['options' => $countries]);
+            echo $this->Form->input('name_en');
+            echo $this->Form->input('name_es');
+            echo $this->Form->input('country_id', ['options' => $countries]);
+            echo $this->Form->input('latitude');
+            echo $this->Form->input('longitude');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

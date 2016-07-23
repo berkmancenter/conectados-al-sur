@@ -34,6 +34,7 @@
             echo $this->Form->input('organization');
             echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);
             echo $this->Form->input('project_stage_id', ['options' => $projectStages]);
+            echo $this->Form->input('country_id');
             echo $this->Form->input('city_id', ['options' => $cities]);
             echo $this->Form->input('start_date', ['empty' => true]);
             echo $this->Form->input('finish_date', ['empty' => true]);

@@ -26,14 +26,14 @@ class CountriesTableTest extends TestCase
     public $fixtures = [
         'app.countries',
         'app.cities',
-        'app.cities_countries',
         'app.projects',
         'app.users',
         'app.genres',
         'app.organization_types',
         'app.project_stages',
         'app.categories',
-        'app.categories_projects'
+        'app.categories_projects',
+        'app.cities_countries'
     ];
 
     /**

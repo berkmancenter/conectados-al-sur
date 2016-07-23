@@ -18,6 +18,9 @@ class CitiesController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Countries']
+        ];
         $cities = $this->paginate($this->Cities);
 
         $this->set(compact('cities'));
@@ -34,7 +37,7 @@ class CitiesController extends AppController
     public function view($id = null)
     {
         $city = $this->Cities->get($id, [
-            'contain' => ['Countries', 'Projects']
+            'contain' => ['Countries', 'Projects', 'CitiesCountries']
         ]);
 
         $this->set('city', $city);
@@ -73,7 +76,7 @@ class CitiesController extends AppController
     public function edit($id = null)
     {
         $city = $this->Cities->get($id, [
-            'contain' => ['Countries']
+            'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $city = $this->Cities->patchEntity($city, $this->request->data);

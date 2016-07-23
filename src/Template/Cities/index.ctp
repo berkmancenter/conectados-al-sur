@@ -2,10 +2,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New City'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Countries'), ['controller' => 'Countries', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Country'), ['controller' => 'Countries', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="cities index large-9 medium-8 columns content">
@@ -14,8 +14,11 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('name_en') ?></th>
+                <th><?= $this->Paginator->sort('name_es') ?></th>
                 <th><?= $this->Paginator->sort('country_id') ?></th>
+                <th><?= $this->Paginator->sort('latitude') ?></th>
+                <th><?= $this->Paginator->sort('longitude') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -23,8 +26,11 @@
             <?php foreach ($cities as $city): ?>
             <tr>
                 <td><?= $this->Number->format($city->id) ?></td>
-                <td><?= h($city->name) ?></td>
-                <td><?= $this->Number->format($city->country_id) ?></td>
+                <td><?= h($city->name_en) ?></td>
+                <td><?= h($city->name_es) ?></td>
+                <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
+                <td><?= $this->Number->format($city->latitude) ?></td>
+                <td><?= $this->Number->format($city->longitude) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $city->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $city->id]) ?>

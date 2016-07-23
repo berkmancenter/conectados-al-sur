@@ -2,8 +2,6 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Country'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?></li>
     </ul>
@@ -14,7 +12,11 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('cod_n3') ?></th>
+                <th><?= $this->Paginator->sort('latitude') ?></th>
+                <th><?= $this->Paginator->sort('longitude') ?></th>
+                <th><?= $this->Paginator->sort('name_en') ?></th>
+                <th><?= $this->Paginator->sort('name_es') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -22,7 +24,11 @@
             <?php foreach ($countries as $country): ?>
             <tr>
                 <td><?= $this->Number->format($country->id) ?></td>
-                <td><?= h($country->name) ?></td>
+                <td><?= h($country->cod_n3) ?></td>
+                <td><?= $this->Number->format($country->latitude) ?></td>
+                <td><?= $this->Number->format($country->longitude) ?></td>
+                <td><?= h($country->name_en) ?></td>
+                <td><?= h($country->name_es) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $country->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $country->id]) ?>

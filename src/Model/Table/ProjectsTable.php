@@ -12,6 +12,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\BelongsTo $Users
  * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
  * @property \Cake\ORM\Association\BelongsTo $ProjectStages
+ * @property \Cake\ORM\Association\BelongsTo $Countries
  * @property \Cake\ORM\Association\BelongsTo $Cities
  * @property \Cake\ORM\Association\BelongsToMany $Categories
  *
@@ -54,6 +55,10 @@ class ProjectsTable extends Table
         ]);
         $this->belongsTo('ProjectStages', [
             'foreignKey' => 'project_stage_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Countries', [
+            'foreignKey' => 'country_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Cities', [
@@ -123,6 +128,7 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
         $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
         $rules->add($rules->existsIn(['project_stage_id'], 'ProjectStages'));
+        $rules->add($rules->existsIn(['country_id'], 'Countries'));
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
         return $rules;
     }

@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Countries Model
  *
  * @property \Cake\ORM\Association\HasMany $Cities
- * @property \Cake\ORM\Association\BelongsToMany $Cities
+ * @property \Cake\ORM\Association\HasMany $Projects
  *
  * @method \App\Model\Entity\Country get($primaryKey, $options = [])
  * @method \App\Model\Entity\Country newEntity($data = null, array $options = [])
@@ -40,10 +40,8 @@ class CountriesTable extends Table
         $this->hasMany('Cities', [
             'foreignKey' => 'country_id'
         ]);
-        $this->belongsToMany('Cities', [
-            'foreignKey' => 'country_id',
-            'targetForeignKey' => 'city_id',
-            'joinTable' => 'cities_countries'
+        $this->hasMany('Projects', [
+            'foreignKey' => 'country_id'
         ]);
     }
 
@@ -60,8 +58,26 @@ class CountriesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->requirePresence('cod_n3', 'create')
+            ->notEmpty('cod_n3');
+
+        $validator
+            ->numeric('latitude')
+            ->requirePresence('latitude', 'create')
+            ->notEmpty('latitude');
+
+        $validator
+            ->numeric('longitude')
+            ->requirePresence('longitude', 'create')
+            ->notEmpty('longitude');
+
+        $validator
+            ->requirePresence('name_en', 'create')
+            ->notEmpty('name_en');
+
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es');
 
         return $validator;
     }

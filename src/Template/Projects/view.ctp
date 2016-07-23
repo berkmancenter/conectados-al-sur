@@ -53,6 +53,10 @@
             <td><?= $this->Number->format($project->id) ?></td>
         </tr>
         <tr>
+            <th><?= __('Country Id') ?></th>
+            <td><?= $this->Number->format($project->country_id) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Created') ?></th>
             <td><?= h($project->created) ?></td>
         </tr>

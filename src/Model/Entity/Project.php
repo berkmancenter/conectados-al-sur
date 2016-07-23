@@ -16,6 +16,7 @@ use Cake\ORM\Entity;
  * @property string $organization
  * @property int $organization_type_id
  * @property int $project_stage_id
+ * @property int $country_id
  * @property int $city_id
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
