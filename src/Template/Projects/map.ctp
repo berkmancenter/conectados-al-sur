@@ -159,6 +159,10 @@ d3.queue()
 
 
 var countries_data;
+var active_pin = d3.select(null);
+var active_id  = null;
+
+var current_transform = d3.zoomIdentity;
 function ready(error, world, cow) {
     if (error) return console.error(error);
 
@@ -212,21 +216,20 @@ function ready(error, world, cow) {
 
     ///// pins
     ///////////////////////////////////////////
-    var pins = g.selectAll(".project_pin")
+    var pins = g.selectAll(".country_pin")
             .data(map_by_country, function(d) { return d.id; })
         .enter().append("circle")
-            .attr("class","project_pin")
+            .attr("class","country_pin")    // class: "country_pin"
+            .attr("id", function(d,i) {     // id   : "country_pin-<codN3>"
+                return "country_pin-" + d.id;
+            })
             .attr("cx", function(d,i) {
-                var country_id = d.id;
-                var sample_proj_id = d.projects[0];
-                var coords = [projects[sample_proj_id].country.longitude, projects[sample_proj_id].country.latitude]
-                return projection(coords)[0]; 
+                var country = getCountryByN3(d.id);
+                return projection([country.lon, country.lat])[0]; 
             })
             .attr("cy", function(d,i) {
-                var country_id = d.id;
-                var sample_proj_id = d.projects[0];
-                var coords = [projects[sample_proj_id].country.longitude, projects[sample_proj_id].country.latitude]
-                return projection(coords)[1];
+                var country = getCountryByN3(d.id);
+                return projection([country.lon, country.lat])[1];
             })
             .attr("r" , function(d,i) {
                 var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
@@ -253,8 +256,11 @@ function ready(error, world, cow) {
     ///// tooltip 
     ///////////////////////////////////////////
     var tooltip = g.append("g")
+        .datum(null)
         .attr("class", "country_tooltip")
-        .style("opacity", 0);
+        .style("opacity", 0)
+        .on("mouseover", tooltipMouseOverListener)
+        .on("mouseout", tooltipMouseOutListener);
     tooltip.append("rect")
         .attr("id", "country_tooltip_rect");
     tooltip.append("text")
@@ -270,28 +276,14 @@ function ready(error, world, cow) {
 
 // Zoom Function Event Listener
 function zoomed() {
+    
+    current_transform = d3.event.transform;
     g.attr("transform", d3.event.transform);
 
-    // update pins
+    // update other elements on a
+    // special way
     pin_drawer_zoom_update(d3.event.transform);
-
-
-    var offsets = [30, -30];
-    // d3.select("#country_tooltip_text")
-    //     .attr("x", proj_coords[0]+offsets[0])
-    //     .attr("y", proj_coords[1]+offsets[1]);
-
-    // d3.select("#country_tooltip_rect")
-    //     .attr("transform", d3.zoomIdentity);
-        // .attr("x", function(d,i) {
-        // //     return 0;
-        // //  })
-        // .attr("width", function(d,i) {
-        //     return d3.select(this).attr("_width")/k;
-        // })
-        // .attr("height", function(d,i) {
-        //     return d3.select(this).attr("_height")/k;
-        // });
+    tooltip_drawer_zoom_update(d3.event.transform);
 }
 
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////
@@ -322,66 +314,52 @@ function countryMouseOutListener(d) {
 ////////// PIN LISTENERS //////////////////////////////////////////////////////
 
 function pinMouseOverListener(d) {
-    d3.select(this)
-        .moveToFront()
-        .transition()
-            .style("stroke", "blue")
-            .style("stroke-width", 5);
     
-    // display info
-    var infolist = d3.select(".side-nav-info")
-        .append("ul").attr("id","country-info")
+    pin_drawer_active(d.id);
 
-    var country_id = d.id;
-    var sample_proj_id = d.projects[0];
-    var country = projects[sample_proj_id].country;
-    var nProjects = d.projects.length;
-
-    infolist.append("li").text("Country: " + country.name_en)
-    if (nProjects > 1) {
-        infolist.append("li").text("# projects: " + nProjects);
-        infolist.append("li").text("# authors: " + 0);
-        infolist.append("li").text("last modified: " + 0);
-        infolist.append("li").text("# finished: " + 0);
-        infolist.append("li").text("# categories: " + 0);
-    } else{
-        var project = projects[sample_proj_id];
-        infolist.append("li").text("# projects: 1");
-        infolist.append("li").text("project: " + project.name);
-        infolist.append("li").text("url: " + project.url);
-        infolist.append("li").text("stage: " + project.project_stage.name);
-        infolist.append("li").text("org type: " + project.organization_type.name);
-        infolist.append("li").text("org name: " + project.organization);
-        infolist.append("li").text("user name: " + project.user.name);
-        infolist.append("li").text("user mail: " + project.user.email);
-        infolist.append("li").text("user main org: " + project.user.main_organization);
-        infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
-        infolist.append("li").text("last modification: " + project.modified.substr(0,10));
-        
-        var cats = infolist.append("li").text("categories: ")
-            .append("ul");
-
-        project.categories.forEach(function(item, index) {
-            cats.append("li").text("#" + (index + 1) + ": " + item.name);
-        });
-    };
-
-    // lookup country information
+    // show tooltip and redraw country 
     tooltip_drawer_draw(d.id);
     country_drawer_paint_active(d.id);
+
+    projects_info_display(d);
 }
 
 // todo: no desaparecer en caso de estar sobre el tooltip
 function pinMouseOutListener(d) {
-    d3.select(this)
-        .transition()
-            .style("stroke", "black")
-            .style("stroke-width", 1);
+    
+    pin_drawer_normal(d.id);
 
-    d3.select("#country-info").remove();
+    projects_info_clear();
 
+    // reset stuff
     tooltip_drawer_remove();
     country_drawer_paint_normal(d.id);
+}
+
+
+////////// TOOLTIP LISTENERS //////////////////////////////////////////////////
+
+function tooltipMouseOverListener(d) {
+    
+    // pin_drawer_active(d);
+
+    // show tooltip and redraw country 
+    tooltip_drawer_draw(d);
+    country_drawer_paint_active(d);
+
+    // projects_info_display(d);
+}
+
+// todo: no desaparecer en caso de estar sobre el tooltip
+function tooltipMouseOutListener(d) {
+    
+    // pin_drawer_normal(d);
+
+    projects_info_clear();
+
+    // reset stuff
+    tooltip_drawer_remove();
+    country_drawer_paint_normal(d);
 }
 
 
@@ -417,6 +395,7 @@ function getCountryByN3(codN3) {
 
 // highlights the country
 function country_drawer_paint_active(codN3) {
+    active_id = codN3;
     d3.select("#country-" + codN3)
         .transition()
             .duration(250)
@@ -425,6 +404,7 @@ function country_drawer_paint_active(codN3) {
 
 // resets the country colour
 function country_drawer_paint_normal(codN3) {
+    active_id = null;
     d3.select("#country-" + codN3)
         .transition()
             .duration(250)
@@ -440,58 +420,149 @@ function country_drawer_paint_normal(codN3) {
 function tooltip_drawer_draw(codN3) {
 
     // retrieve country
-    country = getCountryByN3(codN3);
-
-    // centroid coordinates
-    var coords = [Number(country.lon), Number(country.lat)];
-    var proj_coords = projection(coords);
+    var country = getCountryByN3(codN3);
+    var coords  = projection([country.lon, country.lat]);
 
     // draw tooltip
-    var offsets = [30, -30];
-    d3.select("#country_tooltip_text")
-        // .text(country.codA3 + " " + country.codN3)
-        .text(country.codA3)
-        .attr("x", proj_coords[0]+offsets[0])
-        .attr("y", proj_coords[1]+offsets[1]);
+    var k = current_transform.k;
+    var dx = 20/k;
+    var dy = 20/k;
+    var tw = 60/k;
+    var th = 30/k;
+    var mleft = 15/k;
+    var mbottom = 10/k;
+    var nodeFontSize = 12/k;
 
     d3.select("#country_tooltip_rect")
-        .attr("x", proj_coords[0]-10+offsets[0])
-        .attr("y", proj_coords[1]-20+offsets[1])
-        .attr("width", 55)
-        .attr("height", 30)
-        .attr("_x", proj_coords[0]-10+offsets[0])
-        .attr("_y", proj_coords[1]-20+offsets[1])
-        .attr("_width", 55)
-        .attr("_height", 30);
+        .attr("x", coords[0]+dx)
+        .attr("y", coords[1]-(th+dy))
+        .attr("width", tw)
+        .attr("height", th);
+
+    d3.select("#country_tooltip_text")
+        .text(country.codA3)
+        .attr("x", coords[0]+(dx+mleft))
+        .attr("y", coords[1]-(dy+mbottom))
+        .attr("font-size", nodeFontSize + "px");
 
     d3.select(".country_tooltip")
+        .datum(codN3)
         .style("opacity", 1)
+        .attr("transform", d3.zoomIdentity) // reapear!
         .moveToFront();
 }
 
 // disapears the tooltip
 function tooltip_drawer_remove() {
     d3.select(".country_tooltip")
-        .style("opacity", 1e-6);
+        .style("opacity", 1e-6)
+        // trick to desapear from svg!
+        .attr("transform", d3.zoomIdentity.translate(10*width,10*height));
+}
+
+function tooltip_drawer_zoom_update(transform) {
+    if (active_id != null) {
+        tooltip_drawer_draw(active_id);
+    } else {
+        tooltip_drawer_remove();
+    }
 }
 
 
 //////////////////////////////////////////////////////
 // PIN HELPERS
 
+function pin_drawer_normal(codN3) {
+    
+    active_pin.transition()
+        .style("stroke", "black")
+        .style("stroke-width",  function(d,i) {
+            return 1/current_transform.k;
+        });
+
+    active_pin = d3.select(null);
+}
+
+function pin_drawer_active(codN3) {
+
+    active_pin = d3.select("#country_pin-" + codN3);
+
+    active_pin
+        .moveToFront()
+        .transition()
+            .style("stroke", "blue")
+            .style("stroke-width", function(d,i) {
+                return 5/current_transform.k;
+            });
+
+}
+
 function pin_drawer_zoom_update(transform) {
 
-    var k = d3.event.transform.k;
-
-    g.selectAll(".project_pin")
+    g.selectAll(".country_pin")
         .attr("r" , function(d,i) {
                 var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-                return 9*scale/k;
+                return 9*scale/transform.k;
         })
-        .attr("stroke-width" , function(d,i) {
-                return 1/k;
+        .style("stroke-width", function(d,i) {
+                return 1/transform.k;
+        });
+
+    // this pin will have a different stroke-width
+    active_pin
+        .style("stroke-width", function(d,i) {
+                return 5/transform.k;
         });
 }
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////// INFORMATION  HELPERS//////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+function projects_info_clear() {
+    d3.select("#country-info").remove();
+}
+
+function projects_info_display(map_item) {
+    
+    var country = getCountryByN3(map_item.id);
+    var nProjects = map_item.projects.length;
+
+    var infolist = d3.select(".side-nav-info")
+        .append("ul").attr("id","country-info")
+
+    infolist.append("li").text("Country: " + country.name_en)
+    if (nProjects > 1) {
+        infolist.append("li").text("# projects: " + nProjects);
+        infolist.append("li").text("# authors: " + 0);
+        infolist.append("li").text("last modified: " + 0);
+        infolist.append("li").text("# finished: " + 0);
+        infolist.append("li").text("# categories: " + 0);
+    } else{
+        var project = projects[0];
+        infolist.append("li").text("# projects: 1");
+        infolist.append("li").text("project: " + project.name);
+        infolist.append("li").text("url: " + project.url);
+        infolist.append("li").text("stage: " + project.project_stage.name);
+        infolist.append("li").text("org type: " + project.organization_type.name);
+        infolist.append("li").text("org name: " + project.organization);
+        infolist.append("li").text("user name: " + project.user.name);
+        infolist.append("li").text("user mail: " + project.user.email);
+        infolist.append("li").text("user main org: " + project.user.main_organization);
+        infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
+        infolist.append("li").text("last modification: " + project.modified.substr(0,10));
+        
+        var cats = infolist.append("li").text("categories: ")
+            .append("ul");
+
+        project.categories.forEach(function(item, index) {
+            cats.append("li").text("#" + (index + 1) + ": " + item.name);
+        });
+    };
+}
+
 
 </script>
 
