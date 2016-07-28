@@ -12,6 +12,7 @@ composer install
 
 -- DROP tables if exist
 DROP TABLE genres CASCADE;
+
 DROP TABLE organization_types CASCADE;
 DROP TABLE categories CASCADE;
 DROP TABLE project_stages CASCADE;
@@ -84,6 +85,7 @@ CREATE TABLE projects (
     user_id      INT NOT NULL REFERENCES users(id),
     description  TEXT,
     url          VARCHAR(255) NOT NULL,
+    map_url      VARCHAR(255) NOT NULL,
     contribution TEXT,
     contributing TEXT,
     organization VARCHAR(255) NOT NULL,
