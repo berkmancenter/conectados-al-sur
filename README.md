@@ -57,10 +57,9 @@ CREATE TABLE countries (
 
 -- cities
 CREATE TABLE cities (
-    id    SERIAL PRIMARY KEY,
-    name_en  VARCHAR(255) NOT NULL,
-    name_es  VARCHAR(255) NOT NULL,
+    id    int PRIMARY KEY,
     country_id INT NOT NULL REFERENCES countries(id),
+    name  VARCHAR(255) NOT NULL,
     latitude  DOUBLE PRECISION NOT NULL,
     longitude DOUBLE PRECISION NOT NULL
 );
