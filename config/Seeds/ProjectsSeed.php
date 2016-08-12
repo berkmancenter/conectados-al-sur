@@ -125,9 +125,9 @@ class ProjectsSeed extends AbstractSeed
 
         ## ejecutar en orden (correr script dos veces y comentar):
         # primero esto
-        #$table->insert($data)->save();
+        $table->insert($data)->save();
 
         # luego esto
-        $categories_table->insert($categories)->save();
+        #$categories_table->insert($categories)->save();
     }
 }

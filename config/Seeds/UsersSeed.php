@@ -19,7 +19,7 @@ class UsersSeed extends AbstractSeed
     public function run()
     {
         $faker = Faker\Factory::create();
-        #$faker->seed(1234);
+        $faker->seed(1234);
         $data = [];
         for ($i = 0; $i < 15; $i++) {
             $created  = $faker->dateTimeThisDecade;
