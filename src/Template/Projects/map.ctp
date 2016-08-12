@@ -427,7 +427,7 @@ function tooltip_drawer_draw(codN3) {
     var k = current_transform.k;
     var dx = 20/k;
     var dy = 20/k;
-    var tw = 60/k;
+    var tw = 120/k;
     var th = 30/k;
     var mleft = 15/k;
     var mbottom = 10/k;
@@ -439,8 +439,16 @@ function tooltip_drawer_draw(codN3) {
         .attr("width", tw)
         .attr("height", th);
 
+    // n asociated projects
+    projects = _map_by_country[country.codN3];
+    nProjects = 0
+    if ( projects != null) {
+        nProjects = projects.length;
+    }
+    projects_word = nProjects == 1 ? "project" : "projects" ;
+
     d3.select("#country_tooltip_text")
-        .text(country.codA3)
+        .text(country.codA3 + " (" + nProjects + " " + projects_word + ")")
         .attr("x", coords[0]+(dx+mleft))
         .attr("y", coords[1]-(dy+mbottom))
         .attr("font-size", nodeFontSize + "px");
