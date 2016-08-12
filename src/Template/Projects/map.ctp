@@ -440,10 +440,10 @@ function tooltip_drawer_draw(codN3) {
         .attr("height", th);
 
     // n asociated projects
-    projects = _map_by_country[country.codN3];
+    _projects = _map_by_country[country.codN3];
     nProjects = 0
-    if ( projects != null) {
-        nProjects = projects.length;
+    if ( _projects != null) {
+        nProjects = _projects.length;
     }
     projects_word = nProjects == 1 ? "project" : "projects" ;
 
@@ -550,6 +550,7 @@ function projects_info_display(map_item) {
         infolist.append("li").text("# categories: " + 0);
     } else{
         var project = projects[0];
+        console.log(project);
         infolist.append("li").text("# projects: 1");
         infolist.append("li").text("project: " + project.name);
         infolist.append("li").text("url: " + project.url);
