@@ -48,8 +48,8 @@ class UsersFixture extends TestFixture
             'genre_id' => 1,
             'main_organization' => 'Lorem ipsum dolor sit amet',
             'organization_type_id' => 1,
-            'created' => 1468049939,
-            'modified' => 1468049939
+            'created' => 1469694722,
+            'modified' => 1469694722
         ],
     ];
 }

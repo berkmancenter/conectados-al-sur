@@ -11,8 +11,6 @@ use App\Controller\AppController;
 class ProjectsController extends AppController
 {
 
-
-
     public function preview()
     {
         // $this->paginate = [
@@ -56,7 +54,6 @@ class ProjectsController extends AppController
     }
 
 
-
     /**
      * Index method
      *
@@ -65,7 +62,7 @@ class ProjectsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Cities']
+            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities']
         ];
         $projects = $this->paginate($this->Projects);
 
@@ -83,7 +80,7 @@ class ProjectsController extends AppController
     public function view($id = null)
     {
         $project = $this->Projects->get($id, [
-            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Cities', 'Categories']
+            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities', 'Categories']
         ]);
 
         $this->set('project', $project);
@@ -110,9 +107,10 @@ class ProjectsController extends AppController
         $users = $this->Projects->Users->find('list', ['limit' => 200]);
         $organizationTypes = $this->Projects->OrganizationTypes->find('list', ['limit' => 200]);
         $projectStages = $this->Projects->ProjectStages->find('list', ['limit' => 200]);
+        $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
         $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
         $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'cities', 'categories'));
+        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories'));
         $this->set('_serialize', ['project']);
     }
 
@@ -140,9 +138,10 @@ class ProjectsController extends AppController
         $users = $this->Projects->Users->find('list', ['limit' => 200]);
         $organizationTypes = $this->Projects->OrganizationTypes->find('list', ['limit' => 200]);
         $projectStages = $this->Projects->ProjectStages->find('list', ['limit' => 200]);
+        $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
         $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
         $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'cities', 'categories'));
+        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories'));
         $this->set('_serialize', ['project']);
     }
 

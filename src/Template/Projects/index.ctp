@@ -8,6 +8,8 @@
         <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Project Stages'), ['controller' => 'ProjectStages', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Project Stage'), ['controller' => 'ProjectStages', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Countries'), ['controller' => 'Countries', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Country'), ['controller' => 'Countries', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?></li>
@@ -28,6 +30,8 @@
                 <th><?= $this->Paginator->sort('project_stage_id') ?></th>
                 <th><?= $this->Paginator->sort('country_id') ?></th>
                 <th><?= $this->Paginator->sort('city_id') ?></th>
+                <th><?= $this->Paginator->sort('latitude') ?></th>
+                <th><?= $this->Paginator->sort('longitude') ?></th>
                 <th><?= $this->Paginator->sort('created') ?></th>
                 <th><?= $this->Paginator->sort('modified') ?></th>
                 <th><?= $this->Paginator->sort('start_date') ?></th>
@@ -45,8 +49,10 @@
                 <td><?= h($project->organization) ?></td>
                 <td><?= $project->has('organization_type') ? $this->Html->link($project->organization_type->name, ['controller' => 'OrganizationTypes', 'action' => 'view', $project->organization_type->id]) : '' ?></td>
                 <td><?= $project->has('project_stage') ? $this->Html->link($project->project_stage->name, ['controller' => 'ProjectStages', 'action' => 'view', $project->project_stage->id]) : '' ?></td>
-                <td><?= $this->Number->format($project->country_id) ?></td>
+                <td><?= $project->has('country') ? $this->Html->link($project->country->name, ['controller' => 'Countries', 'action' => 'view', $project->country->id]) : '' ?></td>
                 <td><?= $project->has('city') ? $this->Html->link($project->city->name, ['controller' => 'Cities', 'action' => 'view', $project->city->id]) : '' ?></td>
+                <td><?= $this->Number->format($project->latitude) ?></td>
+                <td><?= $this->Number->format($project->longitude) ?></td>
                 <td><?= h($project->created) ?></td>
                 <td><?= h($project->modified) ?></td>
                 <td><?= h($project->start_date) ?></td>

@@ -38,7 +38,10 @@
                 <th><?= __('Organization') ?></th>
                 <th><?= __('Organization Type Id') ?></th>
                 <th><?= __('Project Stage Id') ?></th>
+                <th><?= __('Country Id') ?></th>
                 <th><?= __('City Id') ?></th>
+                <th><?= __('Latitude') ?></th>
+                <th><?= __('Longitude') ?></th>
                 <th><?= __('Created') ?></th>
                 <th><?= __('Modified') ?></th>
                 <th><?= __('Start Date') ?></th>
@@ -57,7 +60,10 @@
                 <td><?= h($projects->organization) ?></td>
                 <td><?= h($projects->organization_type_id) ?></td>
                 <td><?= h($projects->project_stage_id) ?></td>
+                <td><?= h($projects->country_id) ?></td>
                 <td><?= h($projects->city_id) ?></td>
+                <td><?= h($projects->latitude) ?></td>
+                <td><?= h($projects->longitude) ?></td>
                 <td><?= h($projects->created) ?></td>
                 <td><?= h($projects->modified) ?></td>
                 <td><?= h($projects->start_date) ?></td>

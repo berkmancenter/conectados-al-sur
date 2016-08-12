@@ -13,9 +13,8 @@
     <fieldset>
         <legend><?= __('Add City') ?></legend>
         <?php
-            echo $this->Form->input('name_en');
-            echo $this->Form->input('name_es');
             echo $this->Form->input('country_id', ['options' => $countries]);
+            echo $this->Form->input('name');
             echo $this->Form->input('latitude');
             echo $this->Form->input('longitude');
         ?>

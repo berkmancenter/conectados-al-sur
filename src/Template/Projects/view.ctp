@@ -11,6 +11,8 @@
         <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Project Stages'), ['controller' => 'ProjectStages', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Project Stage'), ['controller' => 'ProjectStages', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Countries'), ['controller' => 'Countries', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Country'), ['controller' => 'Countries', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?> </li>
@@ -45,6 +47,10 @@
             <td><?= $project->has('project_stage') ? $this->Html->link($project->project_stage->name, ['controller' => 'ProjectStages', 'action' => 'view', $project->project_stage->id]) : '' ?></td>
         </tr>
         <tr>
+            <th><?= __('Country') ?></th>
+            <td><?= $project->has('country') ? $this->Html->link($project->country->name, ['controller' => 'Countries', 'action' => 'view', $project->country->id]) : '' ?></td>
+        </tr>
+        <tr>
             <th><?= __('City') ?></th>
             <td><?= $project->has('city') ? $this->Html->link($project->city->name, ['controller' => 'Cities', 'action' => 'view', $project->city->id]) : '' ?></td>
         </tr>
@@ -53,8 +59,12 @@
             <td><?= $this->Number->format($project->id) ?></td>
         </tr>
         <tr>
-            <th><?= __('Country Id') ?></th>
-            <td><?= $this->Number->format($project->country_id) ?></td>
+            <th><?= __('Latitude') ?></th>
+            <td><?= $this->Number->format($project->latitude) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Longitude') ?></th>
+            <td><?= $this->Number->format($project->longitude) ?></td>
         </tr>
         <tr>
             <th><?= __('Created') ?></th>

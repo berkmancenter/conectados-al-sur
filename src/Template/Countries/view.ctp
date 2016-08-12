@@ -7,6 +7,8 @@
         <li><?= $this->Html->link(__('New Country'), ['action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?> </li>
     </ul>
 </nav>
 <div class="countries view large-9 medium-8 columns content">
@@ -43,9 +45,8 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th><?= __('Id') ?></th>
-                <th><?= __('Name En') ?></th>
-                <th><?= __('Name Es') ?></th>
                 <th><?= __('Country Id') ?></th>
+                <th><?= __('Name') ?></th>
                 <th><?= __('Latitude') ?></th>
                 <th><?= __('Longitude') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -53,15 +54,69 @@
             <?php foreach ($country->cities as $cities): ?>
             <tr>
                 <td><?= h($cities->id) ?></td>
-                <td><?= h($cities->name_en) ?></td>
-                <td><?= h($cities->name_es) ?></td>
                 <td><?= h($cities->country_id) ?></td>
+                <td><?= h($cities->name) ?></td>
                 <td><?= h($cities->latitude) ?></td>
                 <td><?= h($cities->longitude) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Cities', 'action' => 'view', $cities->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Cities', 'action' => 'edit', $cities->id]) ?>
                     <?= $this->Form->postLink(__('Delete'), ['controller' => 'Cities', 'action' => 'delete', $cities->id], ['confirm' => __('Are you sure you want to delete # {0}?', $cities->id)]) ?>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    </div>
+    <div class="related">
+        <h4><?= __('Related Projects') ?></h4>
+        <?php if (!empty($country->projects)): ?>
+        <table cellpadding="0" cellspacing="0">
+            <tr>
+                <th><?= __('Id') ?></th>
+                <th><?= __('Name') ?></th>
+                <th><?= __('User Id') ?></th>
+                <th><?= __('Description') ?></th>
+                <th><?= __('Url') ?></th>
+                <th><?= __('Contribution') ?></th>
+                <th><?= __('Contributing') ?></th>
+                <th><?= __('Organization') ?></th>
+                <th><?= __('Organization Type Id') ?></th>
+                <th><?= __('Project Stage Id') ?></th>
+                <th><?= __('Country Id') ?></th>
+                <th><?= __('City Id') ?></th>
+                <th><?= __('Latitude') ?></th>
+                <th><?= __('Longitude') ?></th>
+                <th><?= __('Created') ?></th>
+                <th><?= __('Modified') ?></th>
+                <th><?= __('Start Date') ?></th>
+                <th><?= __('Finish Date') ?></th>
+                <th class="actions"><?= __('Actions') ?></th>
+            </tr>
+            <?php foreach ($country->projects as $projects): ?>
+            <tr>
+                <td><?= h($projects->id) ?></td>
+                <td><?= h($projects->name) ?></td>
+                <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->description) ?></td>
+                <td><?= h($projects->url) ?></td>
+                <td><?= h($projects->contribution) ?></td>
+                <td><?= h($projects->contributing) ?></td>
+                <td><?= h($projects->organization) ?></td>
+                <td><?= h($projects->organization_type_id) ?></td>
+                <td><?= h($projects->project_stage_id) ?></td>
+                <td><?= h($projects->country_id) ?></td>
+                <td><?= h($projects->city_id) ?></td>
+                <td><?= h($projects->latitude) ?></td>
+                <td><?= h($projects->longitude) ?></td>
+                <td><?= h($projects->created) ?></td>
+                <td><?= h($projects->modified) ?></td>
+                <td><?= h($projects->start_date) ?></td>
+                <td><?= h($projects->finish_date) ?></td>
+                <td class="actions">
+                    <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
+                    <?= $this->Html->link(__('Edit'), ['controller' => 'Projects', 'action' => 'edit', $projects->id]) ?>
+                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Projects', 'action' => 'delete', $projects->id], ['confirm' => __('Are you sure you want to delete # {0}?', $projects->id)]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

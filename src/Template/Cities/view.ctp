@@ -15,16 +15,12 @@
     <h3><?= h($city->name) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th><?= __('Name En') ?></th>
-            <td><?= h($city->name_en) ?></td>
-        </tr>
-        <tr>
-            <th><?= __('Name Es') ?></th>
-            <td><?= h($city->name_es) ?></td>
-        </tr>
-        <tr>
             <th><?= __('Country') ?></th>
             <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Name') ?></th>
+            <td><?= h($city->name) ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
@@ -56,6 +52,8 @@
                 <th><?= __('Project Stage Id') ?></th>
                 <th><?= __('Country Id') ?></th>
                 <th><?= __('City Id') ?></th>
+                <th><?= __('Latitude') ?></th>
+                <th><?= __('Longitude') ?></th>
                 <th><?= __('Created') ?></th>
                 <th><?= __('Modified') ?></th>
                 <th><?= __('Start Date') ?></th>
@@ -76,6 +74,8 @@
                 <td><?= h($projects->project_stage_id) ?></td>
                 <td><?= h($projects->country_id) ?></td>
                 <td><?= h($projects->city_id) ?></td>
+                <td><?= h($projects->latitude) ?></td>
+                <td><?= h($projects->longitude) ?></td>
                 <td><?= h($projects->created) ?></td>
                 <td><?= h($projects->modified) ?></td>
                 <td><?= h($projects->start_date) ?></td>

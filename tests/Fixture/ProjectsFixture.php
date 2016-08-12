@@ -29,6 +29,8 @@ class ProjectsFixture extends TestFixture
         'project_stage_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'country_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'city_id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
+        'latitude' => ['type' => 'float', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null],
+        'longitude' => ['type' => 'float', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null, 'unsigned' => null],
         'created' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'modified' => ['type' => 'timestamp', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
         'start_date' => ['type' => 'date', 'length' => null, 'default' => null, 'null' => true, 'comment' => null, 'precision' => null],
@@ -63,10 +65,12 @@ class ProjectsFixture extends TestFixture
             'project_stage_id' => 1,
             'country_id' => 1,
             'city_id' => 1,
-            'created' => 1469232004,
-            'modified' => 1469232004,
-            'start_date' => '2016-07-23',
-            'finish_date' => '2016-07-23'
+            'latitude' => 1,
+            'longitude' => 1,
+            'created' => 1469694710,
+            'modified' => 1469694710,
+            'start_date' => '2016-07-28',
+            'finish_date' => '2016-07-28'
         ],
     ];
 }

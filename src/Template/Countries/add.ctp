@@ -4,6 +4,8 @@
         <li><?= $this->Html->link(__('List Countries'), ['action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
     </ul>
 </nav>
 <div class="countries form large-9 medium-8 columns content">
@@ -16,7 +18,6 @@
             echo $this->Form->input('longitude');
             echo $this->Form->input('name_en');
             echo $this->Form->input('name_es');
-            echo $this->Form->input('cities._ids', ['options' => $cities]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

@@ -21,8 +21,8 @@ class ProjectsControllerTest extends IntegrationTestCase
         'app.genres',
         'app.organization_types',
         'app.project_stages',
-        'app.cities',
         'app.countries',
+        'app.cities',
         'app.categories',
         'app.categories_projects'
     ];

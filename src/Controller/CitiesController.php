@@ -37,7 +37,7 @@ class CitiesController extends AppController
     public function view($id = null)
     {
         $city = $this->Cities->get($id, [
-            'contain' => ['Countries', 'Projects', 'CitiesCountries']
+            'contain' => ['Countries', 'Projects']
         ]);
 
         $this->set('city', $city);

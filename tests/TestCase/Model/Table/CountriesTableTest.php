@@ -32,8 +32,7 @@ class CountriesTableTest extends TestCase
         'app.organization_types',
         'app.project_stages',
         'app.categories',
-        'app.categories_projects',
-        'app.cities_countries'
+        'app.categories_projects'
     ];
 
     /**

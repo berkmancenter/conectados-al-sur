@@ -18,7 +18,6 @@ class CitiesControllerTest extends IntegrationTestCase
     public $fixtures = [
         'app.cities',
         'app.countries',
-        'app.cities_countries',
         'app.projects',
         'app.users',
         'app.genres',

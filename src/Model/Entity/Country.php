@@ -14,6 +14,7 @@ use Cake\ORM\Entity;
  * @property string $name_es
  *
  * @property \App\Model\Entity\City[] $cities
+ * @property \App\Model\Entity\Project[] $projects
  */
 class Country extends Entity
 {

@@ -30,9 +30,8 @@ class CategoriesTableTest extends TestCase
         'app.genres',
         'app.organization_types',
         'app.project_stages',
-        'app.cities',
         'app.countries',
-        'app.cities_countries',
+        'app.cities',
         'app.categories_projects'
     ];
 

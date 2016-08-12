@@ -59,12 +59,8 @@ class CitiesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name_en', 'create')
-            ->notEmpty('name_en');
-
-        $validator
-            ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es');
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
 
         $validator
             ->numeric('latitude')

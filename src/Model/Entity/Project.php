@@ -18,6 +18,8 @@ use Cake\ORM\Entity;
  * @property int $project_stage_id
  * @property int $country_id
  * @property int $city_id
+ * @property float $latitude
+ * @property float $longitude
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  * @property \Cake\I18n\Time $start_date
@@ -26,6 +28,7 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\User $user
  * @property \App\Model\Entity\OrganizationType $organization_type
  * @property \App\Model\Entity\ProjectStage $project_stage
+ * @property \App\Model\Entity\Country $country
  * @property \App\Model\Entity\City $city
  * @property \App\Model\Entity\Category[] $categories
  */

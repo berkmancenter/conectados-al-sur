@@ -34,7 +34,7 @@ class CountriesController extends AppController
     public function view($id = null)
     {
         $country = $this->Countries->get($id, [
-            'contain' => ['Cities']
+            'contain' => ['Cities', 'Projects']
         ]);
 
         $this->set('country', $country);
@@ -58,8 +58,7 @@ class CountriesController extends AppController
                 $this->Flash->error(__('The country could not be saved. Please, try again.'));
             }
         }
-        $cities = $this->Countries->Cities->find('list', ['limit' => 200]);
-        $this->set(compact('country', 'cities'));
+        $this->set(compact('country'));
         $this->set('_serialize', ['country']);
     }
 
@@ -73,7 +72,7 @@ class CountriesController extends AppController
     public function edit($id = null)
     {
         $country = $this->Countries->get($id, [
-            'contain' => ['Cities']
+            'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $country = $this->Countries->patchEntity($country, $this->request->data);
@@ -84,8 +83,7 @@ class CountriesController extends AppController
                 $this->Flash->error(__('The country could not be saved. Please, try again.'));
             }
         }
-        $cities = $this->Countries->Cities->find('list', ['limit' => 200]);
-        $this->set(compact('country', 'cities'));
+        $this->set(compact('country'));
         $this->set('_serialize', ['country']);
     }
 

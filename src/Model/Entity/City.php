@@ -7,9 +7,8 @@ use Cake\ORM\Entity;
  * City Entity
  *
  * @property int $id
- * @property string $name_en
- * @property string $name_es
  * @property int $country_id
+ * @property string $name
  * @property float $latitude
  * @property float $longitude
  *

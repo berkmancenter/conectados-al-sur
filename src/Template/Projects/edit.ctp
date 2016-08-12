@@ -14,6 +14,8 @@
         <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Project Stages'), ['controller' => 'ProjectStages', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Project Stage'), ['controller' => 'ProjectStages', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Countries'), ['controller' => 'Countries', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Country'), ['controller' => 'Countries', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Cities'), ['controller' => 'Cities', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New City'), ['controller' => 'Cities', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?></li>
@@ -34,8 +36,10 @@
             echo $this->Form->input('organization');
             echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);
             echo $this->Form->input('project_stage_id', ['options' => $projectStages]);
-            echo $this->Form->input('country_id');
+            echo $this->Form->input('country_id', ['options' => $countries]);
             echo $this->Form->input('city_id', ['options' => $cities]);
+            echo $this->Form->input('latitude');
+            echo $this->Form->input('longitude');
             echo $this->Form->input('start_date', ['empty' => true]);
             echo $this->Form->input('finish_date', ['empty' => true]);
             echo $this->Form->input('categories._ids', ['options' => $categories]);

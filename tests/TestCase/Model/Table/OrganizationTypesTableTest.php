@@ -29,9 +29,8 @@ class OrganizationTypesTableTest extends TestCase
         'app.users',
         'app.genres',
         'app.project_stages',
-        'app.cities',
         'app.countries',
-        'app.cities_countries',
+        'app.cities',
         'app.categories',
         'app.categories_projects'
     ];

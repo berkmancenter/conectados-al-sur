@@ -29,9 +29,8 @@ class ProjectStagesTableTest extends TestCase
         'app.users',
         'app.genres',
         'app.organization_types',
-        'app.cities',
         'app.countries',
-        'app.cities_countries',
+        'app.cities',
         'app.categories',
         'app.categories_projects'
     ];

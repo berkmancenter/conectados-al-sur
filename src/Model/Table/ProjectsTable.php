@@ -106,6 +106,14 @@ class ProjectsTable extends Table
             ->notEmpty('organization');
 
         $validator
+            ->numeric('latitude')
+            ->allowEmpty('latitude');
+
+        $validator
+            ->numeric('longitude')
+            ->allowEmpty('longitude');
+
+        $validator
             ->date('start_date')
             ->allowEmpty('start_date');
 
