@@ -38,10 +38,17 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
         <div class="top-bar-section">
             <ul class="left title-area large-3 medium-4 columns">
                 <li class="name">
-                    <h1><?= $this->Html->link(__('Conectados al Sur'), [
-                        'controller' => 'Projects',
-                        'action' => 'preview'
-                    ]) ?></h1>
+                    <h1><?= 
+                        $this->Html->image('LOGO_CAS.png',
+                        [
+                            "alt" => "LOGO_CAS",
+                            "url" => array(
+                                'controller' => 'Projects',
+                                'action' => 'preview'
+                            ),
+                            "width" => 300,
+                        ])?>
+                    </h1>
                 </li>
             </ul>
         </div>
@@ -55,10 +62,5 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <div class="container clearfix">
         <?= $this->fetch('content') ?>
     </div>
-    <footer>
-            <?= $this->Html->image('LOGO_CAS.png', [
-                "alt" => "LOGO_CAS",
-            ]) ?>
-    </footer>
 </body>
 </html>
