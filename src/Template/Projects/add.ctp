@@ -23,6 +23,7 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('user_id', ['options' => $users]);
+            echo $this->Form->input('instance_id');
             echo $this->Form->input('description');
             echo $this->Form->input('url');
             echo $this->Form->input('contribution');
@@ -31,7 +32,7 @@
             echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);
             echo $this->Form->input('project_stage_id', ['options' => $projectStages]);
             echo $this->Form->input('country_id', ['options' => $countries]);
-            echo $this->Form->input('city_id', ['options' => $cities]);
+            echo $this->Form->input('city_id', ['options' => $cities, 'empty' => true]);
             echo $this->Form->input('latitude');
             echo $this->Form->input('longitude');
             echo $this->Form->input('start_date', ['empty' => true]);

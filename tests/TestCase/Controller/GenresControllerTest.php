@@ -22,6 +22,8 @@ class GenresControllerTest extends IntegrationTestCase
         'app.projects',
         'app.project_stages',
         'app.countries',
+        'app.subcontinents',
+        'app.continents',
         'app.cities',
         'app.categories',
         'app.categories_projects'

@@ -18,7 +18,10 @@
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('email') ?></th>
+                <th><?= $this->Paginator->sort('contact') ?></th>
                 <th><?= $this->Paginator->sort('password') ?></th>
+                <th><?= $this->Paginator->sort('role_id') ?></th>
+                <th><?= $this->Paginator->sort('instance_id') ?></th>
                 <th><?= $this->Paginator->sort('genre_id') ?></th>
                 <th><?= $this->Paginator->sort('main_organization') ?></th>
                 <th><?= $this->Paginator->sort('organization_type_id') ?></th>
@@ -33,7 +36,10 @@
                 <td><?= $this->Number->format($user->id) ?></td>
                 <td><?= h($user->name) ?></td>
                 <td><?= h($user->email) ?></td>
+                <td><?= h($user->contact) ?></td>
                 <td><?= h($user->password) ?></td>
+                <td><?= $this->Number->format($user->role_id) ?></td>
+                <td><?= $this->Number->format($user->instance_id) ?></td>
                 <td><?= $user->has('genre') ? $this->Html->link($user->genre->name, ['controller' => 'Genres', 'action' => 'view', $user->genre->id]) : '' ?></td>
                 <td><?= h($user->main_organization) ?></td>
                 <td><?= $user->has('organization_type') ? $this->Html->link($user->organization_type->name, ['controller' => 'OrganizationTypes', 'action' => 'view', $user->organization_type->id]) : '' ?></td>

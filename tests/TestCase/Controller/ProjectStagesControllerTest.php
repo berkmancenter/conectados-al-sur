@@ -22,6 +22,8 @@ class ProjectStagesControllerTest extends IntegrationTestCase
         'app.genres',
         'app.organization_types',
         'app.countries',
+        'app.subcontinents',
+        'app.continents',
         'app.cities',
         'app.categories',
         'app.categories_projects'

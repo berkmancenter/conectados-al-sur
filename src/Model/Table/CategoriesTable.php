@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Categories Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\BelongsToMany $Projects
  *
  * @method \App\Model\Entity\Category get($primaryKey, $options = [])
@@ -36,6 +37,10 @@ class CategoriesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Instances', [
+            'foreignKey' => 'instance_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsToMany('Projects', [
             'foreignKey' => 'category_id',
             'targetForeignKey' => 'project_id',
@@ -53,12 +58,35 @@ class CategoriesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name')
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es')
+            ->add('name_es', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->isUnique(['name']));
+        $rules->add($rules->isUnique(['name_es']));
+        $rules->add($rules->existsIn(['instance_id'], 'Instances'));
+        return $rules;
     }
 }

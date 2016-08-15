@@ -26,13 +26,17 @@ class ProjectsTableTest extends TestCase
     public $fixtures = [
         'app.projects',
         'app.users',
-        'app.genres',
+        'app.roles',
+        'app.instances',
+        'app.categories',
+        'app.categories_projects',
         'app.organization_types',
+        'app.genres',
         'app.project_stages',
         'app.countries',
-        'app.cities',
-        'app.categories',
-        'app.categories_projects'
+        'app.subcontinents',
+        'app.continents',
+        'app.cities'
     ];
 
     /**

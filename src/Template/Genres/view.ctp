@@ -17,6 +17,10 @@
             <td><?= h($genre->name) ?></td>
         </tr>
         <tr>
+            <th><?= __('Name Es') ?></th>
+            <td><?= h($genre->name_es) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($genre->id) ?></td>
         </tr>
@@ -29,7 +33,10 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Email') ?></th>
+                <th><?= __('Contact') ?></th>
                 <th><?= __('Password') ?></th>
+                <th><?= __('Role Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Genre Id') ?></th>
                 <th><?= __('Main Organization') ?></th>
                 <th><?= __('Organization Type Id') ?></th>
@@ -42,7 +49,10 @@
                 <td><?= h($users->id) ?></td>
                 <td><?= h($users->name) ?></td>
                 <td><?= h($users->email) ?></td>
+                <td><?= h($users->contact) ?></td>
                 <td><?= h($users->password) ?></td>
+                <td><?= h($users->role_id) ?></td>
+                <td><?= h($users->instance_id) ?></td>
                 <td><?= h($users->genre_id) ?></td>
                 <td><?= h($users->main_organization) ?></td>
                 <td><?= h($users->organization_type_id) ?></td>

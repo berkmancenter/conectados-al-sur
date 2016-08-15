@@ -27,12 +27,16 @@ class CategoriesProjectsTableTest extends TestCase
         'app.categories_projects',
         'app.projects',
         'app.users',
-        'app.genres',
+        'app.roles',
+        'app.instances',
+        'app.categories',
         'app.organization_types',
+        'app.genres',
         'app.project_stages',
         'app.countries',
-        'app.cities',
-        'app.categories'
+        'app.subcontinents',
+        'app.continents',
+        'app.cities'
     ];
 
     /**

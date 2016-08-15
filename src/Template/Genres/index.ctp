@@ -13,6 +13,7 @@
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('name_es') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
         </thead>
@@ -21,6 +22,7 @@
             <tr>
                 <td><?= $this->Number->format($genre->id) ?></td>
                 <td><?= h($genre->name) ?></td>
+                <td><?= h($genre->name_es) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['action' => 'view', $genre->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['action' => 'edit', $genre->id]) ?>

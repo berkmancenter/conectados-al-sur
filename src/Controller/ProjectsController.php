@@ -11,49 +11,6 @@ use App\Controller\AppController;
 class ProjectsController extends AppController
 {
 
-    public function preview()
-    {
-        // $this->paginate = [
-        //     'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Cities']
-        // ];
-        // $projects = $this->paginate($this->Projects);
-
-        // $this->set(compact('projects'));
-        // $this->set('_serialize', ['projects']);
-    }
-
-    public function map()
-    {
-        // In a controller or table method.
-        $projects = [];
-        $query = $this->Projects->find('all')
-            ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories']);
-        foreach ($query as $project) {
-            $projects[] = $project;
-        }
-
-
-        // $this->paginate = [
-        //     'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories']
-        // ];
-        // $projects = $this->paginate($this->Projects);
-
-        $this->set(compact('projects'));
-        $this->set('_serialize', ['projects']);
-    }
-
-    public function graph()
-    {
-        // $this->paginate = [
-        //     'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Cities']
-        // ];
-        // $projects = $this->paginate($this->Projects);
-
-        // $this->set(compact('projects'));
-        // $this->set('_serialize', ['projects']);
-    }
-
-
     /**
      * Index method
      *

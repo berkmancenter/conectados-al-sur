@@ -9,7 +9,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property string $contact
  * @property string $password
+ * @property int $role_id
+ * @property int $instance_id
  * @property int $genre_id
  * @property string $main_organization
  * @property int $organization_type_id

@@ -57,6 +57,10 @@ class ProjectStagesTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es');
+
         return $validator;
     }
 }

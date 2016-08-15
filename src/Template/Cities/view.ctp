@@ -15,12 +15,12 @@
     <h3><?= h($city->name) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th><?= __('Country') ?></th>
-            <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
-        </tr>
-        <tr>
             <th><?= __('Name') ?></th>
             <td><?= h($city->name) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Country') ?></th>
+            <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
         </tr>
         <tr>
             <th><?= __('Id') ?></th>
@@ -43,6 +43,7 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Description') ?></th>
                 <th><?= __('Url') ?></th>
                 <th><?= __('Contribution') ?></th>
@@ -65,6 +66,7 @@
                 <td><?= h($projects->id) ?></td>
                 <td><?= h($projects->name) ?></td>
                 <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->instance_id) ?></td>
                 <td><?= h($projects->description) ?></td>
                 <td><?= h($projects->url) ?></td>
                 <td><?= h($projects->contribution) ?></td>

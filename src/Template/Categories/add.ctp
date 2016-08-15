@@ -12,6 +12,8 @@
         <legend><?= __('Add Category') ?></legend>
         <?php
             echo $this->Form->input('name');
+            echo $this->Form->input('name_es');
+            echo $this->Form->input('instance_id');
             echo $this->Form->input('projects._ids', ['options' => $projects]);
         ?>
     </fieldset>

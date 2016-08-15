@@ -17,7 +17,10 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('email');
+            echo $this->Form->input('contact');
             echo $this->Form->input('password');
+            echo $this->Form->input('role_id');
+            echo $this->Form->input('instance_id');
             echo $this->Form->input('genre_id', ['options' => $genres]);
             echo $this->Form->input('main_organization');
             echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);

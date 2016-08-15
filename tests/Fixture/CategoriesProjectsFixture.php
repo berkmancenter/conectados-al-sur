@@ -22,6 +22,7 @@ class CategoriesProjectsFixture extends TestFixture
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['project_id', 'category_id'], 'length' => []],
             'categories_projects_category_id_fkey' => ['type' => 'foreign', 'columns' => ['category_id'], 'references' => ['categories', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
+            'categories_projects_project_id_fkey' => ['type' => 'foreign', 'columns' => ['project_id'], 'references' => ['projects', 'id'], 'update' => 'noAction', 'delete' => 'noAction', 'length' => []],
         ],
     ];
     // @codingStandardsIgnoreEnd

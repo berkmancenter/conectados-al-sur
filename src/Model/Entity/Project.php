@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property int $user_id
+ * @property int $instance_id
  * @property string $description
  * @property string $url
  * @property string $contribution

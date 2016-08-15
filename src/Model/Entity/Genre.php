@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
+ * @property string $name_es
  *
  * @property \App\Model\Entity\User[] $users
  */

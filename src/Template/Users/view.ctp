@@ -25,6 +25,10 @@
             <td><?= h($user->email) ?></td>
         </tr>
         <tr>
+            <th><?= __('Contact') ?></th>
+            <td><?= h($user->contact) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Password') ?></th>
             <td><?= h($user->password) ?></td>
         </tr>
@@ -45,6 +49,14 @@
             <td><?= $this->Number->format($user->id) ?></td>
         </tr>
         <tr>
+            <th><?= __('Role Id') ?></th>
+            <td><?= $this->Number->format($user->role_id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Instance Id') ?></th>
+            <td><?= $this->Number->format($user->instance_id) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Created') ?></th>
             <td><?= h($user->created) ?></td>
         </tr>
@@ -61,6 +73,7 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Description') ?></th>
                 <th><?= __('Url') ?></th>
                 <th><?= __('Contribution') ?></th>
@@ -83,6 +96,7 @@
                 <td><?= h($projects->id) ?></td>
                 <td><?= h($projects->name) ?></td>
                 <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->instance_id) ?></td>
                 <td><?= h($projects->description) ?></td>
                 <td><?= h($projects->url) ?></td>
                 <td><?= h($projects->contribution) ?></td>

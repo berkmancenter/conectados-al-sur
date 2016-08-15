@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * OrganizationTypes Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\HasMany $Projects
  * @property \Cake\ORM\Association\HasMany $Users
  *
@@ -37,6 +38,10 @@ class OrganizationTypesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Instances', [
+            'foreignKey' => 'instance_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('Projects', [
             'foreignKey' => 'organization_type_id'
         ]);
@@ -55,12 +60,35 @@ class OrganizationTypesTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name')
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es')
+            ->add('name_es', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->isUnique(['name']));
+        $rules->add($rules->isUnique(['name_es']));
+        $rules->add($rules->existsIn(['instance_id'], 'Instances'));
+        return $rules;
     }
 }

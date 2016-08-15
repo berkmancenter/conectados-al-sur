@@ -15,12 +15,12 @@
     <h3><?= h($country->name) ?></h3>
     <table class="vertical-table">
         <tr>
-            <th><?= __('Cod N3') ?></th>
-            <td><?= h($country->cod_n3) ?></td>
+            <th><?= __('Cod A3') ?></th>
+            <td><?= h($country->cod_a3) ?></td>
         </tr>
         <tr>
-            <th><?= __('Name En') ?></th>
-            <td><?= h($country->name_en) ?></td>
+            <th><?= __('Name') ?></th>
+            <td><?= h($country->name) ?></td>
         </tr>
         <tr>
             <th><?= __('Name Es') ?></th>
@@ -29,6 +29,10 @@
         <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($country->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Subcontinent Id') ?></th>
+            <td><?= $this->Number->format($country->subcontinent_id) ?></td>
         </tr>
         <tr>
             <th><?= __('Latitude') ?></th>
@@ -45,8 +49,8 @@
         <table cellpadding="0" cellspacing="0">
             <tr>
                 <th><?= __('Id') ?></th>
-                <th><?= __('Country Id') ?></th>
                 <th><?= __('Name') ?></th>
+                <th><?= __('Country Id') ?></th>
                 <th><?= __('Latitude') ?></th>
                 <th><?= __('Longitude') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -54,8 +58,8 @@
             <?php foreach ($country->cities as $cities): ?>
             <tr>
                 <td><?= h($cities->id) ?></td>
-                <td><?= h($cities->country_id) ?></td>
                 <td><?= h($cities->name) ?></td>
+                <td><?= h($cities->country_id) ?></td>
                 <td><?= h($cities->latitude) ?></td>
                 <td><?= h($cities->longitude) ?></td>
                 <td class="actions">
@@ -76,6 +80,7 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Description') ?></th>
                 <th><?= __('Url') ?></th>
                 <th><?= __('Contribution') ?></th>
@@ -98,6 +103,7 @@
                 <td><?= h($projects->id) ?></td>
                 <td><?= h($projects->name) ?></td>
                 <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->instance_id) ?></td>
                 <td><?= h($projects->description) ?></td>
                 <td><?= h($projects->url) ?></td>
                 <td><?= h($projects->contribution) ?></td>

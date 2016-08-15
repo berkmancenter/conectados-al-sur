@@ -23,6 +23,8 @@ class CategoriesControllerTest extends IntegrationTestCase
         'app.organization_types',
         'app.project_stages',
         'app.countries',
+        'app.subcontinents',
+        'app.continents',
         'app.cities',
         'app.categories_projects'
     ];

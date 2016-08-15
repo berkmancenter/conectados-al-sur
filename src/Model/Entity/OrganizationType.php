@@ -8,6 +8,8 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
+ * @property string $name_es
+ * @property int $instance_id
  *
  * @property \App\Model\Entity\Project[] $projects
  * @property \App\Model\Entity\User[] $users

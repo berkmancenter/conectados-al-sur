@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Countries Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Subcontinents
  * @property \Cake\ORM\Association\HasMany $Cities
  * @property \Cake\ORM\Association\HasMany $Projects
  *
@@ -37,6 +38,10 @@ class CountriesTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Subcontinents', [
+            'foreignKey' => 'subcontinent_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('Cities', [
             'foreignKey' => 'country_id'
         ]);
@@ -58,8 +63,16 @@ class CountriesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('cod_n3', 'create')
-            ->notEmpty('cod_n3');
+            ->requirePresence('cod_a3', 'create')
+            ->notEmpty('cod_a3');
+
+        $validator
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
+
+        $validator
+            ->requirePresence('name_es', 'create')
+            ->notEmpty('name_es');
 
         $validator
             ->numeric('latitude')
@@ -71,14 +84,19 @@ class CountriesTable extends Table
             ->requirePresence('longitude', 'create')
             ->notEmpty('longitude');
 
-        $validator
-            ->requirePresence('name_en', 'create')
-            ->notEmpty('name_en');
-
-        $validator
-            ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es');
-
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['subcontinent_id'], 'Subcontinents'));
+        return $rules;
     }
 }

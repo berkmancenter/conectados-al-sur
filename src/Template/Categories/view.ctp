@@ -17,8 +17,16 @@
             <td><?= h($category->name) ?></td>
         </tr>
         <tr>
+            <th><?= __('Name Es') ?></th>
+            <td><?= h($category->name_es) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($category->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Instance Id') ?></th>
+            <td><?= $this->Number->format($category->instance_id) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -29,6 +37,7 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Description') ?></th>
                 <th><?= __('Url') ?></th>
                 <th><?= __('Contribution') ?></th>
@@ -51,6 +60,7 @@
                 <td><?= h($projects->id) ?></td>
                 <td><?= h($projects->name) ?></td>
                 <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->instance_id) ?></td>
                 <td><?= h($projects->description) ?></td>
                 <td><?= h($projects->url) ?></td>
                 <td><?= h($projects->contribution) ?></td>

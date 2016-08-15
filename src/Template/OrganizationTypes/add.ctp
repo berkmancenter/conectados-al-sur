@@ -14,6 +14,8 @@
         <legend><?= __('Add Organization Type') ?></legend>
         <?php
             echo $this->Form->input('name');
+            echo $this->Form->input('name_es');
+            echo $this->Form->input('instance_id');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

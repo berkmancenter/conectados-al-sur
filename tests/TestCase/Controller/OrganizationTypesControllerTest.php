@@ -22,8 +22,11 @@ class OrganizationTypesControllerTest extends IntegrationTestCase
         'app.genres',
         'app.project_stages',
         'app.countries',
+        'app.subcontinents',
+        'app.continents',
         'app.cities',
         'app.categories',
+        'app.instances',
         'app.categories_projects'
     ];
 

@@ -19,8 +19,16 @@
             <td><?= h($organizationType->name) ?></td>
         </tr>
         <tr>
+            <th><?= __('Name Es') ?></th>
+            <td><?= h($organizationType->name_es) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Id') ?></th>
             <td><?= $this->Number->format($organizationType->id) ?></td>
+        </tr>
+        <tr>
+            <th><?= __('Instance Id') ?></th>
+            <td><?= $this->Number->format($organizationType->instance_id) ?></td>
         </tr>
     </table>
     <div class="related">
@@ -31,6 +39,7 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('User Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Description') ?></th>
                 <th><?= __('Url') ?></th>
                 <th><?= __('Contribution') ?></th>
@@ -53,6 +62,7 @@
                 <td><?= h($projects->id) ?></td>
                 <td><?= h($projects->name) ?></td>
                 <td><?= h($projects->user_id) ?></td>
+                <td><?= h($projects->instance_id) ?></td>
                 <td><?= h($projects->description) ?></td>
                 <td><?= h($projects->url) ?></td>
                 <td><?= h($projects->contribution) ?></td>
@@ -86,7 +96,10 @@
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Email') ?></th>
+                <th><?= __('Contact') ?></th>
                 <th><?= __('Password') ?></th>
+                <th><?= __('Role Id') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th><?= __('Genre Id') ?></th>
                 <th><?= __('Main Organization') ?></th>
                 <th><?= __('Organization Type Id') ?></th>
@@ -99,7 +112,10 @@
                 <td><?= h($users->id) ?></td>
                 <td><?= h($users->name) ?></td>
                 <td><?= h($users->email) ?></td>
+                <td><?= h($users->contact) ?></td>
                 <td><?= h($users->password) ?></td>
+                <td><?= h($users->role_id) ?></td>
+                <td><?= h($users->instance_id) ?></td>
                 <td><?= h($users->genre_id) ?></td>
                 <td><?= h($users->main_organization) ?></td>
                 <td><?= h($users->organization_type_id) ?></td>

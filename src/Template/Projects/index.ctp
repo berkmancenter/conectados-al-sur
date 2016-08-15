@@ -24,6 +24,7 @@
                 <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('user_id') ?></th>
+                <th><?= $this->Paginator->sort('instance_id') ?></th>
                 <th><?= $this->Paginator->sort('url') ?></th>
                 <th><?= $this->Paginator->sort('organization') ?></th>
                 <th><?= $this->Paginator->sort('organization_type_id') ?></th>
@@ -45,6 +46,7 @@
                 <td><?= $this->Number->format($project->id) ?></td>
                 <td><?= h($project->name) ?></td>
                 <td><?= $project->has('user') ? $this->Html->link($project->user->name, ['controller' => 'Users', 'action' => 'view', $project->user->id]) : '' ?></td>
+                <td><?= $this->Number->format($project->instance_id) ?></td>
                 <td><?= h($project->url) ?></td>
                 <td><?= h($project->organization) ?></td>
                 <td><?= $project->has('organization_type') ? $this->Html->link($project->organization_type->name, ['controller' => 'OrganizationTypes', 'action' => 'view', $project->organization_type->id]) : '' ?></td>

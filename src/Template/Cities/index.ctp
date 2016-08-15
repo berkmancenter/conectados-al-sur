@@ -14,8 +14,8 @@
         <thead>
             <tr>
                 <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('country_id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('country_id') ?></th>
                 <th><?= $this->Paginator->sort('latitude') ?></th>
                 <th><?= $this->Paginator->sort('longitude') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -25,8 +25,8 @@
             <?php foreach ($cities as $city): ?>
             <tr>
                 <td><?= $this->Number->format($city->id) ?></td>
-                <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
                 <td><?= h($city->name) ?></td>
+                <td><?= $city->has('country') ? $this->Html->link($city->country->name, ['controller' => 'Countries', 'action' => 'view', $city->country->id]) : '' ?></td>
                 <td><?= $this->Number->format($city->latitude) ?></td>
                 <td><?= $this->Number->format($city->longitude) ?></td>
                 <td class="actions">

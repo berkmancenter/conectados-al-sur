@@ -59,6 +59,10 @@
             <td><?= $this->Number->format($project->id) ?></td>
         </tr>
         <tr>
+            <th><?= __('Instance Id') ?></th>
+            <td><?= $this->Number->format($project->instance_id) ?></td>
+        </tr>
+        <tr>
             <th><?= __('Latitude') ?></th>
             <td><?= $this->Number->format($project->latitude) ?></td>
         </tr>
@@ -102,12 +106,16 @@
             <tr>
                 <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
+                <th><?= __('Name Es') ?></th>
+                <th><?= __('Instance Id') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($project->categories as $categories): ?>
             <tr>
                 <td><?= h($categories->id) ?></td>
                 <td><?= h($categories->name) ?></td>
+                <td><?= h($categories->name_es) ?></td>
+                <td><?= h($categories->instance_id) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('View'), ['controller' => 'Categories', 'action' => 'view', $categories->id]) ?>
                     <?= $this->Html->link(__('Edit'), ['controller' => 'Categories', 'action' => 'edit', $categories->id]) ?>

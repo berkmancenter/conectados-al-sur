@@ -13,11 +13,12 @@
     <fieldset>
         <legend><?= __('Add Country') ?></legend>
         <?php
-            echo $this->Form->input('cod_n3');
+            echo $this->Form->input('cod_a3');
+            echo $this->Form->input('name');
+            echo $this->Form->input('name_es');
+            echo $this->Form->input('subcontinent_id');
             echo $this->Form->input('latitude');
             echo $this->Form->input('longitude');
-            echo $this->Form->input('name_en');
-            echo $this->Form->input('name_es');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

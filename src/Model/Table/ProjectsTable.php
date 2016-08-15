@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Projects Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
  * @property \Cake\ORM\Association\BelongsTo $ProjectStages
  * @property \Cake\ORM\Association\BelongsTo $Countries
@@ -49,6 +50,10 @@ class ProjectsTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Instances', [
+            'foreignKey' => 'instance_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('OrganizationTypes', [
             'foreignKey' => 'organization_type_id',
             'joinType' => 'INNER'
@@ -62,8 +67,7 @@ class ProjectsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Cities', [
-            'foreignKey' => 'city_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'city_id'
         ]);
         $this->belongsToMany('Categories', [
             'foreignKey' => 'project_id',
@@ -82,28 +86,31 @@ class ProjectsTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
         $validator
-            ->allowEmpty('description');
+            ->requirePresence('description', 'create')
+            ->notEmpty('description');
 
         $validator
             ->requirePresence('url', 'create')
             ->notEmpty('url');
 
         $validator
-            ->allowEmpty('contribution');
+            ->requirePresence('contribution', 'create')
+            ->notEmpty('contribution');
 
         $validator
-            ->allowEmpty('contributing');
+            ->requirePresence('contributing', 'create')
+            ->notEmpty('contributing');
 
         $validator
-            ->requirePresence('organization', 'create')
-            ->notEmpty('organization');
+            ->allowEmpty('organization');
 
         $validator
             ->numeric('latitude')
@@ -133,7 +140,9 @@ class ProjectsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['instance_id'], 'Instances'));
         $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
         $rules->add($rules->existsIn(['project_stage_id'], 'ProjectStages'));
         $rules->add($rules->existsIn(['country_id'], 'Countries'));

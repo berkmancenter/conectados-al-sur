@@ -17,8 +17,9 @@ class ProjectStagesFixture extends TestFixture
      */
     // @codingStandardsIgnoreStart
     public $fields = [
-        'id' => ['type' => 'integer', 'length' => 10, 'autoIncrement' => true, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null],
+        'id' => ['type' => 'integer', 'length' => 10, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'unsigned' => null, 'autoIncrement' => null],
         'name' => ['type' => 'string', 'length' => 15, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
+        'name_es' => ['type' => 'string', 'length' => 15, 'default' => null, 'null' => false, 'comment' => null, 'precision' => null, 'fixed' => null],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id'], 'length' => []],
         ],
@@ -33,7 +34,8 @@ class ProjectStagesFixture extends TestFixture
     public $records = [
         [
             'id' => 1,
-            'name' => 'Lorem ipsum d'
+            'name' => 'Lorem ipsum d',
+            'name_es' => 'Lorem ipsum d'
         ],
     ];
 }

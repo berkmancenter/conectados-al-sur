@@ -19,11 +19,14 @@ class UsersControllerTest extends IntegrationTestCase
         'app.users',
         'app.genres',
         'app.organization_types',
+        'app.instances',
+        'app.categories',
         'app.projects',
         'app.project_stages',
         'app.countries',
+        'app.subcontinents',
+        'app.continents',
         'app.cities',
-        'app.categories',
         'app.categories_projects'
     ];
 

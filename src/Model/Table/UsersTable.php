@@ -9,6 +9,8 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Roles
+ * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\BelongsTo $Genres
  * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
  * @property \Cake\ORM\Association\HasMany $Projects
@@ -42,6 +44,14 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Instances', [
+            'foreignKey' => 'instance_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Genres', [
             'foreignKey' => 'genre_id',
             'joinType' => 'INNER'
@@ -65,7 +75,8 @@ class UsersTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
             ->requirePresence('name', 'create')
@@ -74,15 +85,18 @@ class UsersTable extends Table
         $validator
             ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmpty('email');
+            ->notEmpty('email')
+            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->allowEmpty('contact');
 
         $validator
             ->requirePresence('password', 'create')
             ->notEmpty('password');
 
         $validator
-            ->requirePresence('main_organization', 'create')
-            ->notEmpty('main_organization');
+            ->allowEmpty('main_organization');
 
         return $validator;
     }
@@ -97,6 +111,9 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->isUnique(['id']));
+        $rules->add($rules->existsIn(['role_id'], 'Roles'));
+        $rules->add($rules->existsIn(['instance_id'], 'Instances'));
         $rules->add($rules->existsIn(['genre_id'], 'Genres'));
         $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
         return $rules;

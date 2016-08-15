@@ -12,6 +12,7 @@
         <legend><?= __('Add Project Stage') ?></legend>
         <?php
             echo $this->Form->input('name');
+            echo $this->Form->input('name_es');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
