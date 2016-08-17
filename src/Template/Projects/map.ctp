@@ -39,7 +39,6 @@
 {
     background-color: #ccc;
 }
-
 .side-nav li a:not(.button)
 {
     color: #000;
@@ -55,22 +54,19 @@
 <?= $this->Html->script('topojson/topojson.min.js') ?>
 <?= $this->Html->script('jquery-3.0.0.min') ?>
 
-<!-- The view title -->
-<?= $this->assign('title', 'Projects Map') ?>
-
-<div class="projects index large-9 medium-8 columns content">
-    <div id="tooltip-container"></div>
-    <div id="svg-map"></div>
-</div>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<nav class="large-2 medium-3 columns" id="actions-sidebar">
     <ul class="side-nav">
-        <li><?= $this->Html->link(__('New Project'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('Graph Visualization'), ['action' => 'graph']) ?></li>
+        <li><?= $this->Html->link(__('New Project'), ['action' => 'add', $instance_namespace]) ?></li>
+        <li><?= $this->Html->link(__('Graph Visualization'), ['action' => 'graph', $instance_namespace]) ?></li>
     </ul>
     <div class="side-nav-info">
         <p id="info-nprojects"></p>        
     </div>
 </nav>
+<div class="projects map large-10 medium-9 columns content">
+    <div id="tooltip-container"></div>
+    <div id="svg-map"></div>
+</div>
 
 
 <script>
@@ -83,9 +79,6 @@ d3.selection.prototype.moveToFront = function() {
     this.parentNode.appendChild(this);
   });
 };
-
-
-
 
 var projects = <?php echo json_encode($projects); ?>;
 //console.log(projects);
@@ -153,8 +146,8 @@ var g = outer_g.append("g").attr("class", "svg-draws");
 
 // queue file loading and set a callback
 d3.queue()
-    .defer(d3.json, "files/world-110m.json")
-    .defer(d3.csv , "files/cow.csv")
+    .defer(d3.json, <?php echo json_encode($this->Url->build('/files/world-110m.json')); ?> )
+    .defer(d3.csv , <?php echo json_encode($this->Url->build('/files/cow.csv')); ?> )
     .await(ready);
 
 

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Users Controller
@@ -16,10 +17,17 @@ class UsersController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($instance_namespace = null)
     {
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
         $this->paginate = [
-            'contain' => ['Genres', 'OrganizationTypes']
+            'contain' => ['Genres', 'OrganizationTypes'],
+            'conditions' => ['Users.instance_id' => $instance_id]
         ];
         $users = $this->paginate($this->Users);
 

@@ -35,28 +35,25 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 </head>
 <body>
     <nav class="top-bar expanded" data-topbar role="navigation">
+        <ul class="title-area large-2 medium-3 columns">
+            <li class="name">
+                <!-- <h1><a href=""><?= $this->fetch('title') ?></a></h1> -->
+                <h1><a href="">Conectados al Sur</a></h1>
+            </li>
+        </ul>
         <div class="top-bar-section">
-            <ul class="left title-area large-3 medium-4 columns">
+            <ul class="right">
                 <li class="name">
                     <h1><?= 
                         $this->Html->image('LOGO_CAS.png',
                         [
                             "alt" => "LOGO_CAS",
-                            "url" => array(
-                                'controller' => 'Projects',
-                                'action' => 'preview'
-                            ),
                             "width" => 300,
                         ])?>
                     </h1>
                 </li>
             </ul>
         </div>
-        <ul class="right title-area large-3 medium-4 columns">
-            <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
-            </li>
-        </ul>
     </nav>
     <?= $this->Flash->render() ?>
     <div class="container clearfix">

@@ -1,25 +1,17 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
+<nav class="large-2 medium-3 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('List Instances'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Categories'), ['controller' => 'Categories', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Category'), ['controller' => 'Categories', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Organization Types'), ['controller' => 'OrganizationTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add']) ?></li>
     </ul>
 </nav>
-<div class="instances form large-9 medium-8 columns content">
+<div class="instances form large-10 medium-9 columns content">
     <?= $this->Form->create($instance) ?>
     <fieldset>
         <legend><?= __('Add Instance') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('name_es');
-            echo $this->Form->input('namespace');
+            echo $this->Form->input('name', ['label' => 'Instance Name']);
+            echo $this->Form->input('name_es', ['label' => 'Instance Name (Spanish Version)']);
+            echo $this->Form->input('namespace', ['label' => 'App URL']);
             echo $this->Form->input('description');
             echo $this->Form->input('description_es');
             echo $this->Form->input('logo');

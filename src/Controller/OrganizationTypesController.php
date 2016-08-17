@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * OrganizationTypes Controller
@@ -16,8 +17,17 @@ class OrganizationTypesController extends AppController
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($instance_namespace = null)
     {
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
+        $this->paginate = [
+            'conditions' => ['OrganizationTypes.instance_id' => $instance_id]
+        ];
         $organizationTypes = $this->paginate($this->OrganizationTypes);
 
         $this->set(compact('organizationTypes'));

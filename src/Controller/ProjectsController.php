@@ -2,7 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-
+use Cake\ORM\TableRegistry;
 /**
  * Projects Controller
  *
@@ -10,16 +10,22 @@ use App\Controller\AppController;
  */
 class ProjectsController extends AppController
 {
-
     /**
      * Index method
      *
      * @return \Cake\Network\Response|null
      */
-    public function index()
+    public function index($instance_namespace = null)
     {
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
         $this->paginate = [
-            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities']
+            'contain'    => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities'],
+            'conditions' => ['Projects.instance_id' => $instance_id]
         ];
         $projects = $this->paginate($this->Projects);
 
@@ -28,10 +34,51 @@ class ProjectsController extends AppController
     }
 
     /**
+     * Graph method
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function graph($instance_namespace = null)
+    {
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
+        $projects = $this->Projects
+            ->find()
+            ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
+            ->where(['Projects.instance_id' => $instance_id])
+            ->all();
+
+        $this->set(compact('projects', 'instance_namespace'));
+        $this->set('_serialize', ['projects']);
+    }
+
+    /**
+     * Map method
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function map($instance_namespace = null)
+    {
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
+        $projects = $this->Projects
+            ->find()
+            ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
+            ->where(['Projects.instance_id' => $instance_id])
+            ->all();
+
+        $this->set(compact('projects', 'instance_namespace'));
+        $this->set('_serialize', ['projects']);
+    }
+
+    /**
      * View method
-     *
-     * @param string|null $id Project id.
-     * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
@@ -44,12 +91,13 @@ class ProjectsController extends AppController
         $this->set('_serialize', ['project']);
     }
 
+
     /**
      * Add method
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($instance_namespace = null)
     {
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {

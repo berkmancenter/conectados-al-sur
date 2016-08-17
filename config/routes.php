@@ -43,18 +43,168 @@ use Cake\Routing\Router;
 Router::defaultRouteClass('DashedRoute');
 
 Router::scope('/', function (RouteBuilder $routes) {
-    /**
-     * Here, we are connecting '/' (base path) to a controller called 'Pages',
-     * its action called 'display', and we pass a param to select the view file
-     * to use (in this case, src/Template/Pages/home.ctp)...
-     */
+    
+    # =================================================================================
+    # TESTING
+    # =================================================================================
+    
+    # meanwhile: root as instance index
+    $routes->connect('/', ['controller' => 'Instances', 'action' => 'index']);
+
     # defaut as status page
     $routes->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
-    # home as project list preview
-    $routes->connect('/', ['controller' => 'Projects', 'action' => 'preview']);
-    $routes->connect('/map',   ['controller' => 'Projects', 'action' => 'map']);
-    $routes->connect('/graph', ['controller' => 'Projects', 'action' => 'graph']);
+
+    # =================================================================================
+    # admin page
+    # =================================================================================
+
+    # Instances Controller
+    # -------------------------------------------------------------------------
+
+    # index
+    $routes->connect('/admin', ['controller' => 'Instances', 'action' => 'index']);
+
+    # add
+    $routes->connect('/admin/add', ['controller' => 'Instances', 'action' => 'add']);
+
+    # view
+    $routes->connect(
+        '/:instance_namespace/admin',
+        ['controller' => 'Instances', 'action' => 'view'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # edit
+    $routes->connect(
+        '/:instance_namespace/admin/edit',
+        ['controller' => 'Instances', 'action' => 'edit'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # delete
+    $routes->connect(
+        '/:instance_namespace/admin/delete',
+        ['controller' => 'Instances', 'action' => 'delete'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # Projects Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/projects',
+        ['controller' => 'Projects', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # Users Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/users',
+        ['controller' => 'Users', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # Categories Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/categories',
+        ['controller' => 'Categories', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # OrganizationTypes Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/organization_types',
+        ['controller' => 'OrganizationTypes', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # =================================================================================
+    # instance interaction
+    # =================================================================================
+
+    # instance mapping
+    $routes->connect(
+        '/:instance_namespace',
+        ['controller' => 'Instances', 'action' => 'preview'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # map
+    $routes->connect(
+        '/:instance_namespace/map',
+        ['controller' => 'Projects', 'action' => 'map'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # graph
+    $routes->connect(
+        '/:instance_namespace/graph',
+        ['controller' => 'Projects', 'action' => 'graph'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # projects interaction
+    # -------------------------------------------------------------------------
+
+    # add project
+    $routes->connect(
+        '/:instance_namespace/projects/add',
+        ['controller' => 'Projects', 'action' => 'add'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # TODO: 
+
+    # TODO:
+    # - probablemente graph, map, index y download puedan ser abstraídos al 
+    # mismo controlador!, pero con distintas vistas
+    #
+    # - limitar acceso con urls originales, que no ocupan el mapeo que propongo
+    # - bloquear acceso a vistas de Entidades Bloqueadas:
+    #    - Continents
+    #    - Subcontinents
+    #    - Countries
+    #    - Cities
+    #    - CategoriesProjects
+    #    - Genres
+    #    - ProjectStages
+    #    - Roles
+
+    # projects: index  (sysadmin, y download)
+    # projects: view   (user)
+    # projects: delete (user)
+    # projects: modify (user)
+    
+    # users: index   (sysadmin)
+    # users: view    (user)
+    # users: add     (user)
+    # users: modify  (user)
+    # users: delete  (user)
+
+    # Categories: index   (sysadmin)
+    # Categories: view    (sysadmin)
+    # Categories: add     (sysadmin)
+    # Categories: modify  (sysadmin)
+    # Categories: delete  (sysadmin)
+
+    # OrganizationTypes: index   (sysadmin)
+    # OrganizationTypes: view    (sysadmin)
+    # OrganizationTypes: add     (sysadmin)
+    # OrganizationTypes: modify  (sysadmin)
+    # OrganizationTypes: delete  (sysadmin)
+    
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
