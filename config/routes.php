@@ -164,6 +164,16 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['pass' => ['instance_namespace']]
     );
 
+    # view project
+    $routes->connect(
+        '/:instance_namespace/projects/:id',
+        ['controller' => 'Projects', 'action' => 'add'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
 
     # TODO: 
 

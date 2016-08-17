@@ -1,15 +1,15 @@
 <style>
 
 /* = = = = = = = = = = = =  map = = = = = = = = = = = = */
+/* CAS ORANGE: #F26722 */
+/* CAS BLUE  : #42C8F4  */
 
-.svg-background {
-  /*fill: #3399ff;*/
-  fill: lightblue;
-}
+.svg-background { fill: lightblue; }
 
-.country {
-  fill: #ddffcc;
-}
+.country        { fill: #ddffcc; }
+.country_hover  { fill: #f79c6e; }
+.country_active { fill: #f26722; }
+
 
 .country-boundary {
   fill: none;
@@ -60,7 +60,7 @@
         <li><?= $this->Html->link(__('Graph Visualization'), ['action' => 'graph', $instance_namespace]) ?></li>
     </ul>
     <div class="side-nav-info">
-        <p id="info-nprojects"></p>        
+        <p id="info-nprojects"></p>
     </div>
 </nav>
 <div class="projects map large-10 medium-9 columns content">
@@ -97,7 +97,7 @@ Object.keys(_map_by_country).map(function(value, index) {
 //console.log(map_by_country);
 
 d3.select("#info-nprojects")
-    .text("# projects: " + projects.length);
+    .text("Found " + projects.length + " projects");
 
 
 // classical margin convention
@@ -152,10 +152,6 @@ d3.queue()
 
 
 var countries_data;
-var active_pin = d3.select(null);
-var active_id  = null;
-
-var current_transform = d3.zoomIdentity;
 function ready(error, world, cow) {
     if (error) return console.error(error);
 
@@ -242,6 +238,7 @@ function ready(error, world, cow) {
             })
             .style("stroke", "black")
             .style("stroke-width", 1)
+            .on("click", pinClickListener)
             .on("mouseover", pinMouseOverListener)
             .on("mouseout", pinMouseOutListener);
 
@@ -263,11 +260,21 @@ function ready(error, world, cow) {
 }
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////// LISTENERS  ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-// Zoom Function Event Listener
+var active_pin = d3.select(null);
+
+var active_id = null;
+var current_transform = d3.zoomIdentity;
+
+// countries
+var active_country_id = null;
+
+////////// ZOOM LISTENERS //////////////////////////////////////////////////
+
 function zoomed() {
     
     current_transform = d3.event.transform;
@@ -282,29 +289,48 @@ function zoomed() {
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////
 
 function countryClickListener(d) {
-    // if (active.node() === this) return countryClickListenerReset();
-    // active = d3.select(this).classed("active", true);
+    // cases:
+    // - clicked the active country: deactivate -> hover
+    // - clicked other country: deactivate previous and activate this.
+    var clicked_id = d.id;
+    if (clicked_id == active_country_id) {
+        // deactivate the current one        
+        active_country_id = null;
+        drawer_country_hover(clicked_id);
+
+    } else {
+        // deactivate previous one
+        drawer_country_normal(active_country_id);
+
+        // activate the current
+        active_country_id = clicked_id;
+        drawer_country_active(active_country_id);
+    }
 }
 
-function countryClickListenerReset() {
-    // active.classed("active", false);
-    // active = d3.select(null);
-}
-
-function countryMouseOverListener(d) {    
-    country_drawer_paint_active(d.id);
-    tooltip_drawer_draw(d.id);    
+function countryMouseOverListener(d) {
+    var hover_id = d.id;
+    if (hover_id != active_country_id) {
+        drawer_country_hover(hover_id);
+    };
+    // tooltip_drawer_draw(d.id);    
 }
 
 // todo: no desaparecer en caso de estar sobre el tooltip
 function countryMouseOutListener(d) {
-    country_drawer_paint_normal(d.id);
-    tooltip_drawer_remove();
+    var hover_id = d.id;
+    if (hover_id != active_country_id) {
+        drawer_country_normal(hover_id);
+    };
+    // tooltip_drawer_remove();
 }
 
 
 
 ////////// PIN LISTENERS //////////////////////////////////////////////////////
+
+function pinClickListener(d) {
+}
 
 function pinMouseOverListener(d) {
     
@@ -381,27 +407,28 @@ function getCountryByN3(codN3) {
 ///////////////////////////////////////////////////////////////////////////////
 
 
-
-
 //////////////////////////////////////////////////////
 // COUNTRY HELPERS
 
 // highlights the country
-function country_drawer_paint_active(codN3) {
-    active_id = codN3;
-    d3.select("#country-" + codN3)
-        .transition()
-            .duration(250)
-            .style("fill", "#99ff66");
+function drawer_country_active(codN3) {
+    if (codN3 == null) { return; };
+    d3.select("#country-" + codN3).classed("country_active", true);
+    d3.select("#country-" + codN3).classed("country_hover", false);
+}
+
+// highlights the country if not active
+function drawer_country_hover(codN3) {
+    if (codN3 == null) { return; };
+    d3.select("#country-" + codN3).classed("country_active", false);
+    d3.select("#country-" + codN3).classed("country_hover", true);
 }
 
 // resets the country colour
-function country_drawer_paint_normal(codN3) {
-    active_id = null;
-    d3.select("#country-" + codN3)
-        .transition()
-            .duration(250)
-            .style("fill", "#ddffcc");
+function drawer_country_normal(codN3) {
+    if (codN3 == null) { return; };
+    d3.select("#country-" + codN3).classed("country_active", false);
+    d3.select("#country-" + codN3).classed("country_hover", false);
 }
 
 
@@ -529,39 +556,80 @@ function projects_info_clear() {
 function projects_info_display(map_item) {
     
     var country = getCountryByN3(map_item.id);
-    var nProjects = map_item.projects.length;
+    var project_idxs = map_item.projects;
+    var nProjects = project_idxs.length;
+
+    var curr_projects = [];
+    project_idxs.forEach(function (item, index) {
+        curr_projects.push(projects[item]);
+    });
+    //console.log(curr_projects);
 
     var infolist = d3.select(".side-nav-info")
         .append("ul").attr("id","country-info")
 
     infolist.append("li").text("Country: " + country.name_en)
     if (nProjects > 1) {
-        infolist.append("li").text("# projects: " + nProjects);
-        infolist.append("li").text("# authors: " + 0);
-        infolist.append("li").text("last modified: " + 0);
-        infolist.append("li").text("# finished: " + 0);
-        infolist.append("li").text("# categories: " + 0);
+
+        author_ids = {};
+        categories = {};
+        last_update = new Date(0);
+
+        curr_projects.forEach(function (item, index) {
+            
+            // console.log(item);
+
+            // author set (using dictionary as set)
+            author_ids[item.user_id] = 0;
+
+            // fill categories
+            Object.keys(item.categories).forEach(function (cat_item_id, cat_index) {
+                cat_id = item.categories[cat_item_id].id;
+                cat_name = item.categories[cat_item_id].name;
+                categories[cat_id] = cat_name;
+            });
+
+            modified = new Date(item.modified);
+            last_update = last_update > modified ? last_update : modified;
+        });
+        // console.log(categories);
+
+        //console.log(map_item.projects);
+        infolist.append("li").text("Projects: " + nProjects);
+        infolist.append("li").text("Authors: " + Object.keys(author_ids).length);
+        infolist.append("li").text("Last Update: " + last_update.toDateString());
+        infolist.append("li").text("Categories: " + Object.keys(categories).length);
+        // infolist.append("li").text("Finished: " + 0);
     } else{
-        var project = projects[0];
-        console.log(project);
-        infolist.append("li").text("# projects: 1");
-        infolist.append("li").text("project: " + project.name);
-        infolist.append("li").text("url: " + project.url);
-        infolist.append("li").text("stage: " + project.project_stage.name);
-        infolist.append("li").text("org type: " + project.organization_type.name);
-        infolist.append("li").text("org name: " + project.organization);
-        infolist.append("li").text("user name: " + project.user.name);
-        infolist.append("li").text("user mail: " + project.user.email);
-        infolist.append("li").text("user main org: " + project.user.main_organization);
-        infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
-        infolist.append("li").text("last modification: " + project.modified.substr(0,10));
-        
-        var cats = infolist.append("li").text("categories: ")
+
+        var project = curr_projects[0];
+        //console.log(project);
+
+        var proj_description_max = 100;
+        var proj_description = project.description.substring(0,proj_description_max);
+        if (project.description.length > proj_description_max) {
+            proj_description += "...";
+        };
+
+        infolist.append("li").text("Project: " + project.name);
+        infolist.append("li").text(proj_description);
+        infolist.append("li").text("Organization: " + project.organization);
+        // infolist.append("li").text("stage: " + project.project_stage.name);
+        // infolist.append("li").text("org type: " + project.organization_type.name);
+        // infolist.append("li").text("user name: " + project.user.name);
+        // infolist.append("li").text("user mail: " + project.user.email);
+        // infolist.append("li").text("user main org: " + project.user.main_organization);
+        // infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
+        // infolist.append("li").text("last modification: " + project.modified.substr(0,10));
+        var cats = infolist.append("li").text("Categories: ")
             .append("ul");
 
         project.categories.forEach(function(item, index) {
             cats.append("li").text("#" + (index + 1) + ": " + item.name);
         });
+        infolist.append("li").append("a")
+            .text("Complete info ...")
+            .attr("href", "projects/" + project.id);
     };
 }
 

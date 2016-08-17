@@ -81,7 +81,7 @@ class ProjectsController extends AppController
      * View method
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($instance_namespace = null, $id = null)
     {
         $project = $this->Projects->get($id, [
             'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities', 'Categories']
