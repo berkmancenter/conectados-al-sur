@@ -45,7 +45,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             <ul class="right">
                 <li class="name">
                     <h1><?= 
-                        $this->Html->image('LOGO_CAS.png',
+                        $this->Html->image('LOGO_CAS_ALPHA.png',
                         [
                             "alt" => "LOGO_CAS",
                             "width" => 300,
