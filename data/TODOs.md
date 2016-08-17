@@ -15,3 +15,9 @@
 
 ### visualizaciones
 - evitar esparcimiento de campos dummy
+
+
+### Proyectos:
+
+- view: acceder al user, pero sólo nombre y contacto
+- crear, editar... reforzar constraints de labase de datos.

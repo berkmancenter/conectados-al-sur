@@ -10,7 +10,6 @@
 .country_hover  { fill: #f79c6e; }
 .country_active { fill: #f26722; }
 
-
 .country-boundary {
   fill: none;
   stroke: gray;
@@ -251,10 +250,8 @@ function ready(error, world, cow) {
         .style("opacity", 0)
         .on("mouseover", tooltipMouseOverListener)
         .on("mouseout", tooltipMouseOutListener);
-    tooltip.append("rect")
-        .attr("id", "country_tooltip_rect");
-    tooltip.append("text")
-        .attr("id", "country_tooltip_text");
+    tooltip.append("rect").attr("id", "country_tooltip_rect");
+    tooltip.append("text").attr("id", "country_tooltip_text");
 
 
 }
@@ -265,13 +262,12 @@ function ready(error, world, cow) {
 //////////////////// LISTENERS  ///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
-var active_pin = d3.select(null);
-
-var active_id = null;
+// zoom
 var current_transform = d3.zoomIdentity;
 
 // countries
-var active_country_id = null;
+var active_country_id  = null;
+var hovered_country_id = null;
 
 ////////// ZOOM LISTENERS //////////////////////////////////////////////////
 
@@ -280,105 +276,85 @@ function zoomed() {
     current_transform = d3.event.transform;
     g.attr("transform", d3.event.transform);
 
-    // update other elements on a
-    // special way
-    pin_drawer_zoom_update(d3.event.transform);
-    tooltip_drawer_zoom_update(d3.event.transform);
+    // update other elements on a special way
+    drawer_pin_zoom_update(d3.event.transform);
+    drawer_tooltip_zoom_update(d3.event.transform);
 }
 
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////
 
 function countryClickListener(d) {
-    // cases:
-    // - clicked the active country: deactivate -> hover
-    // - clicked other country: deactivate previous and activate this.
+
     var clicked_id = d.id;
     if (clicked_id == active_country_id) {
         // deactivate the current one        
         active_country_id = null;
         drawer_country_hover(clicked_id);
+        drawer_pin_normal(clicked_id);
+
+        // crear country info
+        projects_info_clear();
 
     } else {
         // deactivate previous one
         drawer_country_normal(active_country_id);
+        drawer_pin_normal(active_country_id);
 
         // activate the current
         active_country_id = clicked_id;
+        if (hovered_country_id == active_country_id) { hovered_country_id = null; }
         drawer_country_active(active_country_id);
+        drawer_pin_active(active_country_id);
+
+        // show projects info
+        projects_info_clear();
+        projects_info_display(active_country_id);
     }
 }
 
 function countryMouseOverListener(d) {
     var hover_id = d.id;
     if (hover_id != active_country_id) {
+        hovered_country_id = hover_id;
         drawer_country_hover(hover_id);
-    };
-    // tooltip_drawer_draw(d.id);    
+        drawer_pin_hover(hover_id);
+    }
+    drawer_tooltip(hover_id);    
 }
 
-// todo: no desaparecer en caso de estar sobre el tooltip
 function countryMouseOutListener(d) {
     var hover_id = d.id;
     if (hover_id != active_country_id) {
+        hovered_country_id = null;
         drawer_country_normal(hover_id);
-    };
-    // tooltip_drawer_remove();
+        drawer_pin_normal(hover_id);
+    }
+    drawer_tooltip_remove();
 }
-
-
 
 ////////// PIN LISTENERS //////////////////////////////////////////////////////
-
-function pinClickListener(d) {
-}
-
-function pinMouseOverListener(d) {
-    
-    pin_drawer_active(d.id);
-
-    // show tooltip and redraw country 
-    tooltip_drawer_draw(d.id);
-    country_drawer_paint_active(d.id);
-
-    projects_info_display(d);
-}
-
-// todo: no desaparecer en caso de estar sobre el tooltip
-function pinMouseOutListener(d) {
-    
-    pin_drawer_normal(d.id);
-
-    projects_info_clear();
-
-    // reset stuff
-    tooltip_drawer_remove();
-    country_drawer_paint_normal(d.id);
-}
+function pinClickListener(d)     { countryClickListener(d);     }
+function pinMouseOverListener(d) { countryMouseOverListener(d); }
+function pinMouseOutListener(d)  { countryMouseOutListener(d); }
 
 
 ////////// TOOLTIP LISTENERS //////////////////////////////////////////////////
-
 function tooltipMouseOverListener(d) {
-    
-    // pin_drawer_active(d);
-
-    // show tooltip and redraw country 
-    tooltip_drawer_draw(d);
-    country_drawer_paint_active(d);
-
-    // projects_info_display(d);
+    var country_id = d;
+    drawer_tooltip(country_id);
+    if (country_id != active_country_id) {
+        drawer_country_hover(country_id);
+    } else {
+        drawer_country_active(country_id);
+    }
 }
 
-// todo: no desaparecer en caso de estar sobre el tooltip
 function tooltipMouseOutListener(d) {
-    
-    // pin_drawer_normal(d);
-
-    projects_info_clear();
-
-    // reset stuff
-    tooltip_drawer_remove();
-    country_drawer_paint_normal(d);
+    var country_id = d;
+    drawer_tooltip_remove();
+    if (country_id != active_country_id) {
+        drawer_country_normal(country_id);    
+    }
 }
 
 
@@ -405,6 +381,11 @@ function getCountryByN3(codN3) {
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////// DRAWER  HELPERS //////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+var country_pin = {};
+country_pin.normal = {}; country_pin.hover = {}; country_pin.active = {};
+country_pin.normal.stroke = "#000000"; country_pin.normal.stroke_width = 1;
+country_pin.hover.stroke  = "#42c8f4"; country_pin.hover.stroke_width  = 2;
+country_pin.active.stroke = "#086f91"; country_pin.active.stroke_width = 3;
 
 
 //////////////////////////////////////////////////////
@@ -431,13 +412,70 @@ function drawer_country_normal(codN3) {
     d3.select("#country-" + codN3).classed("country_hover", false);
 }
 
+//////////////////////////////////////////////////////
+// PIN HELPERS
+
+function drawer_pin_active(codN3) {
+    if (codN3 == null) { return; };
+ 
+    d3.select("#country_pin-" + codN3)
+        .moveToFront()
+        .style("stroke", country_pin.active.stroke)
+        .style("stroke-width", function(d,i) {
+                return country_pin.active.stroke_width/current_transform.k;
+        });
+}
+
+function drawer_pin_hover(codN3) {
+    if (codN3 == null) { return; };
+
+    d3.select("#country_pin-" + codN3)
+        .style("stroke", country_pin.hover.stroke)
+        .style("stroke-width", function(d,i) {
+                return country_pin.hover.stroke_width/current_transform.k;
+        });
+}
+
+function drawer_pin_normal(codN3) {
+    if (codN3 == null) { return; };
+
+    d3.select("#country_pin-" + codN3)
+        .style("stroke", country_pin.normal.stroke)
+        .style("stroke-width", function(d,i) {
+                return country_pin.normal.stroke_width/current_transform.k;
+        });
+
+}
+
+function drawer_pin_zoom_update(transform) {
+
+    g.selectAll(".country_pin")
+        .attr("r" , function(d,i) {
+            var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
+            return 9*scale/transform.k;
+        })
+        .style("stroke-width", function(d,i) {
+            return country_pin.normal.stroke_width/transform.k;
+        });
+
+    // hovered pin
+    d3.select("#country_pin-" + hovered_country_id)
+        .style("stroke-width", function(d,i) {
+            return country_pin.hover.stroke_width/transform.k;
+        });
+
+    // active pin
+    d3.select("#country_pin-" + active_country_id)
+        .style("stroke-width", function(d,i) {
+            return country_pin.active.stroke_width/transform.k;
+        });
+}
 
 
 //////////////////////////////////////////////////////
 // TOOLTIP HELPERS
 
-// draws a tooltip with updated data
-function tooltip_drawer_draw(codN3) {
+function drawer_tooltip(codN3) {
 
     // retrieve country
     var country = getCountryByN3(codN3);
@@ -469,6 +507,7 @@ function tooltip_drawer_draw(codN3) {
 
     d3.select("#country_tooltip_text")
         .text(country.codA3 + " (" + nProjects + " " + projects_word + ")")
+        .style("cursor", "default")
         .attr("x", coords[0]+(dx+mleft))
         .attr("y", coords[1]-(dy+mbottom))
         .attr("font-size", nodeFontSize + "px");
@@ -480,69 +519,20 @@ function tooltip_drawer_draw(codN3) {
         .moveToFront();
 }
 
-// disapears the tooltip
-function tooltip_drawer_remove() {
+function drawer_tooltip_remove() {
     d3.select(".country_tooltip")
         .style("opacity", 1e-6)
         // trick to desapear from svg!
         .attr("transform", d3.zoomIdentity.translate(10*width,10*height));
 }
 
-function tooltip_drawer_zoom_update(transform) {
-    if (active_id != null) {
-        tooltip_drawer_draw(active_id);
+function drawer_tooltip_zoom_update(transform) {
+    if (hovered_country_id != null) {
+        drawer_tooltip(hovered_country_id);
     } else {
-        tooltip_drawer_remove();
+        drawer_tooltip_remove();
     }
 }
-
-
-//////////////////////////////////////////////////////
-// PIN HELPERS
-
-function pin_drawer_normal(codN3) {
-    
-    active_pin.transition()
-        .style("stroke", "black")
-        .style("stroke-width",  function(d,i) {
-            return 1/current_transform.k;
-        });
-
-    active_pin = d3.select(null);
-}
-
-function pin_drawer_active(codN3) {
-
-    active_pin = d3.select("#country_pin-" + codN3);
-
-    active_pin
-        .moveToFront()
-        .transition()
-            .style("stroke", "blue")
-            .style("stroke-width", function(d,i) {
-                return 5/current_transform.k;
-            });
-
-}
-
-function pin_drawer_zoom_update(transform) {
-
-    g.selectAll(".country_pin")
-        .attr("r" , function(d,i) {
-                var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-                return 9*scale/transform.k;
-        })
-        .style("stroke-width", function(d,i) {
-                return 1/transform.k;
-        });
-
-    // this pin will have a different stroke-width
-    active_pin
-        .style("stroke-width", function(d,i) {
-                return 5/transform.k;
-        });
-}
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -553,10 +543,16 @@ function projects_info_clear() {
     d3.select("#country-info").remove();
 }
 
-function projects_info_display(map_item) {
+function projects_info_display(codN3) {
     
-    var country = getCountryByN3(map_item.id);
-    var project_idxs = map_item.projects;
+    var country = getCountryByN3(codN3);
+
+    var project_idxs = null;
+    map_by_country.forEach(function (obj, index) {
+        if (obj.id == codN3) {
+            project_idxs = obj.projects;
+        }
+    });
     var nProjects = project_idxs.length;
 
     var curr_projects = [];
@@ -594,7 +590,6 @@ function projects_info_display(map_item) {
         });
         // console.log(categories);
 
-        //console.log(map_item.projects);
         infolist.append("li").text("Projects: " + nProjects);
         infolist.append("li").text("Authors: " + Object.keys(author_ids).length);
         infolist.append("li").text("Last Update: " + last_update.toDateString());
@@ -630,7 +625,7 @@ function projects_info_display(map_item) {
         infolist.append("li").append("a")
             .text("Complete info ...")
             .attr("href", "projects/" + project.id);
-    };
+    }
 }
 
 

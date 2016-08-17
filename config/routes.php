@@ -167,13 +167,32 @@ Router::scope('/', function (RouteBuilder $routes) {
     # view project
     $routes->connect(
         '/:instance_namespace/projects/:id',
-        ['controller' => 'Projects', 'action' => 'add'],
+        ['controller' => 'Projects', 'action' => 'view'],
         [
             'pass' => ['instance_namespace', 'id'],
             'id'   => '[0-9]+'
         ]
     );
 
+    # edit project
+    $routes->connect(
+        '/:instance_namespace/projects/:id/edit',
+        ['controller' => 'Projects', 'action' => 'edit'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
+    # delete project
+    $routes->connect(
+        '/:instance_namespace/projects/:id/delete',
+        ['controller' => 'Projects', 'action' => 'delete'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
 
     # TODO: 
 

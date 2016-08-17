@@ -88,6 +88,7 @@ class ProjectsController extends AppController
         ]);
 
         $this->set('project', $project);
+        $this->set('instance_namespace', $instance_namespace);
         $this->set('_serialize', ['project']);
     }
 
@@ -104,7 +105,7 @@ class ProjectsController extends AppController
             $project = $this->Projects->patchEntity($project, $this->request->data);
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
             }
@@ -115,7 +116,7 @@ class ProjectsController extends AppController
         $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
         $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
         $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories'));
+        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories','instance_namespace'));
         $this->set('_serialize', ['project']);
     }
 
@@ -126,7 +127,7 @@ class ProjectsController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($instance_namespace = null, $id = null)
     {
         $project = $this->Projects->get($id, [
             'contain' => ['Categories']
@@ -135,7 +136,7 @@ class ProjectsController extends AppController
             $project = $this->Projects->patchEntity($project, $this->request->data);
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
             }
@@ -146,7 +147,7 @@ class ProjectsController extends AppController
         $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
         $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
         $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories'));
+        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories', 'instance_namespace'));
         $this->set('_serialize', ['project']);
     }
 
@@ -157,7 +158,7 @@ class ProjectsController extends AppController
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($instance_namespace = null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
         $project = $this->Projects->get($id);
@@ -166,6 +167,6 @@ class ProjectsController extends AppController
         } else {
             $this->Flash->error(__('The project could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
     }
 }
