@@ -110,6 +110,8 @@ CREATE TABLE cities (
     longitude REAL NOT NULL
 );
 INSERT INTO cities VALUES (0, '[null city]', 0, 0, 0);
+-- INSERT: import the cities.csv file. You might need to divide
+--  it into several lighter pieces.
 
 -- TABLE genres
 CREATE TABLE genres (
