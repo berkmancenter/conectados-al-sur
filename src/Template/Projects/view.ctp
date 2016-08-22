@@ -63,18 +63,12 @@
             <td><?= h($project->finish_date) ?></td>
         </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Description') ?></h4>
-        <?= $this->Text->autoParagraph(h($project->description)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('Project Contribution:') ?></h4>
-        <?= $this->Text->autoParagraph(h($project->contribution)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('Contributing to this project:') ?></h4>
-        <?= $this->Text->autoParagraph(h($project->contributing)); ?>
-    </div>
+    <h4><?= __('Description') ?></h4>
+    <?= $this->Text->autoParagraph(h($project->description)); ?>
+    <h4><?= __('Project Contribution:') ?></h4>
+    <?= $this->Text->autoParagraph(h($project->contribution)); ?>
+    <h4><?= __('Contributing to this project:') ?></h4>
+    <?= $this->Text->autoParagraph(h($project->contributing)); ?>
     <div class="related">
         <h4><?= __('Related Categories') ?></h4>
         <?php if (!empty($project->categories)): ?>

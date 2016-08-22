@@ -34,14 +34,10 @@
             <!-- <td><?= h($instance->logo) ?></td> -->
         </tr>
     </table>
-    <div class="row">
-        <h4><?= __('Description') ?></h4>
-        <?= $this->Text->autoParagraph(h($instance->description)); ?>
-    </div>
-    <div class="row">
-        <h4><?= __('Description (Spanish)') ?></h4>
-        <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
-    </div>
+    <h4><?= __('Description') ?></h4>
+    <?= $this->Text->autoParagraph(h($instance->description)); ?>
+    <h4><?= __('Description (Spanish)') ?></h4>
+    <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
 
     <h4><?= __('Configuration:') ?></h4>
     <h5><?= __('For Users:') ?></h5>
