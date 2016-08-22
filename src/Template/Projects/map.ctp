@@ -60,6 +60,7 @@
     </ul>
     <div class="side-nav-info">
         <p id="info-nprojects"></p>
+        <p id="info-country-label"></p>
     </div>
 </nav>
 <div class="projects map large-10 medium-9 columns content">
@@ -243,7 +244,7 @@ function ready(error, world, cow) {
 
 
     ///// tooltip 
-    ///////////////////////////////////////////
+    /////////////////////////////////////////////
     var tooltip = g.append("g")
         .datum(null)
         .attr("class", "country_tooltip")
@@ -254,6 +255,9 @@ function ready(error, world, cow) {
     tooltip.append("text").attr("id", "country_tooltip_text");
 
 
+    //// info bar
+    /////////////////////////////////////////////
+    projects_info_clear();
 }
 
 
@@ -307,7 +311,6 @@ function countryClickListener(d) {
         drawer_pin_active(active_country_id);
 
         // show projects info
-        projects_info_clear();
         projects_info_display(active_country_id);
     }
 }
@@ -539,32 +542,51 @@ function drawer_tooltip_zoom_update(transform) {
 //////////////////// INFORMATION  HELPERS//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+function projects_info_set_country_label(codN3) {
+
+    var label = d3.select("#info-country-label")
+            .style("font-weight", "bold");
+    
+    if (codN3 != null) {
+        var country = getCountryByN3(codN3);
+        label.text(country.name_en);
+    } else {
+        label.text("Please select a country");
+    }
+}
+
+
 function projects_info_clear() {
     d3.select("#country-info").remove();
+    projects_info_set_country_label(null);
 }
 
 function projects_info_display(codN3) {
-    
-    var country = getCountryByN3(codN3);
 
+    projects_info_clear();
+    projects_info_set_country_label(codN3);
+    
     var project_idxs = null;
     map_by_country.forEach(function (obj, index) {
         if (obj.id == codN3) {
             project_idxs = obj.projects;
         }
     });
-    var nProjects = project_idxs.length;
 
     var curr_projects = [];
-    project_idxs.forEach(function (item, index) {
-        curr_projects.push(projects[item]);
-    });
+    if (project_idxs != null) {
+        project_idxs.forEach(function (item, index) {
+            curr_projects.push(projects[item]);
+        });
+    }
+    var nProjects = curr_projects.length;
+
     //console.log(curr_projects);
 
     var infolist = d3.select(".side-nav-info")
         .append("ul").attr("id","country-info")
 
-    infolist.append("li").text("Country: " + country.name_en)
+
     if (nProjects > 1) {
 
         author_ids = {};
@@ -595,7 +617,7 @@ function projects_info_display(codN3) {
         infolist.append("li").text("Last Update: " + last_update.toDateString());
         infolist.append("li").text("Categories: " + Object.keys(categories).length);
         // infolist.append("li").text("Finished: " + 0);
-    } else{
+    } else if (nProjects == 1) {
 
         var project = curr_projects[0];
         //console.log(project);
@@ -606,6 +628,7 @@ function projects_info_display(codN3) {
             proj_description += "...";
         };
 
+        infolist.append("li").text("Projects: 1");
         infolist.append("li").text("Project: " + project.name);
         infolist.append("li").text(proj_description);
         infolist.append("li").text("Organization: " + project.organization);
@@ -625,6 +648,8 @@ function projects_info_display(codN3) {
         infolist.append("li").append("a")
             .text("Complete info ...")
             .attr("href", "projects/" + project.id);
+    } else {
+        infolist.append("li").text("Projects: 0");
     }
 }
 
