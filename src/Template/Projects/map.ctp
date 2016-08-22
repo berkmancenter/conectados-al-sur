@@ -33,6 +33,12 @@
     stroke: gray;
 }
 
+.zoom_buttons {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+}
+
 /* - - - - - - side-bar - - - - - - */
 .side-nav li
 {
@@ -65,7 +71,12 @@
 </nav>
 <div class="projects map large-10 medium-9 columns content">
     <div id="tooltip-container"></div>
-    <div id="svg-map"></div>
+    <div id="svg-map">
+        <div class="zoom_buttons">
+            <button data-zoom="+1">Zoom In</button>
+            <button data-zoom="-1">Zoom Out</button>
+        </div>
+    </div>
 </div>
 
 
@@ -140,6 +151,9 @@ outer_g.append("g").attr("class", "svg-g-background")
         .attr("class", "svg-background")
         .attr("width", width)
         .attr("height", height);
+
+d3.selectAll("button[data-zoom]")
+    .on("click", zoomButtonListener);
 
 var g = outer_g.append("g").attr("class", "svg-draws");
 
@@ -283,6 +297,29 @@ function zoomed() {
     // update other elements on a special way
     drawer_pin_zoom_update(d3.event.transform);
     drawer_tooltip_zoom_update(d3.event.transform);
+}
+
+function zoomButtonListener() {
+
+    var zoom_scale = 1.5;
+    if (this.getAttribute("data-zoom") < 0) {
+        zoom_scale = 1.0/zoom_scale;
+    }
+    zoom.scaleBy(outer_g, zoom_scale);
+    //svg.call(zoom.event); // https://github.com/mbostock/d3/issues/2387
+
+    // Record the coordinates (in data space) of the center (in screen space).
+    // var center0 = zoom.center();
+    // var translate0 = zoom.translate()
+    // var coordinates0 = coordinates(center0);
+
+    // zoom.scale(zoom.scale() * Math.pow(2, +));
+
+    // // Translate back to the center.
+    // var center1 = point(coordinates0);
+    // zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
+
+    // svg.transition().duration(750).call(zoom.event);
 }
 
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////
@@ -546,7 +583,7 @@ function projects_info_set_country_label(codN3) {
 
     var label = d3.select("#info-country-label")
             .style("font-weight", "bold");
-    
+
     if (codN3 != null) {
         var country = getCountryByN3(codN3);
         label.text(country.name_en);

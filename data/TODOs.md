@@ -1,5 +1,9 @@
 # TODO List
 
+## ERRORES
+
+- MAPA: error en hover y click para Djibuti 
+
 ## Relacionados con la Vista de Administración
 
 ### Instance Add
