@@ -17,11 +17,17 @@
 - agregar campos dummy a la base de datos ([unused field] ...)
 
 
-### visualizaciones
+## visualizaciones
 - evitar esparcimiento de campos dummy
+- map width height
+- map size responsive
+	- see: http://stackoverflow.com/questions/16265123/resize-svg-when-window-is-resized-in-d3-js
 
-
-### Proyectos:
+## Proyectos:
 
 - view: acceder al user, pero sólo nombre y contacto
 - crear, editar... reforzar constraints de labase de datos.
+
+## VARIOS
+
+- titulo de la ventana
