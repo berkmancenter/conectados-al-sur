@@ -1,0 +1,76 @@
+
+.fullwidth {
+	max-width: initial;
+	width: 100%;
+}
+
+body {
+	/* the same as .footer-infodiv */
+	background: #363638;
+}
+
+/* ****************************************************************************
+* NAVIGATION BAR
+**************************************************************************** */
+.top-bar {
+	background: #ed7d31;
+	border-bottom: 1px solid #808080;
+	color: #fff;
+	font-family: 'Raleway', 'sans-serif';
+}
+.top-bar-title {
+	line-height: 40px;
+	text-align: center;
+}
+.top-bar-actual-title {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: normal;
+}
+
+.top-bar a {
+	background: #ed7d31;
+	color: #fff;
+	/*border: 1px dashed #808080;*/
+}
+
+.top-bar .dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+	border-color: #fff transparent;
+}
+
+/* ****************************************************************************
+* FOOTER
+**************************************************************************** */
+footer {
+	padding: 0px 0px 0px 0px;
+	border-top: 1px solid #808080;
+}
+
+.footer-imgdiv {
+	background: white;
+	padding: 30px 0px;
+}
+
+.footer-image {
+	display: block;
+	margin: 0px auto;
+}
+
+.footer-infodiv {
+	padding: 10px 0px;
+}
+
+.footer-infodiv a {
+	color: white;	
+}
+
+
+/* ****************************************************************************
+* PAGE
+**************************************************************************** */
+
+.page-content {
+	background: white;
+	color: #363637;
+	padding-bottom: 50px;
+}

@@ -55,6 +55,7 @@
 </style>
 
 
+
 <?= $this->Html->script('d3/d3.min.js') ?>
 <?= $this->Html->script('topojson/topojson.min.js') ?>
 <?= $this->Html->script('jquery-3.0.0.min') ?>
@@ -139,6 +140,7 @@ var svg = d3.select("#svg-map")
         .attr("width" , width  + margin.left + margin.right )
         .attr("height", height + margin.top  + margin.bottom)
         .style("border", "2px solid"); // border!
+
 
 // create inner viewport and enable zooming
 var outer_g = svg.append("g")
@@ -300,26 +302,11 @@ function zoomed() {
 }
 
 function zoomButtonListener() {
-
     var zoom_scale = 1.5;
     if (this.getAttribute("data-zoom") < 0) {
         zoom_scale = 1.0/zoom_scale;
     }
     zoom.scaleBy(outer_g, zoom_scale);
-    //svg.call(zoom.event); // https://github.com/mbostock/d3/issues/2387
-
-    // Record the coordinates (in data space) of the center (in screen space).
-    // var center0 = zoom.center();
-    // var translate0 = zoom.translate()
-    // var coordinates0 = coordinates(center0);
-
-    // zoom.scale(zoom.scale() * Math.pow(2, +));
-
-    // // Translate back to the center.
-    // var center1 = point(coordinates0);
-    // zoom.translate([translate0[0] + center0[0] - center1[0], translate0[1] + center0[1] - center1[1]]);
-
-    // svg.transition().duration(750).call(zoom.event);
 }
 
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////

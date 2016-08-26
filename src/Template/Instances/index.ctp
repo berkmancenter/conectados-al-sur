@@ -1,10 +1,10 @@
-<nav class="large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Instance'), ['action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="instances index large-10 medium-9 columns content">
+<!-- Available Actions -->
+<?php $this->start('available-actions'); ?>
+<li><?= $this->Html->link(__('New Instance'), ['action' => 'add']) ?></li>
+<?php $this->end(); ?>
+
+<!-- Page Content -->
+<div class="instances index large-12 columns content">
     <h3><?= __('Instances') ?></h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
