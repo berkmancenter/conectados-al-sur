@@ -77,8 +77,8 @@
 
 </div>
 <div class="off-cavas-content" data-off-canvas-content>
-<div class="row projects-index" data-equalizer="container">
-    <nav class="medium-4 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
+<div class="row projects-index fullwidth" data-equalizer="container">
+    <nav class="medium-4 large-3 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
         <div class="side-links" data-equalizer="links">
             <ul class="expanded button-group">
             <?= $this->Html->link(__('New Project'), [
@@ -105,7 +105,7 @@
             <p id="info-country-label"></p>
         </div>
     </nav>
-    <div class="medium-8 columns projects-map" data-equalizer-watch="container">
+    <div class="medium-8 large-9 columns projects-map" data-equalizer-watch="container">
         <div id="tooltip-container"></div>
         <div id="svg-map">
             <div class="zoom_buttons">
