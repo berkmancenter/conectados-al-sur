@@ -8,14 +8,13 @@
     
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('foundation/foundation.min.css') ?>
-    <?= $this->Html->css('app.css') ?>
-
-    
     <!-- 
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('cake.css') ?>
     -->
+    <?= $this->Html->css('foundation/foundation.min.css') ?>
+    <?= $this->Html->css('app.css') ?>    
+
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
@@ -30,8 +29,7 @@
             <strong class="top-bar-actual-title">Conectados al Sur</strong>
         </div>
         <div id="responsive-menu">
-            <div class="top-bar-left">
-            </div>
+            <div class="top-bar-left"></div>
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
