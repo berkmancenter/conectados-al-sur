@@ -26,7 +26,7 @@ body {
 	border: 0px;
 	border-bottom: 1px solid #808080;
 	margin: 0px;
-	margin-bottom: 0px;
+	/*margin-bottom: 1px;*/
 }
 
 /* title vertical alignment */
@@ -93,9 +93,7 @@ footer {
 	min-height: 800px;
 	padding: 80px 50px 100px 50px;
 
-
 	border: 0px;
-	border-bottom: 1px solid #808080;
 	margin: 0px;
 	margin-bottom: 0px;
 }
@@ -199,6 +197,7 @@ ul.pagination .disabled:hover a {
 .preview-desc {
 	font-size: 24px;
 	text-align: center;
+	text-transform: uppercase;
 
 	padding: 0px 100px;
 	margin-bottom: 100px;
@@ -209,7 +208,6 @@ ul.pagination .disabled:hover a {
 .preview-desc-eng p {
 	color: #39a0ea;
 }
-
 .preview-imgs .thumbnail {
 	border-radius: 200px;
 	width: 400px;
@@ -221,3 +219,77 @@ ul.pagination .disabled:hover a {
 .preview-imgs .thumbnail:hover, .preview-imgs .thumbnail:focus {
 	box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
 }
+
+
+/* ****************************************************************************
+* PROJECTS INDEX
+**************************************************************************** */
+
+.page-content-with-sidebar {
+	background: #fff;
+	color: #363637;
+	
+	min-height: 700px;
+	padding: 0px 0px 0px 0px;
+
+	border: 0px;
+	border-top: 1px solid #808080;
+	margin: 0px;
+	margin-bottom: 0px;
+}
+.projects-index .side-nav { 
+	padding: 10px 10px;
+	border: 0px;
+	border-right: 5px solid #808080;
+	margin: 0px;
+	/*background: blue;*/
+}
+
+.projects-map {
+	min-height: 600px;
+	padding: 0px;
+	border: 0px;
+	margin: 0px;
+	/*background: green;*/
+}
+
+.side-links {
+	padding: 0px 0px;
+}
+.side-links ul.button-group {
+	margin: 0px;
+}
+
+.off-canvas {
+	background: #fff;
+	border-right: 1px dashed #808080;
+}
+
+/* - - - - - - side-bar - - - - - - */
+/*.side-nav li a:not(.button) {
+    color: #15848F;
+}
+
+.side-nav li a:not(.button):hover {
+    color: #15848F;
+}
+.side-nav li.heading {
+    color: #1798A5;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0.4375rem 0.875rem;
+}
+*/
+/*.side-nav li
+{
+    background-color: #ccc;
+}
+.side-nav li a:not(.button)
+{
+    color: #000;
+}
+.side-nav li a:hover:not(.button)
+{
+    color: red;
+}*/

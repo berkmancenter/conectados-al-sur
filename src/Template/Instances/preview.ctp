@@ -1,9 +1,11 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?> </li>
+<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance_namespace]) ?> </li>
 <?php $this->end(); ?>
 
 <!-- Page Content -->
+<div class="fullwidth page-content">
+
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= h($instance->name) ?></h3>
@@ -35,4 +37,6 @@
             'class' => 'thumbnail'
         ]) ?>        
     </div>
+</div>
+
 </div>

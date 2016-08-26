@@ -4,6 +4,8 @@
 <?php $this->end(); ?>
 
 <!-- Page Content -->
+<div class="fullwidth page-content">
+    
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= __('Instances') ?></h3>
@@ -50,4 +52,5 @@
             <p><?= $this->Paginator->counter() ?></p>
         </div>        
     </div>
+</div>
 </div>

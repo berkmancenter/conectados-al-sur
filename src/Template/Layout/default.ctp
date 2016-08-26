@@ -45,9 +45,7 @@
     </nav>
 
     <?= $this->Flash->render() ?>
-    <div class="row fullwidth page-content ">
     <?= $this->fetch('content') ?>
-    </div>
     
     <footer>
         <div class="row fullwidth">

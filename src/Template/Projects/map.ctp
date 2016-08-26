@@ -33,53 +33,94 @@
     stroke: gray;
 }
 
-.zoom_buttons {
-  position: absolute;
-  right: 40px;
-  top: 40px;
-}
 
-/* - - - - - - side-bar - - - - - - */
-.side-nav li
-{
-    background-color: #ccc;
+#svg-map {
+    position: relative;
 }
-.side-nav li a:not(.button)
-{
-    color: #000;
-}
-.side-nav li a:hover:not(.button)
-{
-    color: red;
+.zoom_buttons {
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 </style>
-
-
 
 <?= $this->Html->script('d3/d3.min.js') ?>
 <?= $this->Html->script('topojson/topojson.min.js') ?>
 <?= $this->Html->script('jquery-3.0.0.min') ?>
 
-<nav class="large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('New Project'), ['action' => 'add', $instance_namespace]) ?></li>
-        <li><?= $this->Html->link(__('Graph Visualization'), ['action' => 'graph', $instance_namespace]) ?></li>
+
+<!-- Available Actions -->
+<?php $this->start('available-actions'); ?>
+<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance_namespace]) ?> </li>
+<?php $this->end(); ?>
+
+<!-- Page Content -->
+<div class="fullwidth page-content-with-sidebar">
+
+<div class="off-convas-wrapper">
+<div class="off-convas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+    <!-- close button -->
+    <button class="close-button" aria-label="Close menu" type="button" data-close>
+        <span aria-hidden="true">&times;</span>
+    </button>
+
+    <!-- menu -->
+    <ul class="vertical menu">
+        <li><a href="#">Lorem.</a></li>
+        <li><a href="#">Facilis.</a></li>
+        <li><a href="#">Sed?</a></li>
+        <li><a href="#">Impedit?</a></li>
+        <li><a href="#">Maxime.</a></li>
     </ul>
-    <div class="side-nav-info">
-        <p id="info-nprojects"></p>
-        <p id="info-country-label"></p>
-    </div>
-</nav>
-<div class="projects map large-10 medium-9 columns content">
-    <div id="tooltip-container"></div>
-    <div id="svg-map">
-        <div class="zoom_buttons">
-            <button data-zoom="+1">Zoom In</button>
-            <button data-zoom="-1">Zoom Out</button>
+
+</div>
+<div class="off-cavas-content" data-off-canvas-content>
+<div class="row projects-index" data-equalizer="container">
+    <nav class="medium-4 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
+        <div class="side-links" data-equalizer="links">
+            <ul class="expanded button-group">
+            <?= $this->Html->link(__('New Project'), [
+                'action' => 'add',
+                 $instance_namespace
+            ], [
+                 'class' => 'secondary button',
+                 'data-equalizer-watch' => 'links'
+            ]) ?>
+            <?= $this->Html->link(__('Graph Visualization'), [
+                'action' => 'graph', $instance_namespace
+            ], [
+                'class' => 'secondary button',
+                'data-equalizer-watch' => 'links'
+            ]) ?>
+        </ul>
+        </div>
+        <hr>
+        <div class="side-filters">
+            <p id="info-nprojects"></p> <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
+        </div>
+        <hr>
+        <div class="side-nav-info">
+            <p id="info-country-label"></p>
+        </div>
+    </nav>
+    <div class="medium-8 columns projects-map" data-equalizer-watch="container">
+        <div id="tooltip-container"></div>
+        <div id="svg-map">
+            <div class="zoom_buttons">
+                <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
+                <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
+            </div>
         </div>
     </div>
 </div>
+</div>
 
+</div>
+</div>
+
+</div>
 
 <script>
 
@@ -138,8 +179,7 @@ var path = d3.geoPath()
 var svg = d3.select("#svg-map")
     .append("svg")
         .attr("width" , width  + margin.left + margin.right )
-        .attr("height", height + margin.top  + margin.bottom)
-        .style("border", "2px solid"); // border!
+        .attr("height", height + margin.top  + margin.bottom);
 
 
 // create inner viewport and enable zooming

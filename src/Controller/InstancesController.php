@@ -37,6 +37,7 @@ class InstancesController extends AppController
             ->first();
 
         $this->set('instance', $instance);
+        $this->set('instance_namespace', $instance_namespace);
         $this->set('_serialize', ['instance']);
     }
 
@@ -53,6 +54,7 @@ class InstancesController extends AppController
             ->first();
 
         $this->set('instance', $instance);
+        $this->set('instance_namespace', $instance_namespace);
         $this->set('_serialize', ['instance']);
     }
 
@@ -109,6 +111,7 @@ class InstancesController extends AppController
             }
         }
         $this->set(compact('instance'));
+        $this->set('instance_namespace', $instance_namespace);
         $this->set('_serialize', ['instance']);
     }
 
