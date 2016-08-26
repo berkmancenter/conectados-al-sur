@@ -91,7 +91,7 @@ footer {
 	color: #363637;
 	
 	min-height: 800px;
-	padding: 80px 50px 50px 50px;
+	padding: 80px 50px 100px 50px;
 
 
 	border: 0px;
@@ -112,13 +112,10 @@ footer {
 	font-size: 42px;
 }
 
-/*th, th a {
-	background: #fff;
-	color: #363637;
-	border-top: 0px;
-}
-*/
 
+/* ****************************************************************************
+* TABLES
+**************************************************************************** */
 table {
     background: #fff;
     margin-bottom: 1.25rem;
@@ -155,6 +152,11 @@ table tbody tr a {
 	color: #808080;
 }
 
+
+/* ****************************************************************************
+* PAGINATION
+**************************************************************************** */
+
 ul.pagination li a {
     color: rgba(0, 0 ,0 , 0.54);
 }
@@ -188,4 +190,34 @@ ul.pagination .disabled:hover a {
 }
 .desc:after {
     content: " \2191";
+}
+
+
+/* ****************************************************************************
+* PREVIEW
+**************************************************************************** */
+.preview-desc {
+	font-size: 24px;
+	text-align: center;
+
+	padding: 0px 100px;
+	margin-bottom: 100px;
+}
+.preview-desc-esp p {
+	color: #ed7d31;
+}
+.preview-desc-eng p {
+	color: #39a0ea;
+}
+
+.preview-imgs .thumbnail {
+	border-radius: 200px;
+	width: 400px;
+	height: 400px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+.preview-imgs .thumbnail:hover, .preview-imgs .thumbnail:focus {
+	box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
 }
