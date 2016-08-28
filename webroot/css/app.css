@@ -1,84 +1,135 @@
+/* ****************************************************************************
+* DEFS
+**************************************************************************** */
+/*
+ Colors considered:
+ - black: #808080
+ - white: #fff;
+ - Futura Bold (#46C7F4)   -  darker version : #39a0ea
+ - Futura Light (#F26621)  -  lighter version: #ed7d31
+ */
+
+@font-face {
+    font-family: Futura;
+    src: url(fonts/Futura-Light.ttf);
+    
+}
+@font-face {
+    font-family: Futura;
+    src: url(fonts/Futura-Bold.otf);
+    font-weight: bold;
+}
+
+.fullwidth {
+    max-width: initial;
+    width: 100%;
+}
 
 /* ****************************************************************************
 * GENERAL
 **************************************************************************** */
 
-.fullwidth {
-	max-width: initial;
-	width: 100%;
+html,
+body {
+    background: #fff;
+    height: 100%;
 }
 
-body {
-	/* the same as .footer-infodiv */
-	background: #363638;
+div#outer-container {
+    position: relative;
+    
+    height:auto !important; /* real browsers */
+    height:100%;      /* IE6: treaded as min-height*/
+    min-height:100%;  /* real browsers */
 }
+
+div#content {
+    /* bottom padding for footer: prevents overlaping; */
+    padding-bottom: 140px;
+}
+
+footer {
+    width:100%;
+    position:absolute;
+
+    padding: 0px 0px 0px 0px;
+    border-top: 1px solid #808080;
+    bottom:0; /* stick to bottom */
+}
+
+
 
 /* ****************************************************************************
 * NAVIGATION BAR
 **************************************************************************** */
 .top-bar {
-	background: #ed7d31;
-	color: #fff;
-	font-family: 'Raleway', 'sans-serif';
-	
-	height: 50px;
-	padding: 1px 20px;
-	border: 0px;
-	border-bottom: 1px solid #808080;
-	margin: 0px;
-	/*margin-bottom: 1px;*/
+    background: #ed7d31;
+    color: #fff;
+    
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    
+    height: 40px;
+    line-height: 40px;
+    padding: 0px 10px;
+    border: 0px;    
+    margin: 0px;
+
 }
 
-/* title vertical alignment */
 .top-bar-title {
-	line-height: 50px;
-	text-align: center;
+    font-family: Futura;
+    font-weight: bold;
+    font-size: 16px;
 }
-.top-bar-actual-title {
-	font-size: 20px;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: normal;
+.top-bar-right {
+    background-color: transparent;
 }
-
-.top-bar a {
-	background: #ed7d31;
-	color: #fff;
+.top-bar-right .dropdown {
+    background-color: transparent;
 }
-.top-bar a:hover {
-	background: #c56828;
-	font-weight: 10px;
+.top-bar-right a {
+    background: #ed7d31;
+    color: #fff;
 }
-
+.top-bar-right a:hover {
+    background: #c56828;
+}
 /* menu arrow */
-.top-bar .dropdown.menu > li.is-dropdown-submenu-parent > a::after {
-	border-color: #fff transparent;
+.top-bar-right .dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+    border-color: #fff transparent;
 }
+
 
 /* ****************************************************************************
 * FOOTER
 **************************************************************************** */
-footer {
-	padding: 0px 0px 0px 0px;
-	border-top: 1px solid #808080;
-}
 
 .footer-imgdiv {
-	background: #fff;
-	padding: 30px 0px;
+    padding: 30px 0px;
 }
 
 .footer-image {
-	display: block;
-	margin: 0px auto;
+    display: block;
+    margin: 0px auto;
+    width: 300px;
 }
 
 .footer-infodiv {
-	padding: 10px 0px;
+    background: #363638;
+    min-height: 0px;
+    padding: 0px;
 }
 
-.footer-infodiv a {
-	color: #fff;	
+.footer-infodiv, .footer-infodiv a {
+    color: #fff;
+    font-size: 12px;
+    font-family: Futura;
+}
+
+.footer-infoitem .button {
+    background: transparent;
+    margin: 0px auto;
 }
 
 
@@ -87,29 +138,151 @@ footer {
 **************************************************************************** */
 
 .page-content {
-	background: #fff;
-	color: #363637;
-	
-	min-height: 800px;
-	padding: 80px 50px 100px 50px;
+    background: #fff;
+    color: #363637;
+    
+    /*min-height: 300px;*/
+    padding: 20px 20px 20px 20px;
 
-	border: 0px;
-	margin: 0px;
-	margin-bottom: 0px;
+    border: 0px;
+    margin: 0px;
+    margin-bottom: 0px;
 }
 
 .view-title {
 
-	/*padding: 0;*/
-	/*border: 1px solid #808080;*/
-	/*margin: 0px;*/
-	margin-bottom: 50px;
-	text-align: center;
+    /*padding: 0;*/
+    /*border: 1px solid #808080;*/
+    /*margin: 0px;*/
+    margin-bottom: 50px;
+    /*text-align: center;*/
 }
 .view-title h3 {
-	color: #363637;
-	font-size: 42px;
+    color: #363637;
+    font-size: 42px;
 }
+
+
+/* ****************************************************************************
+* PREVIEW
+**************************************************************************** */
+
+.preview-title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.preview-title h3 {
+    font-family: Futura;
+    font-size: 30px;
+}
+
+.preview-desc {
+    font-size: 15px;
+    text-align: center;
+    text-transform: uppercase;
+
+    padding: 0px 0px;
+    margin-bottom: 0px;
+}
+.preview-desc-esp p {
+    color: #ed7d31;
+}
+.preview-desc-eng p {
+    color: #39a0ea;
+}
+
+.preview-imgs {
+    margin-top: 50px;
+}
+.preview-imgs .thumbnail {
+    border-radius: 100px;
+    border: 0px;
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.preview-imgs .thumbnail:hover, .preview-imgs .thumbnail:focus {
+    box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
+}
+
+
+/* ****************************************************************************
+* PROJECTS INDEX
+**************************************************************************** */
+
+.page-content-with-sidebar {
+    background: #fff;
+    color: #363637;
+    
+    min-height: 700px;
+    padding: 0px 0px 0px 0px;
+
+    border: 0px;
+    border-top: 1px solid #808080;
+    margin: 0px;
+    margin-bottom: 0px;
+}
+.projects-index .side-nav { 
+    padding: 10px 10px;
+    border: 0px;
+    border-right: 5px solid #808080;
+    margin: 0px;
+    /*background: blue;*/
+}
+
+.projects-map {
+    min-height: 600px;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    /*background: green;*/
+}
+
+.side-links {
+    padding: 0px 0px;
+}
+.side-links ul.button-group {
+    margin: 0px;
+}
+
+.off-canvas {
+    background: #fff;
+    border-right: 1px dashed #808080;
+}
+
+/* - - - - - - side-bar - - - - - - */
+/*.side-nav li a:not(.button) {
+    color: #15848F;
+}
+
+.side-nav li a:not(.button):hover {
+    color: #15848F;
+}
+.side-nav li.heading {
+    color: #1798A5;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0.4375rem 0.875rem;
+}
+*/
+/*.side-nav li
+{
+    background-color: #ccc;
+}
+.side-nav li a:not(.button)
+{
+    color: #000;
+}
+.side-nav li a:hover:not(.button)
+{
+    color: red;
+}*/
+
 
 
 /* ****************************************************************************
@@ -141,14 +314,14 @@ table tr:nth-of-type(even) {
     background: none;
 }
 table thead a {
-	color: #fff;
+    color: #fff;
 }
 table thead a:hover {
-	color: #ed7d31;
+    color: #ed7d31;
 }
 
 table tbody tr a {
-	color: #808080;
+    color: #808080;
 }
 
 
@@ -191,106 +364,3 @@ ul.pagination .disabled:hover a {
     content: " \2191";
 }
 
-
-/* ****************************************************************************
-* PREVIEW
-**************************************************************************** */
-.preview-desc {
-	font-size: 24px;
-	text-align: center;
-	text-transform: uppercase;
-
-	padding: 0px 100px;
-	margin-bottom: 100px;
-}
-.preview-desc-esp p {
-	color: #ed7d31;
-}
-.preview-desc-eng p {
-	color: #39a0ea;
-}
-.preview-imgs .thumbnail {
-	border-radius: 200px;
-	width: 400px;
-	height: 400px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-.preview-imgs .thumbnail:hover, .preview-imgs .thumbnail:focus {
-	box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
-}
-
-
-/* ****************************************************************************
-* PROJECTS INDEX
-**************************************************************************** */
-
-.page-content-with-sidebar {
-	background: #fff;
-	color: #363637;
-	
-	min-height: 700px;
-	padding: 0px 0px 0px 0px;
-
-	border: 0px;
-	border-top: 1px solid #808080;
-	margin: 0px;
-	margin-bottom: 0px;
-}
-.projects-index .side-nav { 
-	padding: 10px 10px;
-	border: 0px;
-	border-right: 5px solid #808080;
-	margin: 0px;
-	/*background: blue;*/
-}
-
-.projects-map {
-	min-height: 600px;
-	padding: 0px;
-	border: 0px;
-	margin: 0px;
-	/*background: green;*/
-}
-
-.side-links {
-	padding: 0px 0px;
-}
-.side-links ul.button-group {
-	margin: 0px;
-}
-
-.off-canvas {
-	background: #fff;
-	border-right: 1px dashed #808080;
-}
-
-/* - - - - - - side-bar - - - - - - */
-/*.side-nav li a:not(.button) {
-    color: #15848F;
-}
-
-.side-nav li a:not(.button):hover {
-    color: #15848F;
-}
-.side-nav li.heading {
-    color: #1798A5;
-    font-size: 0.875rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 0.4375rem 0.875rem;
-}
-*/
-/*.side-nav li
-{
-    background-color: #ccc;
-}
-.side-nav li a:not(.button)
-{
-    color: #000;
-}
-.side-nav li a:hover:not(.button)
-{
-    color: red;
-}*/
