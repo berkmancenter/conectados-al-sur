@@ -14,12 +14,12 @@
 
 <div class="row">
     <div class="small-12 column">
-        <table class="hover stack" cellpadding="0" cellspacing="0">
+        <table class="hover" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('name', 'Name') ?></th>
                     <th><?= $this->Paginator->sort('namespace', 'Instace URL') ?></th>
-                    <th><?= $this->Paginator->sort('logo', 'Logo') ?></th>
+                    <th><?= __('Logo') ?></th>
                     <th class="actions"><?= __('Actions') ?></th>
                 </tr>
             </thead>

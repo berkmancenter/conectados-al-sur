@@ -175,18 +175,35 @@ a:hover {
 }
 
 .view-title {
-
-    /*padding: 0;*/
-    /*border: 1px solid #808080;*/
-    /*margin: 0px;*/
+    margin-top: 30px;
     margin-bottom: 50px;
-    /*text-align: center;*/
+    text-transform: uppercase;
 }
 .view-title h3 {
-    color: #363637;
-    font-size: 42px;
+    font-family: Futura;
+    font-size: 30px;
 }
 
+.view-subtitle {
+    font-family: Futura;
+    border-bottom: 1px solid #ed7d31;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.view-subsubtitle {
+    font-family: Futura;
+    border-bottom: 1px dashed #ed7d31;
+    margin-top: 10px;
+}
+
+.view-subtitle-related {
+    font-family: Futura;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 40px;
+    border-bottom: 1px solid #39a0ea;
+}
 
 /* ****************************************************************************
 * PREVIEW
@@ -315,7 +332,7 @@ a:hover {
 **************************************************************************** */
 table {
     background: #fff;
-    margin-bottom: 1.25rem;
+    margin-bottom: 40px;
     border: none;
     table-layout: fixed;
     width: 100%;
@@ -348,6 +365,29 @@ table.stack thead { display: table-header-group; }
 table.hover > tbody > tr:hover               { background-color: #ccf5ff; }
 table.hover tbody tr:nth-of-type(even):hover { background-color: #ccf5ff; }
 
+/* center actions */
+table th.actions, table td.actions {
+    text-align: center;
+    width: 150px;
+}
+
+.vertical-table {
+    vertical-align: middle;
+}
+
+.vertical-table th {
+    color: #808080;
+    border: none;
+    font-family: Futura;
+    font-weight: bold;
+    text-align: left;
+    padding: 0.5625rem 0.625rem;
+    font-size: 0.875rem;
+}
+
+.vertical-table td {
+    text-align: right;   
+}
 
 
 /* ****************************************************************************
@@ -370,6 +410,7 @@ ul.pagination .disabled:hover a {
 
 .paginator {
     text-align: center;
+    margin-top: -20px;
 }
 
 .paginator ul.pagination li {

@@ -16,10 +16,13 @@ class InstancesController extends AppController
      */
     public function index()
     {
-        $instances = $this->paginate($this->Instances);
+        $query = $this->Instances
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo']);
+        $instances = $this->paginate($query);
 
         $this->set(compact('instances'));
-        $this->set('_serialize', ['instances']);
+        // $this->set('_serialize', ['instances']);
     }
 
 
@@ -32,13 +35,13 @@ class InstancesController extends AppController
         # load instance data
         $instance = $this->Instances
             ->find()
+            ->select(['id', 'name', 'description', 'description_es', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->contain(['Categories', 'OrganizationTypes', 'Projects', 'Users'])
             ->first();
 
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
-        $this->set('_serialize', ['instance']);
+        // $this->set('_serialize', ['instance']);
     }
 
     /**
@@ -49,13 +52,23 @@ class InstancesController extends AppController
     {
         $instance = $this->Instances
             ->find()
+            ->contain(['OrganizationTypes'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->contain(['Categories', 'OrganizationTypes', 'Projects', 'Users'])
             ->first();
 
+        $this->paginate = [
+            'Categories' => [
+                'conditions' => ['Categories.instance_id' => $instance->id],
+                'limit' => 4,
+                'maxLimit' => 50
+            ]
+        ];
+        $categories = $this->paginate('Categories');
+
         $this->set('instance', $instance);
+        $this->set('categories', $categories);
         $this->set('instance_namespace', $instance_namespace);
-        $this->set('_serialize', ['instance']);
+        // $this->set('_serialize', ['instance']);
     }
 
     /**
