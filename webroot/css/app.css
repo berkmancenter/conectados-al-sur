@@ -20,6 +20,26 @@
     font-weight: bold;
 }
 
+.size-12 { font-size: 12px; }
+
+.size-14 { font-size: 14px; }
+
+.size-16 { font-size: 16px; }
+
+.size-18 { font-size: 18px; }
+
+.size-21 { font-size: 21px; }
+
+.size-24 { font-size: 24px; }
+
+.size-36 { font-size: 36px; }
+
+.size-48 { font-size: 48px; }
+
+.size-60 { font-size: 60px; }
+
+.size-72 { font-size: 72px; }
+
 .fullwidth {
     max-width: initial;
     width: 100%;
@@ -57,7 +77,12 @@ footer {
     bottom:0; /* stick to bottom */
 }
 
-
+a {
+    color: #ed7d31;
+}
+a:hover {
+    color: #39a0ea;
+}
 
 /* ****************************************************************************
 * NAVIGATION BAR
@@ -310,19 +335,19 @@ table tr th {
     text-align: left;
     border-bottom: 2px solid #808080;
 }
-table tr:nth-of-type(even) {
-    background: none;
-}
-table thead a {
-    color: #fff;
-}
-table thead a:hover {
-    color: #ed7d31;
-}
 
-table tbody tr a {
-    color: #808080;
-}
+/* head colors */
+table.hover > thead:hover > tr { background-color: #363638; }
+table thead a       { color: #fff;    }
+table thead a:hover { color: #ed7d31; }
+
+/* display headers on stack */
+table.stack thead { display: table-header-group; }
+
+/* row hover */
+table.hover > tbody > tr:hover               { background-color: #ccf5ff; }
+table.hover tbody tr:nth-of-type(even):hover { background-color: #ccf5ff; }
+
 
 
 /* ****************************************************************************
