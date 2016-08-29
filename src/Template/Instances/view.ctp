@@ -28,166 +28,179 @@
     </div>
 </div>
 
+
+
 <div class="row">
     <div class="small-12 column">
-    
-        <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
-        <table class="hover stack vertical-table" cellpadding="0" cellspacing="0">
-            <tr>
-                <th><?= __('Name') ?></th>
-                <td><?= h($instance->name) ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Name (Spanish)') ?></th>
-                <td><?= h($instance->name_es) ?></td>
-            </tr>
-            <tr>
-                <th><?= __('App URL') ?></th>
-                <td><?= $this->Html->link(['controller' => 'Instances', 'action' => 'preview', $instance->namespace, '_full' => true])?> </td>
-            </tr>
-            <tr>
-                <th><?= __('Logo') ?></th>
-                <td>TO-DO</td>
-                <!-- <td><?= h($instance->logo) ?></td> -->
-            </tr>
-        </table>
-        
-        
-        <h4 class="view-subtitle"><?= __('Description:') ?></h4>
-        <?= $this->Text->autoParagraph(h($instance->description)); ?>
-        
-        
-        <h4 class="view-subtitle"><?= __('Description (Spanish):') ?></h4>
-        <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
 
+        <ul class="tabs" data-tabs id="instance-view-tabs">
+            <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
+            <li class="tabs-title"><a href="#panel-configuration">Configuration</a></li>
+            <li class="tabs-title"><a href="#panel-categories">Categories</a></li>
+            <li class="tabs-title"><a href="#panel-organization_types">Organization Types</a></li>
+            
+        </ul>
 
-        <h4 class="view-subtitle-related"><?= __('Related Project Categories:') ?></h4>
-        <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Category</a>
-        <?php if (!empty($categories)): ?>
-        <table class="hover stack" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th><?= $this->Paginator->sort('name', 'Name', ['model' => 'Categories']) ?></th>
-                    <th><?= $this->Paginator->sort('name_es', 'Name (Spanish)', ['model' => 'Categories']) ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <?php foreach ($categories as $category): ?>
-            <tbody>
-                <tr>
-                    <td><?= h($category->name) ?></td>
-                    <td><?= h($category->name_es) ?></td>
-                    <td class="actions">
-                        <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $category->id, $instance->namespace]) ?>><i class='fi-page-edit size-36'></i></a>
-                        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "FIXME", ['controller' => 'Categories', 'action' => 'delete', $category->id, $instance->namespace], ['escape' => false], 
-                            ['confirm' => __('Are you sure you want to delete the "{0}" category?. This operation cannot be undone. All related data will be erased!', $category->name)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
-        <div class="paginator">
-            <ul class="pagination">
-                <?= $this->Paginator->prev('< ' . __('previous'), ['model' => 'Categories']) ?>
-                <?= $this->Paginator->numbers(['model' => 'Categories']) ?>
-                <?= $this->Paginator->next(__('next') . ' >', ['model' => 'Categories']) ?>
-            </ul>
-            <p><?= $this->Paginator->counter(['model' => 'Categories']) ?></p>
+        <div class="tabs-content" data-tabs-content="instance-view-tabs">
+
+            <div class="tabs-panel is-active" id="panel-properties">
+                <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
+                <table class="hover stack vertical-table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th><?= __('Name') ?></th>
+                        <td><?= h($instance->name) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Name (Spanish)') ?></th>
+                        <td><?= h($instance->name_es) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('App URL') ?></th>
+                        <td><?= $this->Html->link(['controller' => 'Instances', 'action' => 'preview', $instance->namespace, '_full' => true])?> </td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Logo') ?></th>
+                        <td>TO-DO</td>
+                        <!-- <td><?= h($instance->logo) ?></td> -->
+                    </tr>
+                </table>
+                
+                
+                <h4 class="view-subtitle"><?= __('Description:') ?></h4>
+                <?= $this->Text->autoParagraph(h($instance->description)); ?>
+                
+                
+                <h4 class="view-subtitle"><?= __('Description (Spanish):') ?></h4>
+                <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
+            </div>
+            <div class="tabs-panel" id="panel-categories">
+
+                <h4 class="view-subtitle-related"><?= __('Related Project Categories:') ?></h4>
+                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Category</a>
+                <?php if (!empty($instance->categories)): ?>
+                <table class="hover stack" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Name (Spanish)') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($instance->categories as $category): ?>
+                    <tbody>
+                        <tr>
+                            <td><?= h($category->name) ?></td>
+                            <td><?= h($category->name_es) ?></td>
+                            <td class="actions">
+                                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $category->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i></a>
+                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "FIXME", ['controller' => 'Categories', 'action' => 'delete', $category->id, $instance->namespace], ['escape' => false], 
+                                    ['confirm' => __('Are you sure you want to delete the "{0}" category?. This operation cannot be undone. All related data will be erased!', $category->name)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php endif; ?>
+            </div>
+
+            <div class="tabs-panel" id="panel-organization_types">
+
+                <h4 class="view-subtitle-related"><?= __('Related Organization Types:') ?></h4>
+                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Organization Type</a>
+                <?php if (!empty($instance->organization_types)): ?>
+                <table class="hover stack" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Name (Spanish)') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <?php foreach ($instance->organization_types as $organization_type): ?>
+                    <tbody>
+                        <tr>
+                            <td><?= h($organization_type->name) ?></td>
+                            <td><?= h($organization_type->name_es) ?></td>
+                            <td class="actions">
+                                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', $organization_type->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i></a>
+                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "FIXME", ['controller' => 'OrganizationTypes', 'action' => 'delete', $organization_type->id, $instance->namespace], ['escape' => false], 
+                                    ['confirm' => __('Are you sure you want to delete the "{0}" organization type?. This operation cannot be undone. All related data will be erased!', $organization_type->name)]) ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php endif; ?>
+            </div>
+
+            <div class="tabs-panel" id="panel-configuration">
+            
+                <h4 class="view-subtitle"><?= __('Configuration:') ?></h4>
+        
+                <h5 class="view-subsubtitle"><?= __('For Users:') ?></h5>
+                <table class="hover stack vertical-table">
+                    <tr>
+                        <th><?= __('Enable Genre field?') ?></th>
+                        <td><?= $instance->use_user_genre ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Main Organization field?') ?></th>
+                        <td><?= $instance->use_user_organization ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                </table>
+                
+                <h5 class="view-subsubtitle"><?= __('For Projects:') ?></h5> 
+                <table class="hover stack vertical-table">
+                    <tr>
+                        <th><?= __('Enable Categories?') ?></th>
+                        <td><?= $instance->use_proj_categories ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Max. Allowed Categories') ?></th>
+                        <td><?= $this->Number->format($instance->proj_max_categories) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Organization Type field?') ?></th>
+                        <td><?= $instance->use_org_types ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Organization name field?') ?></th>
+                        <td><?= $instance->use_proj_organization ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Cities usage?') ?></th>
+                        <td><?= $instance->use_proj_cities ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable exact location?') ?></th>
+                        <td><?= $instance->use_proj_location ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Project Stage field?') ?></th>
+                        <td><?= $instance->use_proj_stage ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable external URL field?') ?></th>
+                        <td><?= $instance->use_proj_url ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Description field?') ?></th>
+                        <td><?= $instance->use_proj_description ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Contribution field?') ?></th>
+                        <td><?= $instance->use_proj_contribution ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable Contributing field?') ?></th>
+                        <td><?= $instance->use_proj_contributing ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= __('Enable start and finish dates?') ?></th>
+                        <td><?= $instance->use_proj_dates ? __('Yes') : __('No'); ?></td>
+                    </tr>
+                </table>
+            </div>
         </div>
-
-        <h4 class="view-subtitle-related"><?= __('Related Organization Types:') ?></h4>
-        <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Organization Type</a>
-        <?php if (!empty($instance->organization_types)): ?>
-        <table class="hover stack" cellpadding="0" cellspacing="0">
-            <thead>
-                <tr>
-                    <th><?= __('Name') ?></th>
-                    <th><?= __('Name (Spanish)') ?></th>
-                    <th class="actions"><?= __('Actions') ?></th>
-                </tr>
-            </thead>
-            <?php foreach ($instance->organization_types as $organization_type): ?>
-            <tbody>
-                <tr>
-                    <td><?= h($organization_type->name) ?></td>
-                    <td><?= h($organization_type->name_es) ?></td>
-                    <td class="actions">
-                        <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', $organization_type->id, $instance->namespace]) ?>><i class='fi-page-edit size-36'></i></a>
-                        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "FIXME", ['controller' => 'OrganizationTypes', 'action' => 'delete', $organization_type->id, $instance->namespace], ['escape' => false], 
-                            ['confirm' => __('Are you sure you want to delete the "{0}" organization type?. This operation cannot be undone. All related data will be erased!', $organization_type->name)]) ?>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-        <?php endif; ?>
-
-    
-        <h4 class="view-subtitle"><?= __('Configuration:') ?></h4>
-        
-        <h5 class="view-subsubtitle"><?= __('For Users:') ?></h5>
-        <table class="hover stack vertical-table">
-            <tr>
-                <th><?= __('Enable Genre field?') ?></th>
-                <td><?= $instance->use_user_genre ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Main Organization field?') ?></th>
-                <td><?= $instance->use_user_organization ? __('Yes') : __('No'); ?></td>
-            </tr>
-        </table>
-        
-        <h5 class="view-subsubtitle"><?= __('For Projects:') ?></h5> 
-        <table class="hover stack vertical-table">
-            <tr>
-                <th><?= __('Enable Categories?') ?></th>
-                <td><?= $instance->use_proj_categories ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Max. Allowed Categories') ?></th>
-                <td><?= $this->Number->format($instance->proj_max_categories) ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Organization Type field?') ?></th>
-                <td><?= $instance->use_org_types ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Organization name field?') ?></th>
-                <td><?= $instance->use_proj_organization ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Cities usage?') ?></th>
-                <td><?= $instance->use_proj_cities ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable exact location?') ?></th>
-                <td><?= $instance->use_proj_location ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Project Stage field?') ?></th>
-                <td><?= $instance->use_proj_stage ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable external URL field?') ?></th>
-                <td><?= $instance->use_proj_url ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Description field?') ?></th>
-                <td><?= $instance->use_proj_description ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Contribution field?') ?></th>
-                <td><?= $instance->use_proj_contribution ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable Contributing field?') ?></th>
-                <td><?= $instance->use_proj_contributing ? __('Yes') : __('No'); ?></td>
-            </tr>
-            <tr>
-                <th><?= __('Enable start and finish dates?') ?></th>
-                <td><?= $instance->use_proj_dates ? __('Yes') : __('No'); ?></td>
-            </tr>
-        </table>
     </div>
 </div>

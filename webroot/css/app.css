@@ -187,7 +187,7 @@ a:hover {
 .view-subtitle {
     font-family: Futura;
     border-bottom: 1px solid #ed7d31;
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 10px;
 }
 
@@ -201,7 +201,7 @@ a:hover {
     font-family: Futura;
     font-weight: bold;
     font-size: 20px;
-    margin-top: 40px;
+    margin-top: 0px;
     border-bottom: 1px solid #39a0ea;
 }
 

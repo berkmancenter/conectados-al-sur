@@ -52,21 +52,11 @@ class InstancesController extends AppController
     {
         $instance = $this->Instances
             ->find()
-            ->contain(['OrganizationTypes'])
+            ->contain(['OrganizationTypes', 'Categories'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
 
-        $this->paginate = [
-            'Categories' => [
-                'conditions' => ['Categories.instance_id' => $instance->id],
-                'limit' => 4,
-                'maxLimit' => 50
-            ]
-        ];
-        $categories = $this->paginate('Categories');
-
         $this->set('instance', $instance);
-        $this->set('categories', $categories);
         $this->set('instance_namespace', $instance_namespace);
         // $this->set('_serialize', ['instance']);
     }
