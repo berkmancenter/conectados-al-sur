@@ -27,7 +27,7 @@ class InstancesController extends AppController
 
 
     /**
-     * PREView method
+     * Preview method
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function preview($instance_namespace = null)
@@ -43,6 +43,51 @@ class InstancesController extends AppController
         $this->set('instance_namespace', $instance_namespace);
         // $this->set('_serialize', ['instance']);
     }
+
+    /**
+     * Graph method
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function dots($instance_namespace = null)
+    {
+        $instance = $this->Instances
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->contain([])
+            ->first();
+
+        $this->set('instance', $instance);
+        // $this->set(compact('instance', 'instance_namespace'));
+        // $this->set('_serialize', ['instance']);
+    }
+
+    /**
+     * Map method
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function map($instance_namespace = null)
+    {
+        $instance = $this->Instances
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->contain(['Projects', 'Categories', 'OrganizationTypes'])
+            ->first();
+
+        $this->set('instance', $instance);
+
+        // $projects = $this->Projects
+        //     ->find()
+        //     ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
+        //     ->where(['Projects.instance_id' => $instance_id])
+        //     ->all();
+
+        // $this->set(compact('projects', 'instance_namespace'));
+        // $this->set('_serialize', ['projects']);
+    }
+
+
 
     /**
      * View method

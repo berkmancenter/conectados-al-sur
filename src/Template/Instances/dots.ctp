@@ -16,7 +16,7 @@
 
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance_namespace]) ?> </li>
+<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance->namespace]) ?> </li>
 <?php $this->end(); ?>
 
 
@@ -48,14 +48,16 @@
                         <div class="side-links" data-equalizer="links">
                             <ul class="expanded button-group">
                             <?= $this->Html->link(__('New Project'), [
+                                'controller' => 'Projects',
                                 'action' => 'add',
-                                 $instance_namespace
+                                 $instance->namespace
                             ], [
                                  'class' => 'secondary button',
                                  'data-equalizer-watch' => 'links'
                             ]) ?>
                             <?= $this->Html->link(__('Map Visualization'), [
-                                'action' => 'map', $instance_namespace
+                                'controller' => 'Instances',
+                                'action' => 'map', $instance->namespace
                             ], [
                                 'class' => 'secondary button',
                                 'data-equalizer-watch' => 'links'

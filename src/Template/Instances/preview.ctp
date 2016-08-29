@@ -31,7 +31,7 @@
     <div class="small-10 small-offset-1 medium-5 medium-offset-1 columns">
         <?= $this->Html->image('graph_preview.png', [
             'alt' => 'View Map',
-            'url' => ['controller' => 'Projects', 'action' => 'graph', $instance->namespace],
+            'url' => ['controller' => 'Instances', 'action' => 'dots', $instance->namespace],
             'class' => 'thumbnail'
         ]) ?>
     </div>
@@ -39,7 +39,7 @@
     <div class="small-10 small-offset-1 medium-5 medium-offset-1 columns">
         <?= $this->Html->image('map_preview.png', [
             'alt' => 'View DOTPLOT',
-            'url' => ['controller' => 'Projects', 'action' => 'map', $instance->namespace],
+            'url' => ['controller' => 'Instances', 'action' => 'map', $instance->namespace],
             'class' => 'thumbnail'
         ]) ?>        
     </div>

@@ -143,16 +143,17 @@ Router::scope('/', function (RouteBuilder $routes) {
     # map
     $routes->connect(
         '/:instance_namespace/map',
-        ['controller' => 'Projects', 'action' => 'map'],
+        ['controller' => 'Instances', 'action' => 'map'],
         ['pass' => ['instance_namespace']]
     );
 
     # graph
     $routes->connect(
-        '/:instance_namespace/graph',
-        ['controller' => 'Projects', 'action' => 'graph'],
+        '/:instance_namespace/dots',
+        ['controller' => 'Instances', 'action' => 'dots'],
         ['pass' => ['instance_namespace']]
     );
+
 
     # projects interaction
     # -------------------------------------------------------------------------

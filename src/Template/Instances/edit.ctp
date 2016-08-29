@@ -1,15 +1,27 @@
-<nav class="large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $instance->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $instance->id)]
-            )
-        ?></li>
-        <li><?= $this->Html->link(__('List Instances'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
+<!-- Available Actions -->
+<?php $this->start('available-actions'); ?>
+<li><?= $this->Html->link(__('Home'), ['controller' => 'Instances', 'action' => 'preview', $instance_namespace]) ?> </li>
+<li><?= $this->Html->link(__('Back to Instances'), ['action' => 'index']) ?> </li>
+<li><?= $this->Html->link(__('New Instance'), ['action' => 'add']) ?></li>
+<?php $this->end(); ?>
+
+
+<!-- Page Content -->
+<div class="fullwidth page-content">
+
+<div class="row">
+    <div class="small-12 medium-9 column view-title">
+        <h3><?= h($instance->name) ?></h3>
+    </div>
+    <div class="small-12 medium-3 column view-title">
+        <a href=<?= $this->Url->build(['action' => 'view', $instance->namespace]) ?>><i class='fi-magnifying-glass size-36'></i>View</a>
+        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance->namespace], ['escape' => false], 
+                ['confirm' => __('Are you sure you want to delete the "{0}" instance?. This operation cannot be undone. All related data will be erased!', $instance->name)]) ?>
+    </div>
+</div>
+
+
+
 <div class="instances form large-10 medium-9 columns content">
     <?= $this->Form->create($instance) ?>
     <fieldset>
@@ -39,4 +51,6 @@
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
     <?= $this->Form->end() ?>
+</div>
+
 </div>

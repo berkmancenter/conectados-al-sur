@@ -34,50 +34,6 @@ class ProjectsController extends AppController
     }
 
     /**
-     * Graph method
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function graph($instance_namespace = null)
-    {
-        $instance_id = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
-
-        $projects = $this->Projects
-            ->find()
-            ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
-            ->where(['Projects.instance_id' => $instance_id])
-            ->all();
-
-        $this->set(compact('projects', 'instance_namespace'));
-        $this->set('_serialize', ['projects']);
-    }
-
-    /**
-     * Map method
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function map($instance_namespace = null)
-    {
-        $instance_id = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
-
-        $projects = $this->Projects
-            ->find()
-            ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
-            ->where(['Projects.instance_id' => $instance_id])
-            ->all();
-
-        $this->set(compact('projects', 'instance_namespace'));
-        $this->set('_serialize', ['projects']);
-    }
-
-    /**
      * View method
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */

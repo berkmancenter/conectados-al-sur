@@ -51,8 +51,8 @@
 
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('Home'), ['controller' => 'Instances', 'action' => 'preview', $instance_namespace]) ?> </li>
-<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance_namespace]) ?> </li>
+<li><?= $this->Html->link(__('Home'), ['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?> </li>
+<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance->namespace]) ?> </li>
 <?php $this->end(); ?>
 
 <!-- Page Content -->
@@ -83,14 +83,16 @@
         <div class="side-links" data-equalizer="links">
             <ul class="expanded button-group">
             <?= $this->Html->link(__('New Project'), [
+                'controller' => 'Projects',
                 'action' => 'add',
-                 $instance_namespace
+                 $instance->namespace
             ], [
                  'class' => 'secondary button',
                  'data-equalizer-watch' => 'links'
             ]) ?>
             <?= $this->Html->link(__('Graph Visualization'), [
-                'action' => 'graph', $instance_namespace
+                'controller' => 'Instances',
+                'action' => 'dots', $instance->namespace
             ], [
                 'class' => 'secondary button',
                 'data-equalizer-watch' => 'links'
@@ -134,8 +136,8 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
-var projects = <?php echo json_encode($projects); ?>;
-//console.log(projects);
+var projects = <?php echo json_encode($instance->projects); ?>;
+// console.log(projects);
 
 // create map with {country_id, project_ids_array}
 var _map_by_country = {};
