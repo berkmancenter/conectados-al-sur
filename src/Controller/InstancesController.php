@@ -97,7 +97,14 @@ class InstancesController extends AppController
     {
         $instance = $this->Instances
             ->find()
-            ->contain(['OrganizationTypes', 'Categories'])
+            ->contain([
+                'OrganizationTypes' => function ($q) {
+                   return $q->where(['OrganizationTypes.name !=' => '[unused]']);
+                },
+                'Categories' => function ($q) {
+                   return $q->where(['Categories.name !=' => '[unused]']);
+                }
+            ])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
 
