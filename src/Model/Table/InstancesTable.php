@@ -51,6 +51,14 @@ class InstancesTable extends Table
         $this->hasMany('Users', [
             'foreignKey' => 'instance_id'
         ]);
+        $this->addBehavior('Utils.Uploadable', [
+            'logo' => [
+                'removeFileOnUpdate' => true,
+                'removeFileOnDelete' => true,
+                'path' => '{ROOT}{DS}{WEBROOT}{DS}img{DS}{model}{DS}',
+                'fileName' => '{field}.{extension}'
+            ],
+        ]);
     }
 
     /**

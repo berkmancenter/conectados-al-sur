@@ -59,6 +59,15 @@
         <!-- footer -->
         <footer>
             <div class="row fullwidth">
+                <?php if (isset($instance_namespace) && ($instance_namespace != "cas") && isset($instance_logo) && !empty($instance_logo)):  ?>
+                    <div class="small-12 columns footer-imgdiv-optional">
+                    <?= 
+                        $this->Html->image('/' . $instance_logo , ['alt' => 'Instance Logo', "class" => "footer-image"])
+                    ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <div class="row fullwidth">
                 <div class="small-12 columns footer-imgdiv">
                     <?= 
                     $this->Html->image('LOGO_CAS_ALPHA.png',

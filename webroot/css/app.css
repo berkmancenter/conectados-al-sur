@@ -65,7 +65,7 @@ div#outer-container {
 
 div#content {
     /* bottom padding for footer: prevents overlaping; */
-    padding-bottom: 140px;
+    padding-bottom: 250px;
 }
 
 footer {
@@ -130,8 +130,15 @@ a:hover {
 * FOOTER
 **************************************************************************** */
 
-.footer-imgdiv {
-    padding: 30px 0px;
+.footer-imgdiv, .footer-imgdiv-optional {
+    padding: 20px 0px;
+}
+
+.footer-imgdiv-optional {
+    border-bottom: 1px dashed #808080;
+}
+.footer-imgdiv-optional img {
+    max-height: 100px;
 }
 
 .footer-image {
@@ -156,6 +163,8 @@ a:hover {
     background: transparent;
     margin: 0px auto;
 }
+
+
 
 
 /* ****************************************************************************
@@ -203,6 +212,22 @@ a:hover {
     font-size: 20px;
     margin-top: 0px;
     border-bottom: 1px solid #39a0ea;
+}
+
+.logo-display p {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-transform: uppercase;
+    color: red;
+}
+
+.logo-display img {
+    border: 1px dashed #808080;
+    max-height: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ****************************************************************************
@@ -430,3 +455,92 @@ ul.pagination .disabled:hover a {
     content: " \2191";
 }
 
+/* ****************************************************************************
+* TABS
+**************************************************************************** */
+
+.tabs-title > a {
+    font-size: 15px;
+}
+
+
+/* ****************************************************************************
+* FORMS
+**************************************************************************** */
+
+.form button:hover, .form button:focus {
+    background: #7A6058;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.26) !important;
+}
+
+
+.form button[type="submit"] {
+    float: right;
+    text-transform: uppercase;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.26);
+    font-size: 20px;
+}
+
+fieldset {
+    border: none;
+    padding: 1.25rem;
+    margin: 1.125rem 0;
+}
+
+fieldset legend {
+}
+
+
+/* ****************************************************************************
+* FLASH MESSAGES
+**************************************************************************** */
+
+div.message {
+    text-align: center;
+    cursor: pointer;
+    display: block;
+    font-weight: normal;
+    padding: 0 1.5rem 0 1.5rem;
+    transition: height 300ms ease-out 0s;
+    background-color: rgb(255, 174, 0);
+    color: #626262;
+    top: 15px;
+    right: 15px;
+    z-index: 999;
+    overflow: hidden;
+    height: 50px;
+    line-height: 2.5em;
+    box-radius: 5px;
+    
+}
+
+div.message:before {
+    line-height: 0px;
+    font-size: 20px;
+    height: 12px;
+    width: 12px;
+    border-radius: 15px;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    position: relative;
+    left: -11px;
+    background-color: #FFF;
+    padding: 12px 14px 12px 10px;
+    content: "i";
+    color: rgb(255, 174, 0);
+}
+
+div.message.error {
+    background-color: #C3232D;
+    color: #FFF;
+}
+
+div.message.error:before {
+    padding: 11px 16px 14px 7px;
+    color: #C3232D;
+    content: "x";
+}
+div.message.hidden {
+    height: 0;
+}

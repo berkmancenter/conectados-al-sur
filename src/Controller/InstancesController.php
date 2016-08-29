@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Routing\Router;
 
 /**
  * Instances Controller
@@ -41,6 +42,7 @@ class InstancesController extends AppController
 
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         // $this->set('_serialize', ['instance']);
     }
 
@@ -58,6 +60,8 @@ class InstancesController extends AppController
             ->first();
 
         $this->set('instance', $instance);
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         // $this->set(compact('instance', 'instance_namespace'));
         // $this->set('_serialize', ['instance']);
     }
@@ -75,6 +79,8 @@ class InstancesController extends AppController
             ->contain(['Projects', 'Categories', 'OrganizationTypes'])
             ->first();
 
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set('instance', $instance);
 
         // $projects = $this->Projects
@@ -110,6 +116,7 @@ class InstancesController extends AppController
 
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         // $this->set('_serialize', ['instance']);
     }
 
@@ -157,16 +164,25 @@ class InstancesController extends AppController
             ->first();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+            
+            // do not remove logo if not provided!
+            if ( isset($this->request->data['logo']) 
+                && isset($this->request->data['logo']['name']) 
+                && empty($this->request->data['logo']['name']) ) {
+                unset($this->request->data['logo']);
+            }
             $instance = $this->Instances->patchEntity($instance, $this->request->data);
+
             if ($this->Instances->save($instance)) {
                 $this->Flash->success(__('The instance has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                // return $this->redirect(['action' => 'view', $instance->namespace]);
             } else {
                 $this->Flash->error(__('The instance could not be saved. Please, try again.'));
             }
         }
         $this->set(compact('instance'));
         $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set('_serialize', ['instance']);
     }
 

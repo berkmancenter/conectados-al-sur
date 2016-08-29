@@ -190,6 +190,7 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
+Plugin::load('Utils');
 Plugin::load('Migrations');
 
 // Only try to load DebugKit in development mode

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dd614710027a7d2c53df936a4fa1ef43",
-    "content-hash": "0c272e88d5a7d52e36e7c58a0a66060c",
+    "hash": "aa06fb84e1a0dbfccc6117cbba128aff",
+    "content-hash": "30b8e41ee809390b9ed8d929b5ec1afd",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -125,6 +125,46 @@
                 "localization"
             ],
             "time": "2014-08-24 00:00:00"
+        },
+        {
+            "name": "cakemanager/cakephp-utils",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakemanager/cakephp-utils.git",
+                "reference": "e9ca228ccfe3bb1fe756a99d408838500e1c8002"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakemanager/cakephp-utils/zipball/e9ca228ccfe3bb1fe756a99d408838500e1c8002",
+                "reference": "e9ca228ccfe3bb1fe756a99d408838500e1c8002",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Utils\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Bob Mulder",
+                    "email": "bobmulder@outlook.com"
+                }
+            ],
+            "description": "Plugin for CakePHP 3.x with useful components and behaviors",
+            "time": "2016-01-07 12:58:27"
         },
         {
             "name": "cakephp/cakephp",
@@ -343,57 +383,6 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2016-04-28 03:01:34"
-        },
-        {
-            "name": "friendsofcake/bootstrap-ui",
-            "version": "v0.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfCake/bootstrap-ui.git",
-                "reference": "d1483230d1bb46f6ff114ae987ddefd285f09dc7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfCake/bootstrap-ui/zipball/d1483230d1bb46f6ff114ae987ddefd285f09dc7",
-                "reference": "d1483230d1bb46f6ff114ae987ddefd285f09dc7",
-                "shasum": ""
-            },
-            "require": {
-                "cakephp/cakephp": "~3.0"
-            },
-            "require-dev": {
-                "cakephp/cakephp-codesniffer": "dev-master",
-                "phpunit/phpunit": "4.1.*"
-            },
-            "type": "cakephp-plugin",
-            "autoload": {
-                "psr-4": {
-                    "BootstrapUI\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jad Bitar",
-                    "homepage": "http://jadb.io",
-                    "role": "Author"
-                },
-                {
-                    "name": "Others",
-                    "homepage": "https://github.com/friendsofcake/bootstrap-ui/graphs/contributors"
-                }
-            ],
-            "description": "Twitter Bootstrap 3 support for CakePHP 3",
-            "homepage": "http://github.com/friendsofcake/bootstrap-ui",
-            "keywords": [
-                "bootstrap",
-                "cakephp",
-                "twitter"
-            ],
-            "time": "2016-04-06 12:22:58"
         },
         {
             "name": "fzaninotto/faker",
@@ -1430,7 +1419,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "friendsofcake/bootstrap-ui": 0,
+        "cakemanager/cakephp-utils": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

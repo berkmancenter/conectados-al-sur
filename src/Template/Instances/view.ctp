@@ -32,7 +32,6 @@
 </div>
 
 
-
 <div class="row">
     <div class="small-12 column">
 
@@ -61,13 +60,7 @@
                         <th><?= __('App URL') ?></th>
                         <td><?= $this->Html->link(['controller' => 'Instances', 'action' => 'preview', $instance->namespace, '_full' => true])?> </td>
                     </tr>
-                    <tr>
-                        <th><?= __('Logo') ?></th>
-                        <td>TO-DO</td>
-                        <!-- <td><?= h($instance->logo) ?></td> -->
-                    </tr>
                 </table>
-                
                 
                 <h4 class="view-subtitle"><?= __('Description:') ?></h4>
                 <?= $this->Text->autoParagraph(h($instance->description)); ?>
@@ -75,6 +68,15 @@
                 
                 <h4 class="view-subtitle"><?= __('Description (Spanish):') ?></h4>
                 <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
+
+                <h4 class="view-subtitle"><?= __('Logo:') ?></h4>
+                <div class="logo-display">
+                    <?php if (empty($instance->logo)):  ?>
+                        <p>PLEASE UPLOAD AN IMAGE</p>
+                    <?php else: ?>
+                        <?= $this->Html->image('/' . $instance->logo , ['alt' => 'Instance Logo'])  ?>
+                    <?php endif; ?>
+                </div>
             </div>
             <div class="tabs-panel" id="panel-categories">
 
