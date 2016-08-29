@@ -56,18 +56,20 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 
     # =================================================================================
+    # sysadmin page
+    # =================================================================================
+    # Instances Controller
+    # -------------------------------------------------------------------------
+    $routes->connect('/admin',     ['controller' => 'Instances', 'action' => 'index']);
+    $routes->connect('/admin/add', ['controller' => 'Instances', 'action' => 'add'  ]);
+
+
+    # =================================================================================
     # admin page
     # =================================================================================
 
     # Instances Controller
     # -------------------------------------------------------------------------
-
-    # index
-    $routes->connect('/admin', ['controller' => 'Instances', 'action' => 'index']);
-
-    # add
-    $routes->connect('/admin/add', ['controller' => 'Instances', 'action' => 'add']);
-
     # view
     $routes->connect(
         '/:instance_namespace/admin',
@@ -90,6 +92,36 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
 
+    # Categories Controller
+    # -------------------------------------------------------------------------
+    # add: 
+    $routes->connect(
+        '/:instance_namespace/admin/categories/add',
+        ['controller' => 'Categories', 'action' => 'add'],
+        ['pass' => ['instance_namespace']]
+    );
+
+    # edit
+    $routes->connect(
+        '/:instance_namespace/admin/categories/:id/edit',
+        ['controller' => 'Categories', 'action' => 'edit'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
+    # delete
+    $routes->connect(
+        '/:instance_namespace/admin/categories/:id/delete',
+        ['controller' => 'Projects', 'action' => 'delete'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
+
     # Projects Controller
     # -------------------------------------------------------------------------
     # index: 
@@ -106,16 +138,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     $routes->connect(
         '/:instance_namespace/admin/users',
         ['controller' => 'Users', 'action' => 'index'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
-    # Categories Controller
-    # -------------------------------------------------------------------------
-    # index: 
-    $routes->connect(
-        '/:instance_namespace/admin/categories',
-        ['controller' => 'Categories', 'action' => 'index'],
         ['pass' => ['instance_namespace']]
     );
 
@@ -212,29 +234,46 @@ Router::scope('/', function (RouteBuilder $routes) {
     #    - ProjectStages
     #    - Roles
 
+    ### COMPLETE LIST
+    ###
+
+    ## Instances:
+    # index   (sysadmin)
+    # add     (sysadmin)
+    # view    (admin)
+    # edit    (admin)
+    # delete  (admin)
+    # preview (user)
+    # map     (user)
+    # dots    (user)
+    
+    ## Categories
+    # index   (no) -- implemented on Instances view
+    # add     (admin)
+    # view    (no) -- implemented on Instances view
+    # edit    (admin)
+    # delete  (admin)
+
+    ## OrganizationTypes
+    # index   (no) -- implemented on Instances view
+    # add     (admin)
+    # view    (no) -- implemented on Instances view
+    # edit    (admin)
+    # delete  (admin)
+
+
     # projects: index  (sysadmin, y download)
     # projects: view   (user)
     # projects: delete (user)
-    # projects: modify (user)
+    # projects: edit   (user)
     
     # users: index   (sysadmin)
     # users: view    (user)
     # users: add     (user)
-    # users: modify  (user)
+    # users: edit    (user)
     # users: delete  (user)
 
-    # Categories: index   (sysadmin)
-    # Categories: view    (sysadmin)
-    # Categories: add     (sysadmin)
-    # Categories: modify  (sysadmin)
-    # Categories: delete  (sysadmin)
-
-    # OrganizationTypes: index   (sysadmin)
-    # OrganizationTypes: view    (sysadmin)
-    # OrganizationTypes: add     (sysadmin)
-    # OrganizationTypes: modify  (sysadmin)
-    # OrganizationTypes: delete  (sysadmin)
-    
+        
 
     /**
      * ...and connect the rest of 'Pages' controller's URLs.

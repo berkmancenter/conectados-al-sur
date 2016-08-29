@@ -97,9 +97,15 @@
                             <td><?= h($category->name) ?></td>
                             <td><?= h($category->name_es) ?></td>
                             <td class="actions">
-                                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $category->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i></a>
-                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "FIXME", ['controller' => 'Categories', 'action' => 'delete', $category->id, $instance->namespace], ['escape' => false], 
-                                    ['confirm' => __('Are you sure you want to delete the "{0}" category?. This operation cannot be undone. All related data will be erased!', $category->name)]) ?>
+                                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $instance->namespace, $category->id]) ?>><i class='fi-page-edit size-24'></i></a>
+                                <?= $this->Form->postLink(
+                                        $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
+                                        'controller' => 'Categories',
+                                        'action' => 'delete', $instance->namespace, $category->id], [
+                                        'escape' => false,
+                                        'confirm' => __('Are you sure you want to delete the "{0}" category?. This operation cannot be undone. All related data will be erased!', $category->name)
+                                    ])
+                                ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
