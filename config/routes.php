@@ -114,7 +114,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     # delete
     $routes->connect(
         '/:instance_namespace/admin/categories/:id/delete',
-        ['controller' => 'Projects', 'action' => 'delete'],
+        ['controller' => 'Categories', 'action' => 'delete'],
         [
             'pass' => ['instance_namespace', 'id'],
             'id'   => '[0-9]+'
@@ -122,34 +122,35 @@ Router::scope('/', function (RouteBuilder $routes) {
     );
 
 
-    # Projects Controller
-    # -------------------------------------------------------------------------
-    # index: 
-    $routes->connect(
-        '/:instance_namespace/admin/projects',
-        ['controller' => 'Projects', 'action' => 'index'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
-    # Users Controller
-    # -------------------------------------------------------------------------
-    # index: 
-    $routes->connect(
-        '/:instance_namespace/admin/users',
-        ['controller' => 'Users', 'action' => 'index'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
     # OrganizationTypes Controller
     # -------------------------------------------------------------------------
-    # index: 
+    # add: 
     $routes->connect(
-        '/:instance_namespace/admin/organization_types',
-        ['controller' => 'OrganizationTypes', 'action' => 'index'],
+        '/:instance_namespace/admin/organization_types/add',
+        ['controller' => 'OrganizationTypes', 'action' => 'add'],
         ['pass' => ['instance_namespace']]
     );
+
+    # edit
+    $routes->connect(
+        '/:instance_namespace/admin/organization_types/:id/edit',
+        ['controller' => 'OrganizationTypes', 'action' => 'edit'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
+    # delete
+    $routes->connect(
+        '/:instance_namespace/admin/organization_types/:id/delete',
+        ['controller' => 'OrganizationTypes', 'action' => 'delete'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
 
     # =================================================================================
     # instance interaction
@@ -217,6 +218,28 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+
+    # Projects Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/projects',
+        ['controller' => 'Projects', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+    # Users Controller
+    # -------------------------------------------------------------------------
+    # index: 
+    $routes->connect(
+        '/:instance_namespace/admin/users',
+        ['controller' => 'Users', 'action' => 'index'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
+
     # TODO: 
 
     # TODO:
@@ -234,6 +257,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     #    - ProjectStages
     #    - Roles
 
+
+
+    # --------------------
     ### COMPLETE LIST
     ###
 
@@ -260,6 +286,9 @@ Router::scope('/', function (RouteBuilder $routes) {
     # view    (no) -- implemented on Instances view
     # edit    (admin)
     # delete  (admin)
+    # --------------------
+
+
 
 
     # projects: index  (sysadmin, y download)

@@ -17,7 +17,6 @@
     </div>
 </div>
 
-
 <div class="row">
     <div class="small-12 column">
         <div class="form">
@@ -25,8 +24,8 @@
             <fieldset>
                 <h4 class="view-subtitle"><?= __('Edit Category:') ?></h4>
                 <?php
-                    echo $this->Form->input('name');
-                    echo $this->Form->input('name_es');
+                    echo $this->Form->input('name',    ['label' => 'Category Name', 'placeholder' => 'required']);
+                    echo $this->Form->input('name_es', ['label' => 'Category Name (Spanish)', 'placeholder' => 'required']);
                 ?>
             </fieldset>
             <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
@@ -34,5 +33,3 @@
         </div>
     </div>
 </div>
-
-

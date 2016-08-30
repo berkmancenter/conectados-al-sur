@@ -76,6 +76,7 @@ class CategoriesController extends AppController
                 $this->Flash->success(__('The category has been saved.'));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
+                $this->Flash->error(__('The category could not be saved. Please, try again.'));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             }
         }

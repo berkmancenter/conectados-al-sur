@@ -11,90 +11,82 @@ use Cake\ORM\TableRegistry;
  */
 class OrganizationTypesController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
-    public function index($instance_namespace = null)
-    {
-        $instance_id = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
-
-        $this->paginate = [
-            'conditions' => ['OrganizationTypes.instance_id' => $instance_id]
-        ];
-        $organizationTypes = $this->paginate($this->OrganizationTypes);
-
-        $this->set(compact('organizationTypes'));
-        $this->set('_serialize', ['organizationTypes']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Organization Type id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $organizationType = $this->OrganizationTypes->get($id, [
-            'contain' => ['Projects', 'Users']
-        ]);
-
-        $this->set('organizationType', $organizationType);
-        $this->set('_serialize', ['organizationType']);
-    }
-
     /**
      * Add method
-     *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($instance_namespace = null)
     {
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
+
         $organizationType = $this->OrganizationTypes->newEntity();
         if ($this->request->is('post')) {
             $organizationType = $this->OrganizationTypes->patchEntity($organizationType, $this->request->data);
+            $organizationType['instance_id'] = $instance->id;
+
+            # NO ES ATÓMICO!
+            $last_id = $this->OrganizationTypes
+                ->find()
+                ->select(['id'])
+                ->order(['id' =>'DESC'])
+                ->first()->id;
+            // var_dump($last_id);
+            $organizationType->id = $last_id + 1;
+
             if ($this->OrganizationTypes->save($organizationType)) {
                 $this->Flash->success(__('The organization type has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The organization type could not be saved. Please, try again.'));
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             }
         }
-        $this->set(compact('organizationType'));
-        $this->set('_serialize', ['organizationType']);
+        $this->set('organizationType', $organizationType);
+        $this->set('instance', $instance);
+        $this->set('instance_logo', $instance->logo);
+        $this->set('instance_namespace', $instance_namespace);
+        // $this->set(compact('organizationType'));
+        // $this->set('_serialize', ['organizationType']);
     }
 
     /**
      * Edit method
-     *
      * @param string|null $id Organization Type id.
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($instance_namespace = null, $id = null)
     {
-        $organizationType = $this->OrganizationTypes->get($id, [
-            'contain' => []
-        ]);
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
+        $organizationType = $this->OrganizationTypes->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
             $organizationType = $this->OrganizationTypes->patchEntity($organizationType, $this->request->data);
             if ($this->OrganizationTypes->save($organizationType)) {
                 $this->Flash->success(__('The organization type has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The organization type could not be saved. Please, try again.'));
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             }
         }
-        $this->set(compact('organizationType'));
-        $this->set('_serialize', ['organizationType']);
+
+        $this->set('organizationType', $organizationType);
+        $this->set('instance', $instance);
+        $this->set('instance_logo', $instance->logo);
+        $this->set('instance_namespace', $instance_namespace);
+        // $this->set(compact('organizationType'));
+        // $this->set('_serialize', ['organizationType']);
     }
 
     /**
@@ -104,15 +96,24 @@ class OrganizationTypesController extends AppController
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($instance_namespace = null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
         $organizationType = $this->OrganizationTypes->get($id);
-        if ($this->OrganizationTypes->delete($organizationType)) {
+        if (isset($instance_id) && isset($organizationType->instance_id)
+            && $organizationType->instance_id == $instance_id 
+            && $this->OrganizationTypes->delete($organizationType)) {
             $this->Flash->success(__('The organization type has been deleted.'));
         } else {
             $this->Flash->error(__('The organization type could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
     }
 }

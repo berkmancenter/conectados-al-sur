@@ -135,9 +135,16 @@
                             <td><?= h($organization_type->name) ?></td>
                             <td><?= h($organization_type->name_es) ?></td>
                             <td class="actions">
-                                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', $organization_type->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i></a>
-                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "FIXME", ['controller' => 'OrganizationTypes', 'action' => 'delete', $organization_type->id, $instance->namespace], ['escape' => false], 
-                                    ['confirm' => __('Are you sure you want to delete the "{0}" organization type?. This operation cannot be undone. All related data will be erased!', $organization_type->name)]) ?>
+                                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', 
+                                $instance->namespace, $organization_type->id]) ?>><i class='fi-page-edit size-24'></i></a>
+                                <?= $this->Form->postLink(
+                                        $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
+                                        'controller' => 'OrganizationTypes',
+                                        'action' => 'delete', $instance->namespace, $organization_type->id], [
+                                        'escape' => false,
+                                        'confirm' => __('Are you sure you want to delete the "{0}" organization type?. This operation cannot be undone. All related data will be erased!', $organization_type->name)
+                                    ])
+                                ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
