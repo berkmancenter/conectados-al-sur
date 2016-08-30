@@ -58,7 +58,7 @@
 
         <!-- footer -->
         <footer>
-            <div class="row fullwidth">
+            <div class="row expanded">
                 <?php if (isset($instance_namespace) && ($instance_namespace != "cas") && isset($instance_logo) && !empty($instance_logo)):  ?>
                     <div class="small-12 columns footer-imgdiv-optional">
                     <?= 
@@ -67,7 +67,7 @@
                     </div>
                 <?php endif; ?>
             </div>
-            <div class="row fullwidth">
+            <div class="row expanded">
                 <div class="small-12 columns footer-imgdiv">
                     <?= 
                     $this->Html->image('LOGO_CAS_ALPHA.png',
@@ -77,7 +77,7 @@
                     ])?>
                 </div>
             </div>
-            <div class="row fullwidth footer-infodiv">
+            <div class="row expanded footer-infodiv">
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
                         <li class="menu-text">© 2016 dvine</li>

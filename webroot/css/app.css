@@ -40,10 +40,6 @@
 
 .size-72 { font-size: 72px; }
 
-.fullwidth {
-    max-width: initial;
-    width: 100%;
-}
 
 /* ****************************************************************************
 * GENERAL
@@ -65,7 +61,7 @@ div#outer-container {
 
 div#content {
     /* bottom padding for footer: prevents overlaping; */
-    padding-bottom: 250px;
+    padding-bottom: 260px;
 }
 
 footer {
@@ -249,7 +245,6 @@ a:hover {
     font-size: 15px;
     text-align: center;
     text-transform: uppercase;
-
     padding: 0px 0px;
     margin-bottom: 0px;
 }
@@ -263,7 +258,20 @@ a:hover {
 .preview-imgs {
     margin-top: 50px;
 }
-.preview-imgs .thumbnail {
+
+/* dont show link outside images on larger screens */
+@media only screen 
+and (min-width : 700px) {
+    .preview-imgs a { display: block; }
+}
+.preview-imgs a {
+    margin-left: auto;
+    margin-right: auto;
+    height: 0;
+}
+
+.preview-imgs img {
+    margin-top: 10px;
     border-radius: 100px;
     border: 0px;
     width: 200px;
@@ -271,8 +279,14 @@ a:hover {
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 0px;
+    transition-property: box-shadow;
+    transition-delay: 0s;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
 }
-.preview-imgs .thumbnail:hover, .preview-imgs .thumbnail:focus {
+
+.preview-imgs img:hover, .preview-imgs img:focus {
     box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
 }
 
@@ -374,7 +388,6 @@ table tr th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
     color: #fff;
-    text-align: left;
     border-bottom: 2px solid #808080;
 }
 
@@ -390,10 +403,15 @@ table.stack thead { display: table-header-group; }
 table.hover > tbody > tr:hover               { background-color: #ccf5ff; }
 table.hover tbody tr:nth-of-type(even):hover { background-color: #ccf5ff; }
 
-/* center actions */
+/* data alignment on large screens */
+@media only screen 
+and (max-width : 1200px) {
+    table thead th, table td {
+        text-align: center;
+    }
+}
 table th.actions, table td.actions {
     text-align: center;
-    width: 150px;
 }
 
 .vertical-table {
@@ -543,4 +561,14 @@ div.message.error:before {
 }
 div.message.hidden {
     height: 0;
+}
+
+
+
+/* ****************************************************************************
+* Instances: index
+**************************************************************************** */
+
+.instances-logo {
+    max-width: 200px;
 }

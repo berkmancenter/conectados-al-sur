@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="small-12 column">
-        <table class="hover" cellpadding="0" cellspacing="0">
+        <table class="hover stack" cellpadding="0" cellspacing="0">
             <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('name', 'Name') ?></th>
@@ -28,7 +28,11 @@
                 <tr>
                     <td><?= h($instance->name) ?></td>
                     <td><?= $this->Html->link(['controller' => 'Instances', 'action' => 'preview', $instance->namespace, '_full' => true])?> </td>
-                    <td>TO-DO</td>
+                    <td>
+                        <?= 
+                            $this->Html->image('/' . $instance->logo , ['alt' => 'Instance Logo', "class" => "instances-logo"]);
+                        ?>
+                    </td>
                     <td class="actions">
                         <a href=<?= $this->Url->build(['action' => 'view', $instance->namespace]) ?>><i class='fi-magnifying-glass size-36'></i></a>
                         <a href=<?= $this->Url->build(['action' => 'edit', $instance->namespace]) ?>><i class='fi-page-edit size-36'></i></a>
