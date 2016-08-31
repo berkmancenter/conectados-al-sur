@@ -74,6 +74,33 @@ class InstancesController extends AppController
     public function map($instance_namespace = null)
     {
         // ----- instance independent data --------
+
+        // location data
+        // available continents
+        $continents = TableRegistry::get('Continents')
+            ->find()
+            ->where(['Continents.id !=' => '0'])
+            ->all();
+        // var_dump($continents);
+
+        // available subcontinents
+        $subcontinents = TableRegistry::get('Subcontinents')
+            ->find()
+            ->where(['Subcontinents.id !=' => '0'])
+            ->all();
+        // var_dump($subcontinents);
+
+        // available countries
+        $countries = TableRegistry::get('Countries')
+            ->find()
+            ->select(['codN3' => 'id', // rename id --> codN3!!
+                 'cod_A3', 'name', 'name_es',
+                 'subcontinent_id', 'latitude', 'longitude'
+            ])
+            ->where(['Countries.id !=' => '0'])
+            ->all();
+        // var_dump($countries);
+
         // available genres
         $genres = TableRegistry::get('Genres')
             ->find()
@@ -130,6 +157,9 @@ class InstancesController extends AppController
         $this->set('instance_logo', $instance->logo);
         $this->set('instance', $instance);
         $this->set('projects', $projects);
+        $this->set('continents', $continents);
+        $this->set('subcontinents', $subcontinents);
+        $this->set('countries', $countries);
         // $this->set(compact('projects', 'instance_namespace'));
         // $this->set('_serialize', ['projects']);
     }

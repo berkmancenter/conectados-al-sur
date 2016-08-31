@@ -134,6 +134,13 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
+// FROM SERVER
+
+// location data
+var continents_data    = <?php echo json_encode($continents); ?>;
+var subcontinents_data = <?php echo json_encode($subcontinents); ?>;
+var countries_data = <?php echo json_encode($countries); ?>;
+
 var projects = <?php echo json_encode($projects); ?>;
 // console.log(projects);
 
@@ -204,19 +211,14 @@ var g = outer_g.append("g").attr("class", "svg-draws");
 // queue file loading and set a callback
 d3.queue()
     .defer(d3.json, <?php echo json_encode($this->Url->build('/files/world-110m.json')); ?> )
-    .defer(d3.csv , <?php echo json_encode($this->Url->build('/files/cow.csv')); ?> )
     .await(ready);
 
 
-var countries_data;
-function ready(error, world, cow) {
+function ready(error, world) {
     if (error) return console.error(error);
 
     ///// data preparation
     ///////////////////////////////////////////
-
-    // countries of the world (make global)
-    countries_data = cow;
 
     // topojson to geojson
     var countries_geojson = topojson.feature(world, world.objects.countries).features;
@@ -271,11 +273,13 @@ function ready(error, world, cow) {
             })
             .attr("cx", function(d,i) {
                 var country = getCountryByN3(d.id);
-                return projection([country.lon, country.lat])[0]; 
+                if (country == null) { return 0; };
+                return projection([country.longitude, country.latitude])[0]; 
             })
             .attr("cy", function(d,i) {
                 var country = getCountryByN3(d.id);
-                return projection([country.lon, country.lat])[1];
+                if (country == null) { return 0; };
+                return projection([country.longitude, country.latitude])[1];
             })
             .attr("r" , function(d,i) {
                 var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
@@ -439,11 +443,13 @@ function getCountryByN3(codN3) {
         }
     );
     // countries codes are unique! so there should be a single match
-    // otherwise, returns 'undefined'
-    return matches[0];
+    // otherwise, returns 'null'
+    if (matches.length >0) {
+        return matches[0];
+    };
+    console.log("Attemped to use undefined country (" + codN3 + ").");
+    return null;
 }
-
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -547,7 +553,9 @@ function drawer_tooltip(codN3) {
 
     // retrieve country
     var country = getCountryByN3(codN3);
-    var coords  = projection([country.lon, country.lat]);
+    if (country == null) { return; };
+
+    var coords  = projection([country.longitude, country.latitude]);
 
     // draw tooltip
     var k = current_transform.k;
@@ -574,7 +582,7 @@ function drawer_tooltip(codN3) {
     projects_word = nProjects == 1 ? "project" : "projects" ;
 
     d3.select("#country_tooltip_text")
-        .text(country.codA3 + " (" + nProjects + " " + projects_word + ")")
+        .text(country.cod_A3 + " (" + nProjects + " " + projects_word + ")")
         .style("cursor", "default")
         .attr("x", coords[0]+(dx+mleft))
         .attr("y", coords[1]-(dy+mbottom))
@@ -614,6 +622,7 @@ function projects_info_set_country_label(codN3) {
 
     if (codN3 != null) {
         var country = getCountryByN3(codN3);
+        if (country == null) { return; };
         label.text(country.name_en);
     } else {
         label.text("Please select a country");
