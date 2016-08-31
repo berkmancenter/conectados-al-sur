@@ -36,12 +36,7 @@
                 </div>
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
-                        <li>
-                            <a href="#">Actions</a>
-                            <ul class="menu vertical">
-                                <?= $this->fetch('available-actions') ?>
-                            </ul>
-                        </li>
+                        <?= $this->fetch('available-actions') ?>
                         <li>
                             <a href="#"><i class="fi-torso"></i></a>
                         </li>

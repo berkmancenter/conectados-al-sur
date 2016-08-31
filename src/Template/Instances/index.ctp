@@ -1,6 +1,5 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('New Instance'), ['action' => 'add']) ?></li>
 <?php $this->end(); ?>
 
 <!-- Page Content -->
@@ -9,6 +8,7 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= __('Instances') ?></h3>
+        <a href=<?= $this->Url->build(['action' => 'add']) ?>><i class='fi-plus size-36'></i>New Instance</a>
     </div>
 </div>
 

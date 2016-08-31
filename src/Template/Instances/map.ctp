@@ -46,83 +46,81 @@
 
 <?= $this->Html->script('d3/d3.min.js') ?>
 <?= $this->Html->script('topojson/topojson.min.js') ?>
-<?= $this->Html->script('jquery-3.0.0.min') ?>
 
 
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('Home'), ['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?> </li>
-<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance->namespace]) ?> </li>
+<li>
+    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><i class='fi-home size-16'></i></a>
+</li>
 <?php $this->end(); ?>
 
 <!-- Page Content -->
 <div class="fullwidth page-content-with-sidebar">
 
-<div class="off-convas-wrapper">
-<div class="off-convas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="off-convas-wrapper">
+        <div class="off-convas-wrapper-inner" data-off-canvas-wrapper>
 
-<div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-    <!-- close button -->
-    <button class="close-button" aria-label="Close menu" type="button" data-close>
-        <span aria-hidden="true">&times;</span>
-    </button>
+            <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
+                <!-- close button -->
+                <button class="close-button" aria-label="Close menu" type="button" data-close>
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-    <!-- menu -->
-    <ul class="vertical menu">
-        <li><a href="#">Lorem.</a></li>
-        <li><a href="#">Facilis.</a></li>
-        <li><a href="#">Sed?</a></li>
-        <li><a href="#">Impedit?</a></li>
-        <li><a href="#">Maxime.</a></li>
-    </ul>
+                <!-- menu -->
+                <ul class="vertical menu">
+                    <li><a href="#">Lorem.</a></li>
+                    <li><a href="#">Facilis.</a></li>
+                    <li><a href="#">Sed?</a></li>
+                    <li><a href="#">Impedit?</a></li>
+                    <li><a href="#">Maxime.</a></li>
+                </ul>
 
-</div>
-<div class="off-cavas-content" data-off-canvas-content>
-<div class="row projects-index fullwidth" data-equalizer="container">
-    <nav class="medium-4 large-3 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
-        <div class="side-links" data-equalizer="links">
-            <ul class="expanded button-group">
-            <?= $this->Html->link(__('New Project'), [
-                'controller' => 'Projects',
-                'action' => 'add',
-                 $instance->namespace
-            ], [
-                 'class' => 'secondary button',
-                 'data-equalizer-watch' => 'links'
-            ]) ?>
-            <?= $this->Html->link(__('Graph Visualization'), [
-                'controller' => 'Instances',
-                'action' => 'dots', $instance->namespace
-            ], [
-                'class' => 'secondary button',
-                'data-equalizer-watch' => 'links'
-            ]) ?>
-        </ul>
-        </div>
-        <hr>
-        <div class="side-filters">
-            <p id="info-nprojects"></p> <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
-        </div>
-        <hr>
-        <div class="side-nav-info">
-            <p id="info-country-label"></p>
-        </div>
-    </nav>
-    <div class="medium-8 large-9 columns projects-map" data-equalizer-watch="container">
-        <div id="tooltip-container"></div>
-        <div id="svg-map">
-            <div class="zoom_buttons">
-                <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
-                <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
+            </div>
+            <div class="off-cavas-content" data-off-canvas-content>
+                <div class="row projects-index fullwidth" data-equalizer="container">
+                    <nav class="medium-4 large-3 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
+                        <div class="side-links" data-equalizer="links">
+                            <ul class="expanded button-group">
+                            <?= $this->Html->link(__('New Project'), [
+                                'controller' => 'Projects',
+                                'action' => 'add',
+                                 $instance->namespace
+                            ], [
+                                 'class' => 'secondary button',
+                                 'data-equalizer-watch' => 'links'
+                            ]) ?>
+                            <?= $this->Html->link(__('Graph Visualization'), [
+                                'controller' => 'Instances',
+                                'action' => 'dots', $instance->namespace
+                            ], [
+                                'class' => 'secondary button',
+                                'data-equalizer-watch' => 'links'
+                            ]) ?>
+                        </ul>
+                        </div>
+                        <hr>
+                        <div class="side-filters">
+                            <p id="info-nprojects"></p> <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
+                        </div>
+                        <hr>
+                        <div class="side-nav-info">
+                            <p id="info-country-label"></p>
+                        </div>
+                    </nav>
+                    <div class="medium-8 large-9 columns projects-map" data-equalizer-watch="container">
+                        <div id="tooltip-container"></div>
+                        <div id="svg-map">
+                            <div class="zoom_buttons">
+                                <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
+                                <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 
 <script>
@@ -136,7 +134,7 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
-var projects = <?php echo json_encode($instance->projects); ?>;
+var projects = <?php echo json_encode($projects); ?>;
 // console.log(projects);
 
 // create map with {country_id, project_ids_array}

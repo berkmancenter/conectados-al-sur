@@ -1,36 +1,95 @@
-<nav class="large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Instances'), ['action' => 'index']) ?></li>
-    </ul>
-</nav>
-<div class="instances form large-10 medium-9 columns content">
-    <?= $this->Form->create($instance) ?>
-    <fieldset>
-        <legend><?= __('Add Instance') ?></legend>
-        <?php
-            echo $this->Form->input('name', ['label' => 'Instance Name']);
-            echo $this->Form->input('name_es', ['label' => 'Instance Name (Spanish Version)']);
-            echo $this->Form->input('namespace', ['label' => 'App URL']);
-            echo $this->Form->input('description');
-            echo $this->Form->input('description_es');
-            echo $this->Form->input('logo');
-            echo $this->Form->input('use_org_types');
-            echo $this->Form->input('use_user_genre');
-            echo $this->Form->input('use_user_organization');
-            echo $this->Form->input('use_proj_cities');
-            echo $this->Form->input('use_proj_stage');
-            echo $this->Form->input('use_proj_categories');
-            echo $this->Form->input('use_proj_description');
-            echo $this->Form->input('use_proj_url');
-            echo $this->Form->input('use_proj_contribution');
-            echo $this->Form->input('use_proj_contributing');
-            echo $this->Form->input('use_proj_organization');
-            echo $this->Form->input('use_proj_location');
-            echo $this->Form->input('use_proj_dates');
-            echo $this->Form->input('proj_max_categories');
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<!-- Available Actions -->
+<?php $this->start('available-actions'); ?>
+<?php $this->end(); ?>
+
+
+<!-- Page Content -->
+<div class="fullwidth page-content">
+
+<div class="row">
+    <div class="small-12 medium-12 column view-title">
+        <h3>New Instance</h3>
+        <a href=<?= $this->Url->build(['action' => 'index']) ?>><i class='fi-arrow-left size-36'></i>Back to Index</a>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="small-12 column">
+        <div class="form">
+            <?= $this->Form->create($instance) ?>
+            <ul class="tabs" data-tabs id="instance-add-tabs">
+                <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
+                <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li>
+                <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li>
+            </ul>
+
+            <div class="tabs-content" data-tabs-content="instance-add-tabs">
+
+                <div class="tabs-panel is-active" id="panel-properties">
+                    <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
+                    <fieldset>
+                    <?php 
+                        echo $this->Form->input('name', ['label' => 'Instance Name', 'placeholder' => 'required']);
+                    ?>
+                    <?php 
+                        echo $this->Form->input('name_es', ['label' => 'Instance Name (Spanish)', 'placeholder' => 'required']);
+                    ?>
+                    <?php 
+                        echo $this->Form->input('namespace', ['label' => 'Shortname', 'placeholder' => $this->Url->build(['action' => 'preview', 'shortname', '_full' => true]), 'aria-describedby' => 'namespaceHelpText']);
+                    ?>
+                    <p class="help-text" id="namespaceHelpText">This word will be used as the domain's namespace, from which the url is built. e.g. "my-page" will result in <?php echo $this->Url->build(['action' => 'preview', 'my-page', '_full' => true]) ?>.</p>
+                    </fieldset>
+
+                    <fieldset>
+                    <h5 class="view-subsubtitle"><?= __('Instance Descriptions:') ?></h5>
+                    <p>Both descriptions will be displayed on the home page of this instance.</p>
+                    <?php 
+                        echo $this->Form->input('description', ['label' => 'Description', 'placeholder' => 'required']);
+                        echo $this->Form->input('description_es', ['label' => 'Description (Spanish)', 'placeholder' => 'required']);
+                    ?>
+                    </fieldset>
+                </div>
+                <div class="tabs-panel" id="panel-user-config">
+                    <h4 class="view-subtitle"><?= __('User Configurations:') ?></h4>
+                    <fieldset>
+                    <p>Regarding user data that this instance will handle, which fields would you like to enable?</p>
+                    <?php
+                        echo $this->Form->input('use_user_genre', ['label' => 'Genre']);
+                        echo $this->Form->input('use_user_organization', ['label' => 'Main organization name']);
+                    ?>
+                    </fieldset>
+                </div>
+                <div class="tabs-panel" id="panel-proj-config">
+                    <h4 class="view-subtitle"><?= __('Project Configurations:') ?></h4>
+                    <fieldset>
+                    <h5 class="view-subsubtitle"><?= __('General:') ?></h5> 
+                    <p>Which fields would you like to consider for your projects?</p>
+                    <?php
+                        echo $this->Form->input('use_proj_stage', ['label' => 'Project Stage']);
+                        echo $this->Form->input('use_proj_url', ['label' => 'External URL']);
+                        echo $this->Form->input('use_proj_description', ['label' => 'Project Description']);
+                        echo $this->Form->input('use_proj_contribution', ['label' => 'Contribution']);
+                        echo $this->Form->input('use_proj_contributing', ['label' => 'Contributing']);
+                        echo $this->Form->input('use_proj_dates', ['label' => 'Start and Finish dates']);
+                        echo $this->Form->input('use_org_types', ['label' => 'Organization Type']);
+                        echo $this->Form->input('use_proj_organization', ['label' => 'Organization name']);
+                        echo $this->Form->input('use_proj_categories', ['label' => 'Categories']);
+                        echo $this->Form->input('proj_max_categories', ['label' => 'Allowed Number of Categories']);
+                    ?>
+                    </fieldset>
+                    <fieldset>
+                    <h5 class="view-subsubtitle"><?= __('Location information:') ?></h5> 
+                    <p>By default, only the country is saved for each project.<!--  When enabling the cities, each project without city will be assigned to the respective capital. --></p>
+                    <?php
+                        echo $this->Form->input('use_proj_cities', ['label' => 'Map using cities']);
+                        echo $this->Form->input('use_proj_location', ['label' => 'Use geo coordinates to generate a link to a google map with projects as markers.']);
+                    ?>
+                    </fieldset>
+                </div>
+            </div>
+            <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
+            <?= $this->Form->end() ?>
+        </div>
+    </div>
 </div>

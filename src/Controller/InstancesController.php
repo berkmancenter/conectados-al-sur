@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 
 /**
@@ -72,23 +73,63 @@ class InstancesController extends AppController
      */
     public function map($instance_namespace = null)
     {
+        // ----- instance independent data --------
+        // available genres
+        $genres = TableRegistry::get('Genres')
+            ->find()
+            ->where(['Genres.name !=' => '[unused]'])
+            ->all();
+
+        // available project_stages
+        $project_stages = TableRegistry::get('ProjectStages')
+            ->find()
+            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->all();
+
+        // var_dump($genres);
+        // var_dump($project_stages);
+
+
+        // ----- instance dependent data --------
+        // instance data
         $instance = $this->Instances
             ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->contain(['Projects', 'Categories', 'OrganizationTypes'])
+            ->contain(['Categories'])
             ->first();
+        // available categories
+        // var_dump($instance->categories);
 
+        $projects = TableRegistry::get('Projects')
+            ->find()
+            ->where(['Projects.instance_id' => $instance->id])
+            ->select([
+                    'id', 'name', 'user_id', 'instance_id', 'description',
+                     'organization', 'organization_type_id', 'project_stage_id',
+                     'country_id', 'city_id', 'latitude', 'longitude', 'created',
+                     'modified', 'start_date', 'finish_date'
+                ])
+            ->contain([
+                    'Users' => function ($q) {
+                       return $q->select(['Users.genre_id']);
+                    },
+                    'Categories' => function ($q) {
+                        return $q->select(['Categories.id']);
+                    },
+                ])
+            ->all();
+        // ->first();
+        // var_dump($projects->categories);
+
+        // independent data
+        $this->set('genres', $genres);
+        $this->set('project_stages', $project_stages);
+
+        // instance data
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
         $this->set('instance', $instance);
-
-        // $projects = $this->Projects
-        //     ->find()
-        //     ->contain(['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Categories'])
-        //     ->where(['Projects.instance_id' => $instance_id])
-        //     ->all();
-
+        $this->set('projects', $projects);
         // $this->set(compact('projects', 'instance_namespace'));
         // $this->set('_serialize', ['projects']);
     }
@@ -144,6 +185,7 @@ class InstancesController extends AppController
                 return $this->redirect(['action' => 'index']);
             } else {
                 $this->Flash->error(__('The instance could not be saved. Please, try again.'));
+                return $this->redirect(['action' => 'index']);
             }
         }
         $this->set(compact('instance'));
@@ -175,9 +217,10 @@ class InstancesController extends AppController
 
             if ($this->Instances->save($instance)) {
                 $this->Flash->success(__('The instance has been saved.'));
-                // return $this->redirect(['action' => 'view', $instance->namespace]);
+                return $this->redirect(['action' => 'view', $instance->namespace]);
             } else {
                 $this->Flash->error(__('The instance could not be saved. Please, try again.'));
+                return $this->redirect(['action' => 'view', $instance->namespace]);
             }
         }
         $this->set(compact('instance'));

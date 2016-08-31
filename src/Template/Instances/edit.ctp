@@ -1,8 +1,5 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('Home'), ['controller' => 'Instances', 'action' => 'preview', $instance_namespace]) ?> </li>
-<li><?= $this->Html->link(__('Back to Instances'), ['action' => 'index']) ?> </li>
-<li><?= $this->Html->link(__('New Instance'), ['action' => 'add']) ?></li>
 <?php $this->end(); ?>
 
 
