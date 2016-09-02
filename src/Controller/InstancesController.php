@@ -93,10 +93,6 @@ class InstancesController extends AppController
         // available countries
         $countries = TableRegistry::get('Countries')
             ->find()
-            ->select(['codN3' => 'id', // rename id --> codN3!!
-                 'cod_A3', 'name', 'name_es',
-                 'subcontinent_id', 'latitude', 'longitude'
-            ])
             ->where(['Countries.id !=' => '0'])
             ->all();
         // var_dump($countries);
@@ -122,7 +118,14 @@ class InstancesController extends AppController
         $instance = $this->Instances
             ->find()
             ->where(['Instances.namespace' => $instance_namespace])
-            ->contain(['Categories'])
+            ->contain([
+                'OrganizationTypes' => function ($q) {
+                   return $q->where(['OrganizationTypes.name !=' => '[unused]']);
+                },
+                'Categories' => function ($q) {
+                   return $q->where(['Categories.name !=' => '[unused]']);
+                }
+            ])
             ->first();
         // available categories
         // var_dump($instance->categories);

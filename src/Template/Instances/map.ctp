@@ -1,52 +1,3 @@
-<style>
-
-/* = = = = = = = = = = = =  map = = = = = = = = = = = = */
-/* CAS ORANGE: #F26722 */
-/* CAS BLUE  : #42C8F4  */
-
-.svg-background { fill: lightblue; }
-
-.country        { fill: #ddffcc; }
-.country_hover  { fill: #f79c6e; }
-.country_active { fill: #f26722; }
-
-.country-boundary {
-  fill: none;
-  stroke: gray;
-  stroke-dasharray: 3,4;
-  stroke-linejoin: round;
-  stroke-width: 1.5px;
-}
-
-.country-coastline {
-  fill: none;
-  stroke: #aaa;
-  stroke-linejoin: round;
-  stroke-width: 1.5px;
-}
-
-#country_tooltip_text {
-    fill: black;    
-}
-#country_tooltip_rect {
-    fill: white;
-    stroke: gray;
-}
-
-
-#svg-map {
-    position: relative;
-}
-.zoom_buttons {
-    position: absolute;
-    left: 10px;
-    top: 10px;
-}
-</style>
-
-<?= $this->Html->script('d3/d3.min.js') ?>
-<?= $this->Html->script('topojson/topojson.min.js') ?>
-
 
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
@@ -62,12 +13,9 @@
         <div class="off-convas-wrapper-inner" data-off-canvas-wrapper>
 
             <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-                <!-- close button -->
                 <button class="close-button" aria-label="Close menu" type="button" data-close>
                     <span aria-hidden="true">&times;</span>
                 </button>
-
-                <!-- menu -->
                 <ul class="vertical menu">
                     <li><a href="#">Lorem.</a></li>
                     <li><a href="#">Facilis.</a></li>
@@ -75,10 +23,10 @@
                     <li><a href="#">Impedit?</a></li>
                     <li><a href="#">Maxime.</a></li>
                 </ul>
-
             </div>
+
             <div class="off-cavas-content" data-off-canvas-content>
-                <div class="row projects-index fullwidth" data-equalizer="container">
+                <div class="row projects-index expanded" data-equalizer="container">
                     <nav class="medium-4 large-3 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
                         <div class="side-links" data-equalizer="links">
                             <ul class="expanded button-group">
@@ -123,610 +71,159 @@
     </div>
 </div>
 
-<script>
 
-// d3 hook
-// moves a child element to the front
-// useful when displaying ocluded data
-d3.selection.prototype.moveToFront = function() {
-  return this.each(function(){
-    this.parentNode.appendChild(this);
-  });
-};
+<script type="text/javascript">
 
-// FROM SERVER
+    ///////////////////////////////////////////////////////////////////////////////
+    //////////////////// SERVER DATA //////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
-// location data
-var continents_data    = <?php echo json_encode($continents); ?>;
-var subcontinents_data = <?php echo json_encode($subcontinents); ?>;
-var countries_data = <?php echo json_encode($countries); ?>;
+    // location data
+    var _data_continents    = <?php echo json_encode($continents); ?>;
+    var _data_subcontinents = <?php echo json_encode($subcontinents); ?>;
+    var _data_countries     = <?php echo json_encode($countries); ?>;
 
-var projects = <?php echo json_encode($projects); ?>;
-// console.log(projects);
+    // independent
+    var _data_genres         = <?php echo json_encode($genres); ?>;
+    var _data_project_stages = <?php echo json_encode($project_stages); ?>;
 
-// create map with {country_id, project_ids_array}
-var _map_by_country = {};
-projects.map(function (project, index) {
-    if (_map_by_country[project.country_id] != null) 
-        return _map_by_country[project.country_id].push(index);
-    return _map_by_country[project.country_id] = [index];
-});
-var map_by_country = []
-Object.keys(_map_by_country).map(function(value, index) {
-    map_by_country.push({'id':value, 'projects':_map_by_country[value]});
-})
-//console.log(map_by_country);
+    // instance
+    var _data_projects           = <?php echo json_encode($projects); ?>;
+    var _data_categories         = <?php echo json_encode($instance->categories); ?>;
+    var _data_organization_types = <?php echo json_encode($instance->organization_types); ?>;
 
-d3.select("#info-nprojects")
-    .text("Found " + projects.length + " projects");
 
+    var topojson_file = <?php echo json_encode($this->Url->build('/files/world-110m.json')); ?>
 
-// classical margin convention
-var availableWidth  = document.getElementById('svg-map').clientWidth;
-var availableHeight = document.getElementById('svg-map').clientHeight;
-var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width  = availableWidth - margin.left - margin.right,
-    height = 700 - margin.top  - margin.bottom;
+    // console.log(_data_continents);
+    // console.log(_data_subcontinents);
+    // console.log(_data_countries);
+    // console.log(_data_genres);
+    // console.log(_data_project_stages);
+    // console.log(_data_categories);
+    // console.log(_data_organization_types);
 
-// zooming behavior
-var zoom = d3.zoom()
-    .scaleExtent([0.5, 5])
-    .translateExtent([[-400, -500], [2500, 900]])
-    .on("zoom", zoomed);
 
-// gep projector
-var projection = d3.geoEquirectangular()
-    .scale(500)
-    .translate([1000, 200]);
 
-// geo path helper
-var path = d3.geoPath()
-    .projection(projection);
+    ///////////////////////////////////////////////////////////////////////////////
+    //////////////////// GET DATA HELPERS /////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
-// svg viewport
-var svg = d3.select("#svg-map")
-    .append("svg")
-        .attr("width" , width  + margin.left + margin.right )
-        .attr("height", height + margin.top  + margin.bottom);
+    // generic data by id
+    function _getDataById(id, data, name) {
+        var matches = $.grep(data, 
+            function(e){
+                return e.id == id;
+            }
+        );
 
-
-// create inner viewport and enable zooming
-var outer_g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    .call(zoom);
-
-// svg background for zomming
-outer_g.append("g").attr("class", "svg-g-background")
-    .append("rect")
-        .attr("class", "svg-background")
-        .attr("width", width)
-        .attr("height", height);
-
-d3.selectAll("button[data-zoom]")
-    .on("click", zoomButtonListener);
-
-var g = outer_g.append("g").attr("class", "svg-draws");
-
-
-// queue file loading and set a callback
-d3.queue()
-    .defer(d3.json, <?php echo json_encode($this->Url->build('/files/world-110m.json')); ?> )
-    .await(ready);
-
-
-function ready(error, world) {
-    if (error) return console.error(error);
-
-    ///// data preparation
-    ///////////////////////////////////////////
-
-    // topojson to geojson
-    var countries_geojson = topojson.feature(world, world.objects.countries).features;
-
-    // country boundaries
-    // filter to reduce the number of boundaries
-    // a,b: features on either side of a boundary
-    // a === b : exterior boundaries
-    // a !== b : interior boundaries
-    var borders = topojson.mesh(world, world.objects.countries,
-        function(a, b) { return a !== b; }
-    )
-    var borders_coast = topojson.mesh(world, world.objects.countries,
-        function(a, b) { return a === b; }
-    )
-
-    ///// countries
-    ///////////////////////////////////////////
-    // add countries
-    g.selectAll(".country")
-            .data(countries_geojson)
-        .enter().append("path")
-            .attr("class", "country")       // class: "country"
-            .attr("id", function(d,i) {     // id   : "country-<codN3>"
-                return "country-" + d.id;
-            })
-            .attr("d", path)
-            .on("click", countryClickListener)
-            .on("mouseover", countryMouseOverListener)
-            .on("mouseout", countryMouseOutListener);
-
-    // add countries country boundaries
-    g.append("path")
-        .datum(borders)
-        .attr("d", path)
-        .attr("class", "country-boundary");
-    g.append("path")
-        .datum(borders_coast)
-        .attr("d", path)
-        .attr("class", "country-coastline");
-
-
-
-    ///// pins
-    ///////////////////////////////////////////
-    var pins = g.selectAll(".country_pin")
-            .data(map_by_country, function(d) { return d.id; })
-        .enter().append("circle")
-            .attr("class","country_pin")    // class: "country_pin"
-            .attr("id", function(d,i) {     // id   : "country_pin-<codN3>"
-                return "country_pin-" + d.id;
-            })
-            .attr("cx", function(d,i) {
-                var country = getCountryByN3(d.id);
-                if (country == null) { return 0; };
-                return projection([country.longitude, country.latitude])[0]; 
-            })
-            .attr("cy", function(d,i) {
-                var country = getCountryByN3(d.id);
-                if (country == null) { return 0; };
-                return projection([country.longitude, country.latitude])[1];
-            })
-            .attr("r" , function(d,i) {
-                var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-                return 9*scale;
-            })
-            .style("fill", function(d,i) {
-                var max_projs = 10.0;
-                var h_maxcolor = 0;
-                var h_mincolor = 60;
-
-                var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
-                var n = h_mincolor - m*1;
-
-                var h_value = Math.min(d.projects.length, max_projs);
-                h_value = m*h_value + n;
-                return "hsl(" + h_value + ", 60%, 50%)";
-            })
-            .style("stroke", "black")
-            .style("stroke-width", 1)
-            .on("click", pinClickListener)
-            .on("mouseover", pinMouseOverListener)
-            .on("mouseout", pinMouseOutListener);
-
-
-    ///// tooltip 
-    /////////////////////////////////////////////
-    var tooltip = g.append("g")
-        .datum(null)
-        .attr("class", "country_tooltip")
-        .style("opacity", 0)
-        .on("mouseover", tooltipMouseOverListener)
-        .on("mouseout", tooltipMouseOutListener);
-    tooltip.append("rect").attr("id", "country_tooltip_rect");
-    tooltip.append("text").attr("id", "country_tooltip_text");
-
-
-    //// info bar
-    /////////////////////////////////////////////
-    projects_info_clear();
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////// LISTENERS  ///////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-// zoom
-var current_transform = d3.zoomIdentity;
-
-// countries
-var active_country_id  = null;
-var hovered_country_id = null;
-
-////////// ZOOM LISTENERS //////////////////////////////////////////////////
-
-function zoomed() {
-    
-    current_transform = d3.event.transform;
-    g.attr("transform", d3.event.transform);
-
-    // update other elements on a special way
-    drawer_pin_zoom_update(d3.event.transform);
-    drawer_tooltip_zoom_update(d3.event.transform);
-}
-
-function zoomButtonListener() {
-    var zoom_scale = 1.5;
-    if (this.getAttribute("data-zoom") < 0) {
-        zoom_scale = 1.0/zoom_scale;
-    }
-    zoom.scaleBy(outer_g, zoom_scale);
-}
-
-////////// COUNTRY LISTENERS //////////////////////////////////////////////////
-
-function countryClickListener(d) {
-
-    var clicked_id = d.id;
-    if (clicked_id == active_country_id) {
-        // deactivate the current one        
-        active_country_id = null;
-        drawer_country_hover(clicked_id);
-        drawer_pin_normal(clicked_id);
-
-        // crear country info
-        projects_info_clear();
-
-    } else {
-        // deactivate previous one
-        drawer_country_normal(active_country_id);
-        drawer_pin_normal(active_country_id);
-
-        // activate the current
-        active_country_id = clicked_id;
-        if (hovered_country_id == active_country_id) { hovered_country_id = null; }
-        drawer_country_active(active_country_id);
-        drawer_pin_active(active_country_id);
-
-        // show projects info
-        projects_info_display(active_country_id);
-    }
-}
-
-function countryMouseOverListener(d) {
-    var hover_id = d.id;
-    if (hover_id != active_country_id) {
-        hovered_country_id = hover_id;
-        drawer_country_hover(hover_id);
-        drawer_pin_hover(hover_id);
-    }
-    drawer_tooltip(hover_id);    
-}
-
-function countryMouseOutListener(d) {
-    var hover_id = d.id;
-    if (hover_id != active_country_id) {
-        hovered_country_id = null;
-        drawer_country_normal(hover_id);
-        drawer_pin_normal(hover_id);
-    }
-    drawer_tooltip_remove();
-}
-
-////////// PIN LISTENERS //////////////////////////////////////////////////////
-function pinClickListener(d)     { countryClickListener(d);     }
-function pinMouseOverListener(d) { countryMouseOverListener(d); }
-function pinMouseOutListener(d)  { countryMouseOutListener(d); }
-
-
-////////// TOOLTIP LISTENERS //////////////////////////////////////////////////
-function tooltipMouseOverListener(d) {
-    var country_id = d;
-    drawer_tooltip(country_id);
-    if (country_id != active_country_id) {
-        drawer_country_hover(country_id);
-    } else {
-        drawer_country_active(country_id);
-    }
-}
-
-function tooltipMouseOutListener(d) {
-    var country_id = d;
-    drawer_tooltip_remove();
-    if (country_id != active_country_id) {
-        drawer_country_normal(country_id);    
-    }
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////// DATA    HELPERS //////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-function getCountryByN3(codN3) {
-
-    // lookup country information
-    var matches = $.grep(countries_data, 
-        function(e){
-            return e.codN3 == codN3;
-        }
-    );
-    // countries codes are unique! so there should be a single match
-    // otherwise, returns 'null'
-    if (matches.length >0) {
-        return matches[0];
-    };
-    console.log("Attemped to use undefined country (" + codN3 + ").");
-    return null;
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////// DRAWER  HELPERS //////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-var country_pin = {};
-country_pin.normal = {}; country_pin.hover = {}; country_pin.active = {};
-country_pin.normal.stroke = "#000000"; country_pin.normal.stroke_width = 1;
-country_pin.hover.stroke  = "#42c8f4"; country_pin.hover.stroke_width  = 2;
-country_pin.active.stroke = "#086f91"; country_pin.active.stroke_width = 3;
-
-
-//////////////////////////////////////////////////////
-// COUNTRY HELPERS
-
-// highlights the country
-function drawer_country_active(codN3) {
-    if (codN3 == null) { return; };
-    d3.select("#country-" + codN3).classed("country_active", true);
-    d3.select("#country-" + codN3).classed("country_hover", false);
-}
-
-// highlights the country if not active
-function drawer_country_hover(codN3) {
-    if (codN3 == null) { return; };
-    d3.select("#country-" + codN3).classed("country_active", false);
-    d3.select("#country-" + codN3).classed("country_hover", true);
-}
-
-// resets the country colour
-function drawer_country_normal(codN3) {
-    if (codN3 == null) { return; };
-    d3.select("#country-" + codN3).classed("country_active", false);
-    d3.select("#country-" + codN3).classed("country_hover", false);
-}
-
-//////////////////////////////////////////////////////
-// PIN HELPERS
-
-function drawer_pin_active(codN3) {
-    if (codN3 == null) { return; };
- 
-    d3.select("#country_pin-" + codN3)
-        .moveToFront()
-        .style("stroke", country_pin.active.stroke)
-        .style("stroke-width", function(d,i) {
-                return country_pin.active.stroke_width/current_transform.k;
-        });
-}
-
-function drawer_pin_hover(codN3) {
-    if (codN3 == null) { return; };
-
-    d3.select("#country_pin-" + codN3)
-        .style("stroke", country_pin.hover.stroke)
-        .style("stroke-width", function(d,i) {
-                return country_pin.hover.stroke_width/current_transform.k;
-        });
-}
-
-function drawer_pin_normal(codN3) {
-    if (codN3 == null) { return; };
-
-    d3.select("#country_pin-" + codN3)
-        .style("stroke", country_pin.normal.stroke)
-        .style("stroke-width", function(d,i) {
-                return country_pin.normal.stroke_width/current_transform.k;
-        });
-
-}
-
-function drawer_pin_zoom_update(transform) {
-
-    g.selectAll(".country_pin")
-        .attr("r" , function(d,i) {
-            var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-            return 9*scale/transform.k;
-        })
-        .style("stroke-width", function(d,i) {
-            return country_pin.normal.stroke_width/transform.k;
-        });
-
-    // hovered pin
-    d3.select("#country_pin-" + hovered_country_id)
-        .style("stroke-width", function(d,i) {
-            return country_pin.hover.stroke_width/transform.k;
-        });
-
-    // active pin
-    d3.select("#country_pin-" + active_country_id)
-        .style("stroke-width", function(d,i) {
-            return country_pin.active.stroke_width/transform.k;
-        });
-}
-
-
-//////////////////////////////////////////////////////
-// TOOLTIP HELPERS
-
-function drawer_tooltip(codN3) {
-
-    // retrieve country
-    var country = getCountryByN3(codN3);
-    if (country == null) { return; };
-
-    var coords  = projection([country.longitude, country.latitude]);
-
-    // draw tooltip
-    var k = current_transform.k;
-    var dx = 20/k;
-    var dy = 20/k;
-    var tw = 120/k;
-    var th = 30/k;
-    var mleft = 15/k;
-    var mbottom = 10/k;
-    var nodeFontSize = 12/k;
-
-    d3.select("#country_tooltip_rect")
-        .attr("x", coords[0]+dx)
-        .attr("y", coords[1]-(th+dy))
-        .attr("width", tw)
-        .attr("height", th);
-
-    // n asociated projects
-    _projects = _map_by_country[country.codN3];
-    nProjects = 0
-    if ( _projects != null) {
-        nProjects = _projects.length;
-    }
-    projects_word = nProjects == 1 ? "project" : "projects" ;
-
-    d3.select("#country_tooltip_text")
-        .text(country.cod_A3 + " (" + nProjects + " " + projects_word + ")")
-        .style("cursor", "default")
-        .attr("x", coords[0]+(dx+mleft))
-        .attr("y", coords[1]-(dy+mbottom))
-        .attr("font-size", nodeFontSize + "px");
-
-    d3.select(".country_tooltip")
-        .datum(codN3)
-        .style("opacity", 1)
-        .attr("transform", d3.zoomIdentity) // reapear!
-        .moveToFront();
-}
-
-function drawer_tooltip_remove() {
-    d3.select(".country_tooltip")
-        .style("opacity", 1e-6)
-        // trick to desapear from svg!
-        .attr("transform", d3.zoomIdentity.translate(10*width,10*height));
-}
-
-function drawer_tooltip_zoom_update(transform) {
-    if (hovered_country_id != null) {
-        drawer_tooltip(hovered_country_id);
-    } else {
-        drawer_tooltip_remove();
-    }
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-//////////////////// INFORMATION  HELPERS//////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////
-
-function projects_info_set_country_label(codN3) {
-
-    var label = d3.select("#info-country-label")
-            .style("font-weight", "bold");
-
-    if (codN3 != null) {
-        var country = getCountryByN3(codN3);
-        if (country == null) { return; };
-        label.text(country.name_en);
-    } else {
-        label.text("Please select a country");
-    }
-}
-
-
-function projects_info_clear() {
-    d3.select("#country-info").remove();
-    projects_info_set_country_label(null);
-}
-
-function projects_info_display(codN3) {
-
-    projects_info_clear();
-    projects_info_set_country_label(codN3);
-    
-    var project_idxs = null;
-    map_by_country.forEach(function (obj, index) {
-        if (obj.id == codN3) {
-            project_idxs = obj.projects;
-        }
-    });
-
-    var curr_projects = [];
-    if (project_idxs != null) {
-        project_idxs.forEach(function (item, index) {
-            curr_projects.push(projects[item]);
-        });
-    }
-    var nProjects = curr_projects.length;
-
-    //console.log(curr_projects);
-
-    var infolist = d3.select(".side-nav-info")
-        .append("ul").attr("id","country-info")
-
-
-    if (nProjects > 1) {
-
-        author_ids = {};
-        categories = {};
-        last_update = new Date(0);
-
-        curr_projects.forEach(function (item, index) {
-            
-            // console.log(item);
-
-            // author set (using dictionary as set)
-            author_ids[item.user_id] = 0;
-
-            // fill categories
-            Object.keys(item.categories).forEach(function (cat_item_id, cat_index) {
-                cat_id = item.categories[cat_item_id].id;
-                cat_name = item.categories[cat_item_id].name;
-                categories[cat_id] = cat_name;
-            });
-
-            modified = new Date(item.modified);
-            last_update = last_update > modified ? last_update : modified;
-        });
-        // console.log(categories);
-
-        infolist.append("li").text("Projects: " + nProjects);
-        infolist.append("li").text("Authors: " + Object.keys(author_ids).length);
-        infolist.append("li").text("Last Update: " + last_update.toDateString());
-        infolist.append("li").text("Categories: " + Object.keys(categories).length);
-        // infolist.append("li").text("Finished: " + 0);
-    } else if (nProjects == 1) {
-
-        var project = curr_projects[0];
-        //console.log(project);
-
-        var proj_description_max = 100;
-        var proj_description = project.description.substring(0,proj_description_max);
-        if (project.description.length > proj_description_max) {
-            proj_description += "...";
+        if (matches.length >0) {
+            return matches[0];
         };
-
-        infolist.append("li").text("Projects: 1");
-        infolist.append("li").text("Project: " + project.name);
-        infolist.append("li").text(proj_description);
-        infolist.append("li").text("Organization: " + project.organization);
-        // infolist.append("li").text("stage: " + project.project_stage.name);
-        // infolist.append("li").text("org type: " + project.organization_type.name);
-        // infolist.append("li").text("user name: " + project.user.name);
-        // infolist.append("li").text("user mail: " + project.user.email);
-        // infolist.append("li").text("user main org: " + project.user.main_organization);
-        // infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
-        // infolist.append("li").text("last modification: " + project.modified.substr(0,10));
-        var cats = infolist.append("li").text("Categories: ")
-            .append("ul");
-
-        project.categories.forEach(function(item, index) {
-            cats.append("li").text("#" + (index + 1) + ": " + item.name);
-        });
-        infolist.append("li").append("a")
-            .text("Complete info ...")
-            .attr("href", "projects/" + project.id);
-    } else {
-        infolist.append("li").text("Projects: 0");
+        if (name) { console.log("Attemped to use undefined data '" + name + "' (id:" + id + ")."); };
+        return null;   
     }
-}
+
+    // continents
+    function getContinentById(id) {
+        return _getDataById(id, _data_continents, 'continent');
+    }
+
+    // subcontinents
+    function getSubcontinentById(id) {
+        return _getDataById(id, _data_subcontinents, 'subcontinent');
+    }
+
+    // countries
+    function getCountryById(id) {
+        return _getDataById(id, _data_countries, 'country');
+    }
+
+    // genres
+    function getGenreById(id) {
+        return _getDataById(id, _data_genres, 'genre');
+    }
+
+    // project_stages
+    function getProjectStageById(id) {
+        return _getDataById(id, _data_project_stages, 'project_stage');
+    }
+
+    // categories
+    function getCategoryById(id) {
+        return _getDataById(id, _data_categories, 'category');
+    }
+
+    // organization_types
+    function getOrganizationTypeById(id) {
+        return _getDataById(id, _data_organization_types, 'organization_type');
+    }
+
+    // projects
+    function getProjectById(id) {
+        return _getDataById(id, _data_projects, 'project');
+    }
+
+    // console.log(getProjectById(5));
+    // console.log(getContinentById(5));
+    // console.log(getSubcontinentById(14));
+    // console.log(getCountryById(152));
+    // console.log(getGenreById(1));
+    // console.log(getProjectStageById(1));
+    // console.log(getCategoryById(3));
+    // console.log(getOrganizationTypeById(1));
+
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //////////////////// PREPARE DATA /////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // create map with {country_id, project_ids_array}
+    function getCountryProjectsMap() {
+        
+        // object version
+        var _map_by_country = {};
+        _data_projects.map(function (project, index) {
+            if (_map_by_country[project.country_id] != null) 
+                return _map_by_country[project.country_id].push(index);
+            return _map_by_country[project.country_id] = [index];
+        });
+
+        // array version
+        var map_by_country = []
+        Object.keys(_map_by_country).map(function(value, index) {
+            map_by_country.push({'id':value, 'projects':_map_by_country[value]});
+        })
+
+        // console.log(_map_by_country);
+        // console.log(map_by_country);
+        return map_by_country;
+    }
+
+    function getCountryProjectIds(id) {
+        country = _getDataById(id, _data_map_by_country, null);
+        if (country) {
+            return country.projects;
+        };
+        // console.log("Attemped to get projects from an inexistent country (id:" + id + ").");
+        return null;
+    }
+    var _data_map_by_country = getCountryProjectsMap();
+    
+    // console.log(getCountryProjectIds(152));
+    
 
 
 </script>
 
+<!-- CSS -->
+<?= $this->Html->css('app/map.css') ?>
+
+<!-- JAVASCRIPT -->
+<?= $this->Html->script('d3/d3.min.js') ?>
+<?= $this->Html->script('topojson/topojson.min.js') ?>
+
+<?= $this->Html->script('app/map_drawers.js') ?>
+<?= $this->Html->script('app/map_listeners.js') ?>
+<?= $this->Html->script('app/map.js') ?>

@@ -17,18 +17,25 @@ class ProjectsController extends AppController
      */
     public function index($instance_namespace = null)
     {
-        $instance_id = TableRegistry::get('Instances')
+        $instance = TableRegistry::get('Instances')
             ->find()
-            ->select(['id'])
+            ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
+            ->first();
 
+        $country_id = (int)$this->request->query["c"];
         $this->paginate = [
+            'limit'      => 5,
             'contain'    => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities'],
-            'conditions' => ['Projects.instance_id' => $instance_id]
+            'conditions' => [
+                'Projects.instance_id' => $instance->id,
+                'Projects.country_id' => $country_id
+            ]
         ];
         $projects = $this->paginate($this->Projects);
 
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set(compact('projects'));
         $this->set('_serialize', ['projects']);
     }
@@ -39,12 +46,29 @@ class ProjectsController extends AppController
      */
     public function view($instance_namespace = null, $id = null)
     {
+        # load instance data
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
         $project = $this->Projects->get($id, [
-            'contain' => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities', 'Categories']
+            'contain' => [
+                'Users' => function ($q) {
+                    return $q->select(['id', 'name']);
+                },
+                'OrganizationTypes',
+                'ProjectStages',
+                'Countries',
+                'Categories'
+            ]
         ]);
+        // var_dump($project);
 
         $this->set('project', $project);
         $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set('_serialize', ['project']);
     }
 
@@ -56,23 +80,76 @@ class ProjectsController extends AppController
      */
     public function add($instance_namespace = null)
     {
+        # load instance data
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {
+
+            # NO ES ATÓMICO!
+            $last_id = $this->Projects
+                ->find()
+                ->select(['id'])
+                ->order(['id' =>'DESC'])
+                ->first()->id;
+            #var_dump($last_id);
+
             $project = $this->Projects->patchEntity($project, $this->request->data);
+            $project->id = $last_id + 1;
+            $project->instance_id = $instance->id;
+
+            // OJO!: MIENTRAS
+            $project->user_id = 0;
+            // 
+
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             }
         }
-        $users = $this->Projects->Users->find('list', ['limit' => 200]);
-        $organizationTypes = $this->Projects->OrganizationTypes->find('list', ['limit' => 200]);
-        $projectStages = $this->Projects->ProjectStages->find('list', ['limit' => 200]);
-        $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
-        $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
-        $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories','instance_namespace'));
+
+        // OrganizationTypes
+        $organizationTypes = $this->Projects->OrganizationTypes
+            ->find('list')
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+        // countries
+        $countries = $this->Projects->Countries
+            ->find('list')
+            ->where(['Countries.id !=' => '0'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+        // ProjectStages
+        $projectStages = $this->Projects->ProjectStages
+            ->find('list')
+            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->order(['id' => 'ASC'])
+            ->all();
+
+        // Categories
+        $categories = $this->Projects->Categories
+            ->find('list', ['limit' => 200])
+            ->where(['Categories.name !=' => '[unused]'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+
+        // $users = $this->Projects->Users->find('list', ['limit' => 200]);
+        // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
+
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
+        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories','instance_namespace'));
         $this->set('_serialize', ['project']);
     }
 
@@ -85,6 +162,13 @@ class ProjectsController extends AppController
      */
     public function edit($instance_namespace = null, $id = null)
     {
+        # load instance data
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
         $project = $this->Projects->get($id, [
             'contain' => ['Categories']
         ]);
@@ -92,18 +176,47 @@ class ProjectsController extends AppController
             $project = $this->Projects->patchEntity($project, $this->request->data);
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+                return $this->redirect(['controller' => 'Projects', 'action' => 'view', $instance_namespace, $id]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
+                return $this->redirect(['controller' => 'Projects', 'action' => 'view', $instance_namespace, $id]);
             }
         }
-        $users = $this->Projects->Users->find('list', ['limit' => 200]);
-        $organizationTypes = $this->Projects->OrganizationTypes->find('list', ['limit' => 200]);
-        $projectStages = $this->Projects->ProjectStages->find('list', ['limit' => 200]);
-        $countries = $this->Projects->Countries->find('list', ['limit' => 200]);
-        $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
-        $categories = $this->Projects->Categories->find('list', ['limit' => 200]);
-        $this->set(compact('project', 'users', 'organizationTypes', 'projectStages', 'countries', 'cities', 'categories', 'instance_namespace'));
+
+        // OrganizationTypes
+        $organizationTypes = $this->Projects->OrganizationTypes
+            ->find('list')
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+        // countries
+        $countries = $this->Projects->Countries
+            ->find('list')
+            ->where(['Countries.id !=' => '0'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+        // ProjectStages
+        $projectStages = $this->Projects->ProjectStages
+            ->find('list')
+            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->order(['id' => 'ASC'])
+            ->all();
+
+        // Categories
+        $categories = $this->Projects->Categories
+            ->find('list', ['limit' => 200])
+            ->where(['Categories.name !=' => '[unused]'])
+            ->order(['name' => 'ASC'])
+            ->all();
+
+        // $users = $this->Projects->Users->find('list', ['limit' => 200]);
+        // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
+
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
+        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories', 'instance_namespace'));
         $this->set('_serialize', ['project']);
     }
 

@@ -89,8 +89,8 @@
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
-                    <?php foreach ($instance->categories as $category): ?>
                     <tbody>
+                    <?php foreach ($instance->categories as $category): ?>
                         <tr>
                             <td><?= h($category->name) ?></td>
                             <td><?= h($category->name_es) ?></td>
@@ -127,8 +127,8 @@
                             <th class="actions"><?= __('Actions') ?></th>
                         </tr>
                     </thead>
-                    <?php foreach ($instance->organization_types as $organization_type): ?>
                     <tbody>
+                    <?php foreach ($instance->organization_types as $organization_type): ?>
                         <tr>
                             <td><?= h($organization_type->name) ?></td>
                             <td><?= h($organization_type->name_es) ?></td>

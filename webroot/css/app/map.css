@@ -1,0 +1,42 @@
+/* = = = = = = = = = = = =  map = = = = = = = = = = = = */
+/* CAS ORANGE: #F26722 */
+/* CAS BLUE  : #42C8F4  */
+
+.svg-background { fill: lightblue; }
+
+.country        { fill: #ddffcc; }
+.country_hover  { fill: #f79c6e; }
+.country_active { fill: #f26722; }
+
+.country-boundary {
+  fill: none;
+  stroke: gray;
+  stroke-dasharray: 3,4;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
+}
+
+.country-coastline {
+  fill: none;
+  stroke: #aaa;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
+}
+
+#country_tooltip_text {
+    fill: black;    
+}
+#country_tooltip_rect {
+    fill: white;
+    stroke: gray;
+}
+
+
+#svg-map {
+    position: relative;
+}
+.zoom_buttons {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+}

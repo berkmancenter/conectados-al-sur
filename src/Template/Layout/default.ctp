@@ -14,7 +14,9 @@
     -->
     <?= $this->Html->css('foundation/foundation.min.css') ?>
     <?= $this->Html->css('foundation-icons/foundation-icons.css') ?>
-    <?= $this->Html->css('app.css') ?>    
+    <?= $this->Html->css('app.css') ?>
+
+    <?= $this->Html->script('foundation/jquery.js') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -96,7 +98,6 @@
             </div>
         </footer>
 
-        <?= $this->Html->script('foundation/jquery.js') ?>
         <?= $this->Html->script('foundation/what-input.js') ?>
         <?= $this->Html->script('foundation/foundation.min.js') ?>
         <?= $this->Html->script('app.js') ?>

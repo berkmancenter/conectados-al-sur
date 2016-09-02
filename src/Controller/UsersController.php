@@ -42,12 +42,38 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($instance_namespace = null, $id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => ['Genres', 'OrganizationTypes', 'Projects']
-        ]);
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
 
+        $user = $this->Users->find()
+            ->where(['Users.id' => $id])
+            ->select([
+                    'id',
+                    'name',
+                    'contact',
+                    'genre_id',
+                    'main_organization',
+                    'organization_type_id',
+                ])
+            ->select($this->Users->Genres)
+            ->select($this->Users->OrganizationTypes)
+            ->contain([
+                    'Genres',
+                    'OrganizationTypes',
+                    'Projects'
+                ])
+            ->first();
+
+        // var_dump($user);
+
+
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
