@@ -16,13 +16,34 @@
                 <button class="close-button" aria-label="Close menu" type="button" data-close>
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <ul class="vertical menu">
-                    <li><a href="#">Lorem.</a></li>
-                    <li><a href="#">Facilis.</a></li>
-                    <li><a href="#">Sed?</a></li>
-                    <li><a href="#">Impedit?</a></li>
-                    <li><a href="#">Maxime.</a></li>
-                </ul>
+
+                <div class="row">
+                    <div class="small-12 columns">
+                        <div class="form">
+                            <p><strong>Filtering options</strong></p>
+                            
+                            <form id="filter-form">
+                                <?php 
+                                echo $this->Form->input('Organization Type', [
+                                    // 'class' => 'filter-select',
+                                    'id' => 'filter-orgtype',
+                                    'empty' => '---',
+                                    'options' => $_organization_types]
+                                    //, 'multiple' => true
+                                );
+                                echo $this->Form->input('Category', [
+                                    // 'class' => 'filter-select',
+                                    'id' => 'filter-category',
+                                    'empty' => '---',
+                                    'options' => $_categories]
+                                );
+                                ?>
+                            </form>
+                            <button type="button" class="button" id="filter-clear">Clear Filters</button>
+                            <button type="button" class="warning button" id="filter-apply">Apply</button>
+                        </div>                        
+                    </div>
+                </div>
             </div>
 
             <div class="off-cavas-content" data-off-canvas-content>
@@ -49,7 +70,8 @@
                         </div>
                         <hr>
                         <div class="side-filters">
-                            <p id="info-nprojects"></p> <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
+                            <p id="info-nprojects"></p>
+                            <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
                         </div>
                         <hr>
                         <div class="side-nav-info">
@@ -180,37 +202,67 @@
     ///////////////////////////////////////////////////////////////////////////////
 
     // create map with {country_id, project_ids_array}
-    function getCountryProjectsMap() {
-        
+    function filterProjectsData(options) {
+
         // object version
         var _map_by_country = {};
         _data_projects.map(function (project, index) {
-            if (_map_by_country[project.country_id] != null) 
-                return _map_by_country[project.country_id].push(index);
-            return _map_by_country[project.country_id] = [index];
+
+
+            if (project.country_id == 862) {
+                // console.log(project);
+            };
+            
+
+            // organization_type
+            if ( options.hasOwnProperty('organization_type_id')) {
+                if (project.organization_type_id != options.organization_type_id) {
+                    return;
+                };
+            }
+
+            //category
+            if ( options.hasOwnProperty('category_id')) {
+                has_category = project.categories.reduce(
+                    function (result, category) {
+                        match = category.id == options.category_id;
+                        return result || match;
+                    },
+                    false
+                );
+                if (!has_category) { return; }
+            }
+
+            // ----------------------------------------------------------------
+            // project is valid!
+            if (_map_by_country[project.country_id] != null) {
+                return _map_by_country[project.country_id].push(project.id);
+            }
+            return _map_by_country[project.country_id] = [project.id];
         });
 
         // array version
         var map_by_country = []
         Object.keys(_map_by_country).map(function(value, index) {
             map_by_country.push({'id':value, 'projects':_map_by_country[value]});
-        })
-
-        // console.log(_map_by_country);
-        // console.log(map_by_country);
+        });
+        
         return map_by_country;
     }
 
+
     function getCountryProjectIds(id) {
-        country = _getDataById(id, _data_map_by_country, null);
+        country = _getDataById(id, actual_map_by_country, null);
+        // console.log(id);
+        // console.log(country);
         if (country) {
             return country.projects;
         };
         // console.log("Attemped to get projects from an inexistent country (id:" + id + ").");
         return null;
     }
-    var _data_map_by_country = getCountryProjectsMap();
-    
+    var data_map_by_country = filterProjectsData({});
+    var actual_map_by_country = data_map_by_country;
     // console.log(getCountryProjectIds(152));
     
 
@@ -219,6 +271,19 @@
 
 <!-- CSS -->
 <?= $this->Html->css('app/map.css') ?>
+<?php if (isset($instance_namespace) 
+    && ($instance_namespace == "cas")
+    && isset($instance_logo)
+    && !empty($instance_logo)): ?>
+    
+    <style type="text/css">
+    div#content {
+        /* bottom padding for footer: prevents overlaping; */
+        padding-bottom: 103px;
+    }
+    </style>
+<?php endif; ?>
+
 
 <!-- JAVASCRIPT -->
 <?= $this->Html->script('d3/d3.min.js') ?>

@@ -40,3 +40,113 @@
     left: 10px;
     top: 10px;
 }
+
+
+/* ****************************************************************************
+* PAGE
+**************************************************************************** */
+
+.page-content-with-sidebar {
+    background: #fff;
+    color: #363637;
+    
+    min-height: 700px;
+    padding: 0px 0px 0px 0px;
+
+    border: 0px;
+    border-top: 1px solid #808080;
+    margin: 0px;
+    margin-bottom: 0px;
+}
+.projects-index .side-nav { 
+    padding: 10px 10px;
+    border: 0px;
+    border-right: 5px solid #808080;
+    margin: 0px;
+    /*background: blue;*/
+}
+.projects-map {
+    min-height: 600px;
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    /*background: green;*/
+}
+
+.side-links {
+    padding: 0px 0px;
+}
+.side-links ul.button-group {
+    margin: 0px;
+}
+
+.off-canvas {
+
+    background: #f2f2f2;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+
+    position: fixed;
+    min-height: 100%;
+    transition: all 3s ease-in-out;
+    z-index: 25;
+    /*transition-property: all;
+    transition-delay: 0s;
+    transition-duration: 2s;
+    transition-timing-function: ease-out;*/
+}
+
+.off-canvas-content {
+  margin-right: 0;
+  transition: all 3s ease-in-out;
+}
+
+#filter-clear {
+  float: right;
+  font-size: 15px;
+}
+
+#filter-submit {
+  font-size: 15px;
+  text-transform: none;
+}
+
+div#content {
+    /* bottom padding for footer: prevents overlaping; */
+    padding-bottom: 225px;
+}
+/*.preview-imgs img:hover, .preview-imgs img:focus {
+    box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
+}
+*/
+
+
+/* - - - - - - side-bar - - - - - - */
+/*.side-nav li a:not(.button) {
+    color: #15848F;
+}
+
+.side-nav li a:not(.button):hover {
+    color: #15848F;
+}
+.side-nav li.heading {
+    color: #1798A5;
+    font-size: 0.875rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 0.4375rem 0.875rem;
+}
+*/
+/*.side-nav li
+{
+    background-color: #ccc;
+}
+.side-nav li a:not(.button)
+{
+    color: #000;
+}
+.side-nav li a:hover:not(.button)
+{
+    color: red;
+}*/
+

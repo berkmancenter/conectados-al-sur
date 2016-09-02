@@ -127,6 +127,18 @@ class InstancesController extends AppController
                 }
             ])
             ->first();
+
+        $_categories = $this->Instances->Categories
+            ->find('list')
+            ->where(['Categories.name !=' => '[unused]'])
+            ->order(['name' =>'ASC'])
+            ->all();
+
+        $_organization_types = $this->Instances->OrganizationTypes
+            ->find('list')
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->order(['name' =>'ASC'])
+            ->all();
         // available categories
         // var_dump($instance->categories);
 
@@ -165,6 +177,8 @@ class InstancesController extends AppController
         $this->set('countries', $countries);
         // $this->set(compact('projects', 'instance_namespace'));
         // $this->set('_serialize', ['projects']);
+        $this->set('_organization_types', $_organization_types);
+        $this->set('_categories', $_categories);
     }
 
 

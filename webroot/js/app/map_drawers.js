@@ -194,6 +194,9 @@ function projects_info_display(codN3) {
     var project_idxs = getCountryProjectIds(codN3);
     
     var curr_projects = [];
+    // console.log("n3: " + codN3);
+    // console.log(project_idxs);
+
     // console.log(project_idxs);
     if (project_idxs != null) {
         project_idxs.forEach(function (item, index) {
@@ -241,7 +244,8 @@ function projects_info_display(codN3) {
     } else if (nProjects == 1) {
 
         var project = curr_projects[0];
-        //console.log(project);
+        // console.log(project);
+        // console.log(curr_projects);
 
         var proj_description_max = 100;
         var proj_description = project.description.substring(0,proj_description_max);

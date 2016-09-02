@@ -1,8 +1,4 @@
 
-d3.select("#info-nprojects")
-    .text("Found " + _data_projects.length + " projects");
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////// D3 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -23,13 +19,6 @@ var availableHeight = document.getElementById('svg-map').clientHeight;
 var margin = {top: 0, right: 0, bottom: 0, left: 0},
     width  = availableWidth - margin.left - margin.right,
     height = 700 - margin.top  - margin.bottom;
-
-
-
-
-
-
-
 
 
 // zooming behavior
@@ -131,44 +120,7 @@ function ready(error, world) {
 
     ///// pins
     ///////////////////////////////////////////
-    var pins = g.selectAll(".country_pin")
-            .data(_data_map_by_country, function(d) { return d.id; })
-        .enter().append("circle")
-            .attr("class","country_pin")    // class: "country_pin"
-            .attr("id", function(d,i) {     // id   : "country_pin-<codN3>"
-                return "country_pin-" + d.id;
-            })
-            .attr("cx", function(d,i) {
-                var country = getCountryById(d.id);
-                if (country == null) { return 0; };
-                return projection([country.longitude, country.latitude])[0]; 
-            })
-            .attr("cy", function(d,i) {
-                var country = getCountryById(d.id);
-                if (country == null) { return 0; };
-                return projection([country.longitude, country.latitude])[1];
-            })
-            .attr("r" , function(d,i) {
-                var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-                return 9*scale;
-            })
-            .style("fill", function(d,i) {
-                var max_projs = 10.0;
-                var h_maxcolor = 0;
-                var h_mincolor = 60;
-
-                var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
-                var n = h_mincolor - m*1;
-
-                var h_value = Math.min(d.projects.length, max_projs);
-                h_value = m*h_value + n;
-                return "hsl(" + h_value + ", 60%, 50%)";
-            })
-            .style("stroke", "black")
-            .style("stroke-width", 1)
-            .on("click", pinClickListener)
-            .on("mouseover", pinMouseOverListener)
-            .on("mouseout", pinMouseOutListener);
+    update_world();
 
 
     ///// tooltip 
@@ -189,6 +141,102 @@ function ready(error, world) {
 }
 
 
+function update_world(map_by_country) {
+
+    // data join
+    var markers = g.selectAll(".country_pin")
+            .data(actual_map_by_country, function(d) { return d.id; });
+
+    // update
+    // markers.attr("class", "updated");
+
+    // enter
+    markers.enter().append("circle")
+        .attr("class","country_pin node")  // class: "country_pin"
+        .attr("id", function(d,i) {        // id   : "country_pin-<codN3>"
+            return "country_pin-" + d.id;
+        })
+        .attr("cx", function(d,i) {
+            var country = getCountryById(d.id);
+            if (country == null) { return 0; };
+            return projection([country.longitude, country.latitude])[0]; 
+        })
+        .attr("cy", function(d,i) {
+            var country = getCountryById(d.id);
+            if (country == null) { return 0; };
+            return projection([country.longitude, country.latitude])[1];
+        })
+        .attr("r" , function(d,i) {
+            var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
+            return 9*scale/current_transform.k;
+        })
+        .style("fill", function(d,i) {
+            var max_projs = 10.0;
+            var h_maxcolor = 0;
+            var h_mincolor = 60;
+
+            var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
+            var n = h_mincolor - m*1;
+
+            var h_value = Math.min(d.projects.length, max_projs);
+            h_value = m*h_value + n;
+            return "hsl(" + h_value + ", 60%, 50%)";
+        })
+        .style("stroke", "black")
+        .style("stroke-width", country_pin.normal.stroke_width/current_transform.k)
+        .on("click", pinClickListener)
+        .on("mouseover", pinMouseOverListener)
+        .on("mouseout", pinMouseOutListener);
+
+
+    // enter + update
+    // markers.merge(markers)
+        // .foo
+
+    // exit
+    markers.exit().remove();
+
+    projects_info_display(active_country_id);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//////////////////// DATA FILTERING  //////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+// -------------------------- clear form button -------------------------------
+d3.select("#filter-clear")
+    .on("click", filterClearListener);
+
+function filterClearListener() {
+    document.getElementById("filter-form").reset();
+}
+
+// -------------------------- apply form button -------------------------------
+d3.select("#filter-apply")
+    .on("click", filterApplyListener);
+
+function filterApplyListener() {
+
+    var options = {};
+
+    // organization type
+    var orgtype = document.getElementById("filter-orgtype").value;
+    if (orgtype) { options.organization_type_id = orgtype; };
+    
+    // category
+    var category = document.getElementById("filter-category").value;
+    if (category) { options.category_id = category; };
+    
+    // console.log(options);
+    actual_map_by_country = filterProjectsData(options);
+    update_world();
+}
+
+
+
+d3.select("#info-nprojects")
+    .text("Found " + _data_projects.length + " projects");
 
 
 
