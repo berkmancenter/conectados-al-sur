@@ -239,7 +239,8 @@ function projects_info_display(codN3) {
         // infolist.append("li").text("Finished: " + 0);
         infolist.append("li").append("a")
             .text("Complete info ...")
-            .attr("href", "projects?c=" + codN3);
+            .attr("href", "projects?c=" + codN3)
+            .attr("target", "_blank");
 
     } else if (nProjects == 1) {
 
@@ -273,7 +274,8 @@ function projects_info_display(codN3) {
         });
         infolist.append("li").append("a")
             .text("Complete info ...")
-            .attr("href", "projects/" + project.id);
+            .attr("href", "projects/" + project.id)
+            .attr("target", "_blank");
     } else {
         infolist.append("li").text("Projects: 0");
     }

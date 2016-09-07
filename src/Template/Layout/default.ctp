@@ -31,7 +31,7 @@
                 <span data-responsive-toggle="responsive-menu" data-hide-for="medium">  
                     <button class="menu-icon light" type="button" data-toggle></button>
                 </span>
-                dvine web-app
+                DVINE WEB-APP
             </div>
             <div id="responsive-menu">
                 <div class="top-bar-left">
@@ -39,9 +39,9 @@
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <?= $this->fetch('available-actions') ?>
-                        <li>
+                       <!--  <li>
                             <a href="#"><i class="fi-torso"></i></a>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -55,46 +55,46 @@
 
         <!-- footer -->
         <footer>
-            <div class="row expanded">
-                <?php if (isset($instance_namespace) && ($instance_namespace != "cas") && isset($instance_logo) && !empty($instance_logo)):  ?>
-                    <div class="small-12 columns footer-imgdiv-optional">
-                    <?= 
-                        $this->Html->image('/' . $instance_logo , ['alt' => 'Instance Logo', "class" => "footer-image"])
-                    ?>
+            
+            <?php if (
+                isset($instance_namespace) &&
+                isset($instance_logo) && 
+                !empty($instance_logo)):  
+            ?>
+                <div class="row expanded">
+                    <div class="small-12 columns footer-imgdiv">
+                        <span class="footer-logo-helper"></span>
+                        <?= 
+                            $this->Html->image('/' . $instance_logo , [
+                                'alt'   => 'Instance Logo',
+                                'class' => "footer-logo"
+                            ])
+                        ?>
                     </div>
-                <?php endif; ?>
-            </div>
-            <div class="row expanded">
-                <div class="small-12 columns footer-imgdiv">
-                    <?= 
-                    $this->Html->image('LOGO_CAS_ALPHA.png',
-                    [
-                        "alt" => "LOGO_CAS",
-                        "class" => "footer-image"
-                    ])?>
                 </div>
-            </div>
+            <?php endif; ?>
+
             <div class="row expanded footer-infodiv">
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
                         <li class="menu-text">© 2016 dvine</li>
                     </ul>
                 </div>
-                <div class="small-4 medium-3 columns footer-infoitem text-center">
-                    <a class="button" href="#">All rights reserved??</a></li>
+                <div class="small-12 medium-3 columns footer-infoitem">
+                    <ul class="menu">
+                        <li><a class="button" href="#">Creative Commons??</a></li>
+                    </ul>
                 </div>
-                <div class="small-4 medium-3 columns footer-infoitem text-center">
-                    <a class="button" href="#">Privacy Policy??</a>
+                <div class="small-12 medium-3 columns footer-infoitem">
+                    <ul class="menu">
+                        <li><a class="button" href="#">Privacy Policy??</a></li>
+                    </ul>
                 </div>
-                <div class="small-4 medium-3 columns footer-infoitem text-center">
-                    <?= $this->Html->link(__('Contact'), "#", ['class' => 'button']) ?>
+                <div class="small-12 medium-3 columns footer-infoitem">
+                    <ul class="menu">
+                        <li><?= $this->Html->link(__('Contact'), "#", ['class' => 'button']) ?></li>
+                    </ul>
                 </div>
-                       
-                        <!-- <li><a href="#">Social Networks. Put FB, Twitter Here!</a></li> -->
-                        <!-- 
-                        authorship information
-                        Tip: Contact information inside a <footer> element should go inside an <address> tag. 
-                        -->
             </div>
         </footer>
 

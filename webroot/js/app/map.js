@@ -120,7 +120,8 @@ function ready(error, world) {
 
     ///// pins
     ///////////////////////////////////////////
-    update_world();
+    filterClearOptions();
+    filterApplyOptions();
 
 
     ///// tooltip 
@@ -141,14 +142,11 @@ function ready(error, world) {
 }
 
 
-function update_world(map_by_country) {
+function update_world(options) {
 
     // data join
     var markers = g.selectAll(".country_pin")
             .data(actual_map_by_country, function(d) { return d.id; });
-
-    // update
-    // markers.attr("class", "updated");
 
     // enter
     markers.enter().append("circle")
@@ -196,28 +194,63 @@ function update_world(map_by_country) {
     // exit
     markers.exit().remove();
 
+
+    // update zoom position
+    if (options && options.hasOwnProperty('country_id')) { 
+        zoomToCountry(options.country_id);
+    }
+
+    // update information
+    d3.select("#info-nprojects").text("Found " + n_filtered_projects + " projects");
     projects_info_display(active_country_id);
+}
+
+function zoomToCountry(country_id) {
+
+    country = getCountryById(country_id);
+    if (!country) { return; }
+    // console.log("zooming to id: " + country_id);
+
+    // zoom
+    point = projection([country.longitude, country.latitude]);
+    transform = d3.zoomIdentity
+      .translate(width / 2, height / 2)
+      .scale(6)
+      .translate(-point[0], -point[1]);
+    outer_g.transition().duration(750).call(zoom.transform, transform);
+    // zoom.transform(outer_g.transition().duration(750), d3.zoomIdentity);
+
+    // record new state
+    current_transform = transform;
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////// DATA FILTERING  //////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
+d3.select("#filter-clear").on("click", filterClearOptions);
+d3.select("#filter-apply").on("click", filterApplyOptions);
+d3.select("#filter-region").on("change", filterUpdateRegion);
 
-// -------------------------- clear form button -------------------------------
-d3.select("#filter-clear")
-    .on("click", filterClearListener);
 
-function filterClearListener() {
+// -------------------------- clear  -------------------------------
+function filterClearOptions() {
     document.getElementById("filter-form").reset();
+    filterUpdateRegion();
 }
 
-// -------------------------- apply form button -------------------------------
-d3.select("#filter-apply")
-    .on("click", filterApplyListener);
+// -------------------------- apply  -------------------------------
+function filterApplyOptions() {
 
-function filterApplyListener() {
+    options = filterParseOptions();   
 
+    actual_map_by_country = filterProjectsData(options);
+    update_world(options);
+}
+
+// -------------------------- parse form ---------------------------
+function filterParseOptions() {
+    
     var options = {};
 
     // organization type
@@ -227,16 +260,98 @@ function filterApplyListener() {
     // category
     var category = document.getElementById("filter-category").value;
     if (category) { options.category_id = category; };
+
+    // project_stage
+    var stage = document.getElementById("filter-stage").value;
+    if (stage) { options.project_stage_id = stage; };
     
+    // user genre
+    var genre = document.getElementById("filter-genre").value;
+    if (genre) { options.user_genre_id = genre; };
+
+    // region
+    var region = document.getElementById("filter-region").value;
+    if (region) { options.region_id = region; };
+
+    // country
+    var country = document.getElementById("filter-country").value;
+    if (country) { options.country_id = country; };
+
     // console.log(options);
-    actual_map_by_country = filterProjectsData(options);
-    update_world();
+    return options;
 }
 
+// -------------------------- location interaction -------------------------------
 
+function filterClearSelectOption(selector_id) {
+    $('#' + selector_id + ' option').prop('selected', function() {
+        return this.defaultSelected;
+    });
+}
 
-d3.select("#info-nprojects")
-    .text("Found " + _data_projects.length + " projects");
+function getRegionSubcontinentIds(region_id) {
+    var valid_subcontinent_ids = [];
+    _data_subcontinents.map(
+        function(subcontinent) {
+            var continent_id = subcontinent.continent_id;
+            if (region_id == "" || region_id == continent_id) {
+                valid_subcontinent_ids.push(subcontinent.id);
+            }
+        }
+    );
+    // console.log(valid_subcontinent_ids);
+    return valid_subcontinent_ids;
+}
 
+function getSubcontinentCountryIds(subcontinent_ids) {
+    var valid_country_ids = [];
+    _data_countries.map(
+        function(country) {
+            var subcontinent_id = country.subcontinent_id;
+            if (subcontinent_ids.includes(subcontinent_id)) {
+                valid_country_ids.push(country.id);
+            }
+        }
+    );
+    // console.log(valid_country_ids);
+    return valid_country_ids;
+}
 
+function filterUpdateCountriesSelector(country_ids) {
+
+    var countries = d3.select("#filter-country")
+        .selectAll(".country_selector")
+        .data(country_ids);
+
+    // append options and update value, text
+    countries
+        .enter().append("option")
+            .attr("class", "country_selector")
+        .merge(countries)
+            .attr("value", function(d,i) {
+                return d;
+            })
+            .text(function(d,i) {
+                country = getCountryById(d);
+                // console.log("id: " + d + ", name: " + country.name);
+                return country.name;
+            });
+
+    // remove remaining options
+    countries.exit().remove();
+}
+
+function filterUpdateRegion() {
+
+    // reset country selector
+    filterClearSelectOption("filter-country");
+
+    // get valid countries
+    var region_id = document.getElementById("filter-region").value;
+    valid_subcontinent_ids = getRegionSubcontinentIds(region_id);
+    valid_country_ids      = getSubcontinentCountryIds(valid_subcontinent_ids);
+
+    // update selector
+    filterUpdateCountriesSelector(valid_country_ids);
+}
 

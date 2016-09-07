@@ -108,7 +108,7 @@ class InstancesController extends AppController
             ->find()
             ->where(['ProjectStages.name !=' => '[unused]'])
             ->all();
-
+        
         // var_dump($genres);
         // var_dump($project_stages);
 
@@ -127,18 +127,6 @@ class InstancesController extends AppController
                 }
             ])
             ->first();
-
-        $_categories = $this->Instances->Categories
-            ->find('list')
-            ->where(['Categories.name !=' => '[unused]'])
-            ->order(['name' =>'ASC'])
-            ->all();
-
-        $_organization_types = $this->Instances->OrganizationTypes
-            ->find('list')
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
-            ->order(['name' =>'ASC'])
-            ->all();
         // available categories
         // var_dump($instance->categories);
 
@@ -163,6 +151,48 @@ class InstancesController extends AppController
         // ->first();
         // var_dump($projects->categories);
 
+        // filter trick
+        $countries_f = TableRegistry::get('Countries')
+            ->find('list')
+            ->where(['Countries.id !=' => '0'])
+            ->order(['name' =>'ASC'])
+            ->all();
+        $genres_f = TableRegistry::get('Genres')
+            ->find('list')
+            ->where(['Genres.name !=' => '[unused]'])
+            ->order(['name' =>'ASC'])
+            ->all();
+        $project_stages_f = TableRegistry::get('ProjectStages')
+            ->find('list')
+            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->all();
+        $_categories = $this->Instances->Categories
+            ->find('list')
+            ->where(['Categories.name !=' => '[unused]'])
+            ->order(['name' =>'ASC'])
+            ->all();
+        $_organization_types = $this->Instances->OrganizationTypes
+            ->find('list')
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->order(['name' =>'ASC'])
+            ->all();
+        $continents_f = TableRegistry::get('Continents')
+            ->find('list')
+            ->where(['Continents.id !=' => '0'])
+            ->all();
+        $subcontinents_f = TableRegistry::get('Subcontinents')
+            ->find('list')
+            ->where(['Subcontinents.id !=' => '0'])
+            ->all();
+
+        $this->set('continents_f', $continents_f);
+        $this->set('subcontinents_f', $subcontinents_f);
+        $this->set('countries_f', $countries_f);
+        $this->set('genres_f', $genres_f);
+        $this->set('project_stages_f', $project_stages_f);
+        $this->set('_organization_types', $_organization_types);
+        $this->set('_categories', $_categories);
+
         // independent data
         $this->set('genres', $genres);
         $this->set('project_stages', $project_stages);
@@ -177,8 +207,7 @@ class InstancesController extends AppController
         $this->set('countries', $countries);
         // $this->set(compact('projects', 'instance_namespace'));
         // $this->set('_serialize', ['projects']);
-        $this->set('_organization_types', $_organization_types);
-        $this->set('_categories', $_categories);
+        
     }
 
 

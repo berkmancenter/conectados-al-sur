@@ -47,8 +47,8 @@
 
 html,
 body {
-    background: #fff;
     height: 100%;
+    background-color: #fff;
 }
 
 div#outer-container {
@@ -59,9 +59,9 @@ div#outer-container {
     min-height:100%;  /* real browsers */
 }
 
-div#content {
-    /* bottom padding for footer: prevents overlaping; */
-    padding-bottom: 260px;
+div #content {
+    padding-bottom: 320px;        /* padding for footer: prevents overlaping */
+    background: transparent;
 }
 
 footer {
@@ -101,7 +101,7 @@ a:hover {
 .top-bar-title {
     font-family: Futura;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 .top-bar-right {
     background-color: transparent;
@@ -126,27 +126,49 @@ a:hover {
 * FOOTER
 **************************************************************************** */
 
-.footer-imgdiv, .footer-imgdiv-optional {
-    padding: 20px 0px;
+/* ------------------- footer logo ------------------- */
+/* ensure:
+- white background
+- centered logos 
+- height 80px
+*/
+.footer-imgdiv {
+    background-color: #ffffff;
+    padding: 10px 0px;
+    height: 80px;
+    text-align: center;
 }
 
-.footer-imgdiv-optional {
-    border-bottom: 1px dashed #808080;
-}
-.footer-imgdiv-optional img {
-    max-height: 100px;
-}
-
-.footer-image {
-    display: block;
-    margin: 0px auto;
-    width: 300px;
+/* used to center the real logo */
+.footer-logo-helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
 
+/* 
+logo assumptions:
+- alpha channel or #ffffff background
+- max dimensions: (width. height) (250x60) px;
+*/
+.footer-logo {
+    vertical-align: middle; /* relative to .footer-logo-helper */
+    max-height: 60px;
+    max-width: 250px;    
+}
+
+
+/* ------------------- footer bar ------------------- */
+/* ensures:
+- background-color: #363638,
+- height: 37px
+*/
 .footer-infodiv {
     background: #363638;
-    min-height: 0px;
+
     padding: 0px;
+    border: 0px;
+    margin: 0px;
 }
 
 .footer-infodiv, .footer-infodiv a {
@@ -155,11 +177,13 @@ a:hover {
     font-family: Futura;
 }
 
-.footer-infoitem .button {
-    background: transparent;
-    margin: 0px auto;
+.footer-infoitem {
+    height: 37px;
+    padding: 0;
 }
 
+.footer-infoitem .button       {     background-color: transparent; }
+.footer-infoitem .button:hover {     background-color: #3e3e41;     }
 
 
 
@@ -168,7 +192,7 @@ a:hover {
 **************************************************************************** */
 
 .page-content {
-    background: #fff;
+    /*background: #fff;*/
     color: #363637;
     
     /*min-height: 300px;*/
@@ -287,7 +311,7 @@ and (min-width : 700px) {
 }
 
 .preview-imgs img:hover, .preview-imgs img:focus {
-    box-shadow: 0 0 6px 1px rgba(237,125,49,0.5);
+    box-shadow: 0 0 0px 7px rgba(50,50,50,1);
 }
 
 
