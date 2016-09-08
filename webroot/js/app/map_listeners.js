@@ -31,31 +31,44 @@ function zoomButtonListener() {
 
 ////////// COUNTRY LISTENERS //////////////////////////////////////////////////
 
-function countryClickListener(d) {
+function mapCountryDeactivate() {
 
-    var clicked_id = d.id;
-    if (clicked_id == active_country_id) {
-        // deactivate the current one        
-        active_country_id = null;
-        drawer_country_hover(clicked_id);
-        drawer_pin_normal(clicked_id);
+    // deactivate the current one
+    drawer_country_normal(active_country_id);
+    drawer_pin_normal(active_country_id);
+    active_country_id = null;
 
-        // crear country info
-        projects_info_clear();
+    // crear country info
+    projects_info_clear();
+}
 
-    } else {
+
+function mapActivateCountry(country_id) {
+    if (active_country_id != country_id) {
+        
         // deactivate previous one
         drawer_country_normal(active_country_id);
         drawer_pin_normal(active_country_id);
 
         // activate the current
-        active_country_id = clicked_id;
+        active_country_id = country_id;
         if (hovered_country_id == active_country_id) { hovered_country_id = null; }
         drawer_country_active(active_country_id);
         drawer_pin_active(active_country_id);
 
         // show projects info
         projects_info_display(active_country_id);
+    };
+}
+
+
+function countryClickListener(d) {
+    var clicked_id = d.id;
+    if (clicked_id == active_country_id) {
+        mapCountryDeactivate();
+        drawer_country_hover(clicked_id);
+    } else {
+        mapActivateCountry(clicked_id);
     }
 }
 

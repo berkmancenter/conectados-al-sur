@@ -4,11 +4,9 @@
 - pais sin proyectos debe mostrar info en barra lateral!
 - algunos paises de la lista no tienen contraparte en el mapa. ejemplo: Barbados, Norte América
 - link a proyectos sólo debe mostrar los que corresponde
-
+aviso de max zoom
 
 ## ERRORES
-
-- MAPA: error en hover y click para Djibuti 
 
 ## Relacionados con la Vista de Administración
 

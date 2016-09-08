@@ -195,9 +195,11 @@ function update_world(options) {
     markers.exit().remove();
 
 
-    // update zoom position
+    // update zoom position and mark
     if (options && options.hasOwnProperty('country_id')) { 
-        zoomToCountry(options.country_id);
+        var country_id = options.country_id;
+        zoomToCountry(country_id);
+        mapActivateCountry(country_id);
     }
 
     // update information
