@@ -23,14 +23,15 @@ class ProjectsController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
 
-        $country_id = (int)$this->request->query["c"];
+        $conditions = array('Projects.instance_id' => $instance->id);
+
+        $country_id = (int)$this->request->query("c");
+        if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
+
         $this->paginate = [
             'limit'      => 5,
             'contain'    => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities'],
-            'conditions' => [
-                'Projects.instance_id' => $instance->id,
-                'Projects.country_id' => $country_id
-            ]
+            'conditions' => $conditions
         ];
         $projects = $this->paginate($this->Projects);
 

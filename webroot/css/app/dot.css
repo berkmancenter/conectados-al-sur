@@ -1,0 +1,5 @@
+.viz-div {
+  /*background: red;*/
+  border: 1px dashed green;
+  min-height: 600px
+}

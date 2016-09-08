@@ -1,5 +1,3 @@
-<!-- TODO: aviso si no hay proyectos asignados -->
-<!-- TODO: mostrar filtro actual -->
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
 <?php $this->end(); ?>
