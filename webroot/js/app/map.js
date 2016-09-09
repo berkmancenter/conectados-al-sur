@@ -142,6 +142,7 @@ function ready(error, world) {
 }
 
 
+var filtering_options = {};
 function update_world(options) {
 
     // data join
@@ -204,6 +205,8 @@ function update_world(options) {
 
     // update information
     d3.select("#info-nprojects").text("Found " + n_filtered_projects + " projects");
+
+    filtering_options = options;
     projects_info_display(active_country_id);
 }
 

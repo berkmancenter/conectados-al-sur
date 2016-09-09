@@ -23,17 +23,50 @@ class ProjectsController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
 
+        $user_conditions = array();
+        $category_conditions = array();
         $conditions = array('Projects.instance_id' => $instance->id);
 
+        // country_id
         $country_id = (int)$this->request->query("c");
         if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
 
+        // organization_type_id
+        $organization_type_id = (int)$this->request->query("o");
+        if ($organization_type_id) { array_push($conditions, array('Projects.organization_type_id' => $organization_type_id)); }
+
+        // project_stage_id
+        $project_stage_id = (int)$this->request->query("s");
+        if ($project_stage_id) { array_push($conditions, array('Projects.project_stage_id' => $project_stage_id)); }
+
+        // genre_id
+        $genre_id = (int)$this->request->query("g");
+        if ($genre_id) { $user_conditions = array('genre_id' => $genre_id); }
+
+        // category_id
+        $category_id = (int)$this->request->query("t");
+        if ($category_id) { $category_conditions = array('Categories.id' => $category_id); }
+        
+
         $this->paginate = [
             'limit'      => 5,
-            'contain'    => ['Users', 'OrganizationTypes', 'ProjectStages', 'Countries', 'Cities'],
+            'contain'    => [
+                'Users' => function ($q) use ($user_conditions) {
+                   return $q
+                        ->select(['id','genre_id'])
+                        ->where($user_conditions);
+                }
+            ],
             'conditions' => $conditions
         ];
-        $projects = $this->paginate($this->Projects);
+        $projects = $this->paginate(
+            $this->Projects
+                ->find()
+                ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
+                    return $q->where($category_conditions);
+                })
+                ->distinct(['Projects.id'])
+        );
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);

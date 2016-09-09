@@ -17,7 +17,7 @@
 <div class="row">
     <div class="small-12 column">
 
-        <h4 class="view-subtitle-related"><?= __('Found: ' . count($projects)) ?></h4>
+        <h4 class="view-subtitle-related"><?= __('Found: ' . $this->request->params['paging']['Projects']['count'] ) ?></h4>
         <a href=<?= $this->Url->build(['action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-36'></i>New Project</a>
 
         <table class="hover stack" cellpadding="0" cellspacing="0">

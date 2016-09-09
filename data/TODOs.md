@@ -1,10 +1,16 @@
 # TODO List
 
-## MAP FILTER:
-- algunos paises de la lista no tienen contraparte en el mapa. ejemplo: Barbados, Norte América
-- link a proyectos sólo debe mostrar los que corresponde
-	- <!-- TODO: aviso si no hay proyectos asignados -->
-	  <!-- TODO: mostrar filtro actual -->
+sanitizar queries!
+probar queries con parametros raros
+link para view all --> implicará  agregar filtro por continente!
+link para download
+sql transsacciones encakephp
+
+
+página no tiene resize de footer ni topbar
+category add: manejar error al intentar crear categor[ia con el mismos nombres]
+
+<!-- TODO: mostrar filtro actual -->
 
 - aviso de max zoom
 

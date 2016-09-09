@@ -236,10 +236,20 @@ function projects_info_display(codN3) {
         infolist.append("li").text("Projects: " + nProjects);
         infolist.append("li").text("Last Update: " + last_update.toDateString());
         infolist.append("li").text("Categories: " + Object.keys(categories).length);
-        // infolist.append("li").text("Finished: " + 0);
+        
+
+        // console.log(filtering_options);
+        filter_query = "projects?c=" + codN3;
+        if (filtering_options.hasOwnProperty('user_genre_id'))        { filter_query += "&g=" + filtering_options.user_genre_id;         }
+        if (filtering_options.hasOwnProperty('organization_type_id')) { filter_query += "&o=" + filtering_options.organization_type_id   }
+        if (filtering_options.hasOwnProperty('category_id'))          { filter_query += "&t=" + filtering_options.category_id            }
+        if (filtering_options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + filtering_options.project_stage_id       }
+        // if (filtering_options.hasOwnProperty('region_id'))            { filter_query += "&r=" + filtering_options.region_id              }
+
+
         infolist.append("li").append("a")
             .text("Complete info ...")
-            .attr("href", "projects?c=" + codN3)
+            .attr("href", filter_query)
             .attr("target", "_blank");
 
     } else if (nProjects == 1) {
