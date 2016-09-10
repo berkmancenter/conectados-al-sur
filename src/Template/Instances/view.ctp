@@ -34,16 +34,16 @@
     <div class="small-12 column">
 
         <ul class="tabs" data-tabs id="instance-view-tabs">
-            <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
+            <li class="tabs-title is-active"><a href="#panel-users" aria-selected="true">Users</a></li>
+            <li class="tabs-title"><a href="#panel-properties">Properties</a></li>
             <li class="tabs-title"><a href="#panel-configuration">Configuration</a></li>
             <li class="tabs-title"><a href="#panel-categories">Categories</a></li>
             <li class="tabs-title"><a href="#panel-organization_types">Organization Types</a></li>
-            
         </ul>
 
         <div class="tabs-content" data-tabs-content="instance-view-tabs">
 
-            <div class="tabs-panel is-active" id="panel-properties">
+            <div class="tabs-panel" id="panel-properties">
                 <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
                 <table class="hover stack vertical-table" cellpadding="0" cellspacing="0">
                     <tr>
@@ -148,6 +148,94 @@
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <?php else: ?>
+                    <p>This instance does not have any related Organization Type.</p>
+                <?php endif; ?>
+            </div>
+
+            <div class="tabs-panel is-active" id="panel-users">
+
+                <h4 class="view-subtitle-related"><?= __('Admins: ') ?></h4>
+                <?php if (!empty($admins)): ?>
+                <table class="hover stack" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><?= __('Name') ?></th>
+                            <th><?= __('Username') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($sysadmins as $user): ?>
+                        <tr>
+                            <td>(sysadmin) <?= h($user->name) ?></td>
+                            <td><?= h($user->email) ?></td>
+                            <td class="actions">
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
+                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+
+                        <?php foreach ($admins as $user): ?>
+                        <tr>
+                            <td><?= h($user->name) ?></td>
+                            <td><?= h($user->email) ?></td>
+                            <td class="actions">
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
+                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                (REVOKE ADMIN)
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php else: ?>
+                    <p>This instance does not have any related Organization Type.</p>
+                <?php endif; ?>
+
+
+                <h4 class="view-subtitle-related"><?= __('Users: '  . $this->request->params['paging']['Users']['count'] ) ?></h4>
+                <?php if (!empty($users)): ?>
+                <table class="hover stack" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><?= $this->Paginator->sort('name') ?></th>
+                            <th><?= $this->Paginator->sort('email') ?></th>
+                            <th class="actions"><?= __('Actions') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td><?= h($user->name) ?></td>
+                            <td><?= h($user->email) ?></td>
+                            <td class="actions">
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
+                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                (GRANT ADMIN)
+                                <?= $this->Form->postLink(
+                                        $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
+                                        'controller' => 'Users',
+                                        'action' => 'delete', $instance_namespace, $user->id], [
+                                        'escape' => false,
+                                        'confirm' => __('Are you sure you want to delete this user: "{0}"?. This operation cannot be undone. All related projects will be erased!', $user->email)
+                                    ])
+                                ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <div class="paginator">
+                    <ul class="pagination">
+                        <?= $this->Paginator->prev('< ' . __('previous')) ?>
+                        <?= $this->Paginator->numbers() ?>
+                        <?= $this->Paginator->next(__('next') . ' >') ?>
+                    </ul>
+                    <p><?= $this->Paginator->counter() ?></p>
+                </div>
+
                 <?php else: ?>
                     <p>This instance does not have any related Organization Type.</p>
                 <?php endif; ?>

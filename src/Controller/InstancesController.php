@@ -231,6 +231,42 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
 
+        $select_fields = ['id', 'name', 'email'];
+        $contidions = array(['instance_id' => $instance->id]);
+
+        $admins = TableRegistry::get('Users')
+            ->find()
+            ->select($select_fields)
+            ->where($contidions)
+            ->where(['role_id' => '1'])
+            ->all();
+        // var_dump($admins);
+
+        $sysadmins = TableRegistry::get('Users')
+            ->find()
+            ->select($select_fields)
+            ->where($contidions)
+            ->where(['role_id' => '2'])
+            ->all();
+        // var_dump($sysadmins);
+
+        $this->paginate = [
+            'limit'      => 10
+        ];
+        $users = $this->paginate(
+            TableRegistry::get('Users')
+                ->find()
+                ->select($select_fields)
+                ->where($contidions)
+                ->where(['role_id' => '0'])
+        );
+        // var_dump($users);
+
+        // var_dump($instance->sysadmins);
+
+        $this->set('users', $users);
+        $this->set('admins', $admins);
+        $this->set('sysadmins', $sysadmins);
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);

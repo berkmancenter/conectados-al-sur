@@ -1,5 +1,20 @@
 # TODO List
 
+
+- 
+-verificar cadena de eliminaciones al borrar user, instancia, proyecto, org_type, category, ...
+acceso a admin tools
+list sysadmins
+user llist: make admin, revoke admin, view
+- verificar que pasa con tablas vacias
+- mejorar sistema de back to previous... sin tener que pasar por edits/view/edits/view/...
+	- ejemplo: botón para volver a lista
+- mejorar redirecciones.. ejemplo; al eliminar un proyecto, volver a la lista, mapa o gráfico, no al preview.
+- checkear correcto funcionamiento de adds/edits
+- más texto en cada vista
+- editar fechas correctamente: project
+- utilizar campos de configuración de la instancia
+	- ej: max-categories.
 sanitizar queries!
 probar queries con parametros raros
 link para view all --> implicará  agregar filtro por continente!

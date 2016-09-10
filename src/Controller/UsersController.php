@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 
 /**
  * Users Controller
@@ -11,29 +12,6 @@ use Cake\ORM\TableRegistry;
  */
 class UsersController extends AppController
 {
-
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
-    public function index($instance_namespace = null)
-    {
-        $instance_id = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
-
-        $this->paginate = [
-            'contain' => ['Genres', 'OrganizationTypes'],
-            'conditions' => ['Users.instance_id' => $instance_id]
-        ];
-        $users = $this->paginate($this->Users);
-
-        $this->set(compact('users'));
-        $this->set('_serialize', ['users']);
-    }
 
     /**
      * View method
@@ -135,15 +113,31 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($id = null)
+    public function delete($instance_namespace = null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+
+        $instance_id = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first()->id;
+
         $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
+        if (isset($instance_id) && isset($user->instance_id)
+            && $user->instance_id == $instance_id 
+            && $this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+
+        // redirect to view when deleting by admin, preview otherwise
+        $view_url = Router::url(['controller' => 'Instances', 'action' => 'view', $instance_namespace, '_full' => true]);
+        if($this->referer() == $view_url) {
+            $this->redirect($view_url);
+        } else {
+            $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+        }
     }
 }

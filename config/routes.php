@@ -276,43 +276,49 @@ Router::scope('/', function (RouteBuilder $routes) {
     ###
 
     ## Instances:
-    # index   (sysadmin)
-    # add     (sysadmin)
-    # view    (admin)
-    # edit    (admin)
-    # delete  (admin)
-    # preview (user)
-    # map     (user)
-    # dots    (user)
+    # (OK) index   (sysadmin)
+    # (OK) add     (sysadmin)
+    # (OK) view    (admin)
+    # (OK) edit    (admin)
+    # (OK) delete  (admin)
+    # (OK) preview (user)
+    # (OK) map     (user)
+    # (NO) dots    (user)
     
     ## Categories
-    # index   (no) -- implemented on Instances view
-    # add     (admin)
-    # view    (no) -- implemented on Instances view
-    # edit    (admin)
-    # delete  (admin)
+    # (OK) index   (no) -- implemented on Instances view
+    # (OK) add     (admin)
+    # (OK) view    (no) -- implemented on Instances view
+    # (OK) edit    (admin)
+    # (OK) delete  (admin)
 
     ## OrganizationTypes
-    # index   (no) -- implemented on Instances view
-    # add     (admin)
-    # view    (no) -- implemented on Instances view
-    # edit    (admin)
-    # delete  (admin)
+    # (OK) index   (no) -- implemented on Instances view
+    # (OK) add     (admin)
+    # (OK) view    (no) -- implemented on Instances view
+    # (OK) edit    (admin)
+    # (OK) delete  (admin)
 
     ## Projects
-    # index   (admin)
-    # add     (user)
-    # view    (all)
-    # edit    (user)
-    # delete  (user)
-
-
+    # (OK) index   (admin)
+    # (OK) add     (user)
+    # (OK) view    (all)
+    # (OK) edit    (user)
+    # (OK) delete  (user)
    
-    # users: index   (sysadmin)
-    # users: view    (user)
-    # users: add     (user)
-    # users: edit    (user)
-    # users: delete  (user)
+    ## Users
+    # index   (no) -- implemented on Instances view
+    # (OK) view    (all)
+    # add     (user)
+    # edit    (user)
+    # (OK) delete  (user)
+
+    ## Continents, Subcontinents, Countries, Cities, Roles
+    # (OK) index   (no)
+    # (OK) add     (no)
+    # (OK) view    (no)
+    # (OK) edit    (no)
+    # (OK) delete  (no)
 
         
 

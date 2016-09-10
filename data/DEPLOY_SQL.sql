@@ -260,8 +260,8 @@ CREATE TABLE projects (
 
 -- TABLE belongsToMany Join
 CREATE TABLE categories_projects (
-    project_id  INT NOT NULL REFERENCES projects(id),
-    category_id INT NOT NULL REFERENCES categories(id),
+    project_id  INT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
+    category_id INT NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     PRIMARY KEY (project_id, category_id)
 );
 
