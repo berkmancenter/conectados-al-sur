@@ -61,22 +61,53 @@ class UsersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add()
+    public function add($instance_namespace = null)
     {
+        # load instance data
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
+
+            # NO ES ATÓMICO!
+            $last_id = $this->Users
+                ->find()
+                ->select(['id'])
+                ->order(['id' =>'DESC'])
+                ->first()->id;
+            #var_dump($last_id);
+
             $user = $this->Users->patchEntity($user, $this->request->data);
+            $user->instance_id = $instance->id;
+            $user->id = $last_id + 1;
+
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
             } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+                $this->Flash->error(__('There was an error while trying to create this user.'));
+                return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
             }
         }
-        $genres = $this->Users->Genres->find('list', ['limit' => 200]);
-        $organizationTypes = $this->Users->OrganizationTypes->find('list', ['limit' => 200]);
+        $genres = $this->Users->Genres
+            ->find('list', ['limit' => 200])
+            ->where(['Genres.name !=' => '[unused]'])
+            ->order(['name' => 'ASC']);
+
+        $organizationTypes = $this->Users->OrganizationTypes
+            ->find('list', ['limit' => 200])
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->order(['name' => 'ASC']);
+
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
         $this->set(compact('user', 'genres', 'organizationTypes'));
         $this->set('_serialize', ['user']);
+
     }
 
     /**

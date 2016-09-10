@@ -1,31 +1,34 @@
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Genres'), ['controller' => 'Genres', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Genre'), ['controller' => 'Genres', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Organization Types'), ['controller' => 'OrganizationTypes', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="users form large-9 medium-8 columns content">
-    <?= $this->Form->create($user) ?>
-    <fieldset>
-        <legend><?= __('Add User') ?></legend>
-        <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('email');
-            echo $this->Form->input('contact');
-            echo $this->Form->input('password');
-            echo $this->Form->input('role_id');
-            echo $this->Form->input('instance_id');
-            echo $this->Form->input('genre_id', ['options' => $genres]);
-            echo $this->Form->input('main_organization');
-            echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);
-        ?>
-    </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
-    <?= $this->Form->end() ?>
+<!-- Available Actions -->
+<?php $this->start('available-actions'); ?>
+<?php $this->end(); ?>
+
+<!-- Page Content -->
+<div class="fullwidth page-content">
+    
+<div class="row">
+    <div class="small-12 column view-title">
+        <h3><?= __('New User') ?></h3>
+        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]) ?>><i class='fi-arrow-left size-36'></i> CANCEL</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="small-12 column">
+        <div class="form">
+            <?= $this->Form->create($user) ?>
+            <fieldset>
+                <?php
+                    echo $this->Form->input('name', ['label' => 'Your Name', 'placeholder' => 'e.g. John Smith']);
+                    echo $this->Form->input('email', ['label' => 'Your Email: Will be used as your username and it will be treated as private.', 'placeholder' => 'e.g. john.smith@gmail.com']);
+                    echo $this->Form->input('contact', ['label' => 'Contact email. Public for everyone to see.', 'placeholder' => 'e.g. organization.contact@gmail.com']);
+                    echo $this->Form->input('password', ['label' => 'Your password. At least 6 characters']);
+                    echo $this->Form->input('genre_id', ['options' => $genres]);
+                    echo $this->Form->input('main_organization', ['label' => 'Main organization you work in.', 'placeholder' => 'e.g. United Nations']);
+                    echo $this->Form->input('organization_type_id', ['label' => 'Type of this organization', 'options' => $organizationTypes]);
+                ?>
+            </fieldset>
+            <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
+            <?= $this->Form->end() ?>
+        </div>
+    </div>
 </div>

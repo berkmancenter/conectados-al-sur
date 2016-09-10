@@ -39,9 +39,11 @@
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <?= $this->fetch('available-actions') ?>
-                       <!--  <li>
-                            <a href="#"><i class="fi-torso"></i></a>
-                        </li> -->
+                        <?php if (isset($instance_namespace)): ?>
+                        <li>
+                            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add', $instance_namespace]) ?>>Sign Up</a>
+                        </li>
+                        <?php endif; ?>
                     </ul>
                 </div>
             </div>

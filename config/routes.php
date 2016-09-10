@@ -234,13 +234,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     # users interaction
     # =================================================================================
 
-    // # index: 
-    // $routes->connect(
-    //     '/:instance_namespace/admin/users',
-    //     ['controller' => 'Users', 'action' => 'index'],
-    //     ['pass' => ['instance_namespace']]
-    // );
-
     # view
     $routes->connect(
         '/:instance_namespace/users/:id',
@@ -248,6 +241,15 @@ Router::scope('/', function (RouteBuilder $routes) {
         [
             'pass' => ['instance_namespace', 'id'],
             'id'   => '[0-9]+'
+        ]
+    );
+
+    # add
+    $routes->connect(
+        '/:instance_namespace/users/add',
+        ['controller' => 'Users', 'action' => 'add'],
+        [
+            'pass' => ['instance_namespace']
         ]
     );
 
@@ -309,7 +311,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     ## Users
     # index   (no) -- implemented on Instances view
     # (OK) view    (all)
-    # add     (user)
+    # (OK) add     (user)
     # edit    (user)
     # (OK) delete  (user)
 
