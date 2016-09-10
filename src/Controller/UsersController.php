@@ -86,19 +86,76 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($id = null)
+    public function edit($instance_namespace = null, $id = null)
     {
-        $user = $this->Users->get($id, [
-            'contain' => []
-        ]);
+        # load instance data
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
+
+
+        $user = $this->Users->find()
+            ->where([
+                'instance_id' => $instance->id,
+                'id' => $id
+            ])
+            ->first();
+
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
+            // role management
+            if (array_key_exists('grant', $this->request->data)) {
+                $grant = $this->request->data["grant"];
+
+                if ($grant >= 0 && $grant <= 2) {
+
+                    // prevent leaving no users of a single type
+                    $curr_role = $user->role_id;
+                    $remaining = $this->Users->find()
+                        ->where([
+                            'instance_id' => $instance->id,
+                            'role_id' => $curr_role
+                        ])
+                        ->count();
+
+                    if ($curr_role == 2 && $remaining == 1) {
+                        $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
+                        return $this->redirect($this->referer());
+                    }
+                    if ($curr_role == 1 && $remaining == 1) {
+                        $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
+                        return $this->redirect($this->referer());
+                    }
+
+                    // modify
+                    $user->role_id = $grant;
+                    if ($this->Users->save($user)) {
+                        if ($grant == 0) {
+                            $this->Flash->success(__('Admin privileges were revoked'));
+                        } else if ($grant == 1) {
+                            $this->Flash->success(__('Admin privileges were granted'));
+                        } else {
+                            $this->Flash->success(__('Granted Sysadmin privileges'));
+                        }
+
+                    } else {
+                        $this->Flash->error(__('Could not modify user privileges.'));
+                    }
+                }
+                return $this->redirect($this->referer());
             }
+            
+            // $user = $this->Users->patchEntity($user, $this->request->data);
+            // if ($this->Users->save($user)) {
+            //     $this->Flash->success(__('The user has been saved.'));
+            //     return $this->redirect(['action' => 'index']);
+            // } else {
+            //     $this->Flash->error(__('The user could not be saved. Please, try again.'));
+            //     return $this->redirect(['action' => 'index']);
+            // }
         }
         $genres = $this->Users->Genres->find('list', ['limit' => 200]);
         $organizationTypes = $this->Users->OrganizationTypes->find('list', ['limit' => 200]);

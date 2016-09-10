@@ -171,8 +171,10 @@
                             <td>(sysadmin) <?= h($user->name) ?></td>
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
                                 $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                </span>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -182,9 +184,24 @@
                             <td><?= h($user->name) ?></td>
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
                                 $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
-                                (REVOKE ADMIN)
+                                </span>
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Revoke Admin Privileges">
+                                <?= $this->Form->postLink(
+                                        $this->Html->tag('i', '', array('class' => 'fi-prohibited size-24')),
+                                        [
+                                            'controller' => 'Users',
+                                            'action' => 'edit', $instance_namespace, $user->id
+                                        ],
+                                        [
+                                            'escape' => false,
+                                            'confirm' => __('Are you sure you want to revoke admin privileges from this user: "{0}"?.', $user->email),
+                                            'data' => ['grant' => 0]
+                                    ])
+                                ?>
+                                </span>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -211,9 +228,11 @@
                             <td><?= h($user->name) ?></td>
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
                                 $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
-                                (GRANT ADMIN)
+                                </span>
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Delete user">
                                 <?= $this->Form->postLink(
                                         $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
                                         'controller' => 'Users',
@@ -222,6 +241,21 @@
                                         'confirm' => __('Are you sure you want to delete this user: "{0}"?. This operation cannot be undone. All related projects will be erased!', $user->email)
                                     ])
                                 ?>
+                                </span>
+                                <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Grant Admin Privileges">
+                                <?= $this->Form->postLink(
+                                        $this->Html->tag('i', '', array('class' => 'fi-upload-cloud size-24')),
+                                    [
+                                        'controller' => 'Users',
+                                        'action' => 'edit', $instance_namespace, $user->id
+                                    ],
+                                    [
+                                        'escape' => false,
+                                        'confirm' => __('Are you sure you want to grant admin privileges to this user: "{0}"?.', $user->email),
+                                        'data' => ['grant' => 1]
+                                    ])
+                                ?>
+                                </span>
                             </td>
                         </tr>
                         <?php endforeach; ?>

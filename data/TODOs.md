@@ -1,7 +1,8 @@
 # TODO List
 
 
-- 
+- check de que al hablar de sysadmins haya coherencia con eso del instance_id... pues no debiera haber ese check
+- agregar tooltips a todos los botones. ejemplo: instances index > users
 -verificar cadena de eliminaciones al borrar user, instancia, proyecto, org_type, category, ...
 acceso a admin tools
 list sysadmins
