@@ -17,6 +17,9 @@ class ProjectsController extends AppController
      */
     public function index($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $instance = TableRegistry::get('Instances')
             ->find()
             ->select(['id', 'name', 'namespace', 'logo'])
@@ -80,6 +83,9 @@ class ProjectsController extends AppController
      */
     public function view($instance_namespace = null, $id = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         # load instance data
         $instance = TableRegistry::get('Instances')
             ->find()
@@ -114,6 +120,9 @@ class ProjectsController extends AppController
      */
     public function add($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         # load instance data
         $instance = TableRegistry::get('Instances')
             ->find()
@@ -196,6 +205,9 @@ class ProjectsController extends AppController
      */
     public function edit($instance_namespace = null, $id = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         # load instance data
         $instance = TableRegistry::get('Instances')
             ->find()
@@ -264,6 +276,10 @@ class ProjectsController extends AppController
     public function delete($instance_namespace = null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
+
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $project = $this->Projects->get($id);
         if ($this->Projects->delete($project)) {
             $this->Flash->success(__('The project has been deleted.'));

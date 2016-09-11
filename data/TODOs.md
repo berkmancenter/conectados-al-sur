@@ -1,5 +1,13 @@
 # TODO List
 
+- ojo ccon los max limit del paginate!, puede limitar info de proyectos y otros
+- lugar donde agregar más sysadmins
+- user delete, check remaining
+- project delete check instance
+- evitar filtrar datos de instancia 0
+- instance add --> agregar datos dummy
+- verificar que todos los adds usen id max+1, pero no max de la instancia, sino que max de todos los que existen.
+- view/make/revoke sysadmin -> verificar funcionamiento multiinstancia
 - check logo en todas las vistas
 - buscar todos en el código
 - add project tiene user fijo a 0!

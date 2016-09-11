@@ -20,8 +20,20 @@ class InstancesController extends AppController
     {
         $query = $this->Instances
             ->find()
-            ->select(['id', 'name', 'namespace', 'logo']);
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['id !=' => 0]); // block sys
         $instances = $this->paginate($query);
+
+        $sysadmins = TableRegistry::get('Users')
+            ->find()
+            ->select(['id', 'name', 'email'])
+            ->where(['role_id' => '2'])
+            ->all();
+        // var_dump($sysadmins);
+
+        $this->set('sysadmins', $sysadmins);
+        // $this->set('_serialize', ['instance']);
+
 
         $this->set(compact('instances'));
         // $this->set('_serialize', ['instances']);
@@ -34,6 +46,9 @@ class InstancesController extends AppController
      */
     public function preview($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        
         # load instance data
         $instance = $this->Instances
             ->find()
@@ -53,6 +68,9 @@ class InstancesController extends AppController
      */
     public function dots($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        
         $instance = $this->Instances
             ->find()
             ->select(['id', 'name', 'namespace', 'logo'])
@@ -73,6 +91,9 @@ class InstancesController extends AppController
      */
     public function map($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         // ----- instance independent data --------
 
         // location data
@@ -218,6 +239,9 @@ class InstancesController extends AppController
      */
     public function view($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $instance = $this->Instances
             ->find()
             ->contain([
@@ -232,32 +256,30 @@ class InstancesController extends AppController
             ->first();
 
         $select_fields = ['id', 'name', 'email'];
-        $contidions = array(['instance_id' => $instance->id]);
-
-        $admins = TableRegistry::get('Users')
-            ->find()
-            ->select($select_fields)
-            ->where($contidions)
-            ->where(['role_id' => '1'])
-            ->all();
-        // var_dump($admins);
 
         $sysadmins = TableRegistry::get('Users')
             ->find()
             ->select($select_fields)
-            ->where($contidions)
             ->where(['role_id' => '2'])
             ->all();
         // var_dump($sysadmins);
 
+        $admins = TableRegistry::get('Users')
+            ->find()
+            ->select($select_fields)
+            ->where(['instance_id' => $instance->id])
+            ->where(['role_id' => '1'])
+            ->all();
+        // var_dump($admins->get(items');
+
         $this->paginate = [
-            'limit'      => 10
+            'limit'      => 5
         ];
         $users = $this->paginate(
             TableRegistry::get('Users')
                 ->find()
                 ->select($select_fields)
-                ->where($contidions)
+                ->where(['instance_id' => $instance->id])
                 ->where(['role_id' => '0'])
         );
         // var_dump($users);
@@ -311,6 +333,9 @@ class InstancesController extends AppController
      */
     public function edit($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $instance = $this->Instances
             ->find()
             ->where(['Instances.namespace' => $instance_namespace])
@@ -348,6 +373,9 @@ class InstancesController extends AppController
      */
     public function delete($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        
         $this->request->allowMethod(['post', 'delete']);
         $instance = $this->Instances
             ->find()

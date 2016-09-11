@@ -184,24 +184,31 @@ CREATE TABLE instances (
     use_proj_dates        BOOLEAN NOT NULL DEFAULT TRUE,
     proj_max_categories   INT NOT NULL DEFAULT 4
 );
+INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
+(0, '[null]', '[null]', 'sys', '[null]', '[null]');
+
 
 -- TABLE organization_types
 CREATE TABLE organization_types (
     id          INT NOT NULL UNIQUE,
-    name        VARCHAR(100) NOT NULL UNIQUE,
-    name_es     VARCHAR(100) NOT NULL UNIQUE,
+    name        VARCHAR(100) NOT NULL,
+    name_es     VARCHAR(100) NOT NULL,
     instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     PRIMARY KEY (instance_id, id)
 );
+INSERT INTO organization_types VALUES 
+ (0, '[unused]', '[unused]', 0);
 
 -- TABLE categories
 CREATE TABLE categories (
     id      INT NOT NULL UNIQUE,
-    name    VARCHAR(100) NOT NULL UNIQUE,
-    name_es VARCHAR(100) NOT NULL UNIQUE,
+    name    VARCHAR(100) NOT NULL,
+    name_es VARCHAR(100) NOT NULL,
     instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     PRIMARY KEY (instance_id, id)
 );
+INSERT INTO categories VALUES 
+ (0, '[unused]', '[unused]', 0);
 
 
 -- TABLE users
@@ -220,7 +227,7 @@ CREATE TABLE categories (
 CREATE TABLE users (
     id          INT          NOT NULL UNIQUE,
     name        VARCHAR(100) NOT NULL,
-    email       VARCHAR(100) NOT NULL UNIQUE,
+    email       VARCHAR(100) NOT NULL,
     contact     VARCHAR(100),
     password    VARCHAR(255) NOT NULL,
     role_id     INT NOT NULL DEFAULT 0 REFERENCES roles(id),
@@ -232,6 +239,9 @@ CREATE TABLE users (
     modified  TIMESTAMP,
     PRIMARY KEY (instance_id, id)
 );
+INSERT INTO users VALUES
+(0, 'sysadmin', 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', 'sysadmin', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(1, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , 'lionel', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 
 
 -- TABLE projects
@@ -270,45 +280,46 @@ CREATE TABLE categories_projects (
 -- populate database for CAS example
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
-(0, 'Conectados Al Sur', 'Conectados Al Sur', 'cas' , 'Congreso Conectados al Sur Project is a ... blah','Proyectos del Congreso Conectados al Sur ... blabla.');
+(1, 'Conectados Al Sur', 'Conectados Al Sur', 'cas' ,
+ 'Global mapping of research and projects on digital citizenchip of children and youth. ',
+ 'Mapeo global de investigaciones y proyectos sobre ciudadanía digital de niños, niñas y adolescentes.');
 
 INSERT INTO organization_types VALUES 
- (0,'[unused]'                            , '[unused]'            , 0),
- (1,'Academic'                            , 'Academia'            , 0),
- (2,'Practitioner'                        , 'Profesional'         , 0),
- (3,'Activists'                           , 'Activista'           , 0),
- (4,'Philanthropists'                     , 'Filantropo'          , 0),
- (5,'Government official'                 , 'Gobierno'            , 0),
- (6,'Representative of technology company', 'Compañia Tecnológica', 0),
- (7,'NGO'                                 , 'ONG'                 , 0),
- (8,'IGO'                                 , 'OIG'                 , 0),
- (9,'Other'                               , 'Otro'                , 0);
+ (1,'[unused]'                            , '[unused]'            , 1),
+ (2,'Academic'                            , 'Academia'            , 1),
+ (3,'Practitioner'                        , 'Profesional'         , 1),
+ (4,'Activists'                           , 'Activista'           , 1),
+ (5,'Philanthropists'                     , 'Filantropo'          , 1),
+ (6,'Government official'                 , 'Gobierno'            , 1),
+ (7,'Representative of technology company', 'Compañia Tecnológica', 1),
+ (8,'NGO'                                 , 'ONG'                 , 1),
+ (9,'IGO'                                 , 'OIG'                 , 1),
+ (10,'Other'                               , 'Otro'                , 1);
 
 INSERT INTO categories VALUES 
- (0, '[unused]'                                      , '[unused]'                                                  , 0),
- (1, 'Creativity and Innovation'                     , 'Creatividad e Innovación'                                  , 0),
- (2, 'Health and Wealth'                             , 'Salud y Bienestar'                                         , 0),
- (3, 'Privacy, Identity and Online Reputation'       , 'Privacidad, Identidad y Reputación Online'                 , 0),
- (4, 'Technology in education'                       , 'Tecnología en la educación'                                , 0),
- (5, 'Methodologies'                                 , 'Metodologías'                                              , 0),
- (6, 'Security'                                      , 'Seguridad'                                                 , 0),
- (7, 'Heritage and Culture'                          , 'Patrimonio y Cultura'                                      , 0),
- (8, 'Technology and Environment'                    , 'Tecnología y Medioambiente'                                , 0),
- (9, 'Skills, Digital Literacy and Learning Cultures', 'Habilidades, Alfabetismo Digital y Culturas de Aprendizaje', 0),
- (10, 'Participation and Civic Engagement'           , 'Participación y Compromiso Cívico'                         , 0),
- (11, 'Violence and Discrimination'                  , 'Violencia y Discriminación'                                , 0),
- (12, 'Intellectual Property and Access to Culture'  , 'Propiedad Intelectual y Acceso a la Cultura'               , 0),
- (13, 'Technology-based Entrepreneurship'            , 'Emprendimientos basados en Tecnología'                     , 0),
- (14, 'Development of Content on Digital Platforms'  , 'Desarrollo de Contenido en Plataformas Digitales'          , 0),
- (15, 'Ownership, Access and Use of Technology'      , 'Propiedad, Acceso y Uso de Tecnología'                     , 0),
- (16, 'Opinion Formation'                            , 'Formación de Opinión'                                      , 0),
- (17, 'Management of multidisciplinary teams to develop digital content', 'Manejo de equipos multidiciplinarios para el desarrollo de contenido digital', 0),
- (18, 'Other'                                        , 'Otro'                                                      , 0);
+ (1, '[unused]'                                       , '[unused]'                                                  , 1),
+ (2, 'Creativity and Innovation'                      , 'Creatividad e Innovación'                                  , 1),
+ (3, 'Health and Wealth'                              , 'Salud y Bienestar'                                         , 1),
+ (4, 'Privacy, Identity and Online Reputation'        , 'Privacidad, Identidad y Reputación Online'                 , 1),
+ (5, 'Technology in education'                        , 'Tecnología en la educación'                                , 1),
+ (6, 'Methodologies'                                  , 'Metodologías'                                              , 1),
+ (7, 'Security'                                       , 'Seguridad'                                                 , 1),
+ (8, 'Heritage and Culture'                           , 'Patrimonio y Cultura'                                      , 1),
+ (9, 'Technology and Environment'                     , 'Tecnología y Medioambiente'                                , 1),
+ (10, 'Skills, Digital Literacy and Learning Cultures', 'Habilidades, Alfabetismo Digital y Culturas de Aprendizaje', 1),
+ (11, 'Participation and Civic Engagement'            , 'Participación y Compromiso Cívico'                         , 1),
+ (12, 'Violence and Discrimination'                   , 'Violencia y Discriminación'                                , 1),
+ (13, 'Intellectual Property and Access to Culture'   , 'Propiedad Intelectual y Acceso a la Cultura'               , 1),
+ (14, 'Technology-based Entrepreneurship'             , 'Emprendimientos basados en Tecnología'                     , 1),
+ (15, 'Development of Content on Digital Platforms'   , 'Desarrollo de Contenido en Plataformas Digitales'          , 1),
+ (16, 'Ownership, Access and Use of Technology'       , 'Propiedad, Acceso y Uso de Tecnología'                     , 1),
+ (17, 'Opinion Formation'                             , 'Formación de Opinión'                                      , 1),
+ (18, 'Management of multidisciplinary teams to develop digital content', 'Manejo de equipos multidiciplinarios para el desarrollo de contenido digital', 1),
+ (19, 'Other'                                         , 'Otro'                                                      , 1);
 
 INSERT INTO users VALUES
-(0, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , 'superadmin', 2, 0, 1, 'ICEI, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(1, 'Matías Pavez' , 'matias.pavez.b@gmail.com'  , 'matias.pavez.b@gmail.com'  , 'adminadmin', 1, 0, 1, 'FCFM, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(2, 'TEST USER'    , 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', 'useruser'  , 0, 0, 1, 'FCFM, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+(2, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , 'adminadmin', 1, 1, 1, 'ICEI, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(3, 'Matías Pavez' , 'matias.pavez.b@gmail.com'  , 'matias.pavez.b@gmail.com'  , 'adminadmin', 1, 1, 1, 'FCFM, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 
 -- populate dummy users for CAS
 -- $ bin/cake migrations seed --seed UsersSeed

@@ -17,6 +17,9 @@ class OrganizationTypesController extends AppController
      */
     public function add($instance_namespace = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $instance = TableRegistry::get('Instances')
             ->find()
             ->select(['id', 'name', 'logo'])
@@ -62,6 +65,9 @@ class OrganizationTypesController extends AppController
      */
     public function edit($instance_namespace = null, $id = null)
     {
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+
         $instance = TableRegistry::get('Instances')
             ->find()
             ->select(['id', 'name', 'logo'])
@@ -100,6 +106,9 @@ class OrganizationTypesController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
 
+        // block sys instance
+        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        
         $instance_id = TableRegistry::get('Instances')
             ->find()
             ->select(['id'])

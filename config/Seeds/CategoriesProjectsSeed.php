@@ -21,7 +21,7 @@ class CategoriesProjectsSeed extends AbstractSeed
         $faker = Faker\Factory::create();
         $faker->seed(1234);
         $categories = [];
-        for ($i = 0; $i < 300; $i++) {
+        for ($i = 0; $i < 600; $i++) {
            
             $faker->unique($reset = true);
             $categories[] = [

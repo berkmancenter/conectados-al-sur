@@ -21,7 +21,7 @@ class UsersSeed extends AbstractSeed
         $faker = Faker\Factory::create();
         $faker->seed(1111); # fixed number! --> same results
         $data = [];
-        $offset = 3;
+        $offset = 4;
         for ($i = 0 + $offset; $i < 50 + $offset; $i++) {
             $created  = $faker->dateTimeThisDecade;
             $modified = $faker->dateTimeBetween($startDate = $created, $endDate = 'now', $timezone = null);
@@ -32,7 +32,7 @@ class UsersSeed extends AbstractSeed
                 'contact'       => $faker->unique()->email,
                 'password'      => $faker->password,
                 'role_id'       => 0,
-                'instance_id'   => 0,
+                'instance_id'   => 1,
                 'genre_id'      => $faker->numberBetween(1,3),
                 'main_organization'    => $faker->company,
                 'organization_type_id' => $faker->numberBetween(1,9),
