@@ -8,23 +8,9 @@ composer install
 
 ## Database
 
-#```sql
-
--- DROP tables if exist
+ver instrucciones en el mismo [archivo sql](`data/DEPLOY_SQL.sql`)
 
 
+## TODOs
 
-
-
-
-
-
-#```
-
-
-```bash
-$ bin/cake migrations seed --seed DatabaseSeed
-$ bin/cake migrations seed --seed ProjectsSeed # version 1
-$ bin/cake migrations seed --seed ProjectsSeed # version 2
-
-```
+ver lista de [TODOs](data/TODOs.md)
