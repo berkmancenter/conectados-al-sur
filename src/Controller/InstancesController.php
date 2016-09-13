@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use Cake\Event\Event;
 
 /**
  * Instances Controller
@@ -12,6 +13,24 @@ use Cake\Routing\Router;
  */
 class InstancesController extends AppController
 {
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);        
+        
+        $action = $this->request->params["action"];
+        if ($action == "index" || $action == "add") {
+            $this->Auth->config('loginAction', [
+                'controller' => 'Users',
+                'action' => 'login',
+                'admin'
+            ]);
+        }
+
+        // public actions
+        $this->Auth->allow(['preview', 'map']);
+    }
+
 
     /**
      * Index method

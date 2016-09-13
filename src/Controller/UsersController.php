@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
+use Cake\Event\Event;
 
 /**
  * Users Controller
@@ -12,6 +13,62 @@ use Cake\Routing\Router;
  */
 class UsersController extends AppController
 {
+
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        // Allow users to register and logout.
+        // You should not add the "login" action to allow list. Doing so would
+        // cause problems with normal functioning of AuthComponent.
+        $this->Auth->allow(['view', 'add', 'logout']);
+
+    }
+
+    public function login($instance_namespace = null)
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+
+            if ($user) {
+                $this->Auth->setUser($user);
+
+                // sysadmin is redirected to admin view
+                if ($user['role_id'] == '2') {
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
+                }
+
+                // admin is redirected to instance admin view
+                if ($user['role_id'] == '1') {
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+                }
+
+                // users to instance preview
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+            }
+            $this->Flash->error(__('Invalid username or password, try again'));
+        }
+    }
+
+    public function logout($instance_namespace = null)
+    {
+        $user = $this->Auth->user();
+        $this->Auth->logout();
+
+        // redirect repends on user
+        if ($user) {
+            
+            // sysadmin is redirected to home
+            if ($user['role_id'] == '2') {
+                return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            }
+
+            // admin and user are redirected to instance preview
+            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+        }
+        // other
+        return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+    }
 
     /**
      * View method

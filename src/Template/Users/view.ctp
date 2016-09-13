@@ -86,7 +86,7 @@
                                 <td><?= h($projects->name) ?></td>
                                 <td><?= h($projects->organization) ?></td>
                                 <td class="actions">
-                                    <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $projects->id]) ?>
+                                    <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $instance_namespace, $projects->id]) ?>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

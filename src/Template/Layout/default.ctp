@@ -39,11 +39,17 @@
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <?= $this->fetch('available-actions') ?>
-                        <?php if (isset($instance_namespace)): ?>
+                        <!-- <?php if (isset($instance_namespace)): ?> -->
+                        <li>
+                            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login', 'cas']) ?>>Sign In</a>
+                        </li>
+                        <li>
+                            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout', 'cas']) ?>>Sign Out</a>
+                        </li>
                         <li>
                             <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add', $instance_namespace]) ?>>Sign Up</a>
                         </li>
-                        <?php endif; ?>
+                        <!-- <?php endif; ?> -->
                     </ul>
                 </div>
             </div>
@@ -52,6 +58,7 @@
         <!-- page content -->
         <div id="content">
             <?= $this->Flash->render() ?>
+            <?= $this->Flash->render('auth') ?>
             <?= $this->fetch('content') ?>
         </div>
 

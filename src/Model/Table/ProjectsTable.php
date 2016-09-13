@@ -149,4 +149,9 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
         return $rules;
     }
+
+    public function isOwnedBy($project_id, $user_id)
+    {
+        return $this->exists(['id' => $project_id, 'user_id' => $user_id]);
+    }    
 }

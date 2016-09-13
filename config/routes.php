@@ -48,11 +48,12 @@ Router::scope('/', function (RouteBuilder $routes) {
     # TESTING
     # =================================================================================
     
-    # meanwhile: root as instance index
-    $routes->connect('/', ['controller' => 'Instances', 'action' => 'index']);
+    # meanwhile: root as cas
+    // $routes->connect('/', ['controller' => 'Instances', 'action' => 'preview', 'cas']);
+    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
 
     # defaut as status page
-    $routes->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'home']);
+    $routes->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'status']);
 
 
     # =================================================================================
@@ -234,6 +235,24 @@ Router::scope('/', function (RouteBuilder $routes) {
     # users interaction
     # =================================================================================
 
+    # login
+    $routes->connect(
+        '/:instance_namespace/login',
+        ['controller' => 'Users', 'action' => 'login'],
+        [
+            'pass' => ['instance_namespace']
+        ]
+    );
+
+    # logout
+    $routes->connect(
+        '/:instance_namespace/logout',
+        ['controller' => 'Users', 'action' => 'logout'],
+        [
+            'pass' => ['instance_namespace']
+        ]
+    );
+
     # view
     $routes->connect(
         '/:instance_namespace/users/:id',
@@ -290,12 +309,12 @@ Router::scope('/', function (RouteBuilder $routes) {
     ## Instances:
     # (OK) index   (sysadmin)
     # (OK) add     (sysadmin)
+    # (OK) delete  (sysadmin)
     # (OK) view    (admin)
     # (OK) edit    (admin)
-    # (OK) delete  (admin)
-    # (OK) preview (user)
-    # (OK) map     (user)
-    # (NO) dots    (user)
+    # (OK) preview (all)
+    # (OK) map     (all)
+    # (NO) dots    (all)
     
     ## Categories
     # (OK) index   (no) -- implemented on Instances view
@@ -312,7 +331,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     # (OK) delete  (admin)
 
     ## Projects
-    # (OK) index   (admin)
+    # (OK) index   (all)
     # (OK) add     (user)
     # (OK) view    (all)
     # (OK) edit    (user)
@@ -321,7 +340,7 @@ Router::scope('/', function (RouteBuilder $routes) {
     ## Users
     # index   (no) -- implemented on Instances view
     # (OK) view    (all)
-    # (OK) add     (user)
+    # (OK) add     (all)
     # edit    (user)
     # (OK) delete  (user)
 

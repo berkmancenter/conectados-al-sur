@@ -1,5 +1,12 @@
 # TODO List
 
+- admin logout --> '/'  ??
+- check de que urls tipo dvine.cl/asdasd no muestren una página basura
+- user add: check existence
+- secure login data https
+- TODO HOME!
+-login/logout refirigen a CAS!
+- borrar ruta de status
 - ojo ccon los max limit del paginate!, puede limitar info de proyectos y otros
 - lugar donde agregar más sysadmins
 - user delete, check remaining

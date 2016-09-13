@@ -240,9 +240,10 @@ CREATE TABLE users (
     PRIMARY KEY (instance_id, id)
 );
 INSERT INTO users VALUES
-(0, 'sysadmin', 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', 'sysadmin', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(1, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , 'lionel', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-
+(0, 'sysadmin', 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(1, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+-- hash para password: tester
+-- tester@tester.tester, tester
 
 -- TABLE projects
 CREATE TABLE projects (

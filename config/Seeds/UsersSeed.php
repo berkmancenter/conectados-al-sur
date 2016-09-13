@@ -35,7 +35,7 @@ class UsersSeed extends AbstractSeed
                 'instance_id'   => 1,
                 'genre_id'      => $faker->numberBetween(1,3),
                 'main_organization'    => $faker->company,
-                'organization_type_id' => $faker->numberBetween(1,9),
+                'organization_type_id' => $faker->numberBetween(2,9),
                 'created'       => $created->format('Y-m-d H:i:s'),
                 'modified'      => $modified->format('Y-m-d H:i:s'),
             ];

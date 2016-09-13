@@ -3,6 +3,8 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
+
 /**
  * Projects Controller
  *
@@ -10,6 +12,34 @@ use Cake\ORM\TableRegistry;
  */
 class ProjectsController extends AppController
 {
+    public function beforeFilter(Event $event)
+    {
+        parent::beforeFilter($event);
+
+        // public actions
+        $this->Auth->allow(['index', 'view']);
+    }
+
+    public function isAuthorized($user = null)
+    {
+        // All registered users can add projects
+        if ($this->request->action === 'add') {
+            return true;
+        }
+
+        // The owner of a project can edit and delete it
+        if (in_array($this->request->action, ['edit', 'delete'])) {
+            $instance_namespace = (int)$this->request->params['pass'][0];
+            $project_id = (int)$this->request->params['pass'][1];
+            if ($this->Projects->isOwnedBy($project_id, $user['id'])) {
+                return true;
+            }
+        }
+
+        return parent::isAuthorized($user);
+    }
+
+
     /**
      * Index method
      *
