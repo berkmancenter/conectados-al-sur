@@ -8,7 +8,7 @@ composer install
 
 ## Database
 
-ver instrucciones en el mismo [archivo sql](`data/DEPLOY_SQL.sql`)
+ver instrucciones en el mismo [archivo SQL](data/DEPLOY_SQL.sql).
 
 
 ## TODOs
