@@ -221,11 +221,13 @@ class InstancesController extends AppController
         $_categories = $this->Instances->Categories
             ->find('list')
             ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' =>'ASC'])
             ->all();
         $_organization_types = $this->Instances->OrganizationTypes
             ->find('list')
             ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' =>'ASC'])
             ->all();
         $continents_f = TableRegistry::get('Continents')
