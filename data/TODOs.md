@@ -1,5 +1,7 @@
 # TODO List
 
+
+- top bar namespace check
 - admin logout --> '/'  ??
 - check de que urls tipo dvine.cl/asdasd no muestren una página basura
 - user add: check existence

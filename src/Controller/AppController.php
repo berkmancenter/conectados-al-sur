@@ -151,5 +151,21 @@ class AppController extends Controller
         ) {
             $this->set('_serialize', true);
         }
+
+        // manage user session
+        $auth_user = $this->Auth->user();
+        if ($auth_user) {
+            // var_dump($auth_user);
+            $this->set('auth_user', $auth_user);
+
+            $auth_user_namespace = TableRegistry::get('Instances')
+                ->find()
+                ->select(['id', 'namespace'])
+                ->where(['id' => $auth_user['instance_id']])
+                ->first()
+                ->namespace;
+            $this->set('auth_user_namespace', $auth_user_namespace);
+        }
+
     }
 }

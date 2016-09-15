@@ -98,7 +98,8 @@ a:hover {
 
 }
 
-.top-bar-title {
+.top-bar-title, .top-bar-title a {
+    color: #fff;
     font-family: Futura;
     font-weight: bold;
     font-size: 14px;
@@ -119,6 +120,20 @@ a:hover {
 /* menu arrow */
 .top-bar-right .dropdown.menu > li.is-dropdown-submenu-parent > a::after {
     border-color: #fff transparent;
+}
+
+#top-bar-username-li {
+    background-color: #ed7d31;
+    font-weight: normal;
+}
+
+#top-bar-username-li span {
+    font-weight: bold;
+    /*font-size: 40px;*/
+}
+
+#top-bar-logout-li {
+    border-top: 1px solid #fff;
 }
 
 

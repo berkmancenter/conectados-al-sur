@@ -4,20 +4,10 @@
 
 <!-- Page Content -->
 <div class="fullwidth page-content">
-
     <div class="row">
         <div class="small-12 column preview-title">
-            <h3>DVINE web app HOME</h3>
+            <h3>DVINE</h3>
+            <h5>Web App</h5>
         </div>
     </div>
-
-    <div class="row preview-desc">
-        <div class="small-12 columns preview-desc-esp">
-            <p>BLA BLA BLA</p>
-            <hr>
-            <a href="admin">admin</a>
-
-        </div>
-    </div>    
-
 </div>

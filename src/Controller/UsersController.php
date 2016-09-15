@@ -27,6 +27,12 @@ class UsersController extends AppController
 
     public function login($instance_namespace = null)
     {
+        $instance = TableRegistry::get('Instances')
+            ->find()
+            ->select(['id', 'name', 'namespace', 'logo'])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
 
@@ -48,6 +54,8 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Invalid username or password, try again'));
         }
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
     }
 
     public function logout($instance_namespace = null)
