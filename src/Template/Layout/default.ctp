@@ -47,10 +47,25 @@
                             <li>
                                 <a href="#"><i class='fi-torso size-16'></i></a>
                                 <ul class="menu vertical">
-                                    <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span></li>
+                                    <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span>
+                                    </li>
                                     <li>
                                         <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user_namespace, $auth_user['id']]) ?>>Your profile</a>
                                     </li>
+                                    <?php if (
+                                            $auth_user['role_id'] > 0 &&
+                                            isset($instance_namespace) &&
+                                            $instance_namespace != "sys"
+                                        ): ?>
+                                    <li>
+                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance_namespace]) ?>>Settings</a>
+                                    </li>
+                                    <?php endif; ?>
+                                    <?php if ($auth_user['role_id'] == 2): ?>
+                                    <li>
+                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>>DVINE Settings</a>
+                                    </li>
+                                    <?php endif; ?>
                                     <li id="top-bar-logout-li">
                                         <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout', $auth_user_namespace]) ?>>Sign Out</a>
                                     </li>

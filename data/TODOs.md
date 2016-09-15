@@ -1,5 +1,7 @@
 # TODO List
 
+
+- sysadmin debe poder ver sus proyectos, ordenados por instancia.. sólo el y otros sysadmins, el resto no debe poder verlos.
 - sysadmins no deben mostrar org type id en su view
 - verificar que datos de edit y add calcen con valores de la base de datos... ej> no agregar cat Id de otra instancia
 - verificar si es que hay problemas para namespaces con más de 3 caracteres

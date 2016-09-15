@@ -22,16 +22,56 @@ class UsersController extends AppController
         // You should not add the "login" action to allow list. Doing so would
         // cause problems with normal functioning of AuthComponent.
         $this->Auth->allow(['view', 'add', 'logout']);
+    }
 
+    public function isAuthorized($user = null)
+    {
+        if (parent::isAuthorized($user)) {
+            return true;
+        }
+        
+        // All registered users can add projects to their instance!
+        if ($this->request->action == 'edit' || $this->request->action == 'delete') {
+
+            // real ns
+            $instance_namespace = TableRegistry::get('Instances')
+                ->find()
+                ->select(['id', 'namespace'])
+                ->where(['id' => $user['instance_id']])
+                ->first()
+                ->namespace;
+
+            // url namespace
+            $url_namespace = $this->request->params['pass'][0];
+            $requested_id = $this->request->params['pass'][1];
+
+            // same namespace
+            if ($url_namespace == $instance_namespace) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function login($instance_namespace = null)
     {
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
+        if ($instance_namespace && 
+            $instance_namespace != "sys" &&
+            $instance_namespace != "admin")
+        {
+            $instance = TableRegistry::get('Instances')
+                ->find()
+                ->select(['id', 'name', 'namespace', 'logo'])
+                ->where(['Instances.namespace' => $instance_namespace])
+                ->first();
+            if (!$instance) {
+                // $this->Flash->error(__('Invalid instance'));
+                return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            }
+            $this->set('instance_namespace', $instance_namespace);
+            $this->set('instance_logo', $instance->logo);
+        }
+        
 
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
@@ -54,8 +94,6 @@ class UsersController extends AppController
             }
             $this->Flash->error(__('Invalid username or password, try again'));
         }
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
     }
 
     public function logout($instance_namespace = null)
@@ -87,17 +125,28 @@ class UsersController extends AppController
      */
     public function view($instance_namespace = null, $id = null)
     {
+        // check sys cosas
+
         $instance = TableRegistry::get('Instances')
             ->find()
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
+
+        $instance_id = $instance->id;
 
         $user = $this->Users->find()
-            ->where(['Users.id' => $id])
+            ->where(['Users.instance_id' => 0])
+            ->orWhere(['Users.instance_id' => $instance->id])
+            ->andWhere(['Users.id' => $id])
             ->select([
                     'id',
                     'name',
+                    'email',
                     'contact',
                     'genre_id',
                     'main_organization',
@@ -108,12 +157,36 @@ class UsersController extends AppController
             ->contain([
                     'Genres',
                     'OrganizationTypes',
-                    'Projects'
+                    'Projects' => function ($q) use ($instance_id) {
+                       return $q->where(['Projects.instance_id' => $instance_id]);
+                    },
                 ])
             ->first();
 
+        // evitar mostrar datos de usuarios de otras instancias
+        if (!$user) {
+            $this->Flash->error(__('Invalid user'));
+            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+        }
         // var_dump($user);
 
+        $owner_id = $user->id;
+        $client  = $this->Auth->user();
+        $client_id   = $client['id'];
+        $client_role = $client['role_id'];
+        $client_instance_id = $client['instance_id'];
+        
+        $this->set('is_authorized', false);
+        if (
+            $client_id == $owner_id ||
+            $client_role == 2 ||
+            (
+                $client_instance_id == $instance->id &&
+                $client_role == 1
+            )
+        ) {
+            $this->set('is_authorized', true);
+        }
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
@@ -134,6 +207,10 @@ class UsersController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
@@ -149,14 +226,24 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->data);
             $user->instance_id = $instance->id;
             $user->id = $last_id + 1;
+            $user->role_id = 0;
 
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
+
+                // log the current user out!
+                $logged_user = $this->Auth->user();
+                if ($logged_user) {
+                    $this->Auth->logout();
+                }
+
+                // log the new user in
+                $this->Auth->setUser($user->toArray());
+            
             } else {
                 $this->Flash->error(__('There was an error while trying to create this user.'));
-                return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
             }
+            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
         }
         $genres = $this->Users->Genres
             ->find('list', ['limit' => 200])
@@ -166,6 +253,7 @@ class UsersController extends AppController
         $organizationTypes = $this->Users->OrganizationTypes
             ->find('list', ['limit' => 200])
             ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC']);
 
         $this->set('instance_namespace', $instance_namespace);
@@ -190,8 +278,10 @@ class UsersController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
-
-
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $user = $this->Users->find()
             ->where([
@@ -253,10 +343,23 @@ class UsersController extends AppController
             //     return $this->redirect(['action' => 'index']);
             // }
         }
-        $genres = $this->Users->Genres->find('list', ['limit' => 200]);
-        $organizationTypes = $this->Users->OrganizationTypes->find('list', ['limit' => 200]);
+    
+        $genres = $this->Users->Genres
+            ->find('list', ['limit' => 200])
+            ->where(['Genres.name !=' => '[unused]'])
+            ->order(['name' => 'ASC']);
+
+        $organizationTypes = $this->Users->OrganizationTypes
+            ->find('list', ['limit' => 200])
+            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
+            ->order(['name' => 'ASC']);
+
         $this->set(compact('user', 'genres', 'organizationTypes'));
         $this->set('_serialize', ['user']);
+
+        $this->set('instance_namespace', $instance_namespace);
+        $this->set('instance_logo', $instance->logo);
     }
 
     /**
@@ -270,12 +373,20 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
 
-        $instance_id = TableRegistry::get('Instances')
+        $instance = TableRegistry::get('Instances')
             ->find()
             ->select(['id'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->first()->id;
+            ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
+        $instance_id = $instance->id;
 
+        $logged_user = $this->Auth->user();
+
+        // delete user
         $user = $this->Users->get($id);
         if (isset($instance_id) && isset($user->instance_id)
             && $user->instance_id == $instance_id 
@@ -286,8 +397,9 @@ class UsersController extends AppController
         }
 
         // redirect to view when deleting by admin, preview otherwise
-        $view_url = Router::url(['controller' => 'Instances', 'action' => 'view', $instance_namespace, '_full' => true]);
-        if($this->referer() == $view_url) {
+        $this->Auth->logout();
+        if($logged_user['id'] != $user->id) {
+            $view_url = Router::url(['controller' => 'Instances', 'action' => 'view', $instance_namespace, '_full' => true]);
             $this->redirect($view_url);
         } else {
             $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);

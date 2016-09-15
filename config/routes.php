@@ -272,6 +272,16 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
+    # edit
+    $routes->connect(
+        '/:instance_namespace/users/:id/edit',
+        ['controller' => 'Users', 'action' => 'edit'],
+        [
+            'pass' => ['instance_namespace', 'id'],
+            'id'   => '[0-9]+'
+        ]
+    );
+
     # delete
     $routes->connect(
         '/:instance_namespace/users/:id/delete',

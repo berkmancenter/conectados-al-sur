@@ -28,7 +28,7 @@ class InstancesController extends AppController
         }
 
         // public actions
-        $this->Auth->allow(['preview', 'map']);
+        $this->Auth->allow(['dots', 'preview', 'map']);
     }
 
 
@@ -74,6 +74,10 @@ class InstancesController extends AppController
             ->select(['id', 'name', 'description', 'description_es', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
@@ -96,6 +100,10 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->contain([])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
@@ -167,6 +175,10 @@ class InstancesController extends AppController
                 }
             ])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
         // available categories
         // var_dump($instance->categories);
 
@@ -273,6 +285,10 @@ class InstancesController extends AppController
             ])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $select_fields = ['id', 'name', 'email'];
 
@@ -360,6 +376,10 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->contain([])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             
@@ -401,6 +421,10 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->contain([])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
         
         if ($this->Instances->delete($instance)) {
              $this->Flash->success(__('The instance "{0}" has been deleted.', $instance->name));

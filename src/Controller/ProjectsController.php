@@ -22,9 +22,28 @@ class ProjectsController extends AppController
 
     public function isAuthorized($user = null)
     {
-        // All registered users can add projects
-        if ($this->request->action === 'add') {
+        if (parent::isAuthorized($user)) {
             return true;
+        }
+        
+        // All registered users can add projects to their instance!
+        if ($this->request->action === 'add') {
+
+            // real ns
+            $instance_namespace = TableRegistry::get('Instances')
+                ->find()
+                ->select(['id', 'namespace'])
+                ->where(['id' => $user['instance_id']])
+                ->first()
+                ->namespace;
+
+            // url namespace
+            $url_namespace = $this->request->params['pass'][0];
+
+            // same namespace
+            if ($url_namespace == $instance_namespace) {
+                return true;
+            }
         }
 
         // The owner of a project can edit and delete it
@@ -36,7 +55,7 @@ class ProjectsController extends AppController
             }
         }
 
-        return parent::isAuthorized($user);
+        return false;
     }
 
 
@@ -55,6 +74,10 @@ class ProjectsController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $user_conditions = array();
         $category_conditions = array();
@@ -122,6 +145,10 @@ class ProjectsController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $project = $this->Projects->get($id, [
             'contain' => [
@@ -159,6 +186,10 @@ class ProjectsController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {
@@ -192,6 +223,7 @@ class ProjectsController extends AppController
         $organizationTypes = $this->Projects->OrganizationTypes
             ->find('list')
             ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
 
@@ -213,6 +245,7 @@ class ProjectsController extends AppController
         $categories = $this->Projects->Categories
             ->find('list', ['limit' => 200])
             ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
 
@@ -244,6 +277,10 @@ class ProjectsController extends AppController
             ->select(['id', 'name', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
+        if (!$instance) {
+            // $this->Flash->error(__('Invalid instance'));
+            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        }
 
         $project = $this->Projects->get($id, [
             'contain' => ['Categories']
@@ -263,6 +300,7 @@ class ProjectsController extends AppController
         $organizationTypes = $this->Projects->OrganizationTypes
             ->find('list')
             ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
 
@@ -284,6 +322,7 @@ class ProjectsController extends AppController
         $categories = $this->Projects->Categories
             ->find('list', ['limit' => 200])
             ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
 

@@ -1,15 +1,5 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-        <!-- <li><?= $this->Html->link(__('Edit User'), ['action' => 'edit', $user->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete User'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Users'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Genres'), ['controller' => 'Genres', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Genre'), ['controller' => 'Genres', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Organization Types'), ['controller' => 'OrganizationTypes', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Organization Type'), ['controller' => 'OrganizationTypes', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Projects'), ['controller' => 'Projects', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add']) ?> </li> -->
 <?php $this->end(); ?>
 
 <!-- Page Content -->
@@ -17,14 +7,15 @@
 
 <div class="row">
     <div class="small-12 column view-title">
-        <h3><?= h($user->name) ?></h3>
-        <!-- <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance_namespace]) ?>><i class='fi-map size-36'></i>Back to Map</a>
-        <a href=<?= $this->Url->build(['action' => 'edit', $instance_namespace, $project->id]) ?>><i class='fi-page-edit size-36'></i>Edit</a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance_namespace, $project->id], [
-                'escape' => false, 
-                'confirm' => __('Are you sure you want to delete this project?. This operation cannot be undone. All related data will be erased!')
-            ])
-        ?> -->
+        <h3><?= h($user->name) ?></h3>        
+        <?php if (isset($is_authorized) && $is_authorized == true): ?>
+            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $instance_namespace, $user->id]) ?>><i class='fi-page-edit size-36'></i>EDIT</a>
+            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['controller' => 'Users', 'action' => 'delete', $instance_namespace, $user->id], [
+                    'escape' => false, 
+                    'confirm' => __('Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
+                ])
+            ?>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -44,10 +35,12 @@
                 <h4 class="view-subtitle"><?= __('Profile:') ?></h4>
    
                 <table class="vertical-table">
-                    <!-- <tr>
-                        <th><?= __('Email (secret!)') ?></th>
+                    <?php if (isset($is_authorized) && $is_authorized == true): ?>
+                    <tr>
+                        <th><?= __('Email (private)') ?></th>
                         <td><?= h($user->email) ?></td>
-                    </tr> -->
+                    </tr>
+                    <?php endif; ?>
                     <tr>
                         <th><?= __('Contact Email') ?></th>
                         <td><?= h($user->contact) ?></td>
@@ -96,7 +89,6 @@
                 </div>
 
             </div>
-
 
         </div>
     </div>
