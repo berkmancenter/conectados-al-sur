@@ -240,9 +240,9 @@ CREATE TABLE users (
     PRIMARY KEY (instance_id, id)
 );
 INSERT INTO users VALUES
-(0, 'sysadmin', 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(0, 'Matías Pavez' , 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
 (1, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
--- hash para password: tester
+-- password: tester, salt: 0000000000000000000000000000000000000000000000000000000000000000
 -- tester@tester.tester, tester
 
 -- TABLE projects
@@ -319,14 +319,42 @@ INSERT INTO categories VALUES
  (19, 'Other'                                         , 'Otro'                                                      , 1);
 
 INSERT INTO users VALUES
-(2, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , 'adminadmin', 1, 1, 1, 'ICEI, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(3, 'Matías Pavez' , 'matias.pavez.b@gmail.com'  , 'matias.pavez.b@gmail.com'  , 'adminadmin', 1, 1, 1, 'FCFM, Universidad de Chile', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+(2, 'tester_cas admin', 'tester_cas_admin@gmail.com', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 1, 'ICEI, Universidad de Chile', 2, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(3, 'tester_cas user' , 'tester_cas@gmail.com'      , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 1, 'ICEI, Universidad de Chile', 2, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 
--- populate dummy users for CAS
+
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+-- populate database for CAS example
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
+(2, 'Example instance', 'Instancia de ejemplo', 'example',
+ 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+ 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.');
+
+INSERT INTO organization_types VALUES 
+ (11,'[unused]', '[unused]', 2),
+ (12,'NGO', 'ONG', 2),
+ (13,'IGO', 'OIG', 2),
+ (14,'Academic', 'Academia', 2),
+ (15,'Other', 'Otro', 2);
+
+INSERT INTO categories VALUES 
+ (20, '[unused]'   , '[unused]'    , 2),
+ (21, 'Health'     , 'Salud'       , 2),
+ (22, 'Privacy'    , 'Privacidad'  , 2),
+ (23, 'Video Games', 'Video Juegos', 2),
+ (24, 'Other'      , 'Otro'        , 2);
+
+INSERT INTO users VALUES
+(4, 'tester_example admin', 'tester_example_admin@gmail.com', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 2, 1, 'ICEI, Universidad de Chile', 12, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+(5, 'tester_example user' , 'tester_example@gmail.com'      , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 2, 1, 'ICEI, Universidad de Chile', 13, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+
+
+-- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed
 
--- populate dummy projects for CAS
+-- populate dummy projects
 -- $ bin/cake migrations seed --seed ProjectsSeed
 
--- populate dummy categories_projects for CAS
+-- populate dummy categories_projects
 -- $ bin/cake migrations seed --seed CategoriesProjectsSeed

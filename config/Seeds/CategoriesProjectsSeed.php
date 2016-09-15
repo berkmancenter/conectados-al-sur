@@ -19,20 +19,27 @@ class CategoriesProjectsSeed extends AbstractSeed
     public function run()
     {
         $faker = Faker\Factory::create();
-        $faker->seed(1234);
+        $faker->seed(1111);
         $categories = [];
-        for ($i = 0; $i < 600; $i++) {
+        for ($i = 0; $i < 400; $i++) {
            
+            $min_cat_id = 2;
+            $max_cat_id = 19;
+            if ($i > 300) {
+                $min_cat_id = 21;
+                $max_cat_id = 24;
+            }
+
             $faker->unique($reset = true);
             $categories[] = [
                 'project_id'    => $i,
-                'category_id'   => $faker->unique()->numberBetween(1,18),
+                'category_id'   => $faker->unique()->numberBetween($min_cat_id,$max_cat_id),
             ];
             for ($k = 0; $k < 3; $k++) {
                 if ( rand(0,1) == 0) {
                     $categories[] = [
                         'project_id'    => $i,
-                        'category_id'   => $faker->unique()->numberBetween(1,18),
+                        'category_id'   => $faker->unique()->numberBetween($min_cat_id,$max_cat_id),
                     ];
                 }
             }

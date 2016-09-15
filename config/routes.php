@@ -332,10 +332,10 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     ## Projects
     # (OK) index   (all)
-    # (OK) add     (user)
+    # (OK) add     (logged user)
     # (OK) view    (all)
-    # (OK) edit    (user)
-    # (OK) delete  (user)
+    # (OK) edit    (owner user)
+    # (OK) delete  (owner user)
    
     ## Users
     # index   (no) -- implemented on Instances view

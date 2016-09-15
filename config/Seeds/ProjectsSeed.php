@@ -40,9 +40,9 @@ class ProjectsSeed extends AbstractSeed
         $city_ids = [ 0 ];
 
         $faker = Faker\Factory::create();
-        $faker->seed(1234);
+        $faker->seed(1111);
         $data = [];
-        for ($i = 0; $i < 600; $i++) {
+        for ($i = 0; $i < 400; $i++) {
 
             $created  = $faker->dateTimeThisYear;
             $modified = $faker->dateTimeBetween($startDate = $created, $endDate = 'now', $timezone = null);
@@ -62,17 +62,33 @@ class ProjectsSeed extends AbstractSeed
                 $country_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
             }
 
+            $instance_id = 1;
+            $min_org_id = 2;
+            $max_org_id = 10;
+
+            $valid_user_ids = [0, 1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+            $user_list_id = $faker->numberBetween(0, count($valid_user_ids)-1);
+            if ($i > 300) {
+                $instance_id = 2;
+                $min_org_id = 12;
+                $max_org_id = 15;
+
+                $valid_user_ids = [0, 1, 4, 5, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
+                $user_list_id = $faker->numberBetween(0, count($valid_user_ids)-1);
+            }
+            $user_id = $valid_user_ids[$user_list_id];
+
             $data[] = [
                 'id'            => $i,
                 'name'          => $faker->unique()->sentence($nbWords = 4), 
-                'user_id'       => $faker->numberBetween(2,40),
-                'instance_id'   => 1,
+                'user_id'       => $user_id,
+                'instance_id'   => $instance_id,
                 'description'   => $faker->paragraph($nbSentences = 2),
                 'url'           => $faker->url,
                 'contribution'  => $faker->paragraph($nbSentences = 2),
                 'contributing'  => $faker->paragraph($nbSentences = 4),
                 'organization'  => $faker->company,
-                'organization_type_id' => $faker->numberBetween(1,9),
+                'organization_type_id' => $faker->numberBetween($min_org_id,$max_org_id),
                 'project_stage_id'     => $faker->numberBetween(1,5),
                 'country_id'           => $country_id,
                 'city_id'              => 0,//$city_ids[$faker->numberBetween(0,count($city_ids)-1)],

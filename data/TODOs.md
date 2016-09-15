@@ -1,6 +1,9 @@
 # TODO List
 
-
+- sysadmins no deben mostrar org type id en su view
+- verificar que datos de edit y add calcen con valores de la base de datos... ej> no agregar cat Id de otra instancia
+- verificar si es que hay problemas para namespaces con más de 3 caracteres
+- login view + SIGNUP button
 - top bar namespace check
 - admin logout --> '/'  ??
 - check de que urls tipo dvine.cl/asdasd no muestren una página basura
