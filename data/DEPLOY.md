@@ -101,19 +101,10 @@ git clone https://github.com/mpavezb/conectados-al-sur.git cas-app
         'default' => [
 			'driver' => 'Cake\Database\Driver\Postgres',
 			'port' => 5432,
-			'username' => 'dvinecl_baker',
-            'password' => 'cake_baker_57',
-            'database' => 'dvinecl_cake',
-
-# instalar deendencias
-composer install
-
-
-
-# see
-http://localhost/cas-app/status
+			'username' => '...',
+            'password' => '...',
+            'database' => '...',
 ```
-
 
 ```
 ## Base de datos
@@ -123,49 +114,5 @@ crear base de datos: dvinecl_cake
 crear usuario: dvinecl_baker
 dar permisos a dvinecl_baker
 
-## import db
-
-# create tables (see README.md)
-
-# populate tables using README.md code
-
-# populate countries (import dump_countries.csv)
-# populate cities (import dump_cities{1,2,3,4}.csv)
-
-# populate users
-$ bin/cake migrations seed --seed UsersSeed
-
-# populate projects
-$ bin/cake migrations seed --seed ProjectsSeed
-
-# populate project_categories
-$ bin/cake migrations seed --seed ProjectsSeed # versión modificada.
-
-
-
-
-```
-
-
-```
-# genrate code files
-bin/cake bake all -f continents ;
-bin/cake bake all -f subcontinents ;
-bin/cake bake all -f countries ;
-bin/cake bake all -f cities ;
-bin/cake bake all -f genres ;
-bin/cake bake all -f project_stages ;
-bin/cake bake all -f roles ;
-bin/cake bake all -f instances ;
-bin/cake bake all -f categories ;
-bin/cake bake all -f organization_types ;
-bin/cake bake all -f users ;
-bin/cake bake all -f projects ;
-bin/cake bake all -f categories_projects ;
-
-
-# crear snapshot del schema de la base de datos
-bin/cake bake migration_snapshot Initial
-```
-
+``
 
