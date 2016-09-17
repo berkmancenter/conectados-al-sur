@@ -12,7 +12,8 @@ use Cake\ORM\Entity;
  * @property string $namespace
  * @property string $description
  * @property string $description_es
- * @property string $logo
+ * @property $logo
+ * @property string $passphrase
  * @property bool $use_org_types
  * @property bool $use_user_genre
  * @property bool $use_user_organization

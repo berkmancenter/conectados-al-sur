@@ -10,10 +10,9 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\BelongsTo $Genres
- * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
  * @property \Cake\ORM\Association\HasMany $Projects
+ * @property \Cake\ORM\Association\BelongsToMany $Instances
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -48,20 +47,17 @@ class UsersTable extends Table
             'foreignKey' => 'role_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Instances', [
-            'foreignKey' => 'instance_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('Genres', [
             'foreignKey' => 'genre_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('OrganizationTypes', [
-            'foreignKey' => 'organization_type_id',
-            'joinType' => 'INNER'
-        ]);
         $this->hasMany('Projects', [
             'foreignKey' => 'user_id'
+        ]);
+        $this->belongsToMany('Instances', [
+            'foreignKey' => 'user_id',
+            'targetForeignKey' => 'instance_id',
+            'joinTable' => 'instances_users'
         ]);
     }
 
@@ -75,8 +71,7 @@ class UsersTable extends Table
     {
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create')
-            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->allowEmpty('id', 'create');
 
         $validator
             ->requirePresence('name', 'create')
@@ -111,11 +106,9 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
-        $rules->add($rules->existsIn(['instance_id'], 'Instances'));
         $rules->add($rules->existsIn(['genre_id'], 'Genres'));
-        $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
+
         return $rules;
     }
 }

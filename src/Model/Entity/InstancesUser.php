@@ -4,17 +4,15 @@ namespace App\Model\Entity;
 use Cake\ORM\Entity;
 
 /**
- * Category Entity
+ * InstancesUser Entity
  *
- * @property int $id
- * @property string $name
- * @property string $name_es
  * @property int $instance_id
+ * @property int $user_id
  *
  * @property \App\Model\Entity\Instance $instance
- * @property \App\Model\Entity\Project[] $projects
+ * @property \App\Model\Entity\User $user
  */
-class Category extends Entity
+class InstancesUser extends Entity
 {
 
     /**
@@ -28,6 +26,7 @@ class Category extends Entity
      */
     protected $_accessible = [
         '*' => true,
-        'id' => false
+        'instance_id' => false,
+        'user_id' => false
     ];
 }

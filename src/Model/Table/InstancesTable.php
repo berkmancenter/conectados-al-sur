@@ -12,7 +12,7 @@ use Cake\Validation\Validator;
  * @property \Cake\ORM\Association\HasMany $Categories
  * @property \Cake\ORM\Association\HasMany $OrganizationTypes
  * @property \Cake\ORM\Association\HasMany $Projects
- * @property \Cake\ORM\Association\HasMany $Users
+ * @property \Cake\ORM\Association\BelongsToMany $Users
  *
  * @method \App\Model\Entity\Instance get($primaryKey, $options = [])
  * @method \App\Model\Entity\Instance newEntity($data = null, array $options = [])
@@ -48,8 +48,10 @@ class InstancesTable extends Table
         $this->hasMany('Projects', [
             'foreignKey' => 'instance_id'
         ]);
-        $this->hasMany('Users', [
-            'foreignKey' => 'instance_id'
+        $this->belongsToMany('Users', [
+            'foreignKey' => 'instance_id',
+            'targetForeignKey' => 'user_id',
+            'joinTable' => 'instances_users'
         ]);
         $this->addBehavior('Utils.Uploadable', [
             'logo' => [
@@ -98,6 +100,9 @@ class InstancesTable extends Table
 
         $validator
             ->allowEmpty('logo');
+
+        $validator
+            ->allowEmpty('passphrase');
 
         $validator
             ->boolean('use_org_types')
@@ -184,6 +189,7 @@ class InstancesTable extends Table
         $rules->add($rules->isUnique(['name']));
         $rules->add($rules->isUnique(['name_es']));
         $rules->add($rules->isUnique(['namespace']));
+
         return $rules;
     }
 }

@@ -147,6 +147,7 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['project_stage_id'], 'ProjectStages'));
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
+
         return $rules;
     }
 

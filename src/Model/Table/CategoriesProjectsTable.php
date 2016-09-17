@@ -58,6 +58,7 @@ class CategoriesProjectsTable extends Table
     {
         $rules->add($rules->existsIn(['project_id'], 'Projects'));
         $rules->add($rules->existsIn(['category_id'], 'Categories'));
+
         return $rules;
     }
 }

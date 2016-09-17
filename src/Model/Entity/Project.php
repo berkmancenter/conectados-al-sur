@@ -27,6 +27,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\Time $finish_date
  *
  * @property \App\Model\Entity\User $user
+ * @property \App\Model\Entity\Instance $instance
  * @property \App\Model\Entity\OrganizationType $organization_type
  * @property \App\Model\Entity\ProjectStage $project_stage
  * @property \App\Model\Entity\Country $country

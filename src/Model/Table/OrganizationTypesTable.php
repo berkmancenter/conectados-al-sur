@@ -11,7 +11,6 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\HasMany $Projects
- * @property \Cake\ORM\Association\HasMany $Users
  *
  * @method \App\Model\Entity\OrganizationType get($primaryKey, $options = [])
  * @method \App\Model\Entity\OrganizationType newEntity($data = null, array $options = [])
@@ -45,9 +44,6 @@ class OrganizationTypesTable extends Table
         $this->hasMany('Projects', [
             'foreignKey' => 'organization_type_id'
         ]);
-        $this->hasMany('Users', [
-            'foreignKey' => 'organization_type_id'
-        ]);
     }
 
     /**
@@ -65,13 +61,11 @@ class OrganizationTypesTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
-            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('name');
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es')
-            ->add('name_es', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('name_es');
 
         return $validator;
     }
@@ -86,9 +80,8 @@ class OrganizationTypesTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['id']));
-        $rules->add($rules->isUnique(['name']));
-        $rules->add($rules->isUnique(['name_es']));
         $rules->add($rules->existsIn(['instance_id'], 'Instances'));
+
         return $rules;
     }
 }
