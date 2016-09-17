@@ -22,7 +22,7 @@ CREATE TABLE continents (
     name_es VARCHAR(255) NOT NULL
 );
 INSERT INTO continents (id, name, name_es) VALUES 
-(000, '[null continent]', '[null continent]' ),
+(000, '[null]'          , '[null]'           ),
 (002, 'Africa'          , 'África'           ),
 (009, 'Australia'       , 'Oceanía'          ),
 (003, 'North America'   , 'América del Norte'),
@@ -44,7 +44,7 @@ CREATE TABLE subcontinents (
     continent_id INT NOT NULL REFERENCES continents(id) ON DELETE CASCADE
 );
 INSERT INTO subcontinents (id, name, name_es, continent_id) VALUES 
-(000, '[null subcontinent]'      , '[null subcontinent]'       , 000),
+(000, '[null]'                   , '[null]'                    , 000),
 (014, 'Eastern Africa'           , 'África Oriental'           , 002),
 (017, 'Central Africa'           , 'África Central'            , 002),
 (015, 'Northern Africa'          , 'África Septentrional'      , 002),
@@ -88,7 +88,7 @@ CREATE TABLE countries (
     latitude  REAL NOT NULL,
     longitude REAL NOT NULL
 );
-INSERT INTO countries VALUES (0, '[-]', '[null country]', '[null country]', 0, 0.0, 0.0);
+INSERT INTO countries VALUES (0, '[-]', '[null]', '[null]', 0, 0.0, 0.0);
 -- INSERT: run the countries.sql file.
 
 
@@ -109,7 +109,7 @@ CREATE TABLE cities (
     latitude  REAL NOT NULL,
     longitude REAL NOT NULL
 );
-INSERT INTO cities VALUES (0, '[null city]', 0, 0, 0);
+INSERT INTO cities VALUES (0, '[null]', 0, 0, 0);
 -- INSERT: import the cities.csv file. You might need to divide
 --  it into several lighter pieces.
 
@@ -120,7 +120,7 @@ CREATE TABLE genres (
     name_es VARCHAR(15) NOT NULL
 );
 INSERT INTO genres VALUES 
- (0,'[unused]', '[unused]'),
+ (0,'[null]', '[null]'),
  (1,'male'  , 'hombre'),
  (2,'female', 'mujer'),
  (3,'other' , 'other');
@@ -133,7 +133,7 @@ CREATE TABLE project_stages (
     name_es VARCHAR(15) NOT NULL
 );
 INSERT INTO project_stages VALUES 
- (0,'[unused]', '[unused]'),
+ (0,'[null]', '[null]'),
  (1,'starting'     , 'empezando'   ),
  (2,'planification', 'planificando'),
  (3,'in execution' , 'en ejecución'),
@@ -162,13 +162,14 @@ DROP TABLE IF EXISTS categories_projects CASCADE;
 
 -- TABLE instances
 CREATE TABLE instances (
-    id          INT NOT NULL PRIMARY KEY,
+    id          SERIAL PRIMARY KEY,
     name        VARCHAR(100) NOT NULL UNIQUE,
     name_es     VARCHAR(100) NOT NULL UNIQUE,
     namespace   VARCHAR(10)  NOT NULL UNIQUE,
     description    TEXT         NOT NULL,
     description_es TEXT         NOT NULL,
     logo        VARCHAR(255) DEFAULT NULL,
+    passphrase  VARCHAR(255) DEFAULT 'token',
     use_org_types         BOOLEAN NOT NULL DEFAULT TRUE,
     use_user_genre        BOOLEAN NOT NULL DEFAULT TRUE,
     use_user_organization BOOLEAN NOT NULL DEFAULT TRUE,
@@ -184,31 +185,27 @@ CREATE TABLE instances (
     use_proj_dates        BOOLEAN NOT NULL DEFAULT TRUE,
     proj_max_categories   INT NOT NULL DEFAULT 4
 );
-INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
-(0, '[null]', '[null]', 'sys', '[null]', '[null]');
+INSERT INTO instances (name, name_es, namespace, description, description_es) VALUES 
+('[null]', '[null]', 'admin', '[null]', '[null]');
 
 
 -- TABLE organization_types
 CREATE TABLE organization_types (
-    id          INT NOT NULL UNIQUE,
+    id          SERIAL UNIQUE,
     name        VARCHAR(100) NOT NULL,
     name_es     VARCHAR(100) NOT NULL,
     instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     PRIMARY KEY (instance_id, id)
 );
-INSERT INTO organization_types VALUES 
- (0, '[unused]', '[unused]', 0);
 
 -- TABLE categories
 CREATE TABLE categories (
-    id      INT NOT NULL UNIQUE,
+    id      SERIAL UNIQUE,
     name    VARCHAR(100) NOT NULL,
     name_es VARCHAR(100) NOT NULL,
     instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     PRIMARY KEY (instance_id, id)
 );
-INSERT INTO categories VALUES 
- (0, '[unused]', '[unused]', 0);
 
 
 -- TABLE users
@@ -221,33 +218,35 @@ INSERT INTO categories VALUES
 -- - instance_id : user role. Cant be NULL. When an instance is deleted, all user too!
 -- - genre_id    : user genre. Can be set to usused
 -- - main_organization: Name of user's main organization. Can be NULL.
--- - organization_type_id: Type of users's main organization. If deleted or unused, sets [unused].
+-- - organization_type_id: Type of users's main organization. If deleted or unused, sets [null].
 -- - created : User creation time record
 -- - modified: User modification time record
 CREATE TABLE users (
-    id          INT          NOT NULL UNIQUE,
+    id          SERIAL UNIQUE,
     name        VARCHAR(100) NOT NULL,
-    email       VARCHAR(100) NOT NULL,
+    email       VARCHAR(100) NOT NULL UNIQUE,
     contact     VARCHAR(100),
     password    VARCHAR(255) NOT NULL,
     role_id     INT NOT NULL DEFAULT 0 REFERENCES roles(id),
-    instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     genre_id    INT NOT NULL DEFAULT 0 REFERENCES genres(id) ON DELETE SET DEFAULT,
     main_organization VARCHAR(255),
-    organization_type_id INT NOT NULL DEFAULT 0 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
     created   TIMESTAMP,
     modified  TIMESTAMP,
-    PRIMARY KEY (instance_id, id)
+    PRIMARY KEY (id)
 );
-INSERT INTO users VALUES
-(0, 'Matías Pavez' , 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(1, 'Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 0, 1, 'dvine', 0, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
--- password: tester, salt: 0000000000000000000000000000000000000000000000000000000000000000
--- tester@tester.tester, tester
+
+
+-- TABLE belongsToMany Join
+CREATE TABLE instances_users (
+    instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
+    user_id     INT NOT NULL REFERENCES users(id)     ON DELETE CASCADE,
+    PRIMARY KEY (instance_id, user_id)
+);
+
 
 -- TABLE projects
 CREATE TABLE projects (
-    id           INT NOT NULL UNIQUE,
+    id           SERIAL UNIQUE,
     name         VARCHAR(255) NOT NULL,
     user_id      INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     instance_id  INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
@@ -277,81 +276,97 @@ CREATE TABLE categories_projects (
 );
 
 
+
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+-- populate database for ADMINS
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
+('Matías Pavez' , 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 1, 'dvine', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 1, 'dvine', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES (1, 1), (1, 2);
+-- password: tester, salt: 0000000000000000000000000000000000000000000000000000000000000000
+-- tester@tester.tester, tester
+
+
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for CAS example
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
-(1, 'Conectados Al Sur', 'Conectados Al Sur', 'cas' ,
+INSERT INTO instances (name, name_es, namespace, description, description_es) VALUES 
+('Conectados Al Sur', 'Conectados Al Sur', 'cas',
  'Global mapping of research and projects on digital citizenchip of children and youth. ',
  'Mapeo global de investigaciones y proyectos sobre ciudadanía digital de niños, niñas y adolescentes.');
 
-INSERT INTO organization_types VALUES 
- (1,'[unused]'                            , '[unused]'            , 1),
- (2,'Academic'                            , 'Academia'            , 1),
- (3,'Practitioner'                        , 'Profesional'         , 1),
- (4,'Activists'                           , 'Activista'           , 1),
- (5,'Philanthropists'                     , 'Filantropo'          , 1),
- (6,'Government official'                 , 'Gobierno'            , 1),
- (7,'Representative of technology company', 'Compañia Tecnológica', 1),
- (8,'NGO'                                 , 'ONG'                 , 1),
- (9,'IGO'                                 , 'OIG'                 , 1),
- (10,'Other'                               , 'Otro'                , 1);
+INSERT INTO organization_types (name, name_es, instance_id) VALUES
+ ('[null]'                              , '[null]'              , 2),
+ ('Academic'                            , 'Academia'            , 2),
+ ('Practitioner'                        , 'Profesional'         , 2),
+ ('Activists'                           , 'Activista'           , 2),
+ ('Philanthropists'                     , 'Filantropo'          , 2),
+ ('Government official'                 , 'Gobierno'            , 2),
+ ('Representative of technology company', 'Compañia Tecnológica', 2),
+ ('NGO'                                 , 'ONG'                 , 2),
+ ('IGO'                                 , 'OIG'                 , 2),
+ ('Other'                               , 'Otro'                , 2);
 
-INSERT INTO categories VALUES 
- (1, '[unused]'                                       , '[unused]'                                                  , 1),
- (2, 'Creativity and Innovation'                      , 'Creatividad e Innovación'                                  , 1),
- (3, 'Health and Wealth'                              , 'Salud y Bienestar'                                         , 1),
- (4, 'Privacy, Identity and Online Reputation'        , 'Privacidad, Identidad y Reputación Online'                 , 1),
- (5, 'Technology in education'                        , 'Tecnología en la educación'                                , 1),
- (6, 'Methodologies'                                  , 'Metodologías'                                              , 1),
- (7, 'Security'                                       , 'Seguridad'                                                 , 1),
- (8, 'Heritage and Culture'                           , 'Patrimonio y Cultura'                                      , 1),
- (9, 'Technology and Environment'                     , 'Tecnología y Medioambiente'                                , 1),
- (10, 'Skills, Digital Literacy and Learning Cultures', 'Habilidades, Alfabetismo Digital y Culturas de Aprendizaje', 1),
- (11, 'Participation and Civic Engagement'            , 'Participación y Compromiso Cívico'                         , 1),
- (12, 'Violence and Discrimination'                   , 'Violencia y Discriminación'                                , 1),
- (13, 'Intellectual Property and Access to Culture'   , 'Propiedad Intelectual y Acceso a la Cultura'               , 1),
- (14, 'Technology-based Entrepreneurship'             , 'Emprendimientos basados en Tecnología'                     , 1),
- (15, 'Development of Content on Digital Platforms'   , 'Desarrollo de Contenido en Plataformas Digitales'          , 1),
- (16, 'Ownership, Access and Use of Technology'       , 'Propiedad, Acceso y Uso de Tecnología'                     , 1),
- (17, 'Opinion Formation'                             , 'Formación de Opinión'                                      , 1),
- (18, 'Management of multidisciplinary teams to develop digital content', 'Manejo de equipos multidiciplinarios para el desarrollo de contenido digital', 1),
- (19, 'Other'                                         , 'Otro'                                                      , 1);
+INSERT INTO categories (name, name_es, instance_id) VALUES
+ ('[null]'                                         , '[null]'                                                    , 2),
+ ('Creativity and Innovation'                      , 'Creatividad e Innovación'                                  , 2),
+ ('Health and Wealth'                              , 'Salud y Bienestar'                                         , 2),
+ ('Privacy, Identity and Online Reputation'        , 'Privacidad, Identidad y Reputación Online'                 , 2),
+ ('Technology in education'                        , 'Tecnología en la educación'                                , 2),
+ ('Methodologies'                                  , 'Metodologías'                                              , 2),
+ ('Security'                                       , 'Seguridad'                                                 , 2),
+ ('Heritage and Culture'                           , 'Patrimonio y Cultura'                                      , 2),
+ ('Technology and Environment'                     , 'Tecnología y Medioambiente'                                , 2),
+ ('Skills, Digital Literacy and Learning Cultures' , 'Habilidades, Alfabetismo Digital y Culturas de Aprendizaje', 2),
+ ('Participation and Civic Engagement'             , 'Participación y Compromiso Cívico'                         , 2),
+ ('Violence and Discrimination'                    , 'Violencia y Discriminación'                                , 2),
+ ('Intellectual Property and Access to Culture'    , 'Propiedad Intelectual y Acceso a la Cultura'               , 2),
+ ('Technology-based Entrepreneurship'              , 'Emprendimientos basados en Tecnología'                     , 2),
+ ('Development of Content on Digital Platforms'    , 'Desarrollo de Contenido en Plataformas Digitales'          , 2),
+ ('Ownership, Access and Use of Technology'        , 'Propiedad, Acceso y Uso de Tecnología'                     , 2),
+ ('Opinion Formation'                              , 'Formación de Opinión'                                      , 2),
+ ('Management of multidisciplinary teams to develop digital content', 'Manejo de equipos multidiciplinarios para el desarrollo de contenido digital', 2),
+ ('Other'                                          , 'Otro'                                                      , 2);
 
-INSERT INTO users VALUES
-(2, 'tester_cas admin', 'tester_cas_admin@gmail.com', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 1, 'ICEI, Universidad de Chile', 2, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(3, 'tester_cas user' , 'tester_cas@gmail.com'      , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 1, 'ICEI, Universidad de Chile', 2, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-
+INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
+('tester_cas admin', 'tester_cas_admin@gmail.com', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_cas user' , 'tester_cas@gmail.com'      , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES (2, 3), (2, 4);
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for CAS example
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-INSERT INTO instances (id, name, name_es, namespace, description, description_es) VALUES 
-(2, 'Example instance', 'Instancia de ejemplo', 'example',
+INSERT INTO instances (name, name_es, namespace, description, description_es) VALUES 
+('Example instance', 'Instancia de ejemplo', 'example',
  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
  'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.');
 
-INSERT INTO organization_types VALUES 
- (11,'[unused]', '[unused]', 2),
- (12,'NGO', 'ONG', 2),
- (13,'IGO', 'OIG', 2),
- (14,'Academic', 'Academia', 2),
- (15,'Other', 'Otro', 2);
+INSERT INTO organization_types (name, name_es, instance_id) VALUES
+ ('[null]'  , '[null]'  , 3),
+ ('NGO'     , 'ONG'     , 3),
+ ('IGO'     , 'OIG'     , 3),
+ ('Academic', 'Academia', 3),
+ ('Other'   , 'Otro'    , 3);
 
-INSERT INTO categories VALUES 
- (20, '[unused]'   , '[unused]'    , 2),
- (21, 'Health'     , 'Salud'       , 2),
- (22, 'Privacy'    , 'Privacidad'  , 2),
- (23, 'Video Games', 'Video Juegos', 2),
- (24, 'Other'      , 'Otro'        , 2);
+INSERT INTO categories (name, name_es, instance_id) VALUES
+ ('[null]'     , '[null]'      , 3),
+ ('Health'     , 'Salud'       , 3),
+ ('Privacy'    , 'Privacidad'  , 3),
+ ('Video Games', 'Video Juegos', 3),
+ ('Other'      , 'Otro'        , 3);
 
-INSERT INTO users VALUES
-(4, 'tester_example admin', 'tester_example_admin@gmail.com', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 2, 1, 'ICEI, Universidad de Chile', 12, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-(5, 'tester_example user' , 'tester_example@gmail.com'      , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 2, 1, 'ICEI, Universidad de Chile', 13, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
+('tester_example admin', 'tester_example_admin@gmail.com', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_example user' , 'tester_example@gmail.com'      , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES (3, 5), (3, 6);
 
 
 -- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed
+
+-- populate dummy instances_users
+-- $ bin/cake migrations seed --seed InstancesUsersSeed
 
 -- populate dummy projects
 -- $ bin/cake migrations seed --seed ProjectsSeed
