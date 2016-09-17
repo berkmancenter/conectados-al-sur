@@ -2,11 +2,10 @@
 /* CAS ORANGE: #F26722 */
 /* CAS BLUE  : #42C8F4  */
 
-.svg-background { fill: lightblue; }
-
-.country        { fill: #ddffcc; }
-.country_hover  { fill: #f79c6e; }
-.country_active { fill: #f26722; }
+.svg-background { fill: #363638; }
+.country        { fill: #d8d8da; }
+.country_hover  { fill: #ed7d31; }
+.country_active { fill: #39a0ea; }
 
 .country-boundary {
   fill: none;
@@ -54,14 +53,14 @@
     padding: 0px 0px 0px 0px;
 
     border: 0px;
-    border-top: 1px solid #808080;
+    border-top: 1px solid #363640;
     margin: 0px;
     margin-bottom: 0px;
 }
 .projects-index .side-nav { 
     padding: 10px 10px;
     border: 0px;
-    border-right: 5px solid #808080;
+    border-right: 5px solid #363638;
     margin: 0px;
     /*background: blue;*/
 }
@@ -83,8 +82,8 @@
 .off-canvas {
 
     background: #f2f2f2;
-    border-right: 1px solid #808080;
-    border-bottom: 1px solid #808080;
+    border-right: 1px solid #363638;
+    border-bottom: 1px solid #363638;
 
     position: fixed;
     min-height: 100%;

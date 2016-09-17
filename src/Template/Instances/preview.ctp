@@ -8,20 +8,12 @@
 
 <div class="row">
     <div class="small-12 column preview-title">
-        <h3 ><?= h($instance->name) ?></h3>
+        <h3><?= h($instance->name) ?></h3>
     </div>
 </div>
 
 <div class="row preview-desc">
-    <div class="small-12 columns preview-desc-esp">
-        <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
-    </div>
-</div>
-<div class="row preview-desc">
-    <hr>
-</div>
-<div class="row preview-desc">
-    <div class="small-12 columns preview-desc-eng">
+    <div class="small-12 columns">
         <?= $this->Text->autoParagraph(h($instance->description)); ?>
     </div>
 </div>

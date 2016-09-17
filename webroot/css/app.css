@@ -12,7 +12,7 @@
 @font-face {
     font-family: Futura;
     src: url(fonts/Futura-Light.ttf);
-    
+    font-weight: normal;
 }
 @font-face {
     font-family: Futura;
@@ -104,6 +104,14 @@ a:hover {
     font-weight: bold;
     font-size: 14px;
 }
+
+.top-bar-left a {
+    color: #fff;
+    font-family: Futura;
+    font-size: 15px;
+    font-weight: normal;
+}
+
 .top-bar-right {
     background-color: transparent;
 }
@@ -287,12 +295,11 @@ logo assumptions:
     padding: 0px 0px;
     margin-bottom: 0px;
 }
-.preview-desc-esp p {
+.preview-desc p {
     color: #ed7d31;
+    /*color: #39a0ea;    */
 }
-.preview-desc-eng p {
-    color: #39a0ea;
-}
+
 
 .preview-imgs {
     margin-top: 50px;
@@ -326,218 +333,8 @@ and (min-width : 700px) {
 }
 
 .preview-imgs img:hover, .preview-imgs img:focus {
-    box-shadow: 0 0 0px 7px rgba(50,50,50,1);
+    box-shadow: 0 0 0px 7px #46C7F4;
 }
-
-
-
-/* ****************************************************************************
-* Tooltips
-**************************************************************************** */
-
-.tooltip:before {
-    border-color: transparent transparent rgb(0, 0, 0) transparent;
-}
-
-span.has-tip {
-    border-bottom: 0;
-}
-
-/* ****************************************************************************
-* TABLES
-**************************************************************************** */
-table {
-    background: #fff;
-    margin-bottom: 40px;
-    border: none;
-    table-layout: fixed;
-    width: 100%;
-    margin-top: 0rem;
-    border: 0;
-}
-table thead {
-    background: #363638;
-}
-table tr {
-    border-bottom: 1px solid #ebebec;
-}
-table tr th {
-    padding: 0.5625rem 0.625rem;
-    font-size: 0.875rem;
-    color: #fff;
-    border-bottom: 2px solid #808080;
-}
-
-/* head colors */
-table.hover > thead:hover > tr { background-color: #363638; }
-table thead a       { color: #fff;    }
-table thead a:hover { color: #ed7d31; }
-
-/* display headers on stack */
-table.stack thead { display: table-header-group; }
-
-/* row hover */
-table.hover > tbody > tr:hover               { background-color: #ccf5ff; }
-table.hover tbody tr:nth-of-type(even):hover { background-color: #ccf5ff; }
-
-/* data alignment on large screens */
-@media only screen 
-and (max-width : 1200px) {
-    table thead th, table td {
-        text-align: center;
-    }
-}
-table th.actions, table td.actions {
-    text-align: center;
-}
-
-.vertical-table {
-    vertical-align: middle;
-}
-
-.vertical-table th {
-    color: #808080;
-    border: none;
-    font-family: Futura;
-    font-weight: bold;
-    text-align: left;
-    padding: 0.5625rem 0.625rem;
-    font-size: 0.875rem;
-}
-
-.vertical-table td {
-    text-align: right;   
-}
-
-
-/* ****************************************************************************
-* PAGINATION
-**************************************************************************** */
-
-ul.pagination li a {
-    color: rgba(0, 0 ,0 , 0.54);
-}
-
-ul.pagination li.active a {
-    background-color: #DCE47E;
-    color: #FFF;
-    font-weight: bold;
-    cursor: default;
-}
-ul.pagination .disabled:hover a {
-    background: none;
-}
-
-.paginator {
-    text-align: center;
-    margin-top: -20px;
-}
-
-.paginator ul.pagination li {
-    float: none;
-    display: inline-block;
-}
-
-.paginator p {
-    text-align: right;
-    color: rgba(0, 0 ,0 , 0.54);
-}
-
-.asc:after {
-    content: " \2193";
-}
-.desc:after {
-    content: " \2191";
-}
-
-/* ****************************************************************************
-* TABS
-**************************************************************************** */
-
-.tabs-title > a {
-    font-size: 15px;
-}
-
-
-/* ****************************************************************************
-* FORMS
-**************************************************************************** */
-
-.form button:hover, .form button:focus {
-    background: #7A6058;
-    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.26) !important;
-}
-
-
-.form button[type="submit"] {
-    float: right;
-    text-transform: uppercase;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.26);
-    font-size: 20px;
-}
-
-fieldset {
-    border: none;
-    padding: 1.25rem;
-    margin: 1.125rem 0;
-}
-
-fieldset legend {
-}
-
-
-/* ****************************************************************************
-* FLASH MESSAGES
-**************************************************************************** */
-
-div.message {
-    text-align: center;
-    cursor: pointer;
-    display: block;
-    font-weight: normal;
-    padding: 0 1.5rem 0 1.5rem;
-    transition: height 300ms ease-out 0s;
-    background-color: rgb(255, 174, 0);
-    color: #626262;
-    top: 15px;
-    right: 15px;
-    z-index: 999;
-    overflow: hidden;
-    height: 50px;
-    line-height: 2.5em;
-}
-
-div.message:before {
-    line-height: 0px;
-    font-size: 20px;
-    height: 12px;
-    width: 12px;
-    border-radius: 15px;
-    text-align: center;
-    vertical-align: middle;
-    display: inline-block;
-    position: relative;
-    left: -11px;
-    background-color: #FFF;
-    padding: 12px 14px 12px 10px;
-    content: "i";
-    color: rgb(255, 174, 0);
-}
-
-div.message.error {
-    background-color: #C3232D;
-    color: #FFF;
-}
-
-div.message.error:before {
-    padding: 11px 16px 14px 7px;
-    color: #C3232D;
-    content: "x";
-}
-div.message.hidden {
-    height: 0;
-}
-
 
 
 /* ****************************************************************************

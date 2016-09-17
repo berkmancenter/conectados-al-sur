@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conectados al Sur</title>
+    <title>dvine app</title>
     
     <?= $this->Html->meta('icon') ?>
 
@@ -15,6 +15,7 @@
     <?= $this->Html->css('foundation/foundation.min.css') ?>
     <?= $this->Html->css('foundation-icons/foundation-icons.css') ?>
     <?= $this->Html->css('app.css') ?>
+    <?= $this->Html->css('app_items.css') ?>
 
     <?= $this->Html->script('foundation/jquery.js') ?>
 
@@ -31,14 +32,22 @@
                 <span data-responsive-toggle="responsive-menu" data-hide-for="medium">  
                     <button class="menu-icon light" type="button" data-toggle></button>
                 </span>
-                <?php if (isset($instance_namespace)): ?>
-                    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]) ?>>DVINE WEB-APP</a>
-                <?php else: ?>
-                    DVINE WEB-APP
-                <?php endif; ?>
+                DVINE WEB-APP
             </div>
             <div id="responsive-menu">
                 <div class="top-bar-left">
+                    <?php if (isset($instance_namespace) && isset($instance_name)): ?>
+                        <a href=
+                            <?= $this->Url->build(
+                            [
+                                'controller' => 'Instances',
+                                'action' => 'preview',
+                                $instance_namespace
+                            ])?>
+                            >
+                            <?= h($instance_name) ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
@@ -122,12 +131,12 @@
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
-                        <li><a class="button" href="#">Creative Commons??</a></li>
+                        <li><a class="button" href="#"><?= __("Creative Commons") ?></a></li>
                     </ul>
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
-                        <li><a class="button" href="#">Privacy Policy??</a></li>
+                        <li><a class="button" href="#"><?= __("Privacy Policy") ?></a></li>
                     </ul>
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">

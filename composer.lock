@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aa06fb84e1a0dbfccc6117cbba128aff",
-    "content-hash": "30b8e41ee809390b9ed8d929b5ec1afd",
+    "hash": "b80b75810e9fbdc3bb0642c06ae15f50",
+    "content-hash": "05926311110465d4131017e8477d295a",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -293,6 +293,54 @@
                 "time"
             ],
             "time": "2016-07-14 05:16:14"
+        },
+        {
+            "name": "cakephp/localized",
+            "version": "3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cakephp/localized.git",
+                "reference": "3e3e90e9779cfcc0f1d1891405b779200a7407b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cakephp/localized/zipball/3e3e90e9779cfcc0f1d1891405b779200a7407b3",
+                "reference": "3e3e90e9779cfcc0f1d1891405b779200a7407b3",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.1",
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "cakephp/cakephp-codesniffer": "2.*",
+                "phpunit/phpunit": "*"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "Cake\\Localized\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CakePHP Community",
+                    "homepage": "https://github.com/cakephp/localized/graphs/contributors"
+                }
+            ],
+            "description": "CakePHP Localized Plugin",
+            "homepage": "https://github.com/cakephp/localized",
+            "keywords": [
+                "cakephp",
+                "i18n",
+                "l10n",
+                "localized"
+            ],
+            "time": "2016-02-29 16:34:17"
         },
         {
             "name": "cakephp/migrations",

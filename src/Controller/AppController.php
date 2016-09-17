@@ -156,6 +156,5 @@ class AppController extends Controller
                 ->namespace;
             $this->set('auth_user_namespace', $auth_user_namespace);
         }
-
     }
 }

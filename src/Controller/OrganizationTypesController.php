@@ -52,6 +52,7 @@ class OrganizationTypesController extends AppController
         $this->set('organizationType', $organizationType);
         $this->set('instance', $instance);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set('instance_namespace', $instance_namespace);
         // $this->set(compact('organizationType'));
         // $this->set('_serialize', ['organizationType']);
@@ -90,6 +91,7 @@ class OrganizationTypesController extends AppController
         $this->set('organizationType', $organizationType);
         $this->set('instance', $instance);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set('instance_namespace', $instance_namespace);
         // $this->set(compact('organizationType'));
         // $this->set('_serialize', ['organizationType']);

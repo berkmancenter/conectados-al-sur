@@ -126,6 +126,7 @@ class ProjectsController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set(compact('projects'));
         $this->set('_serialize', ['projects']);
     }
@@ -166,6 +167,7 @@ class ProjectsController extends AppController
         $this->set('project', $project);
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set('_serialize', ['project']);
     }
 
@@ -255,6 +257,7 @@ class ProjectsController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories','instance_namespace'));
         $this->set('_serialize', ['project']);
     }
@@ -331,6 +334,7 @@ class ProjectsController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories', 'instance_namespace'));
         $this->set('_serialize', ['project']);
     }

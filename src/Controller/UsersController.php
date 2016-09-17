@@ -70,6 +70,7 @@ class UsersController extends AppController
             }
             $this->set('instance_namespace', $instance_namespace);
             $this->set('instance_logo', $instance->logo);
+            $this->set('instance_name', $instance->name);
         }
         
 
@@ -190,6 +191,7 @@ class UsersController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set('user', $user);
         $this->set('_serialize', ['user']);
     }
@@ -258,6 +260,7 @@ class UsersController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set(compact('user', 'genres', 'organizationTypes'));
         $this->set('_serialize', ['user']);
 
@@ -360,6 +363,7 @@ class UsersController extends AppController
 
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
     }
 
     /**

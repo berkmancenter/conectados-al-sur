@@ -190,6 +190,7 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
+Plugin::load('Cake/Localized');
 Plugin::load('Utils');
 Plugin::load('Migrations');
 
@@ -220,3 +221,4 @@ Type::build('date')
     ->useImmutable();
 Type::build('datetime')
     ->useImmutable();
+

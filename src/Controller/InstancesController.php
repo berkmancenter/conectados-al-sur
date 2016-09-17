@@ -82,6 +82,7 @@ class InstancesController extends AppController
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         // $this->set('_serialize', ['instance']);
     }
 
@@ -108,6 +109,7 @@ class InstancesController extends AppController
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         // $this->set(compact('instance', 'instance_namespace'));
         // $this->set('_serialize', ['instance']);
     }
@@ -254,6 +256,7 @@ class InstancesController extends AppController
         // instance data
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         $this->set('instance', $instance);
         $this->set('projects', $projects);
         $this->set('continents', $continents);
@@ -329,6 +332,7 @@ class InstancesController extends AppController
         $this->set('instance', $instance);
         $this->set('instance_namespace', $instance_namespace);
         $this->set('instance_logo', $instance->logo);
+        $this->set('instance_name', $instance->name);
         // $this->set('_serialize', ['instance']);
     }
 
