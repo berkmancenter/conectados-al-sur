@@ -38,6 +38,12 @@ class InstancesController extends AppController
 
             if ($user['role_id'] == 2) {
                 
+                $user_instances = TableRegistry::get('Instances')
+                    ->find()
+                    ->select(['id', 'name', 'namespace', 'logo'])
+                    ->where(['namespace !=' => 'admin']);
+
+                $this->set('auth_user_instances', $user_instances);
             }
             else {
                 $user_data = TableRegistry::get('Users')

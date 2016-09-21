@@ -24,26 +24,26 @@
                 <div class="orbit" role="region" aria-label="My dvine apps" data-orbit>
                     <ul class="orbit-container">
                         
-                        <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
-                        <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
                         <?php foreach ($auth_user_instances as $idx=>$instance): ?>
                             <?php if ($idx == 0): ?>
                             <li class="is-active orbit-slide">
                             <?php else: ?>
                             <li class="orbit-slide">
                             <?php endif; ?>
+                                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>>
                                 <?= 
-                                    // $this->Html->image('/' . $instance->logo, [
-                                    $this->Html->image('/img/0' . ($idx+1) . ".jpg", [
+                                    $this->Html->image('/' . $instance->logo, [
                                         'alt'   => $instance->namespace,
                                         'class' => "orbit-image"
                                     ])
                                 ?>
-                                <p><a href=""><?= $instance->name ?></a></p>
+                                </a>
+                                <p class="text-center"><a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><?= $instance->name ?></a></p>
                                 <!-- <figcaption class="orbit-caption"><?= $instance->name ?></figcaption> -->
                             </li>
                         <?php endforeach; ?>
-
+                        <button class="orbit-previous"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>
+                        <button class="orbit-next"><span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;</button>
                     </ul>
                     <nav class="orbit-bullets">                    
                         <?php foreach ($auth_user_instances as $idx=>$instance): ?>
@@ -109,17 +109,25 @@
 		margin: 30px 0px;
 	}
 
+    .home-login {
+        margin-top: 50px;
+    }
+
     .orbit-image {
-        height: 200px;
+        height: 100px;
         width: 400px;
+        background-color: #fff;
 
     }
+    .orbit-previous { background-color: rgba(54, 54, 55, 0.5); }
+    .orbit-next     { background-color: rgba(54, 54, 55, 0.5); }
+
     .orbit-slide {
         background-color: rgb(54, 54, 55);
         color: #fff;
     }
     .orbit-slide > p {
-        padding: 15px 15px;
+        padding: 10px 15px;
     }
     .orbit-slide > p > a {
         color: #fff;
