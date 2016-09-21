@@ -4,6 +4,23 @@ instance add:
 - echo $this->Form->input('passphrase');
 
 
+# routes: 
+# - probablemente graph, map, index y download puedan ser abstraídos al 
+# mismo controlador!, pero con distintas vistas
+#
+# - limitar acceso con urls originales, que no ocupan el mapeo que propongo
+# - bloquear acceso a vistas de Entidades Bloqueadas:
+#    - Continents
+#    - Subcontinents
+#    - Countries
+#    - Cities
+#    - CategoriesProjects
+#    - Genres
+#    - ProjectStages
+#    - Roles
+
+
+- user view no muestra todos los proyectos para users sysadmin... habría que registrar a los sysadmins en otras instancias, para que puedan agregar proyectos.
 - sysadmin debe poder ver sus proyectos, ordenados por instancia.. sólo el y otros sysadmins, el resto no debe poder verlos.
 - sysadmins no deben mostrar org type id en su view
 - verificar que datos de edit y add calcen con valores de la base de datos... ej> no agregar cat Id de otra instancia

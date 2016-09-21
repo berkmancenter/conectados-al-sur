@@ -16,17 +16,13 @@ class UsersSeed extends AbstractSeed
             $data[] = [
                 'name'          => $faker->name, 
                 'email'         => $faker->unique()->email,
-                'contact'       => $faker->unique()->email,
                 'password'      => $faker->password,
-                'role_id'       => 0,
                 'genre_id'      => $faker->numberBetween(1,3),
-                'main_organization'    => $faker->company,
                 'created'       => $created->format('Y-m-d H:i:s'),
-                'modified'      => $modified->format('Y-m-d H:i:s'),
+                'modified'      => $modified->format('Y-m-d H:i:s')
             ];
         }
         #var_dump($data);
-        
         $table = $this->table('users');
         $table->insert($data)->save();
     }

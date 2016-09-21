@@ -146,8 +146,7 @@ CREATE TABLE roles (
     id      INT PRIMARY KEY,
     name    VARCHAR(100) NOT NULL
 );
-INSERT INTO roles VALUES 
- (0,'user'), (1,'admin'), (2,'superadmin');
+INSERT INTO roles VALUES (0,'user'), (1,'admin');
 
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -157,6 +156,7 @@ DROP TABLE IF EXISTS instances CASCADE;
 DROP TABLE IF EXISTS organization_types CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS instances_users CASCADE;
 DROP TABLE IF EXISTS projects CASCADE;
 DROP TABLE IF EXISTS categories_projects CASCADE;
 
@@ -225,11 +225,8 @@ CREATE TABLE users (
     id          SERIAL UNIQUE,
     name        VARCHAR(100) NOT NULL,
     email       VARCHAR(100) NOT NULL UNIQUE,
-    contact     VARCHAR(100),
     password    VARCHAR(255) NOT NULL,
-    role_id     INT NOT NULL DEFAULT 0 REFERENCES roles(id),
     genre_id    INT NOT NULL DEFAULT 0 REFERENCES genres(id) ON DELETE SET DEFAULT,
-    main_organization VARCHAR(255),
     created   TIMESTAMP,
     modified  TIMESTAMP,
     PRIMARY KEY (id)
@@ -240,6 +237,10 @@ CREATE TABLE users (
 CREATE TABLE instances_users (
     instance_id INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     user_id     INT NOT NULL REFERENCES users(id)     ON DELETE CASCADE,
+    role_id     INT NOT NULL DEFAULT 0 REFERENCES roles(id),
+    contact     VARCHAR(100),
+    main_organization VARCHAR(255),
+    organization_type_id INT NOT NULL DEFAULT 0 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
     PRIMARY KEY (instance_id, user_id)
 );
 
@@ -280,10 +281,14 @@ CREATE TABLE categories_projects (
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for ADMINS
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
-('Matías Pavez' , 'matias.pavez@ing.uchile.cl', 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 1, 'dvine', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-('Lionel Brossi', 'lionelbrossi@gmail.com'    , 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 2, 1, 'dvine', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-INSERT INTO instances_users VALUES (1, 1), (1, 2);
+INSERT INTO organization_types (name, name_es, instance_id) VALUES
+ ('[null]', '[null]', 1);
+INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
+('Matías Pavez' , 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('Lionel Brossi', 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES
+(1, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 1),
+(1, 2, 1, 'lionelbrossi@gmail.com'    , 'dvine', 1);
 -- password: tester, salt: 0000000000000000000000000000000000000000000000000000000000000000
 -- tester@tester.tester, tester
 
@@ -329,10 +334,12 @@ INSERT INTO categories (name, name_es, instance_id) VALUES
  ('Management of multidisciplinary teams to develop digital content', 'Manejo de equipos multidiciplinarios para el desarrollo de contenido digital', 2),
  ('Other'                                          , 'Otro'                                                      , 2);
 
-INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
-('tester_cas admin', 'tester_cas_admin@gmail.com', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-('tester_cas user' , 'tester_cas@gmail.com'      , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-INSERT INTO instances_users VALUES (2, 3), (2, 4);
+INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
+('tester_cas admin', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_cas user' , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES
+(2, 3, 1, 'tester_cas_admin@gmail.com', 'ICEI, Universidad de Chile', 3),
+(2, 4, 0, 'tester_cas@gmail.com'      , 'ICEI, Universidad de Chile', 3);
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for CAS example
@@ -356,15 +363,21 @@ INSERT INTO categories (name, name_es, instance_id) VALUES
  ('Video Games', 'Video Juegos', 3),
  ('Other'      , 'Otro'        , 3);
 
-INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
-('tester_example admin', 'tester_example_admin@gmail.com', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-('tester_example user' , 'tester_example@gmail.com'      , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-INSERT INTO instances_users VALUES (3, 5), (3, 6);
+INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
+('tester_example admin', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_example user' , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES
+(3, 5, 1, 'tester_example_admin@gmail.com', 'ICEI, Universidad de Chile', 13),
+(3, 6, 0, 'tester_example@gmail.com'      , 'ICEI, Universidad de Chile', 13);
 
-INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
-('tester_both'      , 'tester_both_admin@gmail.com', 'tester_both_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-('tester_both user' , 'tester_both@gmail.com'      , 'tester_both@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
-INSERT INTO instances_users VALUES (2, 7), (3, 7), (2, 8), (3, 8);
+INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
+('tester_both'      , 'tester_both_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_both user' , 'tester_both@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES
+(2, 7, 1, 'tester_both_admin@gmail.com', 'ICEI, Universidad de Chile',  3),
+(3, 7, 1, 'tester_both_admin@gmail.com', 'ICEI, Universidad de Chile', 13),
+(2, 8, 0, 'tester_both@gmail.com'      , 'ICEI, Universidad de Chile',  3),
+(3, 8, 0, 'tester_both@gmail.com'      , 'ICEI, Universidad de Chile', 13);
 
 -- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed
