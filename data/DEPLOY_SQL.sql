@@ -361,6 +361,10 @@ INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organ
 ('tester_example user' , 'tester_example@gmail.com'      , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 INSERT INTO instances_users VALUES (3, 5), (3, 6);
 
+INSERT INTO users (name, email, contact, password, role_id, genre_id, main_organization, created, modified) VALUES
+('tester_both'      , 'tester_both_admin@gmail.com', 'tester_both_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('tester_both user' , 'tester_both@gmail.com'      , 'tester_both@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 0, 1, 'ICEI, Universidad de Chile', '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+INSERT INTO instances_users VALUES (2, 7), (3, 7), (2, 8), (3, 8);
 
 -- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed

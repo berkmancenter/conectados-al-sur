@@ -42,7 +42,7 @@ class ProjectsSeed extends AbstractSeed
         $faker = Faker\Factory::create();
         $faker->seed(1111);
         $data = [];
-        for ($i = 0; $i < 400; $i++) {
+        for ($i = 1; $i < 400; $i++) {
 
             $created  = $faker->dateTimeThisYear;
             $modified = $faker->dateTimeBetween($startDate = $created, $endDate = 'now', $timezone = null);
@@ -66,20 +66,19 @@ class ProjectsSeed extends AbstractSeed
             $min_org_id = 2;
             $max_org_id = 10;
 
-            $valid_user_ids = [0, 1, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
+            $valid_user_ids = [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
             $user_list_id = $faker->numberBetween(0, count($valid_user_ids)-1);
             if ($i > 300) {
                 $instance_id = 2;
                 $min_org_id = 12;
                 $max_org_id = 15;
 
-                $valid_user_ids = [0, 1, 4, 5, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
+                $valid_user_ids = [1, 2, 5, 6, 7, 8, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
                 $user_list_id = $faker->numberBetween(0, count($valid_user_ids)-1);
             }
             $user_id = $valid_user_ids[$user_list_id];
 
             $data[] = [
-                'id'            => $i,
                 'name'          => $faker->unique()->sentence($nbWords = 4), 
                 'user_id'       => $user_id,
                 'instance_id'   => $instance_id,

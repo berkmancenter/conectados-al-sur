@@ -45,15 +45,11 @@ Router::defaultRouteClass('DashedRoute');
 Router::scope('/', function (RouteBuilder $routes) {
     
     # =================================================================================
-    # TESTING
+    # STATIC PAGES
     # =================================================================================
     
-    # meanwhile: root as cas
-    // $routes->connect('/', ['controller' => 'Instances', 'action' => 'preview', 'cas']);
-    $routes->connect('/', ['controller' => 'Pages', 'action' => 'display', 'home']);
-
-    # defaut as status page
-    $routes->connect('/status', ['controller' => 'Pages', 'action' => 'display', 'status']);
+    # home
+    $routes->connect('/', ['controller' => 'Instances', 'action' => 'home']);
 
 
     # =================================================================================
@@ -236,22 +232,31 @@ Router::scope('/', function (RouteBuilder $routes) {
     # =================================================================================
 
     # login
+    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect(
         '/:instance_namespace/login',
         ['controller' => 'Users', 'action' => 'login'],
-        [
-            'pass' => ['instance_namespace']
-        ]
+        ['pass' => ['instance_namespace']]
     );
 
+
     # logout
+    $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
     $routes->connect(
         '/:instance_namespace/logout',
         ['controller' => 'Users', 'action' => 'logout'],
-        [
-            'pass' => ['instance_namespace']
-        ]
+        ['pass' => ['instance_namespace']]
     );
+
+
+    # add
+    $routes->connect('/sign-up', ['controller' => 'Users', 'action' => 'add']);
+    $routes->connect(
+        '/:instance_namespace/sign-up',
+        ['controller' => 'Users', 'action' => 'add'],
+        ['pass' => ['instance_namespace']]
+    );
+
 
     # view
     $routes->connect(
@@ -260,15 +265,6 @@ Router::scope('/', function (RouteBuilder $routes) {
         [
             'pass' => ['instance_namespace', 'id'],
             'id'   => '[0-9]+'
-        ]
-    );
-
-    # add
-    $routes->connect(
-        '/:instance_namespace/users/add',
-        ['controller' => 'Users', 'action' => 'add'],
-        [
-            'pass' => ['instance_namespace']
         ]
     );
 

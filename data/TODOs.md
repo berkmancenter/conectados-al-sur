@@ -1,5 +1,8 @@
 # TODO List
 
+instance add:
+- echo $this->Form->input('passphrase');
+
 
 - sysadmin debe poder ver sus proyectos, ordenados por instancia.. sólo el y otros sysadmins, el resto no debe poder verlos.
 - sysadmins no deben mostrar org type id en su view

@@ -21,7 +21,7 @@ class CategoriesProjectsSeed extends AbstractSeed
         $faker = Faker\Factory::create();
         $faker->seed(1111);
         $categories = [];
-        for ($i = 0; $i < 400; $i++) {
+        for ($i = 1; $i < 400; $i++) {
            
             $min_cat_id = 2;
             $max_cat_id = 19;
