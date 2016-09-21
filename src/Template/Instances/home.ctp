@@ -31,12 +31,21 @@
                             <li class="orbit-slide">
                             <?php endif; ?>
                                 <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>>
+                                <?php if ($instance->logo): ?>
                                 <?= 
                                     $this->Html->image('/' . $instance->logo, [
                                         'alt'   => $instance->namespace,
                                         'class' => "orbit-image"
                                     ])
                                 ?>
+                                <?php else: ?>
+                                <?= 
+                                    $this->Html->image('/' . "UNKNOWN.png", [
+                                        'alt'   => $instance->namespace,
+                                        'class' => "orbit-image"
+                                    ])
+                                ?>
+                                <?php endif; ?>
                                 </a>
                                 <p class="text-center"><a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><?= $instance->name ?></a></p>
                                 <!-- <figcaption class="orbit-caption"><?= $instance->name ?></figcaption> -->

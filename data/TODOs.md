@@ -1,5 +1,12 @@
 # TODO List
 
+USER ADMIN DEBE ESTAR EN LISTA DE MAPEO!
+
+<p>TODO: formatos aceptados y chequeo de tamaño y tipo</p>
+<p>TODO: posibilidad de borrar el logo?</p>
+<p>TODO: A veces falla... ver errores!?</p>
+
+
 instance add:
 - echo $this->Form->input('passphrase');
 

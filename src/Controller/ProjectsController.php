@@ -67,7 +67,7 @@ class ProjectsController extends AppController
     public function index($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         $instance = TableRegistry::get('Instances')
             ->find()
@@ -138,7 +138,7 @@ class ProjectsController extends AppController
     public function view($instance_namespace = null, $id = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         # load instance data
         $instance = TableRegistry::get('Instances')
@@ -180,7 +180,7 @@ class ProjectsController extends AppController
     public function add($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         # load instance data
         $instance = TableRegistry::get('Instances')
@@ -224,7 +224,7 @@ class ProjectsController extends AppController
         // OrganizationTypes
         $organizationTypes = $this->Projects->OrganizationTypes
             ->find('list')
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
@@ -239,14 +239,14 @@ class ProjectsController extends AppController
         // ProjectStages
         $projectStages = $this->Projects->ProjectStages
             ->find('list')
-            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->where(['ProjectStages.name !=' => '[null]'])
             ->order(['id' => 'ASC'])
             ->all();
 
         // Categories
         $categories = $this->Projects->Categories
             ->find('list', ['limit' => 200])
-            ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
@@ -272,7 +272,7 @@ class ProjectsController extends AppController
     public function edit($instance_namespace = null, $id = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         # load instance data
         $instance = TableRegistry::get('Instances')
@@ -302,7 +302,7 @@ class ProjectsController extends AppController
         // OrganizationTypes
         $organizationTypes = $this->Projects->OrganizationTypes
             ->find('list')
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
@@ -317,14 +317,14 @@ class ProjectsController extends AppController
         // ProjectStages
         $projectStages = $this->Projects->ProjectStages
             ->find('list')
-            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->where(['ProjectStages.name !=' => '[null]'])
             ->order(['id' => 'ASC'])
             ->all();
 
         // Categories
         $categories = $this->Projects->Categories
             ->find('list', ['limit' => 200])
-            ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' => 'ASC'])
             ->all();
@@ -351,7 +351,7 @@ class ProjectsController extends AppController
         $this->request->allowMethod(['post', 'delete']);
 
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         $project = $this->Projects->get($id);
         if ($this->Projects->delete($project)) {

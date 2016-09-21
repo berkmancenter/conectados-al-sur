@@ -5,30 +5,17 @@
 <!-- Page Content -->
 <div class="fullwidth page-content">
 
-<!--
-<nav class="large-2 medium-3 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Related Projects'), ['controller' => 'Projects', 'action' => 'index', $instance->namespace]) ?> </li>
-        <li><?= $this->Html->link(__('Related Users'), ['controller' => 'Users', 'action' => 'index', $instance->namespace]) ?> </li>
-    </ul>
-</nav> -->
-
 <div class="row">
     <div class="small-12 medium-9 column view-title">
         <h3><?= h($instance->name) ?></h3>
-        <a href=<?= $this->Url->build(['action' => 'index']) ?>><i class='fi-arrow-left size-36'></i></a>
-        <a href=<?= $this->Url->build(['action' => 'preview', $instance->namespace]) ?>><i class='fi-home size-36'></i></a>
-        <a href=<?= $this->Url->build(['action' => 'map', $instance->namespace]) ?>><i class='fi-map size-36'></i></a>
-        <a href=<?= $this->Url->build(['action' => 'dots', $instance->namespace]) ?>><i class='fi-web size-36'></i></a>
+        <?= $this->App->displayInstanceIndexShortcut() ?>
+        <?= $this->App->displayInstancePreviewShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceMapShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceDotsShortcut($instance->namespace) ?>
     </div>
     <div class="small-12 medium-3 column view-title">
-        <a href=<?= $this->Url->build(['action' => 'edit', $instance->namespace]) ?>><i class='fi-page-edit size-36'></i>Edit</a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance->namespace], [
-                'escape' => false, 
-                'confirm' => __('Are you sure you want to delete the "{0}" instance?. This operation cannot be undone. All related data will be erased!', $instance->name)
-            ])
-        ?>
+        <?= $this->App->displayInstanceEditShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceDeleteShortcut($instance->namespace, $instance->name) ?>
     </div>
 </div>
 

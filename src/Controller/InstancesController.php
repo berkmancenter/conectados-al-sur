@@ -18,17 +18,16 @@ class InstancesController extends AppController
     {
         parent::beforeFilter($event);        
         
-        $action = $this->request->params["action"];
-        if ($action == "index" || $action == "add") {
-            $this->Auth->config('loginAction', [
-                'controller' => 'Users',
-                'action' => 'login',
-                'admin'
-            ]);
-        }
-
         // public actions
         $this->Auth->allow(['home', 'dots', 'preview', 'map']);
+    }
+
+    public function isAuthorized($user) {
+        
+        if (parent::isAuthorized($user)) {
+            return true;
+        }
+        return false;
     }
 
     public function home()
@@ -36,16 +35,18 @@ class InstancesController extends AppController
         $user = $this->Auth->user();
         if ($user) {
 
-            if ($user['role_id'] == 2) {
-                
+            if ($this->App->isSysadmin($user['id'])) {
+                // return all instances
                 $user_instances = TableRegistry::get('Instances')
                     ->find()
                     ->select(['id', 'name', 'namespace', 'logo'])
-                    ->where(['namespace !=' => 'admin']);
+                    ->where(['namespace !=' => 'admin'])
+                    ->all();
 
                 $this->set('auth_user_instances', $user_instances);
             }
             else {
+                // return associated instances
                 $user_data = TableRegistry::get('Users')
                     ->find()
                     ->where(['id' => $user['id']])
@@ -62,9 +63,7 @@ class InstancesController extends AppController
                     $this->set('auth_user_instances', $user_instances);
                 }
             }
-
         }
-
     }
 
 
@@ -76,18 +75,20 @@ class InstancesController extends AppController
         $query = $this->Instances
             ->find()
             ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['id !=' => 0]); // block sys
+            ->where(['namespace !=' => $this->App->getAdminNamespace()]); // block sys
         $instances = $this->paginate($query);
 
         $sysadmins = TableRegistry::get('Users')
             ->find()
             ->select(['id', 'name', 'email'])
-            ->where(['role_id' => '2'])
+            ->matching('Instances', function ($q) {
+                return $q
+                    ->where(['Instances.namespace' => 'admin'])
+                    ->where(['role_id' => 1]);
+            })
             ->all();
-        // var_dump($sysadmins);
 
         $this->set('sysadmins', $sysadmins);
-        // $this->set('_serialize', ['instance']);
 
 
         $this->set(compact('instances'));
@@ -106,16 +107,6 @@ class InstancesController extends AppController
             $this->redirect($this->referer());
         }
         
-        # load instance data
-        // $instance = $this->Instances
-        //     ->find()
-        //     ->select(['id', 'name', 'description', 'description_es', 'namespace', 'logo'])
-        //     ->where(['Instances.namespace' => $instance_namespace])
-        //     ->first();
-        // if (!$instance) {
-        //     // $this->Flash->error(__('Invalid instance'));
-        //     return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        // }
         $instance = $this->App->getInstance($instance_namespace);
         // $this->App->setInstanceViewData($instance);
 
@@ -133,7 +124,7 @@ class InstancesController extends AppController
     public function dots($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
         
         $instance = $this->Instances
             ->find()
@@ -161,7 +152,7 @@ class InstancesController extends AppController
     public function map($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         // ----- instance independent data --------
 
@@ -190,13 +181,13 @@ class InstancesController extends AppController
         // available genres
         $genres = TableRegistry::get('Genres')
             ->find()
-            ->where(['Genres.name !=' => '[unused]'])
+            ->where(['Genres.name !=' => '[null]'])
             ->all();
 
         // available project_stages
         $project_stages = TableRegistry::get('ProjectStages')
             ->find()
-            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->where(['ProjectStages.name !=' => '[null]'])
             ->all();
         
         // var_dump($genres);
@@ -210,10 +201,10 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->contain([
                 'OrganizationTypes' => function ($q) {
-                   return $q->where(['OrganizationTypes.name !=' => '[unused]']);
+                   return $q->where(['OrganizationTypes.name !=' => '[null]']);
                 },
                 'Categories' => function ($q) {
-                   return $q->where(['Categories.name !=' => '[unused]']);
+                   return $q->where(['Categories.name !=' => '[null]']);
                 }
             ])
             ->first();
@@ -253,22 +244,22 @@ class InstancesController extends AppController
             ->all();
         $genres_f = TableRegistry::get('Genres')
             ->find('list')
-            ->where(['Genres.name !=' => '[unused]'])
+            ->where(['Genres.name !=' => '[null]'])
             ->order(['name' =>'ASC'])
             ->all();
         $project_stages_f = TableRegistry::get('ProjectStages')
             ->find('list')
-            ->where(['ProjectStages.name !=' => '[unused]'])
+            ->where(['ProjectStages.name !=' => '[null]'])
             ->all();
         $_categories = $this->Instances->Categories
             ->find('list')
-            ->where(['Categories.name !=' => '[unused]'])
+            ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
             ->order(['name' =>'ASC'])
             ->all();
         $_organization_types = $this->Instances->OrganizationTypes
             ->find('list')
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' =>'ASC'])
             ->all();
@@ -316,16 +307,16 @@ class InstancesController extends AppController
     public function view($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         $instance = $this->Instances
             ->find()
             ->contain([
                 'OrganizationTypes' => function ($q) {
-                   return $q->where(['OrganizationTypes.name !=' => '[unused]']);
+                   return $q->where(['OrganizationTypes.name !=' => '[null]']);
                 },
                 'Categories' => function ($q) {
-                   return $q->where(['Categories.name !=' => '[unused]']);
+                   return $q->where(['Categories.name !=' => '[null]']);
                 }
             ])
             ->where(['Instances.namespace' => $instance_namespace])
@@ -335,20 +326,25 @@ class InstancesController extends AppController
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
-        $select_fields = ['id', 'name', 'email'];
-
         $sysadmins = TableRegistry::get('Users')
             ->find()
-            ->select($select_fields)
-            ->where(['role_id' => '2'])
+            ->select(['id', 'name', 'email'])
+            ->matching('Instances', function ($q) {
+                return $q
+                    ->where(['Instances.namespace' => 'admin'])
+                    ->where(['role_id' => 1]);
+            })
             ->all();
         // var_dump($sysadmins);
 
         $admins = TableRegistry::get('Users')
             ->find()
-            ->select($select_fields)
-            ->where(['instance_id' => $instance->id])
-            ->where(['role_id' => '1'])
+            ->select(['id', 'name', 'email'])
+            ->matching('Instances', function ($q) use ($instance_namespace) {
+                return $q
+                    ->where(['Instances.namespace' => $instance_namespace])
+                    ->where(['role_id' => 1]);
+            })
             ->all();
         // var_dump($admins->get(items');
 
@@ -358,9 +354,12 @@ class InstancesController extends AppController
         $users = $this->paginate(
             TableRegistry::get('Users')
                 ->find()
-                ->select($select_fields)
-                ->where(['instance_id' => $instance->id])
-                ->where(['role_id' => '0'])
+                ->select(['id', 'name', 'email'])
+                ->matching('Instances', function ($q) use ($instance_namespace) {
+                    return $q
+                        ->where(['Instances.namespace' => $instance_namespace])
+                        ->where(['role_id' => 0]);
+                })
         );
         // var_dump($users);
 
@@ -415,7 +414,7 @@ class InstancesController extends AppController
     public function edit($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
         $instance = $this->Instances
             ->find()
@@ -459,7 +458,7 @@ class InstancesController extends AppController
     public function delete($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
         
         $this->request->allowMethod(['post', 'delete']);
         $instance = $this->Instances

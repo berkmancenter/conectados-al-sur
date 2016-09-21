@@ -23,19 +23,32 @@
     <div class="small-12 column">
         <div class="form">
             <?= $this->Form->create($user) ?>
-            <fieldset>
-                <legend><?= __('Edit User') ?></legend>
-                <?php
-                    echo $this->Form->input('name');
-                    echo $this->Form->input('email');
-                    echo $this->Form->input('contact');
-                    echo $this->Form->input('password');
-                    echo $this->Form->input('genre_id', ['options' => $genres]);
-                    echo $this->Form->input('main_organization');
-                    echo $this->Form->input('organization_type_id', ['options' => $organizationTypes]);
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
+            <ul class="tabs" data-tabs id="users-edit-tabs">
+                <li class="tabs-title is-active"><a href="#panel-profile" aria-selected="true">General</a></li>
+                <li class="tabs-title"><a href="#panel-admin">Admin information</a></li>
+            </ul>
+            
+            <div class="tabs-content" data-tabs-content="users-edit-tabs">
+                <div class="tabs-panel is-active" id="panel-profile">
+                    <fieldset>
+                        <?php
+                            echo $this->Form->input('name');
+                            echo $this->Form->input('email');
+                            echo $this->Form->input('password');
+                            echo $this->Form->input('genre_id', ['options' => $genres]);
+                        ?>
+                    </fieldset>
+                </div>
+                <div class="tabs-panel" id="panel-admin">
+                    <fieldset>
+                        <?php
+                            echo $this->Form->input('contact');
+                            echo $this->Form->input('main_organization');
+                        ?>
+                    </fieldset>
+                </div>
+            </div>
+            <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

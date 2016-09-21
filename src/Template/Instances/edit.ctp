@@ -9,17 +9,13 @@
 <div class="row">
     <div class="small-12 medium-9 column view-title">
         <h3><?= h($instance->name) ?> (Editing)</h3>
-        <a href=<?= $this->Url->build(['action' => 'preview', $instance->namespace]) ?>><i class='fi-home size-36'></i></a>
-        <a href=<?= $this->Url->build(['action' => 'map', $instance->namespace]) ?>><i class='fi-map size-36'></i></a>
-        <a href=<?= $this->Url->build(['action' => 'dots', $instance->namespace]) ?>><i class='fi-web size-36'></i></a>
+        <?= $this->App->displayInstancePreviewShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceMapShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceDotsShortcut($instance->namespace) ?>
     </div>
     <div class="small-12 medium-3 column view-title">
-        <a href=<?= $this->Url->build(['action' => 'view', $instance->namespace]) ?>><i class='fi-magnifying-glass size-36'></i>View</a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance->namespace], [
-                'escape' => false, 
-                'confirm' => __('Are you sure you want to delete the "{0}" instance?. This operation cannot be undone. All related data will be erased!', $instance->name)
-            ])
-        ?>
+        <?= $this->App->displayInstanceViewShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceDeleteShortcut($instance->namespace, $instance->name) ?>
     </div>
 </div>
 
@@ -99,9 +95,6 @@
                 <div class="tabs-panel" id="panel-logo-config">
                     <h4 class="view-subtitle"><?= __('Instance Logo:') ?></h4>
                     <fieldset>
-                    <p>TODO: formatos aceptados y chequeo de tamaño y tipo</p>
-                    <p>TODO: posibilidad de borrar el logo?</p>
-                    <p>TODO: A veces falla... ver errores!?</p>
                     <p>The logo will be displayed on the footer of the page above the CAS logo.</p>
                     <p>Valid formats are: PNG. Max. file size: 256kB. The displayed image will have a max height of 100px, greater images will be resized to 100px height.</p>
                     <label for="logoFileUpload" class="button">Upload File</label>

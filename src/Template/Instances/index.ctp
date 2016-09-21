@@ -75,8 +75,7 @@
                         <td><?= h($user->email) ?></td>
                         <td class="actions">
                             <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
-                            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                            'sys', $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                             </span>
                         </td>
                     </tr>

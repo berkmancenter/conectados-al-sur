@@ -43,9 +43,12 @@ class AppController extends Controller
                 ]
             ],
             'unauthorizedRedirect' => [
-                'controller' => 'Pages',
-                'action' => 'display',
-                'home'
+                'controller' => 'Instances',
+                'action' => 'home'
+            ],
+            'loginAction', [
+                'controller' => 'Users',
+                'action' => 'login'
             ]
         ]);
 
@@ -57,76 +60,15 @@ class AppController extends Controller
     {
         // Deny all actions by default
         $this->Auth->deny();        
-
-        // loginAction depends on instance or admin site
-        // home      : /login
-        // instance  : /:instance_namespace/login
-        // admin_site: /admin/login                    // router gives this as param [0]
-        if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0]) ) {
-            $ns = $this->request->params['pass'][0];
-            $this->Auth->config('loginAction', [
-                'controller' => 'Users',
-                'action' => 'login',
-                $ns
-            ]);
-        } else {
-            $this->Auth->config('loginAction', [
-                'controller' => 'Users',
-                'action' => 'login'
-            ]);
-        }
-        
     }
 
     public function isAuthorized($user)
     {
-        // var_dump($user);
-        // Admin can access every action
-        if (!isset($user['role_id'])) {
-            return false;
-        }
+        if (!isset($user['id'])) { return false; }
 
         // sysadmin: complete access
-        if ($user['role_id'] == '2') {
+        if ($this->App->isSysadmin($user['id'])) {
             return true;
-        }
-
-        // admin: complete access to instance pages
-        if ($user['role_id'] == '1') {
-
-            // // when inside an instance, then the first parameter must be the $instance_namespace
-            // if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0]) ) {
-                
-
-            //     $instance_idxs = TableRegistry::get('InstancesUsers')
-            //         ->find()
-            //         ->where(['user_id' => $user['id']])
-            //         ->contain([
-            //             'Instances' => function ($q) {
-            //                return $q
-            //                     ->select(['Instances.id', 'Instances.namespace']);
-            //             },
-            //         ])
-            //         ->all();
-            //     // var_dump($instance_idxs);
-
-            //     // url namespace
-            //     $url_namespace = $this->request->params['pass'][0];
-
-            //     $isValidInstance = $instance_idxs->some(
-            //         function ($item) {
-            //             var_dump($item);
-
-            //             // same namespace
-            //             // if ($url_namespace == $instance_namespace) {
-            //             //     return true;
-            //             // }
-
-            //             return false;
-            //         }
-            //     );
-
-            // }
         }
 
         // other

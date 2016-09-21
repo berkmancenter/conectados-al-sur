@@ -233,79 +233,46 @@ Router::scope('/', function (RouteBuilder $routes) {
 
     # login
     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-    $routes->connect(
-        '/:instance_namespace/login',
-        ['controller' => 'Users', 'action' => 'login'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
+    
     # logout
     $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
-    $routes->connect(
-        '/:instance_namespace/logout',
-        ['controller' => 'Users', 'action' => 'logout'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
+    
     # add
     $routes->connect('/sign-up', ['controller' => 'Users', 'action' => 'add']);
-    $routes->connect(
-        '/:instance_namespace/sign-up',
-        ['controller' => 'Users', 'action' => 'add'],
-        ['pass' => ['instance_namespace']]
-    );
-
-
+    
     # view
-    $routes->connect(
-        '/:instance_namespace/users/:id',
-        ['controller' => 'Users', 'action' => 'view'],
+    $routes->connect('/users/:id', ['controller' => 'Users', 'action' => 'view'],
         [
-            'pass' => ['instance_namespace', 'id'],
+            'pass' => ['id'],
             'id'   => '[0-9]+'
         ]
     );
-
+    $routes->connect('/:instance_namespace/users/:id', ['controller' => 'Users', 'action' => 'view'],
+        [
+            'pass' => ['id', 'instance_namespace'],
+            'id'   => '[0-9]+'
+        ]
+    );
+    
     # edit
     $routes->connect(
-        '/:instance_namespace/users/:id/edit',
+        '/users/:id/edit',
         ['controller' => 'Users', 'action' => 'edit'],
         [
-            'pass' => ['instance_namespace', 'id'],
+            'pass' => ['id'],
             'id'   => '[0-9]+'
         ]
     );
 
     # delete
     $routes->connect(
-        '/:instance_namespace/users/:id/delete',
+        '/users/:id/delete',
         ['controller' => 'Users', 'action' => 'delete'],
         [
-            'pass' => ['instance_namespace', 'id'],
+            'pass' => ['id'],
             'id'   => '[0-9]+'
         ]
     );
-
-    
-    # TODO: 
-
-    # TODO:
-    # - probablemente graph, map, index y download puedan ser abstraídos al 
-    # mismo controlador!, pero con distintas vistas
-    #
-    # - limitar acceso con urls originales, que no ocupan el mapeo que propongo
-    # - bloquear acceso a vistas de Entidades Bloqueadas:
-    #    - Continents
-    #    - Subcontinents
-    #    - Countries
-    #    - Cities
-    #    - CategoriesProjects
-    #    - Genres
-    #    - ProjectStages
-    #    - Roles
-
 
 
     # --------------------

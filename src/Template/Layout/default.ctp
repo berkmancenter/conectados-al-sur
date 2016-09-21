@@ -8,10 +8,6 @@
     
     <?= $this->Html->meta('icon') ?>
 
-    <!-- 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-    -->
     <?= $this->Html->css('foundation/foundation.min.css') ?>
     <?= $this->Html->css('foundation-icons/foundation-icons.css') ?>
     <?= $this->Html->css('app.css') ?>
@@ -61,15 +57,15 @@
                                         <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>>Your profile</a>
                                     </li>
                                     <?php if (
-                                            $auth_user['role_id'] > 0 &&
                                             isset($instance) &&
-                                            $instance->namespace != "admin"
+                                            $instance->namespace != "admin" &&
+                                            $this->App->isAdmin($auth_user['id'], $instance->id)
                                         ): ?>
                                     <li>
                                         <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>>Settings</a>
                                     </li>
                                     <?php endif; ?>
-                                    <?php if ($auth_user['role_id'] == 2): ?>
+                                    <?php if ($this->App->isSysadmin($auth_user['id'])): ?>
                                     <li>
                                         <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>>DVINE Settings</a>
                                     </li>

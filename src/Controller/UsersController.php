@@ -30,87 +30,39 @@ class UsersController extends AppController
             return true;
         }
         
-        // All registered users can add projects to their instance!
+        // can edit and delete himself
         if ($this->request->action == 'edit' || $this->request->action == 'delete') {
-
-            // real ns
-            $instance_namespace = TableRegistry::get('Instances')
-                ->find()
-                ->select(['id', 'namespace'])
-                ->where(['id' => $user['instance_id']])
-                ->first()
-                ->namespace;
-
-            // url namespace
-            $url_namespace = $this->request->params['pass'][0];
-            $requested_id = $this->request->params['pass'][1];
-
-            // same namespace
-            if ($url_namespace == $instance_namespace) {
+            $requested_id = $this->request->params['pass'][0];
+            if ($requested_id == $user['id']) {
                 return true;
             }
         }
         return false;
     }
 
-    public function login($instance_namespace = null)
+    public function login()
     {
-        $instance = null;
-        if ($instance_namespace && !$this->App->isAdminInstance($instance_namespace)) {
-            $instance = $this->App->getInstance($instance_namespace);
-            $this->set('instance', $instance);
-        } else {
-            // null instance
-        }
-        
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
 
             if ($user) {
                 $this->Auth->setUser($user);
 
-                if ($instance) {
-                    
-                    // sysadmin is redirected to admin view
-                    if ($user['role_id'] == '2') {
-                        return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
-                    }
-
-                    // admin is redirected to instance admin view
-                    if ($user['role_id'] == '1') {
-                        return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
-                    }
-
-                    // users to instance preview
-                    return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);    
+                // sysadmin is redirected to admin view
+                if ($this->App->isSysadmin($user['id'])) {
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
                 }
-                else {
-                    // home
-                    return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-                }
-                
+                // admin and users are redirected to home
+                return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
             }
             $this->Flash->error(__('Invalid username or password, try again'));
         }
     }
 
-    public function logout($instance_namespace = null)
+    public function logout()
     {
         $user = $this->Auth->user();
         $this->Auth->logout();
-
-        // redirect repends on user
-        if ($user) {
-            
-            // sysadmin is redirected to home
-            if ($user['role_id'] == '2') {
-                return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-            }
-
-            // admin and user are redirected to instance preview
-            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
-        }
-        // other
         return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }
 
@@ -121,76 +73,96 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($instance_namespace = null, $id = null)
+    public function view($id = null, $instance_namespace = null)
     {
         // check sys cosas
+        if ($instance_namespace) {
 
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
-
-        $instance_id = $instance->id;
-
-        $user = $this->Users->find()
-            ->where(['Users.instance_id' => 0])
-            ->orWhere(['Users.instance_id' => $instance->id])
-            ->andWhere(['Users.id' => $id])
-            ->select([
-                    'id',
-                    'name',
-                    'email',
-                    'contact',
-                    'genre_id',
-                    'main_organization',
-                    'organization_type_id',
-                ])
-            ->select($this->Users->Genres)
-            ->select($this->Users->OrganizationTypes)
-            ->contain([
+            $user = $this->Users->find()
+                ->where(['Users.id' => $id])
+                ->select(['id','name','email','genre_id'])
+                ->select($this->Users->Genres)
+                ->contain([
                     'Genres',
-                    'OrganizationTypes',
-                    'Projects' => function ($q) use ($instance_id) {
-                       return $q->where(['Projects.instance_id' => $instance_id]);
-                    },
+                    'Projects',
+                    'Instances' => function ($q) use ($instance_namespace) {
+                        return $q
+                            ->select(['id', 'name', 'namespace', 'logo'])
+                            ->where(['Instances.namespace' => $instance_namespace]);
+                    }
                 ])
-            ->first();
+                ->first();            
+            if (!$user || empty($user->instances)) {
+                $this->Flash->error(__('Invalid user'));
+                return $this->redirect($this->referer());
+            }
+            // var_dump($user);
 
-        // evitar mostrar datos de usuarios de otras instancias
-        if (!$user) {
-            $this->Flash->error(__('Invalid user'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
-        }
-        // var_dump($user);
 
-        $owner_id = $user->id;
-        $client  = $this->Auth->user();
-        $client_id   = $client['id'];
-        $client_role = $client['role_id'];
-        $client_instance_id = $client['instance_id'];
+            $owner_id = $user->id;
+            $client  = $this->Auth->user();
+            $client_id   = $client['id'];
+
+            $data = $this->App->getUserInstanceData($owner_id, $this->App->getAdminInstanceId());
+            if ($data) {
+                $user->contact = $user->instances[0]->_joinData->contact;
+                $user->main_organization = $user->instances[0]->_joinData->main_organization;
+            }
         
-        $this->set('is_authorized', false);
-        if (
-            $client_id == $owner_id ||
-            $client_role == 2 ||
-            (
-                $client_instance_id == $instance->id &&
-                $client_role == 1
-            )
-        ) {
-            $this->set('is_authorized', true);
+            // client has auth to view private data:
+            $this->set('is_authorized', false);
+            if ($client_id == $owner_id || $this->App->isSysadmin($client_id)) {
+                $this->set('is_authorized', true);
+            }
+
+            $this->set('instance', $user->instances[0]);
+            $this->set('user', $user);
+            $this->set('view_instance_version', true);
+            // $this->set('_serialize', ['user']);
+        
+        } else {
+            
+            $user = $this->Users->find()
+                ->where(['Users.id' => $id])
+                ->select(['id','name','email','genre_id'])
+                ->select($this->Users->Genres)
+                ->contain([
+                    'Genres',
+                    'Projects',
+                    'Instances' => function ($q) {
+                        return $q->select(['id', 'name', 'namespace', 'logo']);
+                    }
+                ])
+                ->first();
+            if (!$user) {
+                $this->Flash->error(__('Invalid user'));
+                return $this->redirect($this->referer());
+            }
+
+            $owner_id = $user->id;
+            $client  = $this->Auth->user();
+            $client_id   = $client['id'];
+
+            // if this user is a sysadmin, then, show contact information
+            if ($this->App->isSysadmin($owner_id)) {
+                $data = $this->App->getUserInstanceData($owner_id, $this->App->getAdminInstanceId());
+                if ($data) {
+                    $user->contact = $data->contact;
+                    $user->main_organization = $data->main_organization;
+                }
+            }
+
+            // client has auth to view private data:
+            $this->set('is_authorized', false);
+            if ($client_id == $owner_id || $this->App->isSysadmin($client_id)) {
+                $this->set('is_authorized', true);
+            }
+
+            $this->set('user', $user);
+            $this->set('view_instance_version', false);
+            // $this->set('_serialize', ['user']);
         }
 
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
-        $this->set('user', $user);
-        $this->set('_serialize', ['user']);
     }
 
     /**
@@ -198,7 +170,7 @@ class UsersController extends AppController
      *
      * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
      */
-    public function add($instance_namespace = null)
+    public function add()
     {
         # load instance data
         $instance = TableRegistry::get('Instances')
@@ -246,12 +218,12 @@ class UsersController extends AppController
         }
         $genres = $this->Users->Genres
             ->find('list', ['limit' => 200])
-            ->where(['Genres.name !=' => '[unused]'])
+            ->where(['Genres.name !=' => '[null]'])
             ->order(['name' => 'ASC']);
 
         $organizationTypes = $this->Users->OrganizationTypes
             ->find('list', ['limit' => 200])
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
             ->order(['name' => 'ASC']);
 
@@ -270,25 +242,15 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function edit($instance_namespace = null, $id = null)
+    public function edit($id = null)
     {
-        # load instance data
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
+        $user = $this->Users->find()
+            ->where(['id' => $id])
             ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
+        if (!$user) {
+            $this->Flash->error(__('Invalid user'));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
-
-        $user = $this->Users->find()
-            ->where([
-                'instance_id' => $instance->id,
-                'id' => $id
-            ])
-            ->first();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
@@ -343,24 +305,23 @@ class UsersController extends AppController
             //     return $this->redirect(['action' => 'index']);
             // }
         }
+
+        // if this user is a sysadmin, then, show contact information
+        if ($this->App->isSysadmin($id)) {
+            $data = $this->App->getUserInstanceData($id, $this->App->getAdminInstanceId());
+            if ($data) {
+                $user->contact = $data->contact;
+                $user->main_organization = $data->main_organization;
+            }
+        }
     
         $genres = $this->Users->Genres
             ->find('list', ['limit' => 200])
-            ->where(['Genres.name !=' => '[unused]'])
+            ->where(['Genres.name !=' => '[null]'])
             ->order(['name' => 'ASC']);
 
-        $organizationTypes = $this->Users->OrganizationTypes
-            ->find('list', ['limit' => 200])
-            ->where(['OrganizationTypes.name !=' => '[unused]'])
-            ->where(['OrganizationTypes.instance_id' => $instance->id])
-            ->order(['name' => 'ASC']);
-
-        $this->set(compact('user', 'genres', 'organizationTypes'));
+        $this->set(compact('user', 'genres'));
         $this->set('_serialize', ['user']);
-
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
     }
 
     /**
@@ -370,28 +331,15 @@ class UsersController extends AppController
      * @return \Cake\Network\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function delete($instance_namespace = null, $id = null)
+    public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
-        $instance_id = $instance->id;
 
         $logged_user = $this->Auth->user();
 
         // delete user
         $user = $this->Users->get($id);
-        if (isset($instance_id) && isset($user->instance_id)
-            && $user->instance_id == $instance_id 
-            && $this->Users->delete($user)) {
+        if ($this->Users->delete($user)) {
             $this->Flash->success(__('The user has been deleted.'));
         } else {
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
@@ -400,10 +348,10 @@ class UsersController extends AppController
         // redirect to view when deleting by admin, preview otherwise
         $this->Auth->logout();
         if($logged_user['id'] != $user->id) {
-            $view_url = Router::url(['controller' => 'Instances', 'action' => 'view', $instance_namespace, '_full' => true]);
+            $view_url = Router::url(['controller' => 'Instances', 'action' => 'home', '_full' => true]);
             $this->redirect($view_url);
         } else {
-            $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+            $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
     }
 }
