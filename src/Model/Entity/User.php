@@ -10,19 +10,15 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property string $name
  * @property string $email
- * @property string $contact
  * @property string $password
- * @property int $role_id
  * @property int $genre_id
- * @property string $main_organization
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
  *
  * @property \App\Model\Entity\Role $role
- * @property \App\Model\Entity\Instance $instance
  * @property \App\Model\Entity\Genre $genre
- * @property \App\Model\Entity\OrganizationType $organization_type
  * @property \App\Model\Entity\Project[] $projects
+ * @property \App\Model\Entity\Instance[] $instances
  */
 class User extends Entity
 {

@@ -9,7 +9,6 @@ use Cake\Validation\Validator;
 /**
  * Users Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Roles
  * @property \Cake\ORM\Association\BelongsTo $Genres
  * @property \Cake\ORM\Association\HasMany $Projects
  * @property \Cake\ORM\Association\BelongsToMany $Instances
@@ -43,10 +42,6 @@ class UsersTable extends Table
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Roles', [
-            'foreignKey' => 'role_id',
-            'joinType' => 'INNER'
-        ]);
         $this->belongsTo('Genres', [
             'foreignKey' => 'genre_id',
             'joinType' => 'INNER'
@@ -84,14 +79,8 @@ class UsersTable extends Table
             ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
 
         $validator
-            ->allowEmpty('contact');
-
-        $validator
             ->requirePresence('password', 'create')
             ->notEmpty('password');
-
-        $validator
-            ->allowEmpty('main_organization');
 
         return $validator;
     }
@@ -106,7 +95,6 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));
-        $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['genre_id'], 'Genres'));
 
         return $rules;

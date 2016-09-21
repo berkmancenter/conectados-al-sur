@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
  *
  * @property \Cake\ORM\Association\BelongsTo $Instances
  * @property \Cake\ORM\Association\BelongsTo $Users
+ * @property \Cake\ORM\Association\BelongsTo $Roles
+ * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
  *
  * @method \App\Model\Entity\InstancesUser get($primaryKey, $options = [])
  * @method \App\Model\Entity\InstancesUser newEntity($data = null, array $options = [])
@@ -45,6 +47,31 @@ class InstancesUsersTable extends Table
             'foreignKey' => 'user_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Roles', [
+            'foreignKey' => 'role_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('OrganizationTypes', [
+            'foreignKey' => 'organization_type_id',
+            'joinType' => 'INNER'
+        ]);
+    }
+
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator Validator instance.
+     * @return \Cake\Validation\Validator
+     */
+    public function validationDefault(Validator $validator)
+    {
+        $validator
+            ->allowEmpty('contact');
+
+        $validator
+            ->allowEmpty('main_organization');
+
+        return $validator;
     }
 
     /**
@@ -58,6 +85,8 @@ class InstancesUsersTable extends Table
     {
         $rules->add($rules->existsIn(['instance_id'], 'Instances'));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
+        $rules->add($rules->existsIn(['role_id'], 'Roles'));
+        $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
 
         return $rules;
     }

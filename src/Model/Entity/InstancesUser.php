@@ -8,6 +8,10 @@ use Cake\ORM\Entity;
  *
  * @property int $instance_id
  * @property int $user_id
+ * @property int $role_id
+ * @property string $contact
+ * @property string $main_organization
+ * @property int $organization_type_id
  *
  * @property \App\Model\Entity\Instance $instance
  * @property \App\Model\Entity\User $user
