@@ -28,7 +28,37 @@ class InstancesController extends AppController
         }
 
         // public actions
-        $this->Auth->allow(['dots', 'preview', 'map']);
+        $this->Auth->allow(['home', 'dots', 'preview', 'map']);
+    }
+
+    public function home()
+    {
+        $user = $this->Auth->user();
+        if ($user) {
+
+            if ($user['role_id'] == 2) {
+                
+            }
+            else {
+                $user_data = TableRegistry::get('Users')
+                    ->find()
+                    ->where(['id' => $user['id']])
+                    ->contain([
+                        'Instances' => function ($q) {
+                            return $q
+                                ->select(['id', 'name', 'namespace', 'logo'])
+                                ->where(['Instances.namespace !=' => 'admin']);
+                        }
+                    ])
+                    ->first();
+                if ($user_data) {
+                    $user_instances = $user_data["instances"];
+                    $this->set('auth_user_instances', $user_instances);
+                }
+            }
+
+        }
+
     }
 
 
@@ -66,23 +96,27 @@ class InstancesController extends AppController
     public function preview($instance_namespace = null)
     {
         // block sys instance
-        if ($instance_namespace == "sys") { $this->redirect($this->referer()); }
+        if ($this->App->isAdminInstance($instance_namespace)) {
+            $this->redirect($this->referer());
+        }
         
         # load instance data
-        $instance = $this->Instances
-            ->find()
-            ->select(['id', 'name', 'description', 'description_es', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
-        }
+        // $instance = $this->Instances
+        //     ->find()
+        //     ->select(['id', 'name', 'description', 'description_es', 'namespace', 'logo'])
+        //     ->where(['Instances.namespace' => $instance_namespace])
+        //     ->first();
+        // if (!$instance) {
+        //     // $this->Flash->error(__('Invalid instance'));
+        //     return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+        // }
+        $instance = $this->App->getInstance($instance_namespace);
+        // $this->App->setInstanceViewData($instance);
 
         $this->set('instance', $instance);
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
+        // $this->set('instance_namespace', $instance_namespace);
+        // $this->set('instance_logo', $instance->logo);
+        // $this->set('instance_name', $instance->name);
         // $this->set('_serialize', ['instance']);
     }
 
@@ -103,7 +137,7 @@ class InstancesController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $this->set('instance', $instance);
@@ -179,7 +213,7 @@ class InstancesController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
         // available categories
         // var_dump($instance->categories);
@@ -292,7 +326,7 @@ class InstancesController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $select_fields = ['id', 'name', 'email'];
@@ -384,7 +418,7 @@ class InstancesController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
@@ -429,7 +463,7 @@ class InstancesController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
         
         if ($this->Instances->delete($instance)) {

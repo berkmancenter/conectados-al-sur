@@ -55,43 +55,40 @@ class UsersController extends AppController
 
     public function login($instance_namespace = null)
     {
-        if ($instance_namespace && 
-            $instance_namespace != "sys" &&
-            $instance_namespace != "admin")
-        {
-            $instance = TableRegistry::get('Instances')
-                ->find()
-                ->select(['id', 'name', 'namespace', 'logo'])
-                ->where(['Instances.namespace' => $instance_namespace])
-                ->first();
-            if (!$instance) {
-                // $this->Flash->error(__('Invalid instance'));
-                return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
-            }
-            $this->set('instance_namespace', $instance_namespace);
-            $this->set('instance_logo', $instance->logo);
-            $this->set('instance_name', $instance->name);
+        $instance = null;
+        if ($instance_namespace && !$this->App->isAdminInstance($instance_namespace)) {
+            $instance = $this->App->getInstance($instance_namespace);
+            $this->set('instance', $instance);
+        } else {
+            // null instance
         }
         
-
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
 
             if ($user) {
                 $this->Auth->setUser($user);
 
-                // sysadmin is redirected to admin view
-                if ($user['role_id'] == '2') {
-                    return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
-                }
+                if ($instance) {
+                    
+                    // sysadmin is redirected to admin view
+                    if ($user['role_id'] == '2') {
+                        return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
+                    }
 
-                // admin is redirected to instance admin view
-                if ($user['role_id'] == '1') {
-                    return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
-                }
+                    // admin is redirected to instance admin view
+                    if ($user['role_id'] == '1') {
+                        return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+                    }
 
-                // users to instance preview
-                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+                    // users to instance preview
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);    
+                }
+                else {
+                    // home
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+                }
+                
             }
             $this->Flash->error(__('Invalid username or password, try again'));
         }
@@ -107,14 +104,14 @@ class UsersController extends AppController
             
             // sysadmin is redirected to home
             if ($user['role_id'] == '2') {
-                return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
             }
 
             // admin and user are redirected to instance preview
             return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
         }
         // other
-        return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+        return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }
 
     /**
@@ -135,7 +132,7 @@ class UsersController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $instance_id = $instance->id;
@@ -211,7 +208,7 @@ class UsersController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $user = $this->Users->newEntity();
@@ -283,7 +280,7 @@ class UsersController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $user = $this->Users->find()
@@ -384,7 +381,7 @@ class UsersController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
         $instance_id = $instance->id;
 

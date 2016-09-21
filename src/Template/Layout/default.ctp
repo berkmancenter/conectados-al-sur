@@ -36,16 +36,15 @@
             </div>
             <div id="responsive-menu">
                 <div class="top-bar-left">
-                    <?php if (isset($instance_namespace) && isset($instance_name)): ?>
+                    <?php if (isset($instance)): ?>
                         <a href=
-                            <?= $this->Url->build(
-                            [
-                                'controller' => 'Instances',
-                                'action' => 'preview',
-                                $instance_namespace
-                            ])?>
-                            >
-                            <?= h($instance_name) ?>
+                        <?= $this->Url->build([
+                            'controller' => 'Instances',
+                            'action' => 'preview',
+                            $instance->namespace
+                        ])?>
+                        >
+                        <?= h($instance->name) ?>
                         </a>
                     <?php endif; ?>
                 </div>
@@ -59,15 +58,15 @@
                                     <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span>
                                     </li>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user_namespace, $auth_user['id']]) ?>>Your profile</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>>Your profile</a>
                                     </li>
                                     <?php if (
                                             $auth_user['role_id'] > 0 &&
-                                            isset($instance_namespace) &&
-                                            $instance_namespace != "sys"
+                                            isset($instance) &&
+                                            $instance->namespace != "admin"
                                         ): ?>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance_namespace]) ?>>Settings</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>>Settings</a>
                                     </li>
                                     <?php endif; ?>
                                     <?php if ($auth_user['role_id'] == 2): ?>
@@ -76,17 +75,17 @@
                                     </li>
                                     <?php endif; ?>
                                     <li id="top-bar-logout-li">
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout', $auth_user_namespace]) ?>>Sign Out</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>>Sign Out</a>
                                     </li>
                                 </ul>
                             </li>
                         <?php else: ?>
-                            <?php if (isset($instance_namespace)): ?>
+                            <?php if (isset($instance->namespace)): ?>
                                 <li>
-                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add', $instance_namespace]) ?>>Sign Up</a>
+                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add', $instance->namespace]) ?>>Sign Up</a>
                                 </li>
                                 <li>
-                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login', $instance_namespace]) ?>>Sign In</a>
+                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login', $instance->namespace]) ?>>Sign In</a>
                                 </li>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -106,15 +105,14 @@
         <footer>
             
             <?php if (
-                isset($instance_namespace) &&
-                isset($instance_logo) && 
-                !empty($instance_logo)):  
+                isset($instance) &&
+                !empty($instance->logo)):  
             ?>
                 <div class="row expanded">
                     <div class="small-12 columns footer-imgdiv">
                         <span class="footer-logo-helper"></span>
                         <?= 
-                            $this->Html->image('/' . $instance_logo , [
+                            $this->Html->image('/' . $instance->logo , [
                                 'alt'   => 'Instance Logo',
                                 'class' => "footer-logo"
                             ])

@@ -41,8 +41,16 @@ class AppController extends Controller
                 'Form' => [
                     'fields' => ['username' => 'email', 'password' => 'password']
                 ]
+            ],
+            'unauthorizedRedirect' => [
+                'controller' => 'Pages',
+                'action' => 'display',
+                'home'
             ]
         ]);
+
+        // custom components
+        $this->loadComponent('App');
     }
 
     public function beforeFilter(Event $event)
@@ -51,36 +59,20 @@ class AppController extends Controller
         $this->Auth->deny();        
 
         // loginAction depends on instance or admin site
-        // instance  : /instance_namespace/login
+        // home      : /login
+        // instance  : /:instance_namespace/login
         // admin_site: /admin/login                    // router gives this as param [0]
         if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0]) ) {
+            $ns = $this->request->params['pass'][0];
             $this->Auth->config('loginAction', [
                 'controller' => 'Users',
                 'action' => 'login',
-                $this->request->params['pass'][0]
+                $ns
             ]);
-        }
-
-        // logged in users must be redirected to the related preview when 
-        // trying to access to an unauthorized view
-        $user = $this->Auth->user();
-        if ($user) {
-
-            // real ns
-            $instance_namespace = TableRegistry::get('Instances')
-                ->find()
-                ->select(['id', 'namespace'])
-                ->where(['id' => $user['instance_id']])
-                ->first()
-                ->namespace;
-            // var_dump($instance_namespace);
-
-            // this assumes that it will never be called for 'sys' ns's users,
-            // because they have complete access.
-            $this->Auth->config('unauthorizedRedirect', [
-                'controller' => 'Instances',
-                'action' => 'preview',
-                $instance_namespace
+        } else {
+            $this->Auth->config('loginAction', [
+                'controller' => 'Users',
+                'action' => 'login'
             ]);
         }
         
@@ -102,25 +94,39 @@ class AppController extends Controller
         // admin: complete access to instance pages
         if ($user['role_id'] == '1') {
 
-            // when inside an instance, then the first parameter must be the $instance_namespace
-            if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0]) ) {
+            // // when inside an instance, then the first parameter must be the $instance_namespace
+            // if (isset($this->request->params['pass']) && isset($this->request->params['pass'][0]) ) {
                 
-                // real ns
-                $instance_namespace = TableRegistry::get('Instances')
-                    ->find()
-                    ->select(['id', 'namespace'])
-                    ->where(['id' => $user['instance_id']])
-                    ->first()
-                    ->namespace;
 
-                // url namespace
-                $url_namespace = $this->request->params['pass'][0];
+            //     $instance_idxs = TableRegistry::get('InstancesUsers')
+            //         ->find()
+            //         ->where(['user_id' => $user['id']])
+            //         ->contain([
+            //             'Instances' => function ($q) {
+            //                return $q
+            //                     ->select(['Instances.id', 'Instances.namespace']);
+            //             },
+            //         ])
+            //         ->all();
+            //     // var_dump($instance_idxs);
 
-                // same namespace
-                if ($url_namespace == $instance_namespace) {
-                    return true;
-                }
-            }
+            //     // url namespace
+            //     $url_namespace = $this->request->params['pass'][0];
+
+            //     $isValidInstance = $instance_idxs->some(
+            //         function ($item) {
+            //             var_dump($item);
+
+            //             // same namespace
+            //             // if ($url_namespace == $instance_namespace) {
+            //             //     return true;
+            //             // }
+
+            //             return false;
+            //         }
+            //     );
+
+            // }
         }
 
         // other
@@ -145,16 +151,9 @@ class AppController extends Controller
         // manage user session
         $auth_user = $this->Auth->user();
         if ($auth_user) {
+
             // var_dump($auth_user);
             $this->set('auth_user', $auth_user);
-
-            $auth_user_namespace = TableRegistry::get('Instances')
-                ->find()
-                ->select(['id', 'namespace'])
-                ->where(['id' => $auth_user['instance_id']])
-                ->first()
-                ->namespace;
-            $this->set('auth_user_namespace', $auth_user_namespace);
         }
     }
 }

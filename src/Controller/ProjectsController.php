@@ -76,7 +76,7 @@ class ProjectsController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $user_conditions = array();
@@ -148,7 +148,7 @@ class ProjectsController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $project = $this->Projects->get($id, [
@@ -190,7 +190,7 @@ class ProjectsController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $project = $this->Projects->newEntity();
@@ -282,7 +282,7 @@ class ProjectsController extends AppController
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
         $project = $this->Projects->get($id, [

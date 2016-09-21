@@ -1,6 +1,5 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
-<li><?= $this->Html->link(__('New Project'), ['controller' => 'Projects', 'action' => 'add', $instance_namespace]) ?></li>
 <?php $this->end(); ?>
 
 <!-- Page Content -->
