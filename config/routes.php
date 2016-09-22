@@ -168,7 +168,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['pass' => ['instance_namespace']]
     );
 
-    # graph
+    # dots
     $routes->connect(
         '/:instance_namespace/dots',
         ['controller' => 'Instances', 'action' => 'dots'],
@@ -242,36 +242,21 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     # view
     $routes->connect('/users/:id', ['controller' => 'Users', 'action' => 'view'],
-        [
-            'pass' => ['id'],
-            'id'   => '[0-9]+'
-        ]
+        ['pass' => ['id'],'id' => '[0-9]+']
     );
-    $routes->connect('/:instance_namespace/users/:id', ['controller' => 'Users', 'action' => 'view'],
-        [
-            'pass' => ['id', 'instance_namespace'],
-            'id'   => '[0-9]+'
-        ]
-    );
-    
+        
     # edit
     $routes->connect(
         '/users/:id/edit',
         ['controller' => 'Users', 'action' => 'edit'],
-        [
-            'pass' => ['id'],
-            'id'   => '[0-9]+'
-        ]
+        ['pass' => ['id'],'id' => '[0-9]+']
     );
 
     # delete
     $routes->connect(
         '/users/:id/delete',
         ['controller' => 'Users', 'action' => 'delete'],
-        [
-            'pass' => ['id'],
-            'id'   => '[0-9]+'
-        ]
+        ['pass' => ['id'],'id' => '[0-9]+']
     );
 
 

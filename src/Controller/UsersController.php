@@ -13,7 +13,6 @@ use Cake\Event\Event;
  */
 class UsersController extends AppController
 {
-
     public function beforeFilter(Event $event)
     {
         parent::beforeFilter($event);
@@ -26,9 +25,7 @@ class UsersController extends AppController
 
     public function isAuthorized($user = null)
     {
-        if (parent::isAuthorized($user)) {
-            return true;
-        }
+        if (parent::isAuthorized($user)) { return true; }
         
         // can edit and delete himself
         if ($this->request->action == 'edit' || $this->request->action == 'delete') {
@@ -66,110 +63,59 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null, $instance_namespace = null)
+    public function view($id = null)
     {
-        // check sys cosas
-        if ($instance_namespace) {
-
-            $user = $this->Users->find()
-                ->where(['Users.id' => $id])
-                ->select(['id','name','email','genre_id'])
-                ->select($this->Users->Genres)
-                ->contain([
-                    'Genres',
-                    'Projects',
-                    'Instances' => function ($q) use ($instance_namespace) {
-                        return $q
-                            ->select(['id', 'name', 'namespace', 'logo'])
-                            ->where(['Instances.namespace' => $instance_namespace]);
-                    }
-                ])
-                ->first();            
-            if (!$user || empty($user->instances)) {
-                $this->Flash->error(__('Invalid user'));
-                return $this->redirect($this->referer());
-            }
-            // var_dump($user);
-
-
-            $owner_id = $user->id;
-            $client  = $this->Auth->user();
-            $client_id   = $client['id'];
-
-            $data = $this->App->getUserInstanceData($owner_id, $this->App->getAdminInstanceId());
-            if ($data) {
-                $user->contact = $user->instances[0]->_joinData->contact;
-                $user->main_organization = $user->instances[0]->_joinData->main_organization;
-            }
-        
-            // client has auth to view private data:
-            $this->set('is_authorized', false);
-            if ($client_id == $owner_id || $this->App->isSysadmin($client_id)) {
-                $this->set('is_authorized', true);
-            }
-
-            $this->set('instance', $user->instances[0]);
-            $this->set('user', $user);
-            $this->set('view_instance_version', true);
-            // $this->set('_serialize', ['user']);
-        
-        } else {
-            
-            $user = $this->Users->find()
-                ->where(['Users.id' => $id])
-                ->select(['id','name','email','genre_id'])
-                ->select($this->Users->Genres)
-                ->contain([
-                    'Genres',
-                    'Projects',
-                    'Instances' => function ($q) {
-                        return $q->select(['id', 'name', 'namespace', 'logo']);
-                    }
-                ])
-                ->first();
-            if (!$user) {
-                $this->Flash->error(__('Invalid user'));
-                return $this->redirect($this->referer());
-            }
-
-            $owner_id = $user->id;
-            $client  = $this->Auth->user();
-            $client_id   = $client['id'];
-
-            // if this user is a sysadmin, then, show contact information
-            if ($this->App->isSysadmin($owner_id)) {
-                $data = $this->App->getUserInstanceData($owner_id, $this->App->getAdminInstanceId());
-                if ($data) {
-                    $user->contact = $data->contact;
-                    $user->main_organization = $data->main_organization;
+        // retrieve required user data
+        $user = $this->Users->find()
+            ->where(['Users.id' => $id])
+            ->select(['id','name','email','genre_id'])
+            ->select($this->Users->Genres)
+            ->contain([
+                'Genres',
+                'Projects',
+                'Instances' => function ($q) {
+                    return $q->select(['id', 'name', 'namespace', 'logo']);
                 }
-            }
-
-            // client has auth to view private data:
-            $this->set('is_authorized', false);
-            if ($client_id == $owner_id || $this->App->isSysadmin($client_id)) {
-                $this->set('is_authorized', true);
-            }
-
-            $this->set('user', $user);
-            $this->set('view_instance_version', false);
-            // $this->set('_serialize', ['user']);
+            ])
+            ->first();
+        if (!$user) {
+            $this->Flash->error(__('This user does not exists'));
+            return $this->redirect($this->referer());
         }
 
+        // --  add remaining info --
+        // contact
+        $data = $this->App->getUserInstanceData($user->id, $this->App->getAdminInstanceId());
+        if ($data) {
+            $user->contact = $user->instances[0]->_joinData->contact;
+        }
+        // organization_type
+        foreach ($user->instances as $idx => $instance) {
+            $organization_type_id = $instance->_joinData->organization_type_id;
+            $user->instances[$idx]->_joinData->organization_type = 
+                $this->App->getOrganizationTypeById($instance->id, $organization_type_id);
+        }
+
+        // manage access by client
+        $auth_client = $this->Auth->user();
+        if ($auth_client) {
+            // client is a logged in user
+            $client_id = $auth_client['id'];
+            if ($client_id == $user->id || $this->App->isSysadmin($client_id)) {
+                $this->set('client_type', 'authorized');
+            } else {
+                $this->set('client_type', 'logged');
+            }
+            $this->set('client_id', $client_id);
+
+        } else {
+            // common client
+            $this->set('client_type', 'visita');
+        }
+        // var_dump($user->instances);
+        $this->set('user', $user);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
     public function add()
     {
         # load instance data
@@ -235,13 +181,6 @@ class UsersController extends AppController
 
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
     public function edit($id = null)
     {
         $user = $this->Users->find()
@@ -324,13 +263,6 @@ class UsersController extends AppController
         $this->set('_serialize', ['user']);
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id User id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

@@ -14,6 +14,29 @@ class AppHelper extends Helper
         return $this->isAdmin($user_id, 1);
     }
 
+
+    public function isUserRegisteredInInstance($user_id, $instance_id)
+    {
+        $db_user = TableRegistry::get('Users')
+            ->find()
+            ->select(['id'])
+            ->where(['Users.id' => $user_id])
+            ->contain([
+                'Instances' => function ($q) use ($instance_id) {
+                   return $q
+                        ->select(['id', 'namespace'])
+                        ->where(['Instances.id' => $instance_id]);
+                },
+            ])
+            ->first();
+
+        if ($db_user &&                        // found
+             count($db_user->instances) > 0) { // exist in this instance
+            return true;
+        }
+        return false;
+    }    
+
     public function isAdmin($user_id, $instance_id)
     {
         $db_user = TableRegistry::get('Users')
@@ -38,7 +61,7 @@ class AppHelper extends Helper
         return false;
     }
 
-    public function getAdminNamespace() { return 'admin'; }
+    public function getAdminNamespace() { return 'app'; }
     public function getAdminInstanceId() { return $this->getInstance($this->getAdminNamespace())->id; }
     public function getInstance($ns) {
 

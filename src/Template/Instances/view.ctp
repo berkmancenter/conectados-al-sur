@@ -26,7 +26,7 @@
         <ul class="tabs" data-tabs id="instance-view-tabs">
             <li class="tabs-title is-active"><a href="#panel-users" aria-selected="true">Users</a></li>
             <li class="tabs-title"><a href="#panel-properties">Properties</a></li>
-            <li class="tabs-title"><a href="#panel-configuration">Configuration</a></li>
+            <!-- <li class="tabs-title"><a href="#panel-configuration">Configuration</a></li> -->
             <li class="tabs-title"><a href="#panel-categories">Categories</a></li>
             <li class="tabs-title"><a href="#panel-organization_types">Organization Types</a></li>
         </ul>

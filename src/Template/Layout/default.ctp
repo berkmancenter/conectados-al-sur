@@ -29,21 +29,16 @@
                     <button class="menu-icon light" type="button" data-toggle></button>
                 </span>
                 DVINE WEB-APP
+                <?php if (isset($instance)): ?>
+                    <a href=
+                    <?= $this->Url->build(['controller' => 'Instances','action' => 'preview', $instance->namespace])
+                    ?>
+                    >
+                    <?= h($instance->name) ?>
+                    </a>
+                <?php endif; ?>                
             </div>
             <div id="responsive-menu">
-                <div class="top-bar-left">
-                    <?php if (isset($instance)): ?>
-                        <a href=
-                        <?= $this->Url->build([
-                            'controller' => 'Instances',
-                            'action' => 'preview',
-                            $instance->namespace
-                        ])?>
-                        >
-                        <?= h($instance->name) ?>
-                        </a>
-                    <?php endif; ?>
-                </div>
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <?= $this->fetch('available-actions') ?>
@@ -58,7 +53,7 @@
                                     </li>
                                     <?php if (
                                             isset($instance) &&
-                                            $instance->namespace != "admin" &&
+                                            $instance->namespace != $this->App->getAdminNamespace() &&
                                             $this->App->isAdmin($auth_user['id'], $instance->id)
                                         ): ?>
                                     <li>
@@ -76,14 +71,12 @@
                                 </ul>
                             </li>
                         <?php else: ?>
-                            <?php if (isset($instance->namespace)): ?>
-                                <li>
-                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add', $instance->namespace]) ?>>Sign Up</a>
-                                </li>
-                                <li>
-                                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login', $instance->namespace]) ?>>Sign In</a>
-                                </li>
-                            <?php endif; ?>
+                            <li>
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>Sign Up</a>
+                            </li>
+                            <li>
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>Sign In</a>
+                            </li>
                         <?php endif; ?>
                     </ul>
                 </div>
@@ -115,6 +108,18 @@
                         ?>
                     </div>
                 </div>
+
+                <script>
+                    var curr_padding = parseInt($("#content").css("padding-bottom"));
+                    var img_div_height = parseInt($(".footer-imgdiv").css("height"));
+                    $("#content").css("padding-bottom", curr_padding + img_div_height);
+                    // console.log(curr_padding);
+                    // var new_padding = $("#content").css("padding-bottom");
+                    // console.log(new_padding);
+                    
+
+                </script>
+
             <?php endif; ?>
 
             <div class="row expanded footer-infodiv">

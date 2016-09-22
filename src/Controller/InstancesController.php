@@ -37,24 +37,26 @@ class InstancesController extends AppController
 
             if ($this->App->isSysadmin($user['id'])) {
                 // return all instances
+                $app_ns = $this->App->getAdminNamespace();
                 $user_instances = TableRegistry::get('Instances')
                     ->find()
                     ->select(['id', 'name', 'namespace', 'logo'])
-                    ->where(['namespace !=' => 'admin'])
+                    ->where(['namespace !=' => $app_ns])
                     ->all();
 
                 $this->set('auth_user_instances', $user_instances);
             }
             else {
                 // return associated instances
+                $app_ns = $this->App->getAdminNamespace();
                 $user_data = TableRegistry::get('Users')
                     ->find()
                     ->where(['id' => $user['id']])
                     ->contain([
-                        'Instances' => function ($q) {
+                        'Instances' => function ($q) use ($app_ns) {
                             return $q
                                 ->select(['id', 'name', 'namespace', 'logo'])
-                                ->where(['Instances.namespace !=' => 'admin']);
+                                ->where(['Instances.namespace !=' => $app_ns]);
                         }
                     ])
                     ->first();
@@ -72,18 +74,21 @@ class InstancesController extends AppController
      */
     public function index()
     {
+        $app_ns = $this->App->getAdminNamespace();
+
         $query = $this->Instances
             ->find()
             ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['namespace !=' => $this->App->getAdminNamespace()]); // block sys
+            ->where(['namespace !=' => $app_ns]); // block sys
         $instances = $this->paginate($query);
+
 
         $sysadmins = TableRegistry::get('Users')
             ->find()
             ->select(['id', 'name', 'email'])
-            ->matching('Instances', function ($q) {
+            ->matching('Instances', function ($q) use ($app_ns) {
                 return $q
-                    ->where(['Instances.namespace' => 'admin'])
+                    ->where(['Instances.namespace' => $app_ns])
                     ->where(['role_id' => 1]);
             })
             ->all();
@@ -326,12 +331,13 @@ class InstancesController extends AppController
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
+        $app_ns = $this->App->getAdminNamespace();
         $sysadmins = TableRegistry::get('Users')
             ->find()
             ->select(['id', 'name', 'email'])
-            ->matching('Instances', function ($q) {
+            ->matching('Instances', function ($q) use ($app_ns) {
                 return $q
-                    ->where(['Instances.namespace' => 'admin'])
+                    ->where(['Instances.namespace' => $app_ns])
                     ->where(['role_id' => 1]);
             })
             ->all();

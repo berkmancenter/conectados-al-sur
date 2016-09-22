@@ -26,8 +26,8 @@
             <?= $this->Form->create($instance, ['type' => 'file']) ?>
             <ul class="tabs" data-tabs id="instance-edit-tabs">
                 <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
-                <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li>
-                <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li>
+                <!-- <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li> -->
+                <!-- <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li> -->
                 <li class="tabs-title"><a href="#panel-logo-config">Logo</a></li>
             </ul>
             <div class="tabs-content" data-tabs-content="instance-edit-tabs">

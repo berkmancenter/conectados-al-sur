@@ -18,7 +18,7 @@ class AppComponent extends Component
     }
 
     // ADMIN
-    public function getAdminNamespace() { return 'admin'; }
+    public function getAdminNamespace() { return 'app'; }
     public function getAdminInstanceId() { return $this->getInstance($this->getAdminNamespace())->id; }
 
     public function getInstance($ns) {
@@ -33,6 +33,16 @@ class AppComponent extends Component
             $this->controller->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
         return $instance;
+    }
+
+    public function getOrganizationTypeById($instance_id, $organization_type_id) {
+        $organization_type = TableRegistry::get('OrganizationTypes')
+            ->find()
+            ->where(['id' => $organization_type_id])
+            ->where(['instance_id' => $instance_id])
+            ->first();
+
+        return $organization_type;
     }
 
     public function isAdminInstance($ns)
@@ -66,15 +76,17 @@ class AppComponent extends Component
 
     public function isSysadmin($user_id) {
 
+        $app_ns = $this->getAdminNamespace();
+
         $db_user = TableRegistry::get('Users')
             ->find()
             ->select(['id'])
             ->where(['Users.id' => $user_id])
             ->contain([
-                'Instances' => function ($q) {
+                'Instances' => function ($q) use ($app_ns) {
                    return $q
                         ->select(['id', 'namespace'])
-                        ->where(['Instances.namespace' => 'admin']);
+                        ->where(['Instances.namespace' => $app_ns]);
                 },
             ])
             ->first();

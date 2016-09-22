@@ -86,3 +86,10 @@
         </div>
     </div>
 </div>
+
+
+<style type="text/css">
+.instances-logo {
+    max-width: 200px;
+}
+</style>

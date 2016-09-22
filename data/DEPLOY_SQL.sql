@@ -186,7 +186,7 @@ CREATE TABLE instances (
     proj_max_categories   INT NOT NULL DEFAULT 4
 );
 INSERT INTO instances (name, name_es, namespace, description, description_es) VALUES 
-('[null]', '[null]', 'admin', '[null]', '[null]');
+('[null]', '[null]', 'app', '[null]', '[null]');
 
 
 -- TABLE organization_types
@@ -277,20 +277,19 @@ CREATE TABLE categories_projects (
 );
 
 
-
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for ADMINS
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+-- password: tester
+
 INSERT INTO organization_types (name, name_es, instance_id) VALUES
  ('[null]', '[null]', 1);
 INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
-('Matías Pavez' , 'matias.pavez@ing.uchile.cl', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-('Lionel Brossi', 'lionelbrossi@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
+('sysadmin'     , 'sysadmin@gmail.com'    , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+('Lionel Brossi', 'lionelbrossi@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-(1, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 1),
-(1, 2, 1, 'lionelbrossi@gmail.com'    , 'dvine', 1);
--- password: tester, salt: 0000000000000000000000000000000000000000000000000000000000000000
--- tester@tester.tester, tester
+(1, 1, 1, 'sysadmin.contact@ing.uchile.cl', '[null]', 1),
+(1, 2, 1, 'lionelbrossi.contact@gmail.com', '[null]', 1);
 
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -338,8 +337,10 @@ INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
 ('tester_cas admin', 'tester_cas_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
 ('tester_cas user' , 'tester_cas@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-(2, 3, 1, 'tester_cas_admin@gmail.com', 'ICEI, Universidad de Chile', 3),
-(2, 4, 0, 'tester_cas@gmail.com'      , 'ICEI, Universidad de Chile', 3);
+(1, 3, 0, 'tester_cas_admin.contact.dvine@gmail.com', '[null]', 1), -- register on webapp
+(1, 4, 0, 'tester_cas.contact.dvine@gmail.com'      , '[null]', 1), -- register on webapp
+(2, 3, 1, 'tester_cas_admin_contact.cas@gmail.com'  , 'CAS, ICEI, Universidad de Chile', 3), -- register on CAS
+(2, 4, 0, 'tester_cas.contact.cas@gmail.com'        , 'CAS, ICEI, Universidad de Chile', 3); -- register on CAS
 
 -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 -- populate database for CAS example
@@ -367,27 +368,27 @@ INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
 ('tester_example admin', 'tester_example_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
 ('tester_example user' , 'tester_example@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-(3, 5, 1, 'tester_example_admin@gmail.com', 'ICEI, Universidad de Chile', 13),
-(3, 6, 0, 'tester_example@gmail.com'      , 'ICEI, Universidad de Chile', 13);
+(1, 5, 0, 'tester_example_admin.contact.dvine@gmail.com', '[null]', 1),  -- register on webapp
+(1, 6, 0, 'tester_example.contact.dvine@gmail.com'      , '[null]', 1),  -- register on webapp
+(3, 5, 1, 'tester_example_admin.contact.example@gmail.com', 'Example ORG', 13),  -- register on Example
+(3, 6, 0, 'tester_example.contact.example@gmail.com'      , 'Example ORG', 13);  -- register on Example
+
 
 INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
 ('tester_both'      , 'tester_both_admin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
 ('tester_both user' , 'tester_both@gmail.com'      , '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00');
 INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-(2, 7, 1, 'tester_both_admin@gmail.com', 'ICEI, Universidad de Chile',  3),
-(3, 7, 1, 'tester_both_admin@gmail.com', 'ICEI, Universidad de Chile', 13),
-(2, 8, 0, 'tester_both@gmail.com'      , 'ICEI, Universidad de Chile',  3),
-(3, 8, 0, 'tester_both@gmail.com'      , 'ICEI, Universidad de Chile', 13),
-(2, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 3),
-(3, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 13),
-(2, 2, 1, 'lionelbrossi@gmail.com', 'dvine', 3),
-(3, 2, 1, 'lionelbrossi@gmail.com', 'dvine', 13);
+(1, 7, 0, 'tester_both_admin.contact.dvine@gmail.com', '[null]', 1),  -- register on webapp
+(1, 8, 0, 'tester_both.contact.dvine@gmail.com'      , '[null]', 1),  -- register on webapp
+(2, 7, 1, 'tester_both_admin.contact.cas@gmail.com', 'CAS, ICEI, Universidad de Chile',  3),  -- register on CAS
+(2, 8, 0, 'tester_both.contact.cas@gmail.com'      , 'CAS, ICEI, Universidad de Chile',  3),  -- register on CAS
+(3, 7, 1, 'tester_both_admin@gmail.com', 'Example ORG', 13),  -- register on Example
+(3, 8, 0, 'tester_both@gmail.com'      , 'Example ORG', 13),  -- register on Example
+(2, 1, 1, 'sysadmin.contact.cas@ing.uchile.cl'    , 'CAS, ICEI, Universidad de Chile',  3), -- register on CAS
+(3, 1, 1, 'sysadmin.contact.example@ing.uchile.cl', 'Example ORG'                    , 13), -- register on Example
+(2, 2, 1, 'lionelbrossi.contact.cas@gmail.com'    , 'CAS, ICEI, Universidad de Chile',  3), -- register on CAS
+(3, 2, 1, 'lionelbrossi.contact.example@gmail.com', 'Example ORG'                    , 13); -- register on Example
 
-INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-(2, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 3),
-(3, 1, 1, 'matias.pavez@ing.uchile.cl', 'dvine', 13),
-(2, 2, 1, 'lionelbrossi@gmail.com', 'dvine', 3),
-(3, 2, 1, 'lionelbrossi@gmail.com', 'dvine', 13);
 
 -- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed
