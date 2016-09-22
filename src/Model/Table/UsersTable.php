@@ -70,7 +70,13 @@ class UsersTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name', 'Please, fill with your name.')
+            ->add('name', [
+                'length' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'Names need to be at least 10 characters long',
+                ]
+            ]);
 
         $validator
             ->email('email')

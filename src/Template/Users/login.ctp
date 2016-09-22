@@ -23,12 +23,18 @@
                         <?= $this->Form->input('password', ['label' => '', 'placeholder' => 'password', 'aria-describedby' => 'passwordHelpText', 'class' => 'input-group-field']) ?>
                     </div>
                 </div>
-            <?= $this->Form->button(__('Login'), ['class' => 'button']) ?>
+                <div class="row">
+                    <div class="small-6 columns">
+                        <?= $this->Form->button(__('Login'), ['class' => 'button']) ?>
+                    </div>
+                    <div class="small-6 columns">
+                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button">CANCEL</a>
+                    </div>
+                </div>
             <?= $this->Form->end() ?>
             <p>Don't have an account?
                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>Sign up here &raquo</a>
             </p>
-            <!-- <p>Already have an account? <a href="#">Login here &raquo</a></p> -->
         </div>
     </div>
 </div>
@@ -64,6 +70,9 @@
     margin-left: 0%;
 }
 .signup-panel .button {
-    margin-left: 40%;
+    margin-left: 0%;
+}
+.signup-panel .alert {
+    float: right;
 }
 </style>

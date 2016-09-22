@@ -97,6 +97,7 @@ and (min-width : 700px) {
 }
 
 .preview-imgs img:hover, .preview-imgs img:focus {
-    box-shadow: 0 0 0px 7px #46C7F4;
+    /*box-shadow: 0 0 0px 7px #46C7F4;*/
+    box-shadow: 0 0 0px 7px #ed7d31;
 }
 </style>

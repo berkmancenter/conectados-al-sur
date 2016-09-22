@@ -21,7 +21,7 @@ class AppComponent extends Component
     public function getAdminNamespace() { return 'app'; }
     public function getAdminInstanceId() { return $this->getInstance($this->getAdminNamespace())->id; }
 
-    public function getInstance($ns) {
+    public function getInstance($ns, $redirect = true) {
 
         $instance = TableRegistry::get('Instances')
             ->find()
@@ -29,7 +29,7 @@ class AppComponent extends Component
             ->first();
 
         // prevent invalid instance call
-        if (!$instance) {
+        if ($redirect && !$instance) {
             $this->controller->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
         return $instance;
@@ -72,6 +72,41 @@ class AppComponent extends Component
             ->where(['instance_id' => $instance_id])
             ->first();
         return $data;
+    }
+
+    public function isAdmin($user_id, $instance_id)
+    {
+        $db_user = TableRegistry::get('Users')
+            ->find()
+            ->select(['id'])
+            ->where(['Users.id' => $user_id])
+            ->contain([
+                'Instances' => function ($q) use ($instance_id) {
+                   return $q
+                        ->select(['id', 'namespace'])
+                        ->where(['Instances.id' => 1])
+                        ->orWhere(['Instances.id' => $instance_id]);
+                },
+            ])
+            ->first();
+
+        if ($db_user && count($db_user->instances) > 0) {
+
+            foreach ($db_user->instances as $key => $instance) {
+
+                $role_id = $instance->_joinData->role_id;
+
+                // if sysadmin: return true
+                if ($instance->id == 1 && $role_id == 1) {
+                    return true;
+                }
+                // if admin: return true
+                if ($instance->id == $instance_id && $role_id == 1) {
+                    return true;
+                }   
+            }
+        }
+        return false;
     }
 
     public function isSysadmin($user_id) {

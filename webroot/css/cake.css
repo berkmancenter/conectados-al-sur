@@ -104,10 +104,7 @@ legend {
     margin-right: 10px;
 }
 
-.error label,
-.error label.error {
-    color: #C3232D;
-}
+
 
 .view h2 {
     color: #6F6F6F;

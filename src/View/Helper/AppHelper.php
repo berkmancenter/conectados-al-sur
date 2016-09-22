@@ -53,10 +53,21 @@ class AppHelper extends Helper
             ])
             ->first();
 
-        if ($db_user &&                                         // found
-             count($db_user->instances) > 0 &&                  // exist in this instance
-             $db_user->instances[0]->_joinData->role_id == 1) { // as admin guy
-            return true;
+        if ($db_user && count($db_user->instances) > 0) {
+
+            foreach ($db_user->instances as $key => $instance) {
+
+                $role_id = $instance->_joinData->role_id;
+
+                // if sysadmin: return true
+                if ($instance->id == 1 && $role_id == 1) {
+                    return true;
+                }
+                // if admin: return true
+                if ($instance->id == $instance_id && $role_id == 1) {
+                    return true;
+                }   
+            }
         }
         return false;
     }

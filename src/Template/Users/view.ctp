@@ -47,10 +47,12 @@
                         <th><?= __('Contact Email') ?></th>
                         <td><?= h($user->contact) ?></td>
                     </tr>
+                    <?php if (isset($client_type) && $client_type == 'authorized'): ?>
                     <tr>
                         <th><?= __('Genre') ?></th>
                         <td><?= $user->has('genre') ? h($user->genre->name) : '' ?></td>
                     </tr>
+                    <?php endif; ?>
                 </table>
             </div>
 

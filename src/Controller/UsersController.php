@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Event\Event;
+use Cake\Validation\Validator;
 
 /**
  * Users Controller
@@ -63,6 +64,56 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }
 
+    public function add()
+    {
+        # load instance data
+        $admin_instance = $this->App->getInstance($this->App->getAdminNamespace());
+
+        // register on Users and register on InstanceUsers
+
+        $user = $this->Users->newEntity();
+        if ($this->request->is('post')) {
+
+            // INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
+            // ('sysadmin', 'sysadmin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
+
+            // INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
+            // (1, 1, 1, 'sysadmin.contact@ing.uchile.cl', '[null]', 1),
+
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            if ($this->Users->save($user)) {
+                $this->Flash->success(__('Hello ') . $user->name);
+
+                // log the current user out!
+                $logged_user = $this->Auth->user();
+                if ($logged_user) { $this->Auth->logout(); }
+
+                // log the new user in
+                $this->Auth->setUser($user->toArray());
+                return $this->redirect(['controller' => 'Users', 'action' => 'home']);
+            } else {
+                $this->Flash->error(__('There was an error while trying to create this user.'));
+                // return $this->redirect(['controller' => 'Users', 'action' => 'add']);
+            }
+        }
+        $genres = $this->Users->Genres
+            ->find('list', ['limit' => 200])
+            ->where(['Genres.name !=' => '[null]'])
+            ->order(['name' => 'ASC']);
+
+        // $organizationTypes = $this->Users->OrganizationTypes
+        //     ->find('list', ['limit' => 200])
+        //     ->where(['OrganizationTypes.name !=' => '[null]'])
+        //     ->where(['OrganizationTypes.instance_id' => $instance->id])
+        //     ->order(['name' => 'ASC']);
+
+        // $this->set('instance_namespace', $instance_namespace);
+        // $this->set('instance_logo', $instance->logo);
+        // $this->set('instance_name', $instance->name);
+        $this->set(compact('user', 'genres'));
+        $this->set('_serialize', ['user']);
+    }
+
     public function view($id = null)
     {
         // retrieve required user data
@@ -116,70 +167,6 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
-    public function add()
-    {
-        # load instance data
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
-
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-
-            # NO ES ATÓMICO!
-            $last_id = $this->Users
-                ->find()
-                ->select(['id'])
-                ->order(['id' =>'DESC'])
-                ->first()->id;
-            #var_dump($last_id);
-
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            $user->instance_id = $instance->id;
-            $user->id = $last_id + 1;
-            $user->role_id = 0;
-
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('The user has been saved.'));
-
-                // log the current user out!
-                $logged_user = $this->Auth->user();
-                if ($logged_user) {
-                    $this->Auth->logout();
-                }
-
-                // log the new user in
-                $this->Auth->setUser($user->toArray());
-            
-            } else {
-                $this->Flash->error(__('There was an error while trying to create this user.'));
-            }
-            return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
-        }
-        $genres = $this->Users->Genres
-            ->find('list', ['limit' => 200])
-            ->where(['Genres.name !=' => '[null]'])
-            ->order(['name' => 'ASC']);
-
-        $organizationTypes = $this->Users->OrganizationTypes
-            ->find('list', ['limit' => 200])
-            ->where(['OrganizationTypes.name !=' => '[null]'])
-            ->where(['OrganizationTypes.instance_id' => $instance->id])
-            ->order(['name' => 'ASC']);
-
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
-        $this->set(compact('user', 'genres', 'organizationTypes'));
-        $this->set('_serialize', ['user']);
-
-    }
 
     public function edit($id = null)
     {
