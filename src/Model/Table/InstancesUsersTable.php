@@ -65,11 +65,35 @@ class InstancesUsersTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
-        $validator
-            ->allowEmpty('contact');
+        $validator = $this->validationContact($validator);
 
         $validator
-            ->allowEmpty('main_organization');
+            ->requirePresence('main_organization', 'create')
+            ->notEmpty('main_organization', 'Organization name cannot be empty')
+            ->add('main_organization', [
+                'minLength' => [
+                    'rule' => ['minLength', 3],
+                    'message' => 'The organization name is too short (min: 3 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 100],
+                    'message' => 'The organization name is too long.',
+                ]
+            ]);
+
+        return $validator;
+    }
+
+    public function validationContact(Validator $validator) {
+        $validator            
+            ->requirePresence('contact', 'create')
+            ->notEmpty('contact', 'Please, fill with your contact email.')
+            ->add('contact', [
+                'regex' => [
+                    'rule' => 'email',
+                    'message' => 'The contact email is invalid.'
+                ],
+            ]);
 
         return $validator;
     }

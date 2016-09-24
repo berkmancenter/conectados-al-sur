@@ -72,21 +72,44 @@ class UsersTable extends Table
             ->requirePresence('name', 'create')
             ->notEmpty('name', 'Please, fill with your name.')
             ->add('name', [
-                'length' => [
+                'minLength' => [
                     'rule' => ['minLength', 5],
-                    'message' => 'Names need to be at least 10 characters long',
+                    'message' => 'The name is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 50],
+                    'message' => 'Name is too long',
                 ]
             ]);
 
         $validator
-            ->email('email')
             ->requirePresence('email', 'create')
-            ->notEmpty('email')
-            ->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('email', 'Please, fill with your email.')
+            ->add('email', [
+                'unique' => [
+                    'rule' => 'validateUnique',
+                    'provider' => 'table',
+                    'message' => 'This email is already in use.'
+                ],
+                'regex' => [
+                    'rule' => 'email',
+                    'message' => 'The email is invalid.'
+                ],
+            ]);
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->notEmpty('password', 'Please, fill with your password.')
+            ->add('password', [
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'Your password is too short (min length: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 50],
+                    'message' => 'Your password is too long (max length: 50 characters).',
+                ]
+            ]);
 
         return $validator;
     }
