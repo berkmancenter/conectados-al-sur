@@ -40,6 +40,11 @@ class UsersController extends AppController
 
     public function login()
     {
+        // already logged in: redirect to home 
+        if ($this->Auth->user()) {
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+        }
+
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
 
@@ -64,55 +69,6 @@ class UsersController extends AppController
         return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }
 
-    public function add()
-    {
-        # load instance data
-        $admin_instance = $this->App->getInstance($this->App->getAdminNamespace());
-
-        // register on Users and register on InstanceUsers
-
-        $user = $this->Users->newEntity();
-        if ($this->request->is('post')) {
-
-            // INSERT INTO users (name, email, password, genre_id, created, modified) VALUES
-            // ('sysadmin', 'sysadmin@gmail.com', '$2y$10$BjQYV9JwM.IWPmykYbUnF.4H7RgJ49QAemYKeFQ0h65RKO.TbA/sS', 1, '2016-08-01 12:00:00', '2016-08-01 12:00:00'),
-
-            // INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organization, organization_type_id) VALUES
-            // (1, 1, 1, 'sysadmin.contact@ing.uchile.cl', '[null]', 1),
-
-            $user = $this->Users->patchEntity($user, $this->request->data);
-            if ($this->Users->save($user)) {
-                $this->Flash->success(__('Hello ') . $user->name);
-
-                // log the current user out!
-                $logged_user = $this->Auth->user();
-                if ($logged_user) { $this->Auth->logout(); }
-
-                // log the new user in
-                $this->Auth->setUser($user->toArray());
-                return $this->redirect(['controller' => 'Users', 'action' => 'home']);
-            } else {
-                $this->Flash->error(__('There was an error while trying to create this user.'));
-                // return $this->redirect(['controller' => 'Users', 'action' => 'add']);
-            }
-        }
-        $genres = $this->Users->Genres
-            ->find('list', ['limit' => 200])
-            ->where(['Genres.name !=' => '[null]'])
-            ->order(['name' => 'ASC']);
-
-        // $organizationTypes = $this->Users->OrganizationTypes
-        //     ->find('list', ['limit' => 200])
-        //     ->where(['OrganizationTypes.name !=' => '[null]'])
-        //     ->where(['OrganizationTypes.instance_id' => $instance->id])
-        //     ->order(['name' => 'ASC']);
-
-        // $this->set('instance_namespace', $instance_namespace);
-        // $this->set('instance_logo', $instance->logo);
-        // $this->set('instance_name', $instance->name);
-        $this->set(compact('user', 'genres'));
-        $this->set('_serialize', ['user']);
-    }
 
     public function view($id = null)
     {
@@ -167,6 +123,88 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
+ 
+    public function add()
+    {
+        // register on Users and register on InstanceUsers
+        $user = $this->Users->newEntity();
+        $user_instance = TableRegistry::get('InstancesUsers')->newEntity();
+        if ($this->request->is('post')) {
+
+            // patch user
+            $user = $this->Users->patchEntity($user, $this->request->data);
+
+            // check passwords
+            if (!array_key_exists("repassword", $this->request->data)
+                || !array_key_exists("password", $this->request->data)
+                || $this->request->data["repassword"] != $this->request->data["password"]
+                ) {
+                $this->Flash->error(__("Passwords must match!"));
+
+            } else {
+                       
+                // patch user->instance
+                $ui_data = array();
+                $ui_data = array_merge($ui_data, array('role_id'              => 0));
+                $ui_data = array_merge($ui_data, array('contact'              => $user->contact));
+                $ui_data = array_merge($ui_data, array('main_organization'    => '[null]'));
+                $ui_data = array_merge($ui_data, array('organization_type_id' => 1));
+
+                // validate contact mail
+                $validator = new Validator();
+                $validator = TableRegistry::get('InstancesUsers')->validationDefault($validator);
+                $errors = $validator->errors($ui_data);
+                if (empty($errors)) {
+
+                    // save user
+                    $user_instance = TableRegistry::get('InstancesUsers')->patchEntity($user_instance, $ui_data);
+                    if ($this->Users->save($user)) {
+                        
+                        // save instances users
+                        $user_instance->user_id = $user->id;
+                        $user_instance->instance_id = $this->App->getAdminInstanceId();
+                        if (TableRegistry::get('InstancesUsers')->save($user_instance)) {
+
+                            $this->Flash->success(__('Welcome ') . $user->name . '!');
+
+                            // log the current user out!
+                            $logged_user = $this->Auth->user();
+                            if ($logged_user) { $this->Auth->logout(); }
+
+                            // log the new user in
+                            $this->Auth->setUser($user->toArray());
+                            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+                        } else {
+                            foreach ($user_instance->errors() as $error) {
+                                $this->Flash->error(__(reset($error)));
+                            }
+                        }
+                    } else {
+                        foreach ($user->errors() as $error) {
+                            $this->Flash->error(__(reset($error)));
+                        }
+                    }
+                } else{
+                    foreach ($errors as $error) {
+                        $this->Flash->error(__(reset($error)));
+                    }
+                }
+            }
+        }
+        $genres = $this->Users->Genres
+            ->find('list', ['limit' => 200])
+            ->where(['Genres.name !=' => '[null]'])
+            ->order(['name' => 'ASC']);
+
+        // $organizationTypes = $this->Users->OrganizationTypes
+        //     ->find('list', ['limit' => 200])
+        //     ->where(['OrganizationTypes.name !=' => '[null]'])
+        //     ->where(['OrganizationTypes.instance_id' => $instance->id])
+        //     ->order(['name' => 'ASC']);
+        $this->set(compact('user', 'genres'));
+        $this->set('_serialize', ['user']);
+    }
+
 
     public function edit($id = null)
     {
@@ -174,71 +212,103 @@ class UsersController extends AppController
             ->where(['id' => $id])
             ->first();
         if (!$user) {
-            $this->Flash->error(__('Invalid user'));
+            $this->Flash->error(__('This user does not exists'));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
+
+        $user_instance = $this->App->getUserInstanceData($id, $this->App->getAdminInstanceId());
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
             // role management
-            if (array_key_exists('grant', $this->request->data)) {
-                $grant = $this->request->data["grant"];
+            // if (array_key_exists('grant', $this->request->data)) {
+            //     $grant = $this->request->data["grant"];
 
-                if ($grant >= 0 && $grant <= 2) {
+            //     if ($grant >= 0 && $grant <= 2) {
 
-                    // prevent leaving no users of a single type
-                    $curr_role = $user->role_id;
-                    $remaining = $this->Users->find()
-                        ->where([
-                            'instance_id' => $instance->id,
-                            'role_id' => $curr_role
-                        ])
-                        ->count();
+            //         // prevent leaving no users of a single type
+            //         $curr_role = $user->role_id;
+            //         $remaining = $this->Users->find()
+            //             ->where([
+            //                 'instance_id' => $instance->id,
+            //                 'role_id' => $curr_role
+            //             ])
+            //             ->count();
 
-                    if ($curr_role == 2 && $remaining == 1) {
-                        $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
-                        return $this->redirect($this->referer());
-                    }
-                    if ($curr_role == 1 && $remaining == 1) {
-                        $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
-                        return $this->redirect($this->referer());
-                    }
+            //         if ($curr_role == 2 && $remaining == 1) {
+            //             $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
+            //             return $this->redirect($this->referer());
+            //         }
+            //         if ($curr_role == 1 && $remaining == 1) {
+            //             $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
+            //             return $this->redirect($this->referer());
+            //         }
 
-                    // modify
-                    $user->role_id = $grant;
+            //         // modify
+            //         $user->role_id = $grant;
+            //         if ($this->Users->save($user)) {
+            //             if ($grant == 0) {
+            //                 $this->Flash->success(__('Admin privileges were revoked'));
+            //             } else if ($grant == 1) {
+            //                 $this->Flash->success(__('Admin privileges were granted'));
+            //             } else {
+            //                 $this->Flash->success(__('Granted Sysadmin privileges'));
+            //             }
+
+            //         } else {
+            //             $this->Flash->error(__('Could not modify user privileges.'));
+            //         }
+            //     }
+            //     return $this->redirect($this->referer());
+            // }
+            if (array_key_exists("email", $this->request->data)) {
+                unset($this->request->data["email"]);
+            }
+            if (array_key_exists("id", $this->request->data)) {
+                unset($this->request->data["id"]);
+            }
+            if (array_key_exists("password", $this->request->data)) {
+                unset($this->request->data["password"]);
+            }
+            // var_dump($this->request->data);
+
+            // validate contact mail
+            $ui_data = array();
+            $ui_data = array_merge($ui_data, array('contact' => $this->request->data["contact"]));
+            $validator = new Validator();
+            $validator = TableRegistry::get('InstancesUsers')->validationContact($validator);
+            $errors = $validator->errors($ui_data);
+            if (empty($errors)) {
+
+                $user_instance->contact = $this->request->data["contact"];
+                if (TableRegistry::get('InstancesUsers')->save($user_instance)) {
+
+                    $user = $this->Users->patchEntity($user, $this->request->data);
                     if ($this->Users->save($user)) {
-                        if ($grant == 0) {
-                            $this->Flash->success(__('Admin privileges were revoked'));
-                        } else if ($grant == 1) {
-                            $this->Flash->success(__('Admin privileges were granted'));
-                        } else {
-                            $this->Flash->success(__('Granted Sysadmin privileges'));
-                        }
-
+                        $this->Flash->success(__('User details has been saved.'));
+                        return $this->redirect(['controller' => 'Users', 'action' => 'view', $user->id]);
                     } else {
-                        $this->Flash->error(__('Could not modify user privileges.'));
+                        $this->Flash->error(__('There was an error. Please, try again.'));
+                        foreach ($user->errors() as $error) {
+                            $this->Flash->error(__(reset($error)));
+                        }
+                    }
+                } else {
+                    foreach ($user_instance->errors() as $error) {
+                        $this->Flash->error(__(reset($error)));
                     }
                 }
-                return $this->redirect($this->referer());
+            } else{
+                foreach ($errors as $error) {
+                    $this->Flash->error(__(reset($error)));
+                }
             }
-            
-            // $user = $this->Users->patchEntity($user, $this->request->data);
-            // if ($this->Users->save($user)) {
-            //     $this->Flash->success(__('The user has been saved.'));
-            //     return $this->redirect(['action' => 'index']);
-            // } else {
-            //     $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            //     return $this->redirect(['action' => 'index']);
-            // }
         }
 
-        // if this user is a sysadmin, then, show contact information
-        if ($this->App->isSysadmin($id)) {
-            $data = $this->App->getUserInstanceData($id, $this->App->getAdminInstanceId());
-            if ($data) {
-                $user->contact = $data->contact;
-                $user->main_organization = $data->main_organization;
-            }
+        
+        // add contact info for display
+        if ($user_instance) {
+            $user->contact = $user_instance->contact;
         }
     
         $genres = $this->Users->Genres
@@ -266,11 +336,11 @@ class UsersController extends AppController
 
         // redirect to view when deleting by admin, preview otherwise
         $this->Auth->logout();
-        if($logged_user['id'] != $user->id) {
-            $view_url = Router::url(['controller' => 'Instances', 'action' => 'home', '_full' => true]);
-            $this->redirect($view_url);
-        } else {
-            $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
+        // if($logged_user['id'] != $user->id) {
+        //     $view_url = Router::url(['controller' => 'Instances', 'action' => 'home', '_full' => true]);
+        //     $this->redirect($view_url);
+        // } else {
+        $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+        // }
     }
 }

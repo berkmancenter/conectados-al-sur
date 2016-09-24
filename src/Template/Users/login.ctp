@@ -11,16 +11,31 @@
             <p class="welcome">Welcome to dvine!</p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
+                
+                <!-- email -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-mail"></i></span>
-                        <?= $this->Form->input('email', ['label' => '', 'placeholder' => 'john.smith@gmail.com', 'class' => 'input-group-field']) ?>
+                        <?= $this->Form->input('email', [
+                            'label'       => '',
+                            'placeholder' => 'john.smith@gmail.com',
+                            'class'       => 'input-group-field', 
+                            'required'
+                        ]) ?>
                     </div>
                 </div>
+
+                <!-- password -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-lock"></i></span>
-                        <?= $this->Form->input('password', ['label' => '', 'placeholder' => 'password', 'aria-describedby' => 'passwordHelpText', 'class' => 'input-group-field']) ?>
+                        <?= $this->Form->input('password', [
+                            'label'            => '',
+                            'placeholder'      => 'password',
+                            'aria-describedby' => 'passwordHelpText',
+                            'class'            => 'input-group-field',
+                            'required'
+                        ]) ?>
                     </div>
                 </div>
                 <div class="row">
@@ -30,14 +45,18 @@
                     <div class="small-6 columns">
                         <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button">CANCEL</a>
                     </div>
-                </div>
+                </div>  
+
             <?= $this->Form->end() ?>
             <p>Don't have an account?
-                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>Sign up here &raquo</a>
+                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>
+                    Sign up here &raquo
+                </a>
             </p>
         </div>
     </div>
 </div>
+
 </div>
 
 <style type="text/css">
@@ -72,7 +91,7 @@
 .signup-panel .button {
     margin-left: 0%;
 }
-.signup-panel .alert {
+.signup-panel a.alert {
     float: right;
 }
 </style>

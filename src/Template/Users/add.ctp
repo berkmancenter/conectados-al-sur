@@ -5,57 +5,107 @@
 <!-- Page Content -->
 <div class="fullwidth page-content">
     
-<!--
-        <div class="form">
-            <?= $this->Form->create($user) ?>
-            <fieldset>
-                <?php
-                    echo $this->Form->input('main_organization', ['label' => 'Main organization you work in.', 'placeholder' => 'e.g. United Nations']);
-                    echo $this->Form->input('organization_type_id', ['label' => 'Type of this organization', 'options' => $organizationTypes]);
-                ?>
-            </fieldset>
-        </div>
-    
- -->
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
             <p class="welcome">New Account</p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
+                
+                <!-- name -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-torso"></i></span>
-                        <?= $this->Form->input('name', ['label' => '', 'placeholder' => 'Your name: John Smith', 'class' => 'input-group-field']) ?>
+                        <?= $this->Form->input('name', [
+                            'label'       => '',
+                            'placeholder' => 'Your name: John Smith',
+                            'class'       => 'input-group-field',
+                            'required'
+                        ]) ?>
                     </div>
                 </div>
+                
+                <!-- email -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-mail"></i></span>
-                        <?= $this->Form->input('email', ['label' => '', 'placeholder' => 'Username: john.smith@gmail.com', 'class' => 'input-group-field', 'aria-describedby' => 'emailHelpText']) ?>
+                        <?= $this->Form->input('email', [
+                            'label'            => '',
+                            'placeholder'      => 'Username: john.smith@gmail.com',
+                            'class'            => 'input-group-field',
+                            'aria-describedby' => 'emailHelpText',
+                            'type'             => 'text',
+                            'required'
+                        ]) ?>
                     </div>      
                     <p class="help-text" id="emailHelpText">Your email will serve as username and it will be treated as private.</p>
                 </div>
+
+                <br>
+
+                <!-- contact -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-address-book"></i></span>
-                        <?= $this->Form->input('contact', ['label' => '', 'placeholder' => 'Contact: my.organization@example.com', 'class' => 'input-group-field', 'aria-describedby' => 'contactHelpText']) ?>
+                        <?= $this->Form->input('contact', [
+                            'label'            => '',
+                            'placeholder'      => 'Contact: my.organization@example.com',
+                            'class'            => 'input-group-field',
+                            'aria-describedby' => 'contactHelpText',
+                            'type'             => 'email',
+                            'required']) ?>
                     </div>
                     <p class="help-text" id="contactHelpText">Contact email. Public for everyone to see.</p>
                 </div>
+
+                <br>
+
+                <!-- password -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-lock"></i></span>
-                        <?= $this->Form->input('password', ['label' => '', 'placeholder' => 'password', 'aria-describedby' => 'passwordHelpText', 'class' => 'input-group-field']) ?>
+                        <?= $this->Form->input('password', [
+                            'label'            => '',
+                            'placeholder'      => 'password',
+                            'aria-describedby' => 'passwordHelpText',
+                            'class'            => 'input-group-field',
+                            'id'               => 'password',
+                            'required'
+                        ]) ?>
                     </div>
-                    <!-- <p class="help-text" id="passwordHelpText">Your password must have at least 6 characters.</p> -->
                 </div>
+
+                <!-- password repeat -->
+                <div class="row collapse">
+                    <div class="input-group">
+                        <span class="input-group-label"><i class="fi-lock"></i></span>
+                        <div class="input password">
+                            <input
+                                name="repassword"
+                                type="password"
+                                class="input-group-field"
+                                placeholder="password (again)"
+                                
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
+                <!-- genre -->
                 <div class="row collapse">
                     <div class="input-group">
                         <span class="input-group-label"><i class="fi-heart"></i></span>
-                        <?= $this->Form->input('genre_id', ['label' => '', 'placeholder' => 'password', 'class' => 'input-group-field', 'options' => $genres]) ?>
+                        <?= $this->Form->input('genre_id', [
+                            'label'       => '',
+                            'placeholder' => 'password',
+                            'class'       => 'input-group-field',
+                            'options'     => $genres
+                        ]) ?>
                     </div>
                 </div>
+
+                <!-- submit, cancel -->
                 <div class="row">
                     <div class="small-6 columns">
                         <?= $this->Form->button(__('Create account'), ['class' => 'button']) ?>
@@ -64,9 +114,12 @@
                         <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button">CANCEL</a>
                     </div>
                 </div>
+
             <?= $this->Form->end() ?>
             <p>Already have an account?
-                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>Login here &raquo</a>
+                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>
+                    Login here &raquo
+                </a>
             </p>
         </div>
     </div>

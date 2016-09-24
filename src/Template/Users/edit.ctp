@@ -7,15 +7,13 @@
 
 <div class="row">
     <div class="small-12 column view-title">
-        <h3><?= h($user->name) ?> (EDITING)</h3>        
-        <?php if (isset($is_authorized) && $is_authorized == true): ?>
-            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $instance_namespace, $user->id]) ?>><i class='fi-page-edit size-36'></i>EDIT</a>
-            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['controller' => 'Users', 'action' => 'delete', $instance_namespace, $user->id], [
+        <h3><?= h($user->name) ?> (EDITING)</h3>
+            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-36'></i>VIEW</a>
+            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['controller' => 'Users', 'action' => 'delete', $user->id], [
                     'escape' => false, 
                     'confirm' => __('Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
                 ])
             ?>
-        <?php endif; ?>
     </div>
 </div>
 
@@ -23,29 +21,77 @@
     <div class="small-12 column">
         <div class="form">
             <?= $this->Form->create($user) ?>
-            <ul class="tabs" data-tabs id="users-edit-tabs">
-                <li class="tabs-title is-active"><a href="#panel-profile" aria-selected="true">General</a></li>
-                <li class="tabs-title"><a href="#panel-admin">Admin information</a></li>
-            </ul>
             
-            <div class="tabs-content" data-tabs-content="users-edit-tabs">
-                <div class="tabs-panel is-active" id="panel-profile">
-                    <fieldset>
-                        <?php
-                            echo $this->Form->input('name');
-                            echo $this->Form->input('email');
-                            echo $this->Form->input('password');
-                            echo $this->Form->input('genre_id', ['options' => $genres]);
-                        ?>
-                    </fieldset>
+            <!-- name -->
+            <div class="row collapse">
+                <div class="input-group">
+                    <span class="input-group-label"><i class="fi-torso"></i></span>
+                    <?= $this->Form->input('name', [
+                        'label'       => '',
+                        'placeholder' => 'Your name: John Smith',
+                        'class'       => 'input-group-field',
+                        'required'
+                    ]) ?>
                 </div>
-                <div class="tabs-panel" id="panel-admin">
-                    <fieldset>
-                        <?php
-                            echo $this->Form->input('contact');
-                            echo $this->Form->input('main_organization');
-                        ?>
-                    </fieldset>
+            </div>
+            
+            <!-- contact -->
+            <div class="row collapse">
+                <div class="input-group">
+                    <span class="input-group-label"><i class="fi-address-book"></i></span>
+                    <?= $this->Form->input('contact', [
+                        'label'            => '',
+                        'placeholder'      => 'Contact: my.organization@example.com',
+                        'class'            => 'input-group-field',
+                        'aria-describedby' => 'contactHelpText',
+                        'type'             => 'email',
+                        'required'
+                    ]) ?>
+                </div>
+                <p class="help-text" id="contactHelpText">Contact email. Public for everyone to see.</p>
+            </div>
+
+            <!-- password -->
+           <!--  <div class="row collapse">
+                <div class="input-group">
+                    <span class="input-group-label"><i class="fi-lock"></i></span>
+                    <?= $this->Form->input('password', [
+                        'label'            => '',
+                        'placeholder'      => 'password',
+                        'aria-describedby' => 'passwordHelpText',
+                        'class'            => 'input-group-field',
+                        'id'               => 'password',
+                        'required'
+                    ]) ?>
+                </div>
+            </div>
+ -->
+            <!-- password repeat -->
+      <!--       <div class="row collapse">
+                <div class="input-group">
+                    <span class="input-group-label"><i class="fi-lock"></i></span>
+                    <div class="input password">
+                        <input
+                            name="repassword"
+                            type="password"
+                            class="input-group-field"
+                            placeholder="password (again)"
+                            
+                        >
+                    </div>
+                </div>
+            </div>
+ -->
+            <!-- genre -->
+            <div class="row collapse">
+                <div class="input-group">
+                    <span class="input-group-label"><i class="fi-heart"></i></span>
+                    <?= $this->Form->input('genre_id', [
+                        'label'       => '',
+                        'placeholder' => 'password',
+                        'class'       => 'input-group-field',
+                        'options'     => $genres
+                    ]) ?>
                 </div>
             </div>
             <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>

@@ -59,6 +59,7 @@
             <?php if (isset($client_type) && $client_type != 'visita'): ?>
             <div class="tabs-panel" id="panel-profiles">
                 <h4 class="view-subtitle-related"><?= __('Registered App Profiles: ') ?></h4>
+                <p>To register a new profile, you need the app url and current passphrase. The app admin can give more details about this.</p>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                 <?php foreach ($user->instances as $instance): ?>
                     <?php if (!$this->App->isAdminInstance($instance->id)): ?>

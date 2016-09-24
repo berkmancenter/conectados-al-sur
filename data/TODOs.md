@@ -1,6 +1,8 @@
 # TODO List
 
-USER ADMIN DEBE ESTAR EN LISTA DE MAPEO!
+
+- make sysadmin
+- add user to instance
 
 <p>TODO: formatos aceptados y chequeo de tamaño y tipo</p>
 <p>TODO: posibilidad de borrar el logo?</p>
@@ -87,7 +89,6 @@ category add: manejar error al intentar crear categor[ia con el mismos nombres]
 
 ### Instance Add
 
-- next id no es atómico
 - Autocompletar nombre en español, al rellenar versión en Inglés
 - Autocompletar descripción en español, al rellenar versión en Inglés
 - Upload del Logo + Preview
