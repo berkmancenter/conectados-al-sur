@@ -364,7 +364,7 @@ class InstancesController extends AppController
         // var_dump($admins->get(items');
 
         $this->paginate = [
-            'limit'      => 5
+            'limit'      => 10
         ];
         $users = $this->paginate(
             TableRegistry::get('Users')

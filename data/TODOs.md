@@ -1,6 +1,7 @@
 # TODO List
 
 
+- view projects.. mostrar info de que no hay proyectos registrados para cierta instancia y user... en vez de mostrar tabla en blanco
 - make sysadmin
 - add user to instance
 

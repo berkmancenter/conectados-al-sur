@@ -259,6 +259,28 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['pass' => ['id'],'id' => '[0-9]+']
     );
 
+    # =================================================================================
+    # instances_users interaction
+    # =================================================================================
+
+    # add
+    $routes->connect(
+        '/users/:id/add_profile',
+        ['controller' => 'InstancesUsers', 'action' => 'add'],
+        ['pass' => ['id'],'id' => '[0-9]+']
+    );
+
+    # edit
+    $routes->connect(
+        '/users/:id/edit_profile/:instance_namespace',
+        ['controller' => 'InstancesUsers', 'action' => 'edit'],
+        [
+            'pass' => ['id', 'instance_namespace'],
+            'id' => '[0-9]+'
+        ]
+    );
+
+
 
     # --------------------
     ### COMPLETE LIST

@@ -50,4 +50,13 @@ class Instance extends Entity
         '*' => true,
         'id' => false
     ];
+
+    protected $_hidden = [
+        'passphrase'
+    ];
+
+    // protected function _setPassphrase($passphrase)
+    // {
+    //     return (new DefaultPasswordHasher)->hash($passphrase);
+    // }
 }

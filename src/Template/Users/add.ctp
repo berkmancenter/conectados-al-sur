@@ -67,7 +67,6 @@
                         <?= $this->Form->input('password', [
                             'label'            => '',
                             'placeholder'      => 'password',
-                            'aria-describedby' => 'passwordHelpText',
                             'class'            => 'input-group-field',
                             'id'               => 'password',
                             'required'

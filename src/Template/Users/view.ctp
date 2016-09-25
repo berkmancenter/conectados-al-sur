@@ -59,7 +59,9 @@
             <?php if (isset($client_type) && $client_type != 'visita'): ?>
             <div class="tabs-panel" id="panel-profiles">
                 <h4 class="view-subtitle-related"><?= __('Registered App Profiles: ') ?></h4>
-                <p>To register a new profile, you need the app url and current passphrase. The app admin can give more details about this.</p>
+                <?php if (isset($client_type) && $client_type == 'authorized'): ?>
+                    <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]) ?>><i class='fi-plus size-24'></i> Add Profile</a>
+                <?php endif; ?>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                 <?php foreach ($user->instances as $instance): ?>
                     <?php if (!$this->App->isAdminInstance($instance->id)): ?>
@@ -77,7 +79,18 @@
                             <?php if ($client_type == 'authorized' || 
                                 $this->App->isAdmin($client_id, $instance->id)
                             ): ?>
-                                <!-- nothing to do here -->
+                                <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i>Edit this profile</a>
+                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "Delete this profile", 
+                                    [
+                                        'controller' => 'InstancesUsers',
+                                        'action' => 'delete',
+                                        $user->id,
+                                        $instance->id
+                                    ], [
+                                        'escape' => false, 
+                                        'confirm' => __('Are you sure you want to delete this profile?. This operation cannot be undone. All related projects will be erased!!')
+                                    ])
+                                ?>
                             <?php endif; ?>
                         
                             <table class="hover stack vertical-table">
@@ -87,11 +100,19 @@
                                 </tr>
                                 <tr>
                                     <th><?= __('Main Organization') ?></th>
-                                    <td><?= h($instance->_joinData->main_organization) ?></td>
+                                    <?php if ($instance->_joinData->main_organization != "[null]"): ?>
+                                        <td><?= h($instance->_joinData->main_organization) ?></td>
+                                    <?php else: ?>
+                                        <td><span class="unset-field">Please, complete this profile.</span></td>
+                                    <?php endif; ?>
                                 </tr>
                                 <tr>
                                     <th><?= __('Organization Type') ?></th>
-                                    <td><?= h($instance->_joinData->organization_type->name) ?></td>
+                                    <?php if ($instance->_joinData->organization_type->name != "[null]"): ?>
+                                        <td><?= h($instance->_joinData->organization_type->name) ?></td>
+                                    <?php else: ?>
+                                        <td><span class="unset-field">Please, complete this profile.</span></td>
+                                    <?php endif; ?>
                                 </tr>
                             </table>
                         </div>
@@ -117,6 +138,8 @@
                     <li class="accordion-item" data-accordion-item>
                         <a href="#" class="accordion-title"><?= $instance->name ?></a>
                         <div class="accordion-content" data-tab-content>
+
+                            <?php if (!empty($user->projects)): ?>                            
                             <table class="hover stack" cellpadding="0" cellspacing="0">
                                 <thead>
                                     <tr>
@@ -139,6 +162,10 @@
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?php else: ?>
+                                <p>There aren't registered projects for this app (<?= h($instance->name) ?>), related to this user.</p>
+                            <?php endif; ?>
+
                         </div>
                     </li>
                     <?php endif; ?>
@@ -151,3 +178,9 @@
     </div>
 </div>
 </div>
+
+<style type="text/css">
+.unset-field {
+    color: red;
+}
+</style>

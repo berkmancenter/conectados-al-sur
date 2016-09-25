@@ -169,7 +169,7 @@ CREATE TABLE instances (
     description    TEXT         NOT NULL,
     description_es TEXT         NOT NULL,
     logo        VARCHAR(255) DEFAULT NULL,
-    passphrase  VARCHAR(255) DEFAULT 'token',
+    passphrase  VARCHAR(255) NOT NULL DEFAULT 'token',
     use_org_types         BOOLEAN NOT NULL DEFAULT TRUE,
     use_user_genre        BOOLEAN NOT NULL DEFAULT TRUE,
     use_user_organization BOOLEAN NOT NULL DEFAULT TRUE,
@@ -240,7 +240,7 @@ CREATE TABLE instances_users (
     role_id     INT NOT NULL DEFAULT 0 REFERENCES roles(id),
     contact     VARCHAR(100),
     main_organization VARCHAR(255),
-    organization_type_id INT NOT NULL DEFAULT 0 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
+    organization_type_id INT NOT NULL DEFAULT 1 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
     PRIMARY KEY (instance_id, user_id)
 );
 
@@ -256,7 +256,7 @@ CREATE TABLE projects (
     contribution TEXT NOT NULL,
     contributing TEXT NOT NULL,
     organization VARCHAR(255),
-    organization_type_id INT NOT NULL DEFAULT 0 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
+    organization_type_id INT NOT NULL DEFAULT 1 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
     project_stage_id     INT NOT NULL DEFAULT 0 REFERENCES project_stages(id) ON DELETE SET DEFAULT,
     country_id           INT NOT NULL REFERENCES countries(id),
     city_id              INT DEFAULT 0 REFERENCES cities(id) ON DELETE SET DEFAULT,
@@ -388,7 +388,6 @@ INSERT INTO instances_users (instance_id, user_id, role_id, contact, main_organi
 (3, 1, 1, 'sysadmin.contact.example@ing.uchile.cl', 'Example ORG'                    , 13), -- register on Example
 (2, 2, 1, 'lionelbrossi.contact.cas@gmail.com'    , 'CAS, ICEI, Universidad de Chile',  3), -- register on CAS
 (3, 2, 1, 'lionelbrossi.contact.example@gmail.com', 'Example ORG'                    , 13); -- register on Example
-
 
 -- populate dummy users
 -- $ bin/cake migrations seed --seed UsersSeed

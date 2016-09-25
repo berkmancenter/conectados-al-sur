@@ -196,11 +196,6 @@ class UsersController extends AppController
             ->where(['Genres.name !=' => '[null]'])
             ->order(['name' => 'ASC']);
 
-        // $organizationTypes = $this->Users->OrganizationTypes
-        //     ->find('list', ['limit' => 200])
-        //     ->where(['OrganizationTypes.name !=' => '[null]'])
-        //     ->where(['OrganizationTypes.instance_id' => $instance->id])
-        //     ->order(['name' => 'ASC']);
         $this->set(compact('user', 'genres'));
         $this->set('_serialize', ['user']);
     }

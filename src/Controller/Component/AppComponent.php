@@ -35,6 +35,24 @@ class AppComponent extends Component
         return $instance;
     }
 
+    public function getInstanceId($instance_namespace) {
+        $instance = TableRegistry::get('Instances')
+            ->find()            
+            ->where(['namespace' => $instance_namespace])
+            ->first();
+        if ($instance) {
+            return $instance->id;
+        }
+        return $instance;
+    }
+    public function getInstanceById($instance_id) {
+        $instance = TableRegistry::get('Instances')
+            ->find()            
+            ->where(['id' => $instance_id])
+            ->first();
+        return $instance;
+    }
+
     public function getOrganizationTypeById($instance_id, $organization_type_id) {
         $organization_type = TableRegistry::get('OrganizationTypes')
             ->find()
