@@ -59,15 +59,38 @@ class CategoriesTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create')
-            ->add('id', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->add('id', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table'
+            ]);
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name', 'Please, set the category name (English version).')
+            ->add('name', [
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'The category name (english) is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 50],
+                    'message' => 'The category name (english) is too long',
+                ]
+            ]);
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es');
+            ->notEmpty('name_es', 'Please, set the category name (Spanish version).')
+            ->add('name_es', [
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'The category name (spanish) is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 50],
+                    'message' => 'The category name (spanish) is too long',
+                ]
+            ]);
 
         return $validator;
     }
