@@ -20,7 +20,7 @@
 <div class="row">
     <div class="small-12 column">
         <div class="form">
-            <?= $this->Form->create($user) ?>
+            <?= $this->Form->create() ?>
             
             <!-- name -->
             <div class="row collapse">

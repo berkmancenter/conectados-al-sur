@@ -10,19 +10,23 @@
         <div class="form">
             <h4 class="view-subtitle"><?= __('Edit Category:') ?></h4>
             <?= $this->Flash->render('auth') ?>
-            <?= $this->Form->create($category) ?>
+            <?= $this->Form->create() ?>
             
             <?= $this->Form->input('name', [
-                'label' => 'Category Name', 
-                'placeholder' => 'e.g: Education',
-                'required'
-            ]) ?>
+                    'label' => 'Category Name', 
+                    'placeholder' => 'e.g: Education',
+                    'type'        => 'text',
+                    'value'       => $category->name,
+                    'required'
+                ]) ?>
 
             <?= $this->Form->input('name_es', [
-                'label' => 'Category Name (Spanish)',
-                'placeholder' => 'e.g: Educación',
-                'required']);
-            ?>
+                    'label' => 'Category Name (Spanish)',
+                    'placeholder' => 'e.g: Educación',
+                    'type'        => 'text',
+                    'value'       => $category->name_es,
+                    'required'
+                ]) ?>
             
             <!-- submit, cancel -->
             <div class="row">
@@ -33,7 +37,6 @@
                     <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?> class="alert hollow button">CANCEL</a>
                 </div>
             </div>
-
             <?= $this->Form->end() ?>
         </div>
     </div>

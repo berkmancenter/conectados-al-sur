@@ -12,7 +12,7 @@
             <p class="welcome subtitle"><?= $instance->name ?></p>
 
             <?= $this->Flash->render('auth') ?>
-            <?= $this->Form->create($instances_user) ?>
+            <?= $this->Form->create() ?>
 
             <!-- contact -->
             <div class="row collapse">
@@ -24,6 +24,7 @@
                         'class'            => 'input-group-field',
                         'aria-describedby' => 'contactHelpText',
                         'type'             => 'email',
+                        'value'            => $instances_user->contact,
                         'required']) ?>
                 </div>
                 <p class="help-text" id="contactHelpText">Contact email for this app. Public for everyone to see.</p>

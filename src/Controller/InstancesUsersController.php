@@ -81,7 +81,6 @@ class InstancesUsersController extends AppController
                                 $this->Flash->error(__(reset($error)));
                             }
                         }
-
                     } else {
                         $this->Flash->error(__('Sorry, your are already registered on this app.'));
                     }
@@ -117,6 +116,13 @@ class InstancesUsersController extends AppController
                 return $this->redirect(['controller' => 'Users', 'action' => 'view', $user_id]);
             } else {
                 $this->Flash->error(__('There was an error while trying to save your profile data. Please, try again.'));
+                foreach ($instances_user->errors() as $error) {
+                    $this->Flash->error(__(reset($error)));
+                }
+
+                // set variables for reedit
+                if (isset($this->request->data['contact']))           { $instances_user->contact = $this->request->data['contact']; }
+                if (isset($this->request->data['main_organization'])) { $instances_user->main_organization = $this->request->data['main_organization']; }
             }
         }
 

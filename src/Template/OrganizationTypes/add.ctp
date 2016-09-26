@@ -10,7 +10,7 @@
         <div class="form">
             <h4 class="view-subtitle"><?= __('New Organization Type:') ?></h4>
             <?= $this->Flash->render('auth') ?>
-            <?= $this->Form->create($organizationType) ?>
+            <?= $this->Form->create() ?>
             
             <?= $this->Form->input('name', [
                     'label' => 'Organization Type Name',
@@ -23,7 +23,8 @@
                     'label' => 'Organization Type Name (Spanish)',
                     'placeholder' => 'Naciones Unidas',
                     'type'        => 'text',
-                    'required']) ?>
+                    'required'
+                ]) ?>
 
             <!-- submit, cancel -->
             <div class="row">

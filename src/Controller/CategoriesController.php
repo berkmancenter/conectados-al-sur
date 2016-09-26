@@ -15,11 +15,11 @@ class CategoriesController extends AppController
         $instance = $this->App->getInstance($instance_namespace);
         if (!$instance) { return $this->redirect(['controller' => 'Instances', 'action' => 'home']); }
 
-
         $category = $this->Categories->newEntity();
         if ($this->request->is('post')) {
+
             $category = $this->Categories->patchEntity($category, $this->request->data);
-            $category['instance_id'] = $instance->id;
+            $category->instance_id = $instance->id;
 
             if ($this->Categories->save($category)) {
                 $this->Flash->success(__('The category has been saved.'));
@@ -29,10 +29,8 @@ class CategoriesController extends AppController
                 foreach ($category->errors() as $error) {
                     $this->Flash->error(__(reset($error)));
                 }
-                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             }
         }
-
         $this->set('category', $category);
         $this->set('instance', $instance);
     }
@@ -58,20 +56,22 @@ class CategoriesController extends AppController
                 foreach ($category->errors() as $error) {
                     $this->Flash->error(__(reset($error)));
                 }
-                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+
+                // set variables for reedit
+                if (isset($this->request->data['name']))    { $category->name    = $this->request->data['name'];    }
+                if (isset($this->request->data['name_es'])) { $category->name_es = $this->request->data['name_es']; } 
             }
-        }
-        
+        }        
         $this->set('category', $category);
         $this->set('instance', $instance);
     }
 
     public function delete($instance_namespace = null, $id = null)
     {
+        $this->request->allowMethod(['post', 'delete']);
+        
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
-        
-        $this->request->allowMethod(['post', 'delete']);
 
         // get instance
         $instance = $this->App->getInstance($instance_namespace);

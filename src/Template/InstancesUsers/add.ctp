@@ -5,8 +5,6 @@
 <!-- Page Content -->
 <div class="fullwidth page-content">
 
-
-    
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">

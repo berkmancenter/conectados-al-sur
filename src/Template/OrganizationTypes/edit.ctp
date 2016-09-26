@@ -10,12 +10,13 @@
         <div class="form">
             <h4 class="view-subtitle"><?= __('Edit Organization Type:') ?></h4>
             <?= $this->Flash->render('auth') ?>
-            <?= $this->Form->create($organizationType) ?>
+            <?= $this->Form->create() ?>
             
             <?= $this->Form->input('name', [
                     'label' => 'Organization Type Name',
                     'placeholder' => 'United Nations',
                     'type'        => 'text',
+                    'value'       => $organization_type->name,
                     'required'
                 ]) ?>
                 
@@ -23,7 +24,9 @@
                     'label' => 'Organization Type Name (Spanish)',
                     'placeholder' => 'Naciones Unidas',
                     'type'        => 'text',
-                    'required']) ?>
+                    'value'       => $organization_type->name_es,
+                    'required'
+                ]) ?>
 
             <!-- submit, cancel -->
             <div class="row">
