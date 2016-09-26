@@ -69,7 +69,7 @@
             <div class="tabs-panel" id="panel-categories">
 
                 <h4 class="view-subtitle-related"><?= __('Related Project Categories: ' . count($instance->categories)) ?></h4>
-                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Category</a>
+                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-24'></i> Add Category</a>
                 <?php if (!empty($instance->categories)): ?>
                 <table class="hover stack" cellpadding="0" cellspacing="0">
                     <thead>
@@ -107,7 +107,7 @@
             <div class="tabs-panel" id="panel-organization_types">
 
                 <h4 class="view-subtitle-related"><?= __('Related Organization Types: ' . count($instance->organization_types)) ?></h4>
-                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance_namespace]) ?>><i class='fi-plus size-24'></i> Add Organization Type</a>
+                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-24'></i> Add Organization Type</a>
                 <?php if (!empty($instance->organization_types)): ?>
                 <table class="hover stack" cellpadding="0" cellspacing="0">
                     <thead>
@@ -163,8 +163,24 @@
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
+                                <?php if (isset($client_type) && $client_type == 'sysadmin'): ?>
+                                    <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Revoke Sysadmin Privileges">
+                                    <?= $this->Form->postLink(
+                                            $this->Html->tag('i', '', array('class' => 'fi-prohibited size-24')),
+                                        [
+                                            'controller' => 'InstancesUsers',
+                                            'action' => 'edit', $user->id, $this->App->getAdminNamespace()
+                                        ],
+                                        [
+                                            'escape' => false,
+                                            'confirm' => __('Are you sure you want to revoke sysadmin privileges from this user: "{0}"? A sysadmin has complete access to the whole system.', $user->email),
+                                            'data' => ['grant' => false]
+                                        ])
+                                    ?>
+                                    </span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -176,22 +192,39 @@
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Revoke Admin Privileges">
                                 <?= $this->Form->postLink(
                                         $this->Html->tag('i', '', array('class' => 'fi-prohibited size-24')),
                                         [
-                                            'controller' => 'Users',
-                                            'action' => 'edit', $instance_namespace, $user->id
+                                            'controller' => 'InstancesUsers',
+                                            'action' => 'edit', $user->id, $instance->namespace
                                         ],
                                         [
                                             'escape' => false,
                                             'confirm' => __('Are you sure you want to revoke admin privileges from this user: "{0}"?.', $user->email),
-                                            'data' => ['grant' => 0]
-                                    ])
+                                            'data' => ['grant' => false]
+                                        ]
+                                    )
                                 ?>
                                 </span>
+                                <?php if (isset($client_type) && $client_type == 'sysadmin'): ?>
+                                    <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Grant Sysadmin Privileges">
+                                    <?= $this->Form->postLink(
+                                            $this->Html->tag('i', '', array('class' => 'fi-upload-cloud size-24')),
+                                        [
+                                            'controller' => 'InstancesUsers',
+                                            'action' => 'edit', $user->id, $this->App->getAdminNamespace()
+                                        ],
+                                        [
+                                            'escape' => false,
+                                            'confirm' => __('Are you sure you want to grant sysadmin privileges to this user: "{0}"? A sysadmin has complete access to the whole system.', $user->email),
+                                            'data' => ['grant' => true]
+                                        ])
+                                    ?>
+                                    </span>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -220,13 +253,13 @@
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="View user">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance_namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="Delete user">
                                 <?= $this->Form->postLink(
                                         $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
                                         'controller' => 'Users',
-                                        'action' => 'delete', $instance_namespace, $user->id], [
+                                        'action' => 'delete', $instance->namespace, $user->id], [
                                         'escape' => false,
                                         'confirm' => __('Are you sure you want to delete this user: "{0}"?. This operation cannot be undone. All related projects will be erased!', $user->email)
                                     ])
@@ -236,13 +269,13 @@
                                 <?= $this->Form->postLink(
                                         $this->Html->tag('i', '', array('class' => 'fi-upload-cloud size-24')),
                                     [
-                                        'controller' => 'Users',
-                                        'action' => 'edit', $instance_namespace, $user->id
+                                        'controller' => 'InstancesUsers',
+                                        'action' => 'edit', $user->id, $instance->namespace
                                     ],
                                     [
                                         'escape' => false,
                                         'confirm' => __('Are you sure you want to grant admin privileges to this user: "{0}"?.', $user->email),
-                                        'data' => ['grant' => 1]
+                                        'data' => ['grant' => true]
                                     ])
                                 ?>
                                 </span>

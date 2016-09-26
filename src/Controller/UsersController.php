@@ -215,47 +215,6 @@ class UsersController extends AppController
 
         if ($this->request->is(['patch', 'post', 'put'])) {
 
-            // role management
-            // if (array_key_exists('grant', $this->request->data)) {
-            //     $grant = $this->request->data["grant"];
-
-            //     if ($grant >= 0 && $grant <= 2) {
-
-            //         // prevent leaving no users of a single type
-            //         $curr_role = $user->role_id;
-            //         $remaining = $this->Users->find()
-            //             ->where([
-            //                 'instance_id' => $instance->id,
-            //                 'role_id' => $curr_role
-            //             ])
-            //             ->count();
-
-            //         if ($curr_role == 2 && $remaining == 1) {
-            //             $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
-            //             return $this->redirect($this->referer());
-            //         }
-            //         if ($curr_role == 1 && $remaining == 1) {
-            //             $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
-            //             return $this->redirect($this->referer());
-            //         }
-
-            //         // modify
-            //         $user->role_id = $grant;
-            //         if ($this->Users->save($user)) {
-            //             if ($grant == 0) {
-            //                 $this->Flash->success(__('Admin privileges were revoked'));
-            //             } else if ($grant == 1) {
-            //                 $this->Flash->success(__('Admin privileges were granted'));
-            //             } else {
-            //                 $this->Flash->success(__('Granted Sysadmin privileges'));
-            //             }
-
-            //         } else {
-            //             $this->Flash->error(__('Could not modify user privileges.'));
-            //         }
-            //     }
-            //     return $this->redirect($this->referer());
-            // }
             if (array_key_exists("email", $this->request->data)) {
                 unset($this->request->data["email"]);
             }

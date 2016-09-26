@@ -102,13 +102,78 @@ class InstancesUsersController extends AppController
         // retrieve instance
         $instance = $this->App->getInstance($instance_namespace);
 
+        // get user
+        $user = TableRegistry::get('Users')->find()
+            ->where(['id' => $user_id])
+            ->first();
+        if (!$user) { 
+            return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+        }
+
         // retrieve association
         $instances_user = $this->App->getUserInstanceData($user_id, $instance->id);
         if (!$instances_user) {
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+            return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
         }
 
         if ($this->request->is(['patch', 'post', 'put'])) {
+
+            // role management
+            if (array_key_exists('grant', $this->request->data)) {
+                $grant = $this->request->data["grant"];
+
+                // check authority
+                $client = $this->Auth->user();
+                if (!$client || !$this->App->isAdmin($client['id'], $instance->id)) {
+                    $this->Flash->error(__('You are not authorized to perform this action.'));
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+                }
+
+                $message = '';
+                $is_admin_instance = $instances_user->instance_id == $this->App->getAdminInstanceId();
+
+                if ($grant) {
+                    
+                    // give privileges
+                    $instances_user->role_id = 1;
+                    if ($is_admin_instance) { $message = 'SysAdmin privileges were granted'; }
+                    else {                    $message = 'Admin privileges were granted'; }
+
+                } else {
+                    
+                    // prevent leaving no users of a single type
+                    $remaining = $this->InstancesUsers->find()
+                        ->where([
+                            'instance_id' => $instance->id,
+                            'role_id' => 1
+                        ])
+                        ->count();
+
+                    if ($remaining == 1) {
+                        if ($is_admin_instance) {
+                            $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
+                        } else {
+                            $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
+                        }
+                        return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+                    }
+
+                    // remove privileges
+                    $instances_user->role_id = 0;
+                    if ($is_admin_instance) { $message = 'SysAdmin privileges were revoked'; }
+                    else {                    $message = 'Admin privileges were revoked';    }
+                    
+                }
+
+                $message = $message . ' for user ' . $user->email . '.';
+                if ($this->InstancesUsers->save($instances_user)) {
+                    $this->Flash->success(__($message));
+                } else {
+                    $this->Flash->error(__('Could not modify user privileges.'));
+                }
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
+            }
+
 
             $instances_user = $this->InstancesUsers->patchEntity($instances_user, $this->request->data);
             if ($this->InstancesUsers->save($instances_user)) {

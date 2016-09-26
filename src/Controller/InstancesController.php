@@ -78,9 +78,6 @@ class InstancesController extends AppController
     }
 
 
-    /**
-     * Index method
-     */
     public function index()
     {
         $app_ns = $this->App->getAdminNamespace();
@@ -103,17 +100,11 @@ class InstancesController extends AppController
             ->all();
 
         $this->set('sysadmins', $sysadmins);
-
-
         $this->set(compact('instances'));
         // $this->set('_serialize', ['instances']);
     }
 
 
-    /**
-     * Preview method
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
     public function preview($instance_namespace = null)
     {
         // block sys instance
@@ -125,16 +116,9 @@ class InstancesController extends AppController
         // $this->App->setInstanceViewData($instance);
 
         $this->set('instance', $instance);
-        // $this->set('instance_namespace', $instance_namespace);
-        // $this->set('instance_logo', $instance->logo);
-        // $this->set('instance_name', $instance->name);
-        // $this->set('_serialize', ['instance']);
     }
 
-    /**
-     * Graph method
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+    
     public function dots($instance_namespace = null)
     {
         // block sys instance
@@ -152,17 +136,11 @@ class InstancesController extends AppController
         }
 
         $this->set('instance', $instance);
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
         // $this->set(compact('instance', 'instance_namespace'));
         // $this->set('_serialize', ['instance']);
     }
 
-    /**
-     * Map method
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+ 
     public function map($instance_namespace = null)
     {
         // block sys instance
@@ -299,9 +277,6 @@ class InstancesController extends AppController
         $this->set('project_stages', $project_stages);
 
         // instance data
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
         $this->set('instance', $instance);
         $this->set('projects', $projects);
         $this->set('continents', $continents);
@@ -314,10 +289,6 @@ class InstancesController extends AppController
 
 
 
-    /**
-     * View method
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
     public function view($instance_namespace = null)
     {
         // block sys instance
@@ -336,7 +307,6 @@ class InstancesController extends AppController
             ->where(['Instances.namespace' => $instance_namespace])
             ->first();
         if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
@@ -352,7 +322,7 @@ class InstancesController extends AppController
             ->all();
         // var_dump($sysadmins);
 
-        $admins = TableRegistry::get('Users')
+        $all_admins = TableRegistry::get('Users')
             ->find()
             ->select(['id', 'name', 'email'])
             ->matching('Instances', function ($q) use ($instance_namespace) {
@@ -361,7 +331,9 @@ class InstancesController extends AppController
                     ->where(['role_id' => 1]);
             })
             ->all();
-        // var_dump($admins->get(items');
+        $admins = $all_admins->filter(function ($admin, $key) {
+            return !$this->App->isSysadmin($admin->id);
+        });
 
         $this->paginate = [
             'limit'      => 10
@@ -384,38 +356,33 @@ class InstancesController extends AppController
         $this->set('admins', $admins);
         $this->set('sysadmins', $sysadmins);
         $this->set('instance', $instance);
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
         // $this->set('_serialize', ['instance']);
+
+        // manage access by client
+        $auth_client = $this->Auth->user();
+        if ($auth_client && $this->App->isSysadmin($auth_client['id'])) {
+            $this->set('client_type', 'sysadmin');
+        } else {
+            // common client (should not happen!)
+            $this->set('client_type', 'other');
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+        }
     }
 
-    /**
-     * Add method
-     * Redirects on successful add, renders view otherwise.
-     */
+ 
     public function add()
     {
         $instance = $this->Instances->newEntity();
         if ($this->request->is('post')) {
 
-            # NO ES ATÓMICO!
-            $last_id = $this->Instances
-                ->find()
-                ->select(['id'])
-                ->order(['id' =>'DESC'])
-                ->first()->id;
-            #var_dump($last_id);
-
             $instance = $this->Instances->patchEntity($instance, $this->request->data);
-            $instance->id = $last_id + 1;
-            if ($this->Instances->save($instance)) {
-                $this->Flash->success(__('The instance has been saved.'));
-                return $this->redirect(['action' => 'index']);
-            } else {
-                $this->Flash->error(__('The instance could not be saved. Please, try again.'));
-                return $this->redirect(['action' => 'index']);
-            }
+            // if ($this->Instances->save($instance)) {
+            //     $this->Flash->success(__('The instance has been saved.'));
+            //     return $this->redirect(['action' => 'index']);
+            // } else {
+            //     $this->Flash->error(__('The instance could not be saved. Please, try again.'));
+            //     // return $this->redirect(['action' => 'index']);
+            // }
         }
         $this->set(compact('instance'));
         $this->set('_serialize', ['instance']);

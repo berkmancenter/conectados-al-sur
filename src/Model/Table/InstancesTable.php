@@ -77,32 +77,106 @@ class InstancesTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name')
-            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('name', 'Please, give a name to this instance.')
+            ->add('name', [
+                'unique' => [
+                    'rule'     => 'validateUnique',
+                    'provider' => 'table',
+                    'message'  => 'This instance name is already in use'
+                ],
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'Instance name is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 25],
+                    'message' => 'Instance name is too long',
+                ]
+            ]);
+
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es')
-            ->add('name_es', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('name_es', 'Please, give a name (spanish) to this instance.')
+            ->add('name_es', [
+                'unique' => [
+                    'rule'     => 'validateUnique',
+                    'provider' => 'table',
+                    'message'  => 'This instance name is already in use (spanish)'
+                ],
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'Instance name (spanish) is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 25],
+                    'message' => 'Instance name (spanish) is too long',
+                ]
+            ]);
 
         $validator
             ->requirePresence('namespace', 'create')
-            ->notEmpty('namespace')
-            ->add('namespace', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+            ->notEmpty('namespace', 'Please, give this instance a shortname.')
+            ->add('namespace', [
+                'unique' => [
+                    'rule'     => 'validateUnique',
+                    'provider' => 'table',
+                    'message'  => 'This instance shortname is already in use.'
+                ],
+                'minLength' => [
+                    'rule' => ['minLength', 3],
+                    'message' => 'Instance shortname must be longer (min: 3 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 10],
+                    'message' => 'Instance shortname is too long (max: 10 characters)',
+                ]
+            ]);
 
         $validator
             ->requirePresence('description', 'create')
-            ->notEmpty('description');
+            ->notEmpty('description', 'Please, give this instance a description.')
+            ->add('description', [
+                'minLength' => [
+                    'rule' => ['minLength', 120],
+                    'message' => 'Instance description is too short (min: 120 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 500],
+                    'message' => 'Instance description is too long (max: 500 characters)',
+                ]
+            ]);
 
         $validator
             ->requirePresence('description_es', 'create')
-            ->notEmpty('description_es');
+            ->notEmpty('description_es', 'Please, give this instance a description.')
+            ->add('description_es', [
+                'minLength' => [
+                    'rule' => ['minLength', 120],
+                    'message' => 'Instance description (spanish) is too short (min: 120 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 500],
+                    'message' => 'Instance description (spanish) is too long (max: 500 characters)',
+                ]
+            ]);
 
         $validator
             ->allowEmpty('logo');
 
         $validator
-            ->allowEmpty('passphrase');
+            ->requirePresence('passphrase', 'create')
+            ->notEmpty('passphrase', 'Please, give this instance a passphrase.')
+            ->add('passphrase', [
+                'minLength' => [
+                    'rule' => ['minLength', 5],
+                    'message' => 'Instance passphrase is too short (min: 5 characters).',
+                ],
+                'maxLength' => [
+                    'rule' => ['maxLength', 40],
+                    'message' => 'Instance passphrase is too long (max: 40 characters)',
+                ]
+            ]);
 
         $validator
             ->boolean('use_org_types')

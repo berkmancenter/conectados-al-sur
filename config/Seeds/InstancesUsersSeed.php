@@ -11,6 +11,16 @@ class InstancesUsersSeed extends AbstractSeed
         $offset = 8;
         for ($i = 1 + $offset; $i < 50; $i++) {
 
+            // register user
+            $data[] = [
+                'instance_id'   => 1,
+                'user_id'       => $i,
+                'role_id'       => 0,
+                'contact'       => $faker->unique()->email,
+                'main_organization' => '[null]',
+                'organization_type_id' => 1
+            ];
+            
             $instance_id = 2;
             $min_org_id = 3;
             $max_org_id = 11;

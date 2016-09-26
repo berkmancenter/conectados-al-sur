@@ -17,11 +17,13 @@
 <div class="row">
     <div class="small-12 column">
         <div class="form">
-            <?= $this->Form->create($instance) ?>
+            <?= $this->Form->create() ?>
+            
             <ul class="tabs" data-tabs id="instance-add-tabs">
                 <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
-                <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li>
-                <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li>
+                <li class="tabs-title"><a href="#panel-description">Description</a></li>
+                <!-- <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li>
+                <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li> -->
             </ul>
 
             <div class="tabs-content" data-tabs-content="instance-add-tabs">
@@ -29,27 +31,55 @@
                 <div class="tabs-panel is-active" id="panel-properties">
                     <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
                     <fieldset>
-                    <?php 
-                        echo $this->Form->input('name', ['label' => 'Instance Name', 'placeholder' => 'required']);
-                    ?>
-                    <?php 
-                        echo $this->Form->input('name_es', ['label' => 'Instance Name (Spanish)', 'placeholder' => 'required']);
-                    ?>
-                    <?php 
-                        echo $this->Form->input('namespace', ['label' => 'Shortname', 'placeholder' => $this->Url->build(['action' => 'preview', 'shortname', '_full' => true]), 'aria-describedby' => 'namespaceHelpText']);
-                    ?>
-                    <p class="help-text" id="namespaceHelpText">This word will be used as the domain's namespace, from which the url is built. e.g. "my-page" will result in <?php echo $this->Url->build(['action' => 'preview', 'my-page', '_full' => true]) ?>.</p>
-                    </fieldset>
+                    
+                    <?= $this->Form->input('name', [
+                        'label' => 'Instance Name',
+                        'placeholder' => 'e.g: Music networking',
+                        'required'
+                    ]) ?>
 
-                    <fieldset>
-                    <h5 class="view-subsubtitle"><?= __('Instance Descriptions:') ?></h5>
-                    <p>Both descriptions will be displayed on the home page of this instance.</p>
-                    <?php 
-                        echo $this->Form->input('description', ['label' => 'Description', 'placeholder' => 'required']);
-                        echo $this->Form->input('description_es', ['label' => 'Description (Spanish)', 'placeholder' => 'required']);
+                    <?= $this->Form->input('name_es', [
+                        'label' => 'Instance Name (Spanish)',
+                        'placeholder' => 'e.g: Mapeo musical'
+                    ])
                     ?>
+
+                    <?= $this->Form->input('namespace', [
+                        'label' => 'Shortname',
+                        'placeholder' => 'music',
+                        'aria-describedby' => 'namespaceHelpText']);
+                    ?>
+                    <p class="help-text" id="namespaceHelpText">This word will be used as the domain's namespace, from which the url is built. e.g. "music" will result in <?php echo $this->Url->build(['action' => 'preview', 'music', '_full' => true]) ?>.</p>
+
+                    <?= $this->Form->input('passphrase', [
+                        'label' => 'Passphrase',
+                        'placeholder' => 'my very secret phrase',
+                        'aria-describedby' => 'passphraseHelpText']);
+                    ?>
+                    <p class="help-text" id="passphraseHelpText">You can give this to your users, so they can associate their accounts to your app. </p>
+
                     </fieldset>
                 </div>
+
+                <div class="tabs-panel" id="panel-description">
+                    <h4 class="view-subtitle"><?= __('Instance Descriptions:') ?></h4>
+                    <fieldset>
+                    <p>Both descriptions will be displayed on the home page of this instance.</p>
+                    
+                    <?= $this->Form->input('description', [
+                        'label' => 'Description',
+                        'placeholder' => 'required',
+                        'required'
+                    ])?>
+
+                    <?= $this->Form->input('description_es', [
+                        'label' => 'Description (Spanish)',
+                        'placeholder' => 'required',
+                        'required'
+                    ]) ?>
+                    </fieldset>
+                </div>
+
                 <div class="tabs-panel" id="panel-user-config">
                     <h4 class="view-subtitle"><?= __('User Configurations:') ?></h4>
                     <fieldset>
