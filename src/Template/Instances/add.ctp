@@ -35,7 +35,6 @@
                     <?= $this->Form->input('name', [
                         'label' => 'Instance Name',
                         'placeholder' => 'e.g: Music networking',
-                        'required'
                     ]) ?>
 
                     <?= $this->Form->input('name_es', [
@@ -68,18 +67,16 @@
                     
                     <?= $this->Form->input('description', [
                         'label' => 'Description',
-                        'placeholder' => 'required',
-                        'required'
+                        'type' => 'textarea'
                     ])?>
 
                     <?= $this->Form->input('description_es', [
                         'label' => 'Description (Spanish)',
-                        'placeholder' => 'required',
-                        'required'
+                        'type' => 'textarea'
                     ]) ?>
                     </fieldset>
                 </div>
-
+                <!-- 
                 <div class="tabs-panel" id="panel-user-config">
                     <h4 class="view-subtitle"><?= __('User Configurations:') ?></h4>
                     <fieldset>
@@ -110,13 +107,14 @@
                     </fieldset>
                     <fieldset>
                     <h5 class="view-subsubtitle"><?= __('Location information:') ?></h5> 
-                    <p>By default, only the country is saved for each project.<!--  When enabling the cities, each project without city will be assigned to the respective capital. --></p>
+                    <p>By default, only the country is saved for each project. When enabling the cities, each project without city will be assigned to the respective capital. </p>
                     <?php
                         echo $this->Form->input('use_proj_cities', ['label' => 'Map using cities']);
                         echo $this->Form->input('use_proj_location', ['label' => 'Use geo coordinates to generate a link to a google map with projects as markers.']);
                     ?>
                     </fieldset>
                 </div>
+                -->
             </div>
             <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
             <?= $this->Form->end() ?>

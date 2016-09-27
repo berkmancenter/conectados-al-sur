@@ -135,7 +135,7 @@ class InstancesTable extends Table
 
         $validator
             ->requirePresence('description', 'create')
-            ->notEmpty('description', 'Please, give this instance a description.')
+            ->notEmpty('description', 'Please, give this instance a description (english)')
             ->add('description', [
                 'minLength' => [
                     'rule' => ['minLength', 120],
@@ -149,7 +149,7 @@ class InstancesTable extends Table
 
         $validator
             ->requirePresence('description_es', 'create')
-            ->notEmpty('description_es', 'Please, give this instance a description.')
+            ->notEmpty('description_es', 'Please, give this instance a description (spanish)')
             ->add('description_es', [
                 'minLength' => [
                     'rule' => ['minLength', 120],
@@ -180,72 +180,72 @@ class InstancesTable extends Table
 
         $validator
             ->boolean('use_org_types')
-            ->requirePresence('use_org_types', 'create')
+            //->requirePresence('use_org_types', 'create')
             ->notEmpty('use_org_types');
 
         $validator
             ->boolean('use_user_genre')
-            ->requirePresence('use_user_genre', 'create')
+            //->requirePresence('use_user_genre', 'create')
             ->notEmpty('use_user_genre');
 
         $validator
             ->boolean('use_user_organization')
-            ->requirePresence('use_user_organization', 'create')
+            //->requirePresence('use_user_organization', 'create')
             ->notEmpty('use_user_organization');
 
         $validator
             ->boolean('use_proj_cities')
-            ->requirePresence('use_proj_cities', 'create')
+            //->requirePresence('use_proj_cities', 'create')
             ->notEmpty('use_proj_cities');
 
         $validator
             ->boolean('use_proj_stage')
-            ->requirePresence('use_proj_stage', 'create')
+            //->requirePresence('use_proj_stage', 'create')
             ->notEmpty('use_proj_stage');
 
         $validator
             ->boolean('use_proj_categories')
-            ->requirePresence('use_proj_categories', 'create')
+            //->requirePresence('use_proj_categories', 'create')
             ->notEmpty('use_proj_categories');
 
         $validator
             ->boolean('use_proj_description')
-            ->requirePresence('use_proj_description', 'create')
+            //->requirePresence('use_proj_description', 'create')
             ->notEmpty('use_proj_description');
 
         $validator
             ->boolean('use_proj_url')
-            ->requirePresence('use_proj_url', 'create')
+            //->requirePresence('use_proj_url', 'create')
             ->notEmpty('use_proj_url');
 
         $validator
             ->boolean('use_proj_contribution')
-            ->requirePresence('use_proj_contribution', 'create')
+            //->requirePresence('use_proj_contribution', 'create')
             ->notEmpty('use_proj_contribution');
 
         $validator
             ->boolean('use_proj_contributing')
-            ->requirePresence('use_proj_contributing', 'create')
+            //->requirePresence('use_proj_contributing', 'create')
             ->notEmpty('use_proj_contributing');
 
         $validator
             ->boolean('use_proj_organization')
-            ->requirePresence('use_proj_organization', 'create')
+            //->requirePresence('use_proj_organization', 'create')
             ->notEmpty('use_proj_organization');
 
         $validator
             ->boolean('use_proj_location')
-            ->requirePresence('use_proj_location', 'create')
+            //->requirePresence('use_proj_location', 'create')
             ->notEmpty('use_proj_location');
 
         $validator
             ->boolean('use_proj_dates')
-            ->requirePresence('use_proj_dates', 'create')
+            //->requirePresence('use_proj_dates', 'create')
             ->notEmpty('use_proj_dates');
 
         $validator
             ->integer('proj_max_categories')
-            ->requirePresence('proj_max_categories', 'create')
+            //->requirePresence('proj_max_categories', 'create')
             ->notEmpty('proj_max_categories');
 
         return $validator;

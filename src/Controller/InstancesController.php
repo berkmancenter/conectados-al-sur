@@ -375,43 +375,78 @@ class InstancesController extends AppController
         $instance = $this->Instances->newEntity();
         if ($this->request->is('post')) {
 
+            $instance->use_org_types = true;
+            $instance->use_user_genre = true;
+            $instance->use_user_organization = true;
+            $instance->use_proj_cities = true;
+            $instance->use_proj_stage = true;
+            $instance->use_proj_categories = true;
+            $instance->use_proj_description = true;
+            $instance->use_proj_url = true;
+            $instance->use_proj_contribution = true;
+            $instance->use_proj_contributing = true;
+            $instance->use_proj_organization = true;
+            $instance->use_proj_location = true;
+            $instance->use_proj_dates = true;
+            $instance->proj_max_categories = 4;
+
             $instance = $this->Instances->patchEntity($instance, $this->request->data);
-            // if ($this->Instances->save($instance)) {
-            //     $this->Flash->success(__('The instance has been saved.'));
-            //     return $this->redirect(['action' => 'index']);
-            // } else {
-            //     $this->Flash->error(__('The instance could not be saved. Please, try again.'));
-            //     // return $this->redirect(['action' => 'index']);
-            // }
+            if ($this->Instances->save($instance)) {
+
+                $dummy_category = TableRegistry::get('Categories')->newEntity();
+                $dummy_category->name    = '[null]';
+                $dummy_category->name_es = '[null]';
+                $dummy_category->instance_id = $instance->id;
+
+                $dummy_orgtype = TableRegistry::get('OrganizationTypes')->newEntity();
+                $dummy_orgtype->name    = '[null]';
+                $dummy_orgtype->name_es = '[null]';
+                $dummy_orgtype->instance_id = $instance->id;
+
+                $ok = true;
+                if (!TableRegistry::get('Categories')->save($dummy_category)) {
+                    foreach ($dummy_category->errors() as $error) {
+                        $this->Flash->error(__(reset($error)));
+                    }
+                    $ok = false;
+                }
+                if (!TableRegistry::get('OrganizationTypes')->save($dummy_orgtype)) {
+                    foreach ($dummy_orgtype->errors() as $error) {
+                        $this->Flash->error(__(reset($error)));
+                    }
+                    $ok = false;
+                }
+
+                if ($ok) {
+                    $this->Flash->success(__('The instance has been saved.'));
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
+                } else {
+                    $this->Flash->error(__('There was an error while trying to generate some instance data.'));
+                    return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
+                }
+            } else {
+                $this->Flash->error(__('The instance could not be saved. Please, try again.'));
+                foreach ($instance->errors() as $error) {
+                    $this->Flash->error(__(reset($error)));
+                }
+            }
         }
         $this->set(compact('instance'));
         $this->set('_serialize', ['instance']);
     }
 
-    /**
-     * Edit method
-     * Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
+
+
     public function edit($instance_namespace = null)
     {
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
-
-        $instance = $this->Instances
-            ->find()
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->contain([])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
-
+        $instance = $this->App->getInstance($instance_namespace);
+        
         if ($this->request->is(['patch', 'post', 'put'])) {
             
             // do not remove logo if not provided!
-            if ( isset($this->request->data['logo']) 
+            if (isset($this->request->data['logo']) 
                 && isset($this->request->data['logo']['name']) 
                 && empty($this->request->data['logo']['name']) ) {
                 unset($this->request->data['logo']);
@@ -419,45 +454,36 @@ class InstancesController extends AppController
             $instance = $this->Instances->patchEntity($instance, $this->request->data);
 
             if ($this->Instances->save($instance)) {
-                $this->Flash->success(__('The instance has been saved.'));
-                return $this->redirect(['action' => 'view', $instance->namespace]);
+                $this->Flash->success(__('The instance data has been saved.'));
+                return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
             } else {
-                $this->Flash->error(__('The instance could not be saved. Please, try again.'));
-                return $this->redirect(['action' => 'view', $instance->namespace]);
+                $this->Flash->error(__('The instance data could not be saved. Please, try again.'));
+                foreach ($instance->errors() as $error) {
+                    $this->Flash->error(__(reset($error)));
+                }
+
+                // clear errors
+                $instance = $this->App->getInstance($instance_namespace);
             }
         }
         $this->set(compact('instance'));
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
         $this->set('_serialize', ['instance']);
     }
 
-    /**
-     * Delete method
-     * Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+
     public function delete($instance_namespace = null)
     {
+        $this->request->allowMethod(['post', 'delete']);
+        
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
-        
-        $this->request->allowMethod(['post', 'delete']);
-        $instance = $this->Instances
-            ->find()
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->contain([])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
-        
+        $instance = $this->App->getInstance($instance_namespace);
+ 
         if ($this->Instances->delete($instance)) {
-             $this->Flash->success(__('The instance "{0}" has been deleted.', $instance->name));
+            $this->Flash->success(__('The instance "{0}" has been deleted.', $instance->name));
         } else {
             $this->Flash->error(__('The instance could not be deleted. Please, try again.'));
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
     }
 }
