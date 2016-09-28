@@ -8,7 +8,7 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3>New Project</h3>
-        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance_namespace]) ?>><i class='fi-map size-36'></i>Back to Map</a>
+        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>><i class='fi-map size-36'></i>Back to Map</a>
     </div>
 </div>
 

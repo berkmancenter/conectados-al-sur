@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b80b75810e9fbdc3bb0642c06ae15f50",
-    "content-hash": "05926311110465d4131017e8477d295a",
+    "hash": "4af38a1b344f6c44e56635821bc35213",
+    "content-hash": "8ac46e6bc6d9048b6fad6ea24f4fd50c",
     "packages": [
         {
             "name": "aura/installer-default",
@@ -431,6 +431,77 @@
             ],
             "description": "A composer installer for CakePHP 3.0+ plugins.",
             "time": "2016-04-28 03:01:34"
+        },
+        {
+            "name": "friendsofcake/cakephp-csvview",
+            "version": "3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfCake/cakephp-csvview.git",
+                "reference": "a0099a4ecb5f23cb91da8128da9106b863033730"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfCake/cakephp-csvview/zipball/a0099a4ecb5f23cb91da8128da9106b863033730",
+                "reference": "a0099a4ecb5f23cb91da8128da9106b863033730",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0",
+                "php": ">=5.4.16"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "CsvView\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ADmad",
+                    "homepage": "https://github.com/admad",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Mark Scherer",
+                    "homepage": "https://github.com/dereuromark",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Joshua Paling",
+                    "homepage": "https://github.com/joshuapaling",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gaurish Sharma",
+                    "homepage": "https://github.com/gaurish",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Gregory Gaskill",
+                    "homepage": "https://github.com/chronon",
+                    "role": "Contributor"
+                },
+                {
+                    "name": "Jose Diaz-Gonzalez",
+                    "email": "email@josediazgonzalez.com",
+                    "homepage": "http://josediazgonzalez.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "A CSV View class for CakePHP 3.x",
+            "homepage": "http://github.com/friendsofcake/cakephp-csvview",
+            "keywords": [
+                "cakephp",
+                "csv",
+                "export",
+                "view"
+            ],
+            "time": "2016-07-20 06:52:49"
         },
         {
             "name": "fzaninotto/faker",

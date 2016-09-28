@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
@@ -17,7 +18,7 @@ class ProjectsController extends AppController
         parent::beforeFilter($event);
 
         // public actions
-        $this->Auth->allow(['index', 'view']);
+        $this->Auth->allow(['index', 'view', 'exportCsv']);
     }
 
     public function isAuthorized($user = null)
@@ -69,15 +70,8 @@ class ProjectsController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
+        // get instance
+        $instance = $this->App->getInstance($instance_namespace);
 
         $user_conditions = array();
         $category_conditions = array();
@@ -124,11 +118,187 @@ class ProjectsController extends AppController
                 ->distinct(['Projects.id'])
         );
 
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
+        $this->set('instance', $instance);
         $this->set(compact('projects'));
         $this->set('_serialize', ['projects']);
+    }
+
+    public function exportCsv($instance_namespace)
+    {
+        // block sys instance
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
+
+        // get instance
+        $instance = $this->App->getInstance($instance_namespace);
+        $instance_id = $instance->id;
+
+        $projects = $this->Projects
+            ->find()
+            ->select([
+                'id',
+                'name',
+                'url',
+                'created',
+                'modified',
+                'start_date',
+                'finish_date',
+                'description',
+                'contribution',
+                'contributing',
+                'organization',
+                'instance_id',
+                'organization_type_id',
+                'project_stage_id',
+                'user_id',
+                'country_id',
+            ])
+            ->select(TableRegistry::get('Users'))
+            ->select(TableRegistry::get('ProjectStages'))
+            ->select(TableRegistry::get('Countries'))
+            ->contain([
+                'Countries',
+                'ProjectStages',
+                'Users' => function ($q) {
+                   return $q
+                        ->select(['Users.id', 'Users.genre_id'])
+                        ->select(TableRegistry::get('Genres'))
+                        ->contain(['Genres']);
+                },
+            ])
+            ->where(['instance_id' => $instance->id])
+            ->all();
+
+        $data = [];
+        foreach ($projects as $project) {
+            // var_dump($project);
+
+            // CONTACT INFO
+            $user_data = $this->App->getUserInstanceData($project->user->id, $instance->id);
+            $contact = null;
+            if ($user_data) {
+                // get instance contact
+                $contact = $user_data->contact;
+            } else {
+                // else: get general contact mail
+                $user_system_data = $this->App->getUserInstanceData($project->user->id, $this->App->getAdminInstanceId());
+                if ($user_system_data) {
+                    $contact = $user_system_data->contact;
+                }
+            }
+
+            // ORGANIZATION TYPE INFO
+            $organization_type = TableRegistry::get('OrganizationTypes')
+                ->find()
+                ->where(['instance_id' => $instance->id])
+                ->where(['id' => $project->organization_type_id])
+                ->first();
+                $organization_type_en = null;
+                $organization_type_es = null;
+            if ($organization_type) {
+                $organization_type_en = $organization_type->name;
+                $organization_type_es = $organization_type->name_es;
+            }
+
+            // COUNTRY CONTINENT INFO
+            $continent_id = null;
+            $continent_name_en = null;
+            $continent_name_es = null;
+            $subcontinent = TableRegistry::get('Subcontinents')
+                ->find()
+                ->where(['id' => $project->country->subcontinent_id])
+                ->first();
+            if ($subcontinent) {
+                $continent = TableRegistry::get('Continents')
+                    ->find()
+                    ->where(['id' => $subcontinent->continent_id])
+                    ->first();
+                if ($continent) {
+                    $continent_id = $continent->id;
+                    $continent_name_en = $continent->name;
+                    $continent_name_es = $continent->name_es;
+                }
+            }
+
+            $row = [
+                'id'   => $project->id,
+                'name' => $project->name,
+                'external_url'  => $project->url,
+                'user_name'     => $project->user->name,
+                'user_contact'  => $contact,
+                'user_genre_en' => $project->user->genre->name,
+                'user_genre_es' => $project->user->genre->name_es,
+                'organization'  => $project->organization,
+                'organization_type_en'  => $organization_type_en,
+                'organization_type_es'  => $organization_type_es,
+                'project_stage_en' => $project->project_stage->name,
+                'project_stage_es' => $project->project_stage->name_es,
+                'start_date'   => $project->start_date,
+                'finish_date'   => $project->finish_date,
+                'country_id'    => $project->country_id,
+                'country_A3'    => $project->country->cod_a3,
+                'country_name_en'    => $project->country->name,
+                'country_name_es'    => $project->country->name_es,
+                'country_continent_id'    => $continent->id,
+                'country_continent_name_en'    => $continent_name_en,
+                'country_continent_name_es'    => $continent_name_es,
+                'description'   => $project->description,
+                'contribution'   => $project->contribution,
+                'contributing'   => $project->contributing,
+                'created'   => $project->created,
+                'modified'   => $project->modified,
+            ];
+            array_push($data, $row);
+        }
+
+        $_serialize = 'data';
+        $_header = [
+            'id',
+            'name',
+            'external_url',
+            'user_name',
+            'user_contact',
+            'user_genre_en',
+            'user_genre_es',
+            'organization',
+            'organization_type_en',
+            'organization_type_es',
+            'project_stage_en',
+            'project_stage_es',
+            'start_date',
+            'finish_date',
+            'country_id',
+            'country_A3',
+            'country_name_en',
+            'country_name_es',
+            'country_continent_id',
+            'country_continent_name_en',
+            'country_continent_name_es',
+            'description',
+            'contribution',
+            'contributing',
+            'created',
+            'modified',
+        ];
+        // $_footer = ['Totals', '400', '$3000'];
+        // formatting
+        // $_delimiter = chr(9); //tab  // _delimiter: ,
+        // $_enclosure = '"';  // _enclosure: "
+        // $_newline = '\r\n';  // _newline: \n
+        // $_eol = '~';  // _eol: \n
+        // $_bom = true;  // _bom: false
+        // _setSeparator: false
+        // $_null defaults to ''.
+
+
+        // File name
+        $this->response->download($instance->namespace . '_export.csv');
+
+        // CSV builder
+        $this->viewBuilder()->className('CsvView.Csv');
+
+        // required data
+        $this->set(compact('data', '_serialize', '_header'));
+        // '_footer', '_delimiter', '_enclosure', '_newline', '_eol', '_bom', '_enclosure'
     }
 
     /**
@@ -140,16 +310,8 @@ class ProjectsController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
-        # load instance data
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
+        // get instance
+        $instance = $this->App->getInstance($instance_namespace);
 
         $project = $this->Projects->get($id, [
             'contain' => [
@@ -165,9 +327,7 @@ class ProjectsController extends AppController
         // var_dump($project);
 
         $this->set('project', $project);
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
+        $this->set('instance', $instance);
         $this->set('_serialize', ['project']);
     }
 
@@ -182,16 +342,8 @@ class ProjectsController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
-        # load instance data
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
+        // get instance
+        $instance = $this->App->getInstance($instance_namespace);
 
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {
@@ -255,10 +407,8 @@ class ProjectsController extends AppController
         // $users = $this->Projects->Users->find('list', ['limit' => 200]);
         // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
 
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
-        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories','instance_namespace'));
+        $this->set('instance', $instance);
+        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories','instance'));
         $this->set('_serialize', ['project']);
     }
 
@@ -274,16 +424,8 @@ class ProjectsController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
-        # load instance data
-        $instance = TableRegistry::get('Instances')
-            ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
-            ->where(['Instances.namespace' => $instance_namespace])
-            ->first();
-        if (!$instance) {
-            // $this->Flash->error(__('Invalid instance'));
-            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        }
+        // get instance
+        $instance = $this->App->getInstance($instance_namespace);
 
         $project = $this->Projects->get($id, [
             'contain' => ['Categories']
@@ -332,10 +474,8 @@ class ProjectsController extends AppController
         // $users = $this->Projects->Users->find('list', ['limit' => 200]);
         // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
 
-        $this->set('instance_namespace', $instance_namespace);
-        $this->set('instance_logo', $instance->logo);
-        $this->set('instance_name', $instance->name);
-        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories', 'instance_namespace'));
+        $this->set('instance', $instance);
+        $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories', 'instance'));
         $this->set('_serialize', ['project']);
     }
 

@@ -8,9 +8,9 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= h($project->name) ?> (Editing)</h3>
-        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance_namespace]) ?>><i class='fi-map size-36'></i>Back to Map</a>
-        <a href=<?= $this->Url->build(['action' => 'view', $instance_namespace, $project->id]) ?>><i class='fi-magnifying-glass size-36'></i>View</a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance_namespace, $project->id], [
+        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>><i class='fi-map size-36'></i>Back to Map</a>
+        <a href=<?= $this->Url->build(['action' => 'view', $instance->namespace, $project->id]) ?>><i class='fi-magnifying-glass size-36'></i>View</a>
+        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance->namespace, $project->id], [
                 'escape' => false, 
                 'confirm' => __('Are you sure you want to delete this project?. This operation cannot be undone. All related data will be erased!')
             ])

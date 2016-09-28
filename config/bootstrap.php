@@ -190,9 +190,10 @@ Request::addDetector('tablet', function ($request) {
  *
  */
 
-Plugin::load('Cake/Localized');
-Plugin::load('Utils');
-Plugin::load('Migrations');
+Plugin::load('Cake/Localized');   // i18n
+Plugin::load('Utils');            // file uploads
+Plugin::load('Migrations');       // ?
+Plugin::load('CsvView');          // CSV download
 
 // Only try to load DebugKit in development mode
 // Debug Kit should not be installed on a production system

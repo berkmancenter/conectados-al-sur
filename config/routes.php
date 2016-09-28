@@ -188,6 +188,13 @@ Router::scope('/', function (RouteBuilder $routes) {
         ['pass' => ['instance_namespace']]
     );
 
+    # csv export
+    $routes->connect(
+        '/:instance_namespace/projects/download',
+        ['controller' => 'Projects', 'action' => 'exportCsv'],
+        ['pass' => ['instance_namespace']]
+    );
+
 
     # add
     $routes->connect(
