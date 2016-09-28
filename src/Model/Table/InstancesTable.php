@@ -138,8 +138,8 @@ class InstancesTable extends Table
             ->notEmpty('description', 'Please, give this instance a description (english)')
             ->add('description', [
                 'minLength' => [
-                    'rule' => ['minLength', 120],
-                    'message' => 'Instance description is too short (min: 120 characters).',
+                    'rule' => ['minLength', 80],
+                    'message' => 'Instance description is too short (min: 80 characters).',
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 500],
@@ -152,8 +152,8 @@ class InstancesTable extends Table
             ->notEmpty('description_es', 'Please, give this instance a description (spanish)')
             ->add('description_es', [
                 'minLength' => [
-                    'rule' => ['minLength', 120],
-                    'message' => 'Instance description (spanish) is too short (min: 120 characters).',
+                    'rule' => ['minLength', 80],
+                    'message' => 'Instance description (spanish) is too short (min: 80 characters).',
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 500],
