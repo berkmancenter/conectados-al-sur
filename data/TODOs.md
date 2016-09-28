@@ -1,13 +1,11 @@
 # TODO List
 
 COSAS IMPORTANTES:
-- dots
-- i18n
-- cache
-- ssl
-- download
-- campos config instance
-- responsive
+- portada embebible
+- tablas con hd celeste
+- describr filtro en projects index
+
+REUNION: Ah! lo otro que me sugirió, es que hagamos bien claro en el correo que se va a publicar de los proyectos, que diga algo así cómo ¿Cuál es el correo de contacto que puede publicarse del proyecto?
 
 
 
