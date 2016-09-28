@@ -132,6 +132,56 @@ class ProjectsController extends AppController
         $instance = $this->App->getInstance($instance_namespace);
         $instance_id = $instance->id;
 
+
+        // BUILD FILTER CONDITIONS
+        // -----------------------------------------------------------------------------
+        $user_conditions = array();
+        $category_conditions = array();
+        $conditions = array('Projects.instance_id' => $instance->id);
+
+        // country_id
+        $country_id = (int)$this->request->query("c");
+        if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
+
+        // organization_type_id
+        $organization_type_id = (int)$this->request->query("o");
+        if ($organization_type_id) { array_push($conditions, array('Projects.organization_type_id' => $organization_type_id)); }
+
+        // project_stage_id
+        $project_stage_id = (int)$this->request->query("s");
+        if ($project_stage_id) { array_push($conditions, array('Projects.project_stage_id' => $project_stage_id)); }
+
+        // genre_id
+        $genre_id = (int)$this->request->query("g");
+        if ($genre_id) { $user_conditions = array('genre_id' => $genre_id); }
+
+        // category_id
+        $category_id = (int)$this->request->query("t");
+        if ($category_id) { $category_conditions = array('Categories.id' => $category_id); }
+        
+
+        // $this->paginate = [
+        //     'limit'      => 5,
+        //     'contain'    => [
+        //         'Users' => function ($q) use ($user_conditions) {
+        //            return $q
+        //                 ->select(['id','genre_id'])
+        //                 ->where($user_conditions);
+        //         }
+        //     ],
+        //     'conditions' => $conditions
+        // ];
+        // $projects = $this->paginate(
+        //     $this->Projects
+        //         ->find()
+        //         ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
+        //             return $q->where($category_conditions);
+        //         })
+        //         ->distinct(['Projects.id'])
+        // );
+
+        // BUILD CSV
+        // --------------------------------------------------------------------------
         $projects = $this->Projects
             ->find()
             ->select([
@@ -164,6 +214,7 @@ class ProjectsController extends AppController
                         ->select(TableRegistry::get('Genres'))
                         ->contain(['Genres']);
                 },
+                'Categories'
             ])
             ->where(['instance_id' => $instance->id])
             ->all();
@@ -219,6 +270,14 @@ class ProjectsController extends AppController
                 }
             }
 
+            // CATEGORIES (de mayor tamaño, sólo porsiacaso!)
+            $categories_en = [null, null, null, null, null, null, null];
+            $categories_es = [null, null, null, null, null, null, null];
+            foreach ($project->categories as $idx => $category) {
+                $categories_en[$idx] = $category->name;
+                $categories_es[$idx] = $category->name_es;
+            }
+
             $row = [
                 'id'   => $project->id,
                 'name' => $project->name,
@@ -246,6 +305,14 @@ class ProjectsController extends AppController
                 'contributing'   => $project->contributing,
                 'created'   => $project->created,
                 'modified'   => $project->modified,
+                'category_1_en' => $categories_en[0],
+                'category_1_es' => $categories_es[0],
+                'category_2_en' => $categories_en[1],
+                'category_2_es' => $categories_es[1],
+                'category_3_en' => $categories_en[2],
+                'category_3_es' => $categories_es[2],
+                'category_4_en' => $categories_en[3],
+                'category_4_es' => $categories_es[3],
             ];
             array_push($data, $row);
         }
@@ -278,6 +345,14 @@ class ProjectsController extends AppController
             'contributing',
             'created',
             'modified',
+            'category_1_en',
+            'category_1_es',
+            'category_2_en',
+            'category_2_es',
+            'category_3_en',
+            'category_3_es',
+            'category_4_en',
+            'category_4_es',
         ];
         // $_footer = ['Totals', '400', '$3000'];
         // formatting
