@@ -15,6 +15,7 @@
                 'confirm' => __('Are you sure you want to delete this project?. This operation cannot be undone. All related data will be erased!')
             ])
         ?>
+        <a href=<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $download_query ?>><i class='fi-arrow-down size-36'></i>Download</a>
     </div>
 </div>
 

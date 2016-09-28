@@ -93,8 +93,14 @@
                         <div class="side-filters">
                             <p id="info-nprojects"></p>
                             <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
-                            <a href="#" id="info-view-all">View all</a>
-                            <a href="#" id="info-download">Download</a>
+                            <?= $this->Html->link(__('Project List'), [
+                                'controller' => 'Projects',
+                                'action' => 'index', $instance->namespace
+                            ], [
+                                'id' => 'map_project_list_button',
+                                'class' => 'secondary button',
+                                'target' => '_blank'
+                            ]) ?>
                         </div>
                         <hr>
                         <div class="side-nav-info">

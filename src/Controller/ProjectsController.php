@@ -118,6 +118,8 @@ class ProjectsController extends AppController
                 ->distinct(['Projects.id'])
         );
 
+        // var_dump($_SERVER['QUERY_STRING']);
+        $this->set('filter_query', $_SERVER['QUERY_STRING']);
         $this->set('instance', $instance);
         $this->set(compact('projects'));
         $this->set('_serialize', ['projects']);
@@ -139,6 +141,10 @@ class ProjectsController extends AppController
         $category_conditions = array();
         $conditions = array('Projects.instance_id' => $instance->id);
 
+        // project_id
+        $project_id = (int)$this->request->query("p");
+        if ($project_id) { array_push($conditions, array('Projects.id' => $project_id)); }
+
         // country_id
         $country_id = (int)$this->request->query("c");
         if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
@@ -153,32 +159,12 @@ class ProjectsController extends AppController
 
         // genre_id
         $genre_id = (int)$this->request->query("g");
-        if ($genre_id) { $user_conditions = array('genre_id' => $genre_id); }
+        if ($genre_id) { $user_conditions = array('Users.genre_id' => $genre_id); }
 
         // category_id
         $category_id = (int)$this->request->query("t");
         if ($category_id) { $category_conditions = array('Categories.id' => $category_id); }
         
-
-        // $this->paginate = [
-        //     'limit'      => 5,
-        //     'contain'    => [
-        //         'Users' => function ($q) use ($user_conditions) {
-        //            return $q
-        //                 ->select(['id','genre_id'])
-        //                 ->where($user_conditions);
-        //         }
-        //     ],
-        //     'conditions' => $conditions
-        // ];
-        // $projects = $this->paginate(
-        //     $this->Projects
-        //         ->find()
-        //         ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
-        //             return $q->where($category_conditions);
-        //         })
-        //         ->distinct(['Projects.id'])
-        // );
 
         // BUILD CSV
         // --------------------------------------------------------------------------
@@ -208,20 +194,48 @@ class ProjectsController extends AppController
             ->contain([
                 'Countries',
                 'ProjectStages',
-                'Users' => function ($q) {
+                'Users' => function ($q) use ($user_conditions) {
                    return $q
                         ->select(['Users.id', 'Users.genre_id'])
                         ->select(TableRegistry::get('Genres'))
+                        ->where($user_conditions)
                         ->contain(['Genres']);
                 },
                 'Categories'
             ])
             ->where(['instance_id' => $instance->id])
+            ->where($conditions)
             ->all();
+
+        // $projects = $this->paginate(
+        //     $this->Projects
+        //         ->find()
+        //         ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
+        //             return $q->where($category_conditions);
+        //         })
+        //         ->distinct(['Projects.id'])
+        // );
+
 
         $data = [];
         foreach ($projects as $project) {
             // var_dump($project);
+
+            // CATEGORIES (de mayor tamaño, sólo porsiacaso!)
+            $category_ids = [];
+            $categories_en = [null, null, null, null, null, null, null];
+            $categories_es = [null, null, null, null, null, null, null];
+            foreach ($project->categories as $idx => $category) {
+                array_push($category_ids, $category->id);
+                $categories_en[$idx] = $category->name;
+                $categories_es[$idx] = $category->name_es;
+            }
+
+            // check for category id condition
+            if ($category_id && !in_array($category_id, $category_ids)) {
+                // do not process this project
+                continue;
+            }
 
             // CONTACT INFO
             $user_data = $this->App->getUserInstanceData($project->user->id, $instance->id);
@@ -270,13 +284,6 @@ class ProjectsController extends AppController
                 }
             }
 
-            // CATEGORIES (de mayor tamaño, sólo porsiacaso!)
-            $categories_en = [null, null, null, null, null, null, null];
-            $categories_es = [null, null, null, null, null, null, null];
-            foreach ($project->categories as $idx => $category) {
-                $categories_en[$idx] = $category->name;
-                $categories_es[$idx] = $category->name_es;
-            }
 
             $row = [
                 'id'   => $project->id,
@@ -401,6 +408,8 @@ class ProjectsController extends AppController
         ]);
         // var_dump($project);
 
+        $download_query = "p=" . $project->id;
+        $this->set('download_query', $download_query);
         $this->set('project', $project);
         $this->set('instance', $instance);
         $this->set('_serialize', ['project']);

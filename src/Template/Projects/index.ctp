@@ -8,9 +8,9 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= __('Project List') ?></h3>
-        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><i class='fi-home size-36'></i></a>
-        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>><i class='fi-map size-36'></i></a>
-        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'dots', $instance->namespace]) ?>><i class='fi-web size-36'></i></a>
+        <?= $this->App->displayInstancePreviewShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceMapShortcut($instance->namespace) ?>
+        <?= $this->App->displayInstanceDotsShortcut($instance->namespace) ?>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
 
         <h4 class="view-subtitle-related"><?= __('Found: ' . $this->request->params['paging']['Projects']['count'] ) ?></h4>
         <a href=<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-36'></i>New Project</a>
-        <a href=<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) ?>><i class='fi-arrow-down size-36'></i>Download</a>
+        <a href=<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>><i class='fi-arrow-down size-36'></i>Download</a>
 
         <table class="hover stack" cellpadding="0" cellspacing="0">
             <thead>

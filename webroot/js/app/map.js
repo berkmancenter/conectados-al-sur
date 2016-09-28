@@ -217,6 +217,17 @@ function update_world(options) {
     // update information
     d3.select("#info-nprojects").text("Found " + n_filtered_projects + " projects");
 
+    // update view all button link
+    filter_query = "projects?";
+    if (options.hasOwnProperty('user_genre_id'))        { filter_query += "&g=" + options.user_genre_id;         }
+    if (options.hasOwnProperty('organization_type_id')) { filter_query += "&o=" + options.organization_type_id   }
+    if (options.hasOwnProperty('category_id'))          { filter_query += "&t=" + options.category_id            }
+    if (options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + options.project_stage_id       }
+    var view_all_button = document.getElementById('map_project_list_button');
+    view_all_button.href =  filter_query;
+    // console.log(view_all_button);
+
+
     filtering_options = options;
     projects_info_display(active_country_id);
 }
