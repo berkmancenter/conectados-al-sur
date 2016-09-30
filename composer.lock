@@ -4,9 +4,62 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4af38a1b344f6c44e56635821bc35213",
-    "content-hash": "8ac46e6bc6d9048b6fad6ea24f4fd50c",
+    "hash": "9d68c9da77a3c699ea291c62fc829809",
+    "content-hash": "3cf979e8c66f906267aae4d2b3edade2",
     "packages": [
+        {
+            "name": "admad/cakephp-i18n",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ADmad/cakephp-i18n.git",
+                "reference": "d3db7213588cc9a43f590e341869890c0ad4275d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ADmad/cakephp-i18n/zipball/d3db7213588cc9a43f590e341869890c0ad4275d",
+                "reference": "d3db7213588cc9a43f590e341869890c0ad4275d",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "~3.0"
+            },
+            "require-dev": {
+                "cakephp/cakephp": "~3.3"
+            },
+            "type": "cakephp-plugin",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ADmad\\I18n\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "ADmad",
+                    "homepage": "https://github.com/ADmad",
+                    "role": "Author"
+                }
+            ],
+            "description": "A CakePHP plugin for I18n related tools.",
+            "homepage": "https://github.com/ADmad/cakephp-i18n",
+            "keywords": [
+                "cakephp",
+                "i18n",
+                "messages",
+                "routing",
+                "validation"
+            ],
+            "time": "2016-09-28 12:39:09"
+        },
         {
             "name": "aura/installer-default",
             "version": "1.0.0",
@@ -1539,6 +1592,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cakemanager/cakephp-utils": 20,
+        "admad/cakephp-i18n": 20,
         "psy/psysh": 0
     },
     "prefer-stable": true,

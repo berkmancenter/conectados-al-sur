@@ -6,6 +6,8 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Event\Event;
 
+
+use Cake\I18n\I18n;
 /**
  * Instances Controller
  *
@@ -115,6 +117,9 @@ class InstancesController extends AppController
         $instance = $this->App->getInstance($instance_namespace);
         // $this->App->setInstanceViewData($instance);
 
+        
+
+        I18n::locale('es');
         $this->set('instance', $instance);
     }
 
@@ -406,13 +411,13 @@ class InstancesController extends AppController
                 $ok = true;
                 if (!TableRegistry::get('Categories')->save($dummy_category)) {
                     foreach ($dummy_category->errors() as $error) {
-                        $this->Flash->error(__(reset($error)));
+                        $this->Flash->error(__('{0}', reset($error)));
                     }
                     $ok = false;
                 }
                 if (!TableRegistry::get('OrganizationTypes')->save($dummy_orgtype)) {
                     foreach ($dummy_orgtype->errors() as $error) {
-                        $this->Flash->error(__(reset($error)));
+                        $this->Flash->error(__('{0}', reset($error)));
                     }
                     $ok = false;
                 }
@@ -427,7 +432,7 @@ class InstancesController extends AppController
             } else {
                 $this->Flash->error(__('The instance could not be saved. Please, try again.'));
                 foreach ($instance->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
             }
         }
@@ -459,7 +464,7 @@ class InstancesController extends AppController
             } else {
                 $this->Flash->error(__('The instance data could not be saved. Please, try again.'));
                 foreach ($instance->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
 
                 // clear errors

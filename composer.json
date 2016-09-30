@@ -13,7 +13,8 @@
         "fzaninotto/faker": "^1.6",
         "cakemanager/cakephp-utils": "dev-master",
         "cakephp/localized": "^3.0",
-        "friendsofcake/cakephp-csvview": "~3.0"
+        "friendsofcake/cakephp-csvview": "~3.0",
+        "admad/cakephp-i18n": "1.0.x-dev"
     },
     "require-dev": {
         "psy/psysh": "@stable",

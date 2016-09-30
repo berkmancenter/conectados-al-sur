@@ -21,13 +21,14 @@ class CategoriesController extends AppController
             $category = $this->Categories->patchEntity($category, $this->request->data);
             $category->instance_id = $instance->id;
 
+            $loc_field = $this->locHelper->fieldCategory();
             if ($this->Categories->save($category)) {
-                $this->Flash->success(__('The category has been saved.'));
+                $this->Flash->success($this->locHelper->crudAddSuccess($loc_field));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
-                $this->Flash->error(__('The category could not be saved. Please, try again.'));
+                $this->Flash->error($this->locHelper->crudAddError($loc_field));
                 foreach ($category->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
             }
         }
@@ -47,14 +48,15 @@ class CategoriesController extends AppController
         $category = $this->Categories->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
+            $loc_field = $this->locHelper->fieldCategory();
             $category = $this->Categories->patchEntity($category, $this->request->data);
             if ($this->Categories->save($category)) {
-                $this->Flash->success(__('The category has been saved.'));
+                $this->Flash->success($this->locHelper->crudEditSuccess($loc_field));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
-                $this->Flash->error(__('The category could not be saved. Please, try again.'));
+                $this->Flash->error($this->locHelper->crudEditError($loc_field));
                 foreach ($category->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
 
                 // set variables for reedit
@@ -78,13 +80,14 @@ class CategoriesController extends AppController
         if (!$instance) { return $this->redirect(['controller' => 'Instances', 'action' => 'home']); }
         $instance_id = $instance->id;
 
+        $loc_field = $this->locHelper->fieldCategory();
         $category = $this->Categories->get($id);
         if (isset($instance_id) && isset($category->instance_id)
             && $category->instance_id == $instance_id 
             && $this->Categories->delete($category)) {
-            $this->Flash->success(__('The category has been deleted.'));
+            $this->Flash->error($this->locHelper->crudDeleteSuccess($loc_field));
         } else {
-            $this->Flash->error(__('The category could not be deleted. Please, try again.'));
+            $this->Flash->error($this->locHelper->crudDeleteError($loc_field));
         }
         return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
     }

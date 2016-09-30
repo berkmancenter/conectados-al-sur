@@ -1,5 +1,13 @@
 # TODO List
 
+
+# update pot files
+bin/cake i18n extract --extract-core no --overwrite --paths /home/matias/workspaces/apache2/cas-app/src/ --output /home/matias/workspaces/apache2/cas-app/src/Locale --merge no
+
+# delete i18n cache
+rm -f  myapp_cake_core_translations_*
+
+
 COSAS IMPORTANTES:
 - portada embebible
 - tablas con hd celeste

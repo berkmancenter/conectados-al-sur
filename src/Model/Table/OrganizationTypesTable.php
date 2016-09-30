@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
 /**
  * OrganizationTypes Model
@@ -54,6 +55,10 @@ class OrganizationTypesTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $loc_orgtype_name_en = $locHelper->fieldOrganizationTypeNameEn();
+        $loc_orgtype_name_es = $locHelper->fieldOrganizationTypeNameEs();
+
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create')
@@ -64,29 +69,29 @@ class OrganizationTypesTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name', 'Please, set the organization type (English version).')
+            ->notEmpty('name', $locHelper->validationNotEmpty($loc_orgtype_name_en))
             ->add('name', [
                 'minLength' => [
                     'rule' => ['minLength', 5],
-                    'message' => 'The org type name (english) is too short (min: 5 characters).',
+                    'message' => $locHelper->validationMinLength($loc_orgtype_name_en , 5),
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 50],
-                    'message' => 'The org type name (english) is too long',
+                    'message' => $locHelper->validationMaxLength($loc_orgtype_name_en , 50),
                 ]
             ]);
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es', 'Please, set the organization type (Spanish version).')
+            ->notEmpty('name_es', $locHelper->validationNotEmpty($loc_orgtype_name_es))
             ->add('name_es', [
                 'minLength' => [
                     'rule' => ['minLength', 5],
-                    'message' => 'The org type (spanish) is too short (min: 5 characters).',
+                    'message' => $locHelper->validationMinLength($loc_orgtype_name_es , 5),
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 50],
-                    'message' => 'The org type (spanish) is too long',
+                    'message' => $locHelper->validationMaxLength($loc_orgtype_name_es , 50),
                 ]
             ]);
 

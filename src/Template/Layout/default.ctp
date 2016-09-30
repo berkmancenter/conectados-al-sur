@@ -49,7 +49,7 @@
                                     <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span>
                                     </li>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>>Your profile</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>> <?= __d('auth', 'Your profile') ?></a>
                                     </li>
                                     <?php if (
                                             isset($instance) &&
@@ -57,25 +57,25 @@
                                             $this->App->isAdmin($auth_user['id'], $instance->id)
                                         ): ?>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>>Settings</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>> <?= __d('auth', 'Settings') ?> </a>
                                     </li>
                                     <?php endif; ?>
                                     <?php if ($this->App->isSysadmin($auth_user['id'])): ?>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>>DVINE Settings</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>> <?= __d('auth', 'DVINE Settings') ?> </a>
                                     </li>
                                     <?php endif; ?>
                                     <li id="top-bar-logout-li">
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>>Sign Out</a>
+                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>> <?= __d('auth', 'Sign Out') ?> </a>
                                     </li>
                                 </ul>
                             </li>
                         <?php else: ?>
                             <li>
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>Sign Up</a>
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>> <?= __d('auth', 'Sign Up') ?> </a>
                             </li>
                             <li>
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>Sign In</a>
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>> <?= __d('auth', 'Sign Up') ?> </a>
                             </li>
                         <?php endif; ?>
                     </ul>

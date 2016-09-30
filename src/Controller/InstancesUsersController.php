@@ -78,7 +78,7 @@ class InstancesUsersController extends AppController
                             ]);
                         } else {
                             foreach ($instances_user->errors() as $error) {
-                                $this->Flash->error(__(reset($error)));
+                                $this->Flash->error(__('{0}', reset($error)));
                             }
                         }
                     } else {
@@ -167,7 +167,7 @@ class InstancesUsersController extends AppController
 
                 $message = $message . ' for user ' . $user->email . '.';
                 if ($this->InstancesUsers->save($instances_user)) {
-                    $this->Flash->success(__($message));
+                    $this->Flash->success(__('{0}', $message));
                 } else {
                     $this->Flash->error(__('Could not modify user privileges.'));
                 }
@@ -182,7 +182,7 @@ class InstancesUsersController extends AppController
             } else {
                 $this->Flash->error(__('There was an error while trying to save your profile data. Please, try again.'));
                 foreach ($instances_user->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
 
                 // set variables for reedit

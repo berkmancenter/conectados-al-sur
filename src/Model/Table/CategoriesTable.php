@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
 /**
  * Categories Model
@@ -56,6 +57,10 @@ class CategoriesTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $loc_cat_name_en = $locHelper->fieldCategoryNameEn();
+        $loc_cat_name_es = $locHelper->fieldCategoryNameEs();
+
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create')
@@ -66,29 +71,29 @@ class CategoriesTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name', 'Please, set the category name (English version).')
+            ->notEmpty('name', $locHelper->validationNotEmpty($loc_cat_name_en))
             ->add('name', [
                 'minLength' => [
                     'rule' => ['minLength', 5],
-                    'message' => 'The category name (english) is too short (min: 5 characters).',
+                    'message' => $locHelper->validationMinLength($loc_cat_name_en , 5),
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 50],
-                    'message' => 'The category name (english) is too long',
+                    'message' => $locHelper->validationMaxLength($loc_cat_name_en , 50),
                 ]
             ]);
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es', 'Please, set the category name (Spanish version).')
+            ->notEmpty('name_es', $locHelper->validationNotEmpty($loc_cat_name_es))
             ->add('name_es', [
                 'minLength' => [
                     'rule' => ['minLength', 5],
-                    'message' => 'The category name (spanish) is too short (min: 5 characters).',
+                    'message' => $locHelper->validationMinLength($loc_cat_name_es , 5),
                 ],
                 'maxLength' => [
                     'rule' => ['maxLength', 50],
-                    'message' => 'The category name (spanish) is too long',
+                    'message' => $locHelper->validationMaxLength($loc_cat_name_es , 50),
                 ]
             ]);
 

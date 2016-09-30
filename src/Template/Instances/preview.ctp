@@ -31,7 +31,7 @@
         <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?> >
             <figure>
                 <?= $this->Html->image('map_preview.png', ['alt' => 'View map']) ?>
-                <figcaption>map</figcaption>
+                <figcaption><?=  __("map") ?></figcaption>
             </figure>
         </a>
         </figure>

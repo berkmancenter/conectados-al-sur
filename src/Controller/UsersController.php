@@ -176,17 +176,17 @@ class UsersController extends AppController
                             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
                         } else {
                             foreach ($user_instance->errors() as $error) {
-                                $this->Flash->error(__(reset($error)));
+                                $this->Flash->error(__('{0}', reset($error)));
                             }
                         }
                     } else {
                         foreach ($user->errors() as $error) {
-                            $this->Flash->error(__(reset($error)));
+                            $this->Flash->error(__('{0}', reset($error)));
                         }
                     }
                 } else{
                     foreach ($errors as $error) {
-                        $this->Flash->error(__(reset($error)));
+                        $this->Flash->error(__('{0}', reset($error)));
                     }
                 }
             }
@@ -244,17 +244,17 @@ class UsersController extends AppController
                     } else {
                         $this->Flash->error(__('There was an error. Please, try again.'));
                         foreach ($user->errors() as $error) {
-                            $this->Flash->error(__(reset($error)));
+                            $this->Flash->error(__('{0}', reset($error)));
                         }
                     }
                 } else {
                     foreach ($user_instance->errors() as $error) {
-                        $this->Flash->error(__(reset($error)));
+                        $this->Flash->error(__('{0}', reset($error)));
                     }
                 }
             } else{
                 foreach ($errors as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
             }
         }

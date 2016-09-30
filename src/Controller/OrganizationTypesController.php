@@ -21,13 +21,14 @@ class OrganizationTypesController extends AppController
             $organization_type = $this->OrganizationTypes->patchEntity($organization_type, $this->request->data);
             $organization_type->instance_id = $instance->id;
 
+            $loc_field = $this->locHelper->fieldOrganizationType();
             if ($this->OrganizationTypes->save($organization_type)) {
-                $this->Flash->success(__('The organization type has been saved.'));
+                $this->Flash->success($this->locHelper->crudAddSuccess($loc_field));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
-                $this->Flash->error(__('The organization type could not be saved. Please, try again.'));
+                $this->Flash->error($this->locHelper->crudAddError($loc_field));
                 foreach ($organization_type->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
             }
         }
@@ -47,14 +48,15 @@ class OrganizationTypesController extends AppController
         $organization_type = $this->OrganizationTypes->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
+            $loc_field = $this->locHelper->fieldCategory();
             $organization_type = $this->OrganizationTypes->patchEntity($organization_type, $this->request->data);
             if ($this->OrganizationTypes->save($organization_type)) {
-                $this->Flash->success(__('The organization type has been saved.'));
+                $this->Flash->success($this->locHelper->crudEditSuccess($loc_field));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
             } else {
-                $this->Flash->error(__('The organization type could not be saved. Please, try again.'));
+                $this->Flash->error($this->locHelper->crudEditError($loc_field));
                 foreach ($organization_type->errors() as $error) {
-                    $this->Flash->error(__(reset($error)));
+                    $this->Flash->error(__('{0}', reset($error)));
                 }
                 
                 // set variables for reedit
@@ -78,13 +80,14 @@ class OrganizationTypesController extends AppController
         if (!$instance) { return $this->redirect(['controller' => 'Instances', 'action' => 'home']); }
         $instance_id = $instance->id;
 
+        $loc_field = $this->locHelper->fieldCategory();
         $organization_type = $this->OrganizationTypes->get($id);
         if (isset($instance_id) && isset($organization_type->instance_id)
             && $organization_type->instance_id == $instance_id 
             && $this->OrganizationTypes->delete($organization_type)) {
-            $this->Flash->success(__('The organization type has been deleted.'));
+            $this->Flash->error($this->locHelper->crudDeleteSuccess($loc_field));
         } else {
-            $this->Flash->error(__('The organization type could not be deleted. Please, try again.'));
+            $this->Flash->error($this->locHelper->crudDeleteError($loc_field));
         }
         return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
     }
