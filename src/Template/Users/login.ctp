@@ -8,7 +8,7 @@
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
-            <p class="welcome">Welcome to dvine!</p>
+            <p class="welcome"><?= __d("auth", "Welcome to dvine!") ?></p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
                 
@@ -31,7 +31,7 @@
                         <span class="input-group-label"><i class="fi-lock"></i></span>
                         <?= $this->Form->input('password', [
                             'label'            => '',
-                            'placeholder'      => 'password',
+                            'placeholder'      => __d('auth', 'password'),
                             'aria-describedby' => 'passwordHelpText',
                             'class'            => 'input-group-field',
                             'required'
@@ -40,17 +40,17 @@
                 </div>
                 <div class="row">
                     <div class="small-6 columns">
-                        <?= $this->Form->button(__('Login'), ['class' => 'button']) ?>
+                        <?= $this->Form->button(__d('auth', 'Login'), ['class' => 'button']) ?>
                     </div>
                     <div class="small-6 columns">
-                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button">CANCEL</a>
+                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
                     </div>
                 </div>  
 
             <?= $this->Form->end() ?>
-            <p>Don't have an account?
+            <p><?= __d("auth", "Don't have an account?") ?>
                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>
-                    Sign up here &raquo
+                    <?= __d("auth", "Sign up here") ?> &raquo
                 </a>
             </p>
         </div>

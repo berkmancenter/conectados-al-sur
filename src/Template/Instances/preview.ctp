@@ -7,13 +7,21 @@
 
 <div class="row">
     <div class="small-12 column preview-title">
+        <?php if ($lang_current == "en"): ?>
         <h3><?= h($instance->name) ?></h3>
+        <?php else: ?>
+        <h3><?= h($instance->name_es) ?></h3>
+        <?php endif; ?>
     </div>
 </div>
 
 <div class="row preview-desc">
     <div class="small-12 columns">
+        <?php if ($lang_current == "en"): ?>
         <?= $this->Text->autoParagraph(h($instance->description)); ?>
+        <?php else: ?>
+        <?= $this->Text->autoParagraph(h($instance->description_es)); ?>
+        <?php endif; ?>
     </div>
 </div>
 

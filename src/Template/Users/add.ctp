@@ -8,7 +8,7 @@
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
-            <p class="welcome">New Account</p>
+            <p class="welcome"><?= __d('auth', "New Account") ?></p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
                 
@@ -18,7 +18,7 @@
                         <span class="input-group-label"><i class="fi-torso"></i></span>
                         <?= $this->Form->input('name', [
                             'label'       => '',
-                            'placeholder' => 'Your name: John Smith',
+                            'placeholder' => __d('auth', 'Your name') . ': John Smith',
                             'class'       => 'input-group-field',
                             'required'
                         ]) ?>
@@ -31,14 +31,14 @@
                         <span class="input-group-label"><i class="fi-mail"></i></span>
                         <?= $this->Form->input('email', [
                             'label'            => '',
-                            'placeholder'      => 'Username: john.smith@gmail.com',
+                            'placeholder'      => __d('auth', 'Username') . ': john.smith@gmail.com',
                             'class'            => 'input-group-field',
                             'aria-describedby' => 'emailHelpText',
                             'type'             => 'text',
                             'required'
                         ]) ?>
                     </div>      
-                    <p class="help-text" id="emailHelpText">Your email will serve as username and it will be treated as private.</p>
+                    <p class="help-text" id="emailHelpText"><?= __d('auth', "Your email will serve as username and it will be treated as private.") ?></p>
                 </div>
 
                 <br>
@@ -49,13 +49,13 @@
                         <span class="input-group-label"><i class="fi-address-book"></i></span>
                         <?= $this->Form->input('contact', [
                             'label'            => '',
-                            'placeholder'      => 'Contact: my.organization@example.com',
+                            'placeholder'      => __d('auth', 'Contact') . ': my.organization@example.com',
                             'class'            => 'input-group-field',
                             'aria-describedby' => 'contactHelpText',
                             'type'             => 'email',
                             'required']) ?>
                     </div>
-                    <p class="help-text" id="contactHelpText">Contact email. Public for everyone to see.</p>
+                    <p class="help-text" id="contactHelpText"><?= __d('auth', "Contact email. Public for everyone to see.") ?></p>
                 </div>
 
                 <br>
@@ -66,7 +66,7 @@
                         <span class="input-group-label"><i class="fi-lock"></i></span>
                         <?= $this->Form->input('password', [
                             'label'            => '',
-                            'placeholder'      => 'password',
+                            'placeholder'      => __d('auth', 'password'),
                             'class'            => 'input-group-field',
                             'id'               => 'password',
                             'required'
@@ -83,8 +83,7 @@
                                 name="repassword"
                                 type="password"
                                 class="input-group-field"
-                                placeholder="password (again)"
-                                
+                                placeholder= <?= __d('auth', "password (again)") ?>
                             >
                         </div>
                     </div>
@@ -97,7 +96,6 @@
                         <span class="input-group-label"><i class="fi-heart"></i></span>
                         <?= $this->Form->input('genre_id', [
                             'label'       => '',
-                            'placeholder' => 'password',
                             'class'       => 'input-group-field',
                             'options'     => $genres
                         ]) ?>
@@ -107,17 +105,17 @@
                 <!-- submit, cancel -->
                 <div class="row">
                     <div class="small-6 columns">
-                        <?= $this->Form->button(__('Create account'), ['class' => 'button']) ?>
+                        <?= $this->Form->button(__d('auth', 'Create account'), ['class' => 'button']) ?>
                     </div>
                     <div class="small-6 columns">
-                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button">CANCEL</a>
+                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
                     </div>
                 </div>
 
             <?= $this->Form->end() ?>
-            <p>Already have an account?
+            <p><?= __d('auth', "Already have an account?") ?>
                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>
-                    Login here &raquo
+                    <?= __d('auth', "Login here") ?> &raquo
                 </a>
             </p>
         </div>

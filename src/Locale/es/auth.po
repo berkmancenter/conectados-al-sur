@@ -1,0 +1,75 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-09-30 06:54+0000\n"
+"PO-Revision-Date: 2016-09-30 04:24-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: Template/Users/add.ctp:11
+msgid "New Account"
+msgstr "Nueva cuenta"
+
+#: Template/Users/add.ctp:21
+msgid "Your name"
+msgstr "Tu nombre"
+
+#: Template/Users/add.ctp:34
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: Template/Users/add.ctp:41
+msgid "Your email will serve as username and it will be treated as private."
+msgstr "Tu correo será tu nombre de usuario y será tratado como privado."
+
+#: Template/Users/add.ctp:52
+msgid "Contact"
+msgstr "Correo de contacto"
+
+#: Template/Users/add.ctp:58
+msgid "Contact email. Public for everyone to see."
+msgstr "Correo de contacto. Público para todos."
+
+#: Template/Users/add.ctp:69 Template/Users/login.ctp:34
+msgid "password"
+msgstr "contraseña"
+
+#: Template/Users/add.ctp:86
+msgid "password (again)"
+msgstr "contraseña (nuevamente)"
+
+#: Template/Users/add.ctp:108
+msgid "Create account"
+msgstr "Crear usuario"
+
+#: Template/Users/add.ctp:116
+msgid "Already have an account?"
+msgstr "ya estás registrado?"
+
+#: Template/Users/add.ctp:118
+msgid "Login here"
+msgstr "Accede aquí"
+
+#: Template/Users/login.ctp:11
+msgid "Welcome to dvine!"
+msgstr "Bienvenido a dvine!"
+
+#: Template/Users/login.ctp:43
+msgid "Login"
+msgstr "Acceder"
+
+#: Template/Users/login.ctp:51
+msgid "Don't have an account?"
+msgstr "No estás registrado?"
+
+#: Template/Users/login.ctp:53
+msgid "Sign up here"
+msgstr "Crea tu cuenta aquí"

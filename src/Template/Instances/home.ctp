@@ -26,10 +26,10 @@
                         
                         <?php if (count($auth_user_instances) > 1) : ?>
                             <button class="orbit-previous">
-                                <span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;
+                                <span class="show-for-sr"><?= __('Previous App') ?></span>&#9664;&#xFE0E;
                             </button>
                             <button class="orbit-next">
-                                <span class="show-for-sr">Next Slide</span>&#9654;&#xFE0E;
+                                <span class="show-for-sr"><?= __('Next App') ?></span>&#9654;&#xFE0E;
                             </button>
                         <?php endif; ?>
                         
@@ -56,7 +56,15 @@
                                 ?>
                                 <?php endif; ?>
                                 </a>
-                                <p class="text-center"><a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><?= $instance->name ?></a></p>
+                                <p class="text-center">
+                                    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>>
+                                        <?php if ($lang_current == "en"): ?>
+                                        <?= $instance->name ?>
+                                        <?php else: ?>
+                                        <?= $instance->name_es ?>
+                                        <?php endif; ?>
+                                    </a>
+                                </p>
                                 <!-- <figcaption class="orbit-caption"><?= $instance->name ?></figcaption> -->
                             </li>
                         <?php endforeach; ?>
@@ -68,14 +76,22 @@
                             <?php if ($idx == 0): ?>
                             <button class="is-active" data-slide=<?= $idx ?>>
                                 <span class="show-for-sr">
+                                    <?php if ($lang_current == "en"): ?>
                                     <?= $instance->name ?>
+                                    <?php else: ?>
+                                    <?= $instance->name_es ?>
+                                    <?php endif; ?>
                                 </span>
-                                <span class="show-for-sr">Current Slide</span>
+                                <span class="show-for-sr"><?= __('Current Slide') ?></span>
                             </button>
                             <?php else: ?>
                             <button data-slide=<?= $idx ?>>
                                 <span class="show-for-sr">
+                                    <?php if ($lang_current == "en"): ?>
                                     <?= $instance->name ?>
+                                    <?php else: ?>
+                                    <?= $instance->name_es ?>
+                                    <?php endif; ?>
                                 </span>
                             </button> 
                             <?php endif; ?>
@@ -89,11 +105,11 @@
             <div class="button-group large stacked">
                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>
                      class="secondary button">
-                     Sign In
+                     <?= __d('template', 'Sign In') ?>
                  </a>
                  <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>
                      class="secondary button">
-                     Sign Up
+                     <?= __d('template', 'Sign Up') ?>
                  </a>
             </div>
             <?php endif; ?>

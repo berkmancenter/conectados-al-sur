@@ -305,15 +305,16 @@ $app_routes = function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    // $routes->fallbacks('DashedRoute');
+    $routes->fallbacks('DashedRoute');
 };
 
+
+Router::scope("/", $app_routes);
 
 $languages = ['en', 'es'];
 foreach ($languages as $lang) {
     Router::scope("/$lang", ['lang' => $lang], $app_routes);
 }
-Router::scope("/", $app_routes);
 
 
 Router::addUrlFilter(function ($params, $request) {

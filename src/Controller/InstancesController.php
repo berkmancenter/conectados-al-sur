@@ -49,7 +49,7 @@ class InstancesController extends AppController
                 $app_ns = $this->App->getAdminNamespace();
                 $user_instances = TableRegistry::get('Instances')
                     ->find()
-                    ->select(['id', 'name', 'namespace', 'logo'])
+                    ->select(['id', 'name', 'name_es', 'namespace', 'logo'])
                     ->where(['namespace !=' => $app_ns])
                     ->all();
 
@@ -84,7 +84,7 @@ class InstancesController extends AppController
 
         $query = $this->Instances
             ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
+            ->select(['id', 'name', 'name_es', 'namespace', 'logo'])
             ->where(['namespace !=' => $app_ns]); // block sys
         $instances = $this->paginate($query);
 
@@ -126,7 +126,7 @@ class InstancesController extends AppController
         
         $instance = $this->Instances
             ->find()
-            ->select(['id', 'name', 'namespace', 'logo'])
+            ->select(['id', 'name', 'name_es', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
             ->contain([])
             ->first();

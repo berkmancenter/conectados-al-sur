@@ -1,0 +1,48 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-09-30 06:54+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Template/Categories/add.ctp:11
+msgid "New Category:"
+msgstr ""
+
+#: Template/Categories/edit.ctp:11
+msgid "Edit Category:"
+msgstr ""
+
+#: Template/OrganizationTypes/add.ctp:11
+msgid "New Organization Type:"
+msgstr ""
+
+#: Template/OrganizationTypes/edit.ctp:11
+msgid "Edit Organization Type:"
+msgstr ""
+
+#: View/Helper/LocHelper.php:80;83
+msgid "The {0} has been saved."
+msgstr ""
+
+#: View/Helper/LocHelper.php:86
+msgid "The {0} has been deleted."
+msgstr ""
+
+#: View/Helper/LocHelper.php:89;92
+msgid "The {0} could not be saved. Please, try again."
+msgstr ""
+
+#: View/Helper/LocHelper.php:95
+msgid "The {0} could not be deleted. Please, try again."
+msgstr ""
+
