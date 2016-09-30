@@ -41,6 +41,9 @@
             <div id="responsive-menu">
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
+                        <li>
+                            <a href=<?= $lang_new_url ?>> <?= __("Language: ") ?> <span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
+                        </li>
                         <?= $this->fetch('available-actions') ?>
                         <?php if (isset($auth_user)): ?>
                             <li>
@@ -152,3 +155,15 @@
     </div>
 </body>
 </html>
+
+
+<style type="text/css">
+#lang-button {
+    text-transform: lowercase;
+    font-weight: normal;
+}
+#current-lang-button {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+</style>

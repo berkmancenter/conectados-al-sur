@@ -6,8 +6,6 @@ use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\Event\Event;
 
-
-use Cake\I18n\I18n;
 /**
  * Instances Controller
  *
@@ -117,9 +115,6 @@ class InstancesController extends AppController
         $instance = $this->App->getInstance($instance_namespace);
         // $this->App->setInstanceViewData($instance);
 
-        
-
-        I18n::locale('es');
         $this->set('instance', $instance);
     }
 

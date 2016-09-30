@@ -42,7 +42,7 @@ use Cake\Routing\Router;
  */
 Router::defaultRouteClass('DashedRoute');
 
-Router::scope('/', function (RouteBuilder $routes) {
+$app_routes = function (RouteBuilder $routes) {
     
     # =================================================================================
     # STATIC PAGES
@@ -50,7 +50,6 @@ Router::scope('/', function (RouteBuilder $routes) {
     
     # home
     $routes->connect('/', ['controller' => 'Instances', 'action' => 'home']);
-
 
     # =================================================================================
     # sysadmin page
@@ -287,62 +286,7 @@ Router::scope('/', function (RouteBuilder $routes) {
         ]
     );
 
-
-
-    # --------------------
-    ### COMPLETE LIST
-    ###
-
-    ## Instances:
-    # (OK) index   (sysadmin)
-    # (OK) add     (sysadmin)
-    # (OK) delete  (sysadmin)
-    # (OK) view    (admin)
-    # (OK) edit    (admin)
-    # (OK) preview (all)
-    # (OK) map     (all)
-    # (NO) dots    (all)
-    
-    ## Categories
-    # (OK) index   (no) -- implemented on Instances view
-    # (OK) add     (admin)
-    # (OK) view    (no) -- implemented on Instances view
-    # (OK) edit    (admin)
-    # (OK) delete  (admin)
-
-    ## OrganizationTypes
-    # (OK) index   (no) -- implemented on Instances view
-    # (OK) add     (admin)
-    # (OK) view    (no) -- implemented on Instances view
-    # (OK) edit    (admin)
-    # (OK) delete  (admin)
-
-    ## Projects
-    # (OK) index   (all)
-    # (OK) add     (logged user)
-    # (OK) view    (all)
-    # (OK) edit    (owner user)
-    # (OK) delete  (owner user)
-   
-    ## Users
-    # index   (no) -- implemented on Instances view
-    # (OK) view    (all)
-    # (OK) add     (all)
-    # edit    (user)
-    # (OK) delete  (user)
-
-    ## Continents, Subcontinents, Countries, Cities, Roles
-    # (OK) index   (no)
-    # (OK) add     (no)
-    # (OK) view    (no)
-    # (OK) edit    (no)
-    # (OK) delete  (no)
-
-        
-
-    /**
-     * ...and connect the rest of 'Pages' controller's URLs.
-     */
+ 
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
 
     /**
@@ -361,11 +305,23 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
-    $routes->fallbacks('DashedRoute');
+    // $routes->fallbacks('DashedRoute');
+};
+
+
+$languages = ['en', 'es'];
+foreach ($languages as $lang) {
+    Router::scope("/$lang", ['lang' => $lang], $app_routes);
+}
+Router::scope("/", $app_routes);
+
+
+Router::addUrlFilter(function ($params, $request) {
+    if ($request->param('lang')) {
+        $params['lang'] = $request->param('lang');
+    }
+    return $params;
 });
 
-/**
- * Load all plugin routes.  See the Plugin documentation on
- * how to customize the loading of plugin routes.
- */
+
 Plugin::routes();
