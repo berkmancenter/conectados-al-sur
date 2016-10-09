@@ -270,3 +270,23 @@ logo assumptions:
     margin-left: auto;
     margin-right: auto;
 }
+
+
+
+
+input::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:   black;
+    opacity: 0.3;
+}
+input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:   black;
+   opacity: 0.3;
+}
+input::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:   black;
+   opacity: 0.3;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color:   black;
+   opacity: 0.3;
+}

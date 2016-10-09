@@ -33,86 +33,33 @@
     <div class="row">
         <div class="small-8 small-offset-2 medium-6 medium-offset-3 large-4 large-offset-4 column home-login">
             <?php if (isset($auth_user) && isset($auth_user_instances)): ?>
-                
-                <div class="orbit" role="region" aria-label="My dvine apps" data-orbit>
-                    <ul class="orbit-container">
-                        
-                        <?php if (count($auth_user_instances) > 1) : ?>
-                            <button class="orbit-previous">
-                                <span class="show-for-sr"><?= __('Previous App') ?></span>&#9664;&#xFE0E;
-                            </button>
-                            <button class="orbit-next">
-                                <span class="show-for-sr"><?= __('Next App') ?></span>&#9654;&#xFE0E;
-                            </button>
-                        <?php endif; ?>
-                        
-                        <?php foreach ($auth_user_instances as $idx=>$instance): ?>
-                            <?php if ($idx == 0): ?>
-                            <li class="is-active orbit-slide">
+                <?php if (!empty($auth_user_instances)): ?>
+                <table class="hover" id="home-table" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th><?= __('Your Apps') ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($auth_user_instances as $instance): ?>
+                        <tr>
+                            <td>
+                            <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>
+                            >
+                            <?php if ($lang_current == "en"): ?>
+                                <?= $instance->name ?>
                             <?php else: ?>
-                            <li class="orbit-slide">
+                                <?= $instance->name_es ?>
                             <?php endif; ?>
-                                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>>
-                                <?php if ($instance->logo): ?>
-                                <?= 
-                                    $this->Html->image('/' . $instance->logo, [
-                                        'alt'   => $instance->namespace,
-                                        'class' => "orbit-image"
-                                    ])
-                                ?>
-                                <?php else: ?>
-                                <?= 
-                                    $this->Html->image('/' . "UNKNOWN.png", [
-                                        'alt'   => $instance->namespace,
-                                        'class' => "orbit-image"
-                                    ])
-                                ?>
-                                <?php endif; ?>
-                                </a>
-                                <p class="text-center">
-                                    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>>
-                                        <?php if ($lang_current == "en"): ?>
-                                        <?= $instance->name ?>
-                                        <?php else: ?>
-                                        <?= $instance->name_es ?>
-                                        <?php endif; ?>
-                                    </a>
-                                </p>
-                                <!-- <figcaption class="orbit-caption"><?= $instance->name ?></figcaption> -->
-                            </li>
+                            </a>
+                            </td>
+                        </tr>
                         <?php endforeach; ?>
-                    </ul>
-
-                    <?php if (count($auth_user_instances) > 1) : ?>
-                    <nav class="orbit-bullets">        
-                        <?php foreach ($auth_user_instances as $idx=>$instance): ?>
-                            <?php if ($idx == 0): ?>
-                            <button class="is-active" data-slide=<?= $idx ?>>
-                                <span class="show-for-sr">
-                                    <?php if ($lang_current == "en"): ?>
-                                    <?= $instance->name ?>
-                                    <?php else: ?>
-                                    <?= $instance->name_es ?>
-                                    <?php endif; ?>
-                                </span>
-                                <span class="show-for-sr"><?= __('Current Slide') ?></span>
-                            </button>
-                            <?php else: ?>
-                            <button data-slide=<?= $idx ?>>
-                                <span class="show-for-sr">
-                                    <?php if ($lang_current == "en"): ?>
-                                    <?= $instance->name ?>
-                                    <?php else: ?>
-                                    <?= $instance->name_es ?>
-                                    <?php endif; ?>
-                                </span>
-                            </button> 
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                    </nav>
-                    <?php endif; ?>
-                </div>
-
+                    </tbody>
+                </table>
+                <?php else: ?>
+                    <p><?= __('You don\'t have any registered app.') ?></p>
+                <?php endif; ?>
 
             <?php else: ?>
             <div class="button-group large stacked">
@@ -151,39 +98,71 @@
         font-family: Futura;
         font-weight: normal;
         font-size: 16px;
+        text-align: justify;
     }
 
     .home-text p {
         margin: 20px 0px;
+        color: black;
     }
 
     .home-login {
         margin-top: 20px;
     }
 
-    .orbit-image {
-        height: 100px;
-        width: 400px;
-        background-color: #fff;
+    #home-table thead {
+        border: 0px ;
+    }
 
+    #home-table th {
+        text-align: center;
+        font-family: Futura;
+        font-weight: bold;
+        font-size: 16px;
     }
-    .orbit-previous { background-color: rgba(54, 54, 55, 0.5); }
-    .orbit-next     { background-color: rgba(54, 54, 55, 0.5); }
 
-    .orbit-slide {
-        background-color: rgb(54, 54, 55);
+    #home-table td {
+        font-family: Futura;
+        font-weight: normal;
+        font-size: 16px;
+        background-color: rgb(54,54,55);
+    }
+    #home-table td:hover {
+        background-color: rgb(63,63,64);
+    }
+
+    #home-table {
         color: #fff;
+        text-align: center;
+        border-collapse:separate;
+        border:solid black 10px;
+        border-radius:10px;
     }
-    .orbit-slide > p {
-        padding: 10px 15px;
-    }
-    .orbit-slide > p > a {
+
+    #home-table td a {
         color: #fff;
+        display: block;
+        width: auto;
     }
-    .orbit-slide > p > a:hover {
+    #home-table td a:hover {
         color: #39a0ea;
     }
 
+    .home-login a.button {
+        background-color: rgb(54,54,55);
+        border-radius: 10px;
+        margin-bottom: 2px;
+        margin-top: 2px;
+        border: 5px solid black;
+        text-align: center;
+        font-family: Futura;
+        /*font-weight: bold;*/
+    }
+
+    .top-bar-title {
+        color: rgb(54,54,55);
+    }
+    
 </style>
 <script>
     $("body").css("background-color", "#ed7d31");

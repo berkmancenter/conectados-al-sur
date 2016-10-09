@@ -59,11 +59,10 @@
 <style type="text/css">
 .signup-panel {
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 5px solid #ccc;
     padding: 15px;
     margin-top: 30px;
 }
-
 .signup-panel form input,
 .signup-panel form select,
 .signup-panel form span {
@@ -73,6 +72,7 @@
 .signup-panel i {
     font-size: 30px;
     line-height: 45px;
+    
     color: #999;
 }
 .signup-panel .fi-heart {

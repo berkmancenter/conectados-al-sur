@@ -60,9 +60,11 @@
 </div>
 
 <style type="text/css">
+
+
 .signup-panel {
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 5px solid #ccc;
     padding: 15px;
     margin-top: 30px;
 }
