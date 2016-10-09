@@ -198,7 +198,17 @@ class InstancesUsersController extends AppController
             ->order(['name' =>'ASC'])
             ->all();
 
-        $this->set(compact('instances_user', 'organization_types'));
+        $organization_types_es = TableRegistry::get('OrganizationTypes')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => 'name_es'
+            ])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
+            ->order(['name_es' =>'ASC'])
+            ->all();
+
+        $this->set(compact('instances_user', 'organization_types', 'organization_types_es'));
         $this->set('_serialize', ['instances_user']);
         $this->set('user_id', $user_id);
         $this->set('instance', $instance);

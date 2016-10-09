@@ -52,6 +52,7 @@
                 <p class="help-text" id="mainOrgHelpText"><?= __d('users', 'Main organization you work in.') ?></p>
             </div>
 
+
             <!-- organization_type_id -->
             <div class="row collapse">
                 <div class="input-group">
@@ -61,7 +62,7 @@
                         'class'            => 'input-group-field',
                         'aria-describedby' => 'orgTypeHelpText',
                         'type'             => 'select',
-                        'options'          => $organization_types,
+                        'options'          => $lang_current == "en" ? $organization_types : $organization_types_es,
                         'required']) ?>
                 </div>
                 <p class="help-text" id="orgTypeHelpText"><?= __d('users', 'Type of this organization.') ?></p>

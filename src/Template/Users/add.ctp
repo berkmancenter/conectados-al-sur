@@ -94,7 +94,7 @@
                         <?= $this->Form->input('genre_id', [
                             'label'       => '',
                             'class'       => 'input-group-field',
-                            'options'     => $genres
+                            'options'     => $lang_current == "en" ? $genres : $genres_es,
                         ]) ?>
                     </div>
                 </div>

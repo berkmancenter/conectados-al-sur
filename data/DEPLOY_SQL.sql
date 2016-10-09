@@ -123,7 +123,7 @@ INSERT INTO genres VALUES
  (0,'[null]', '[null]'),
  (1,'male'  , 'hombre'),
  (2,'female', 'mujer'),
- (3,'other' , 'other');
+ (3,'other' , 'otro');
 
 
 -- TABLE project_stages

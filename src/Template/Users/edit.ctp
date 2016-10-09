@@ -87,7 +87,7 @@
                         'label'       => '',
                         'placeholder' => 'password',
                         'class'       => 'input-group-field',
-                        'options'     => $genres
+                        'options'     => $lang_current == "en" ? $genres : $genres_es,
                     ]) ?>
                 </div>
             </div>

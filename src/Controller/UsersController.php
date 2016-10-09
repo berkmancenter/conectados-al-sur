@@ -196,7 +196,16 @@ class UsersController extends AppController
             ->where(['Genres.name !=' => '[null]'])
             ->order(['name' => 'ASC']);
 
-        $this->set(compact('user', 'genres'));
+        $genres_es = $this->Users->Genres
+            ->find('list', [
+                'limit' => 200,
+                'keyField' => 'id',
+                'valueField' => 'name_es'
+            ])
+            ->where(['Genres.name !=' => '[null]'])
+            ->order(['name_es' => 'ASC']);
+
+        $this->set(compact('user', 'genres', 'genres_es'));
         $this->set('_serialize', ['user']);
     }
 
@@ -270,7 +279,16 @@ class UsersController extends AppController
             ->where(['Genres.name !=' => '[null]'])
             ->order(['name' => 'ASC']);
 
-        $this->set(compact('user', 'genres'));
+        $genres_es = $this->Users->Genres
+            ->find('list', [
+                'limit' => 200,
+                'keyField' => 'id',
+                'valueField' => 'name_es'
+            ])
+            ->where(['Genres.name !=' => '[null]'])
+            ->order(['name_es' => 'ASC']);
+
+        $this->set(compact('user', 'genres', 'genres_es'));
         $this->set('_serialize', ['user']);
     }
 
