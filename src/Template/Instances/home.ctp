@@ -33,7 +33,6 @@
     <div class="row">
         <div class="small-8 small-offset-2 medium-6 medium-offset-3 large-4 large-offset-4 column home-login">
             <?php if (isset($auth_user) && isset($auth_user_instances)): ?>
-                <?php if (!empty($auth_user_instances)): ?>
                 <table class="hover" id="home-table" cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
@@ -41,25 +40,26 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($auth_user_instances as $instance): ?>
-                        <tr>
-                            <td>
-                            <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>
-                            >
-                            <?php if ($lang_current == "en"): ?>
-                                <?= $instance->name ?>
-                            <?php else: ?>
-                                <?= $instance->name_es ?>
-                            <?php endif; ?>
-                            </a>
-                            </td>
-                        </tr>
+                    <?php if (!empty($auth_user_instances)): ?>
+                        <?php foreach ($auth_user_instances as $instance): ?>
+                            <tr>
+                                <td>
+                                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>
+                                >
+                                <?php if ($lang_current == "en"): ?>
+                                    <?= $instance->name ?>
+                                <?php else: ?>
+                                    <?= $instance->name_es ?>
+                                <?php endif; ?>
+                                </a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td><?= __('You don\'t have any registered app.') ?></td></tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
-                <?php else: ?>
-                    <p><?= __('You don\'t have any registered app.') ?></p>
-                <?php endif; ?>
 
             <?php else: ?>
             <div class="button-group large stacked">
