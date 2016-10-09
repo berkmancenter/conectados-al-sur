@@ -34,7 +34,11 @@
                     <?= $this->Url->build(['controller' => 'Instances','action' => 'preview', $instance->namespace])
                     ?>
                     >
+                    <?php if ($lang_current == "en"): ?>
                     <?= h($instance->name) ?>
+                    <?php else: ?>
+                    <?= h($instance->name_es) ?>
+                    <?php endif; ?>
                     </a>
                 <?php endif; ?>                
             </div>

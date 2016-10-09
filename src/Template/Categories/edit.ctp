@@ -2,6 +2,7 @@
 <?php $this->start('available-actions'); ?>
 <?php $this->end(); ?>
 
+
 <!-- Page Content -->
 <div class="fullwidth page-content">
 

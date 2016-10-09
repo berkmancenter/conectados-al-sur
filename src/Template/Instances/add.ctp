@@ -8,8 +8,11 @@
 
 <div class="row">
     <div class="small-12 medium-12 column view-title">
-        <h3>New Instance</h3>
-        <a href=<?= $this->Url->build(['action' => 'index']) ?>><i class='fi-arrow-left size-36'></i>Back to Index</a>
+        <h3><?= __d('crud', 'New Application:') ?></h3>
+        <a href=<?= $this->Url->build(['action' => 'index']) ?>>
+            <i class='fi-arrow-left size-36'></i>
+            <?= __d('instances', 'Back to admin panel') ?>
+        </a>
     </div>
 </div>
 
@@ -20,8 +23,8 @@
             <?= $this->Form->create() ?>
             
             <ul class="tabs" data-tabs id="instance-add-tabs">
-                <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true">Properties</a></li>
-                <li class="tabs-title"><a href="#panel-description">Description</a></li>
+                <li class="tabs-title is-active"><a href="#panel-properties" aria-selected="true"><?= __d('instances', 'Properties') ?></a></li>
+                <li class="tabs-title"><a href="#panel-description"><?= __d('instances', 'Description') ?></a></li>
                 <!-- <li class="tabs-title"><a href="#panel-user-config">User Configurations</a></li>
                 <li class="tabs-title"><a href="#panel-proj-config">Project Configurations</a></li> -->
             </ul>
@@ -29,49 +32,49 @@
             <div class="tabs-content" data-tabs-content="instance-add-tabs">
 
                 <div class="tabs-panel is-active" id="panel-properties">
-                    <h4 class="view-subtitle"><?= __('Properties:') ?></h4>
+                    <h4 class="view-subtitle"><?= __d('instances', 'Properties') . ':' ?></h4>
                     <fieldset>
                     
                     <?= $this->Form->input('name', [
-                        'label' => 'Instance Name',
+                        'label' => $this->Loc->fieldInstanceNameEn(),
                         'placeholder' => 'e.g: Music networking',
                     ]) ?>
 
                     <?= $this->Form->input('name_es', [
-                        'label' => 'Instance Name (Spanish)',
+                        'label' => $this->Loc->fieldInstanceNameEs(),
                         'placeholder' => 'e.g: Mapeo musical'
                     ])
                     ?>
 
                     <?= $this->Form->input('namespace', [
-                        'label' => 'Shortname',
+                        'label' => $this->Loc->fieldInstanceNamespace(),
                         'placeholder' => 'music',
                         'aria-describedby' => 'namespaceHelpText']);
                     ?>
-                    <p class="help-text" id="namespaceHelpText">This word will be used as the domain's namespace, from which the url is built. e.g. "music" will result in <?php echo $this->Url->build(['action' => 'preview', 'music', '_full' => true]) ?>.</p>
+                    <p class="help-text" id="namespaceHelpText"><?= __d('instances', 'This word will be used as the domain\'s namespace, from which the url is built. e.g. "music" will result in') ?> <?php echo $this->Url->build(['action' => 'preview', 'music', '_full' => true]) ?>.</p>
 
                     <?= $this->Form->input('passphrase', [
-                        'label' => 'Passphrase',
-                        'placeholder' => 'my very secret phrase',
+                        'label' => $this->Loc->fieldInstancePassphrase(),
+                        'placeholder' => __d('instances', 'my very secret phrase'),
                         'aria-describedby' => 'passphraseHelpText']);
                     ?>
-                    <p class="help-text" id="passphraseHelpText">You can give this to your users, so they can associate their accounts to your app. </p>
+                    <p class="help-text" id="passphraseHelpText"><?= __d('instances', 'You can give this to your users, so they can associate their accounts to your app.') ?></p>
 
                     </fieldset>
                 </div>
 
                 <div class="tabs-panel" id="panel-description">
-                    <h4 class="view-subtitle"><?= __('Instance Descriptions:') ?></h4>
+                    <h4 class="view-subtitle"><?= __d('instances', 'Description') . ':' ?></h4>
                     <fieldset>
-                    <p>Both descriptions will be displayed on the home page of this instance.</p>
+                    <p><?= __d('instances', 'Both descriptions will be displayed on the home page of this instance.') ?></p>
                     
                     <?= $this->Form->input('description', [
-                        'label' => 'Description',
+                        'label' => $this->Loc->fieldInstanceDescriptionEn(),
                         'type' => 'textarea'
                     ])?>
 
                     <?= $this->Form->input('description_es', [
-                        'label' => 'Description (Spanish)',
+                        'label' => $this->Loc->fieldInstanceDescriptionEs(),
                         'type' => 'textarea'
                     ]) ?>
                     </fieldset>
@@ -116,7 +119,7 @@
                 </div>
                 -->
             </div>
-            <?= $this->Form->button(__('Submit'), ['class' => 'warning button']) ?>
+            <?= $this->Form->button($this->Loc->formSubmit(), ['class' => 'warning button']) ?>
             <?= $this->Form->end() ?>
         </div>
     </div>

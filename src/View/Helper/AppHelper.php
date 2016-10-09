@@ -86,6 +86,9 @@ class AppHelper extends Helper
         return $instance_id == $this->getAdminInstanceId();
     }
 
+    // public function wrapInHelpText($string, $text) {
+    //     return "<span data-tooltip aria-haspopup=\"true\" class=\"has-tip\" data-disable-hover=\"false\" tabindex=\"1\" title=\"" . __($text) . "\">" . $string . "</span>";
+    // }
     public function displayInstanceIndexShortcut() {
         return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'index']) . "><i class='fi-arrow-left size-36'></i></a>";
     }
@@ -99,15 +102,15 @@ class AppHelper extends Helper
         return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'dots', $instance_namespace]) . "><i class='fi-graph-pie size-36'></i></a>";
     }
     public function displayInstanceViewShortcut($instance_namespace) {
-        return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance_namespace]) . "><i class='fi-magnifying-glass size-36'></i>View</a>";
+        return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance_namespace]) . "><i class='fi-magnifying-glass size-36'></i>" . ' ' . __('View') . "</a>";
     }
     public function displayInstanceEditShortcut($instance_namespace) {
-        return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'edit', $instance_namespace]) . "><i class='fi-page-edit size-36'></i>Edit</a>";
+        return "<a href=" . $this->Url->build(['controller' => 'Instances', 'action' => 'edit', $instance_namespace]) . "><i class='fi-page-edit size-36'></i>" . ' ' . __('Edit') . "</a>";
     }
     public function displayInstanceDeleteShortcut($instance_namespace, $instance_name) {
-        return $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['action' => 'delete', $instance_namespace], [
+        return $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . ' ' . __('DELETE'), ['action' => 'delete', $instance_namespace], [
                 'escape' => false, 
-                'confirm' => __('Are you sure you want to delete the "{0}" instance?. This operation cannot be undone. All related data will be erased!', $instance_name)
+                'confirm' => __('Are you sure you want to delete the "{0}" app?. This operation cannot be undone. All related data will be erased!', $instance_name)
             ]);
     }
 }

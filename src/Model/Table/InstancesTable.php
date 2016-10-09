@@ -5,32 +5,11 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
-/**
- * Instances Model
- *
- * @property \Cake\ORM\Association\HasMany $Categories
- * @property \Cake\ORM\Association\HasMany $OrganizationTypes
- * @property \Cake\ORM\Association\HasMany $Projects
- * @property \Cake\ORM\Association\BelongsToMany $Users
- *
- * @method \App\Model\Entity\Instance get($primaryKey, $options = [])
- * @method \App\Model\Entity\Instance newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Instance[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Instance|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Instance patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Instance[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Instance findOrCreate($search, callable $callback = null)
- */
 class InstancesTable extends Table
 {
 
-    /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
-     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -63,120 +42,78 @@ class InstancesTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $loc_instance_name_en = $locHelper->fieldInstanceNameEn();
+        $loc_instance_name_es = $locHelper->fieldInstanceNameEn();
+        $str_namespace = $locHelper->fieldInstanceNamespace();
+        $str_description_en = $locHelper->fieldInstanceDescriptionEn();
+        $str_description_es = $locHelper->fieldInstanceDescriptionEs();
+        $str_passphrase = $locHelper->fieldInstancePassphrase();
+
+
         $validator
             ->integer('id')
-            ->allowEmpty('id', 'create');
+            ->allowEmpty('id', 'create')
+            ->add('id', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table'
+            ]);
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name', 'Please, give a name to this instance.')
+            ->notEmpty('name', $locHelper->validationNotEmpty($loc_instance_name_en))
             ->add('name', [
-                'unique' => [
-                    'rule'     => 'validateUnique',
-                    'provider' => 'table',
-                    'message'  => 'This instance name is already in use'
-                ],
-                'minLength' => [
-                    'rule' => ['minLength', 5],
-                    'message' => 'Instance name is too short (min: 5 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 25],
-                    'message' => 'Instance name is too long',
-                ]
+                'minLength' => $locHelper->validationMinLength($loc_instance_name_en , 5),
+                'maxLength' => $locHelper->validationMaxLength($loc_instance_name_en , 25),
+                'unique'    => $locHelper->validationUnique($loc_instance_name_en)
             ]);
-
 
         $validator
             ->requirePresence('name_es', 'create')
-            ->notEmpty('name_es', 'Please, give a name (spanish) to this instance.')
+            ->notEmpty('name_es', $locHelper->validationNotEmpty($loc_instance_name_es))
             ->add('name_es', [
-                'unique' => [
-                    'rule'     => 'validateUnique',
-                    'provider' => 'table',
-                    'message'  => 'This instance name is already in use (spanish)'
-                ],
-                'minLength' => [
-                    'rule' => ['minLength', 5],
-                    'message' => 'Instance name (spanish) is too short (min: 5 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 25],
-                    'message' => 'Instance name (spanish) is too long',
-                ]
+                'minLength' => $locHelper->validationMinLength($loc_instance_name_es , 5),
+                'maxLength' => $locHelper->validationMaxLength($loc_instance_name_es , 25),
+                'unique'    => $locHelper->validationUnique($loc_instance_name_es)
             ]);
-
+        
+        
         $validator
             ->requirePresence('namespace', 'create')
-            ->notEmpty('namespace', 'Please, give this instance a shortname.')
+            ->notEmpty('namespace', $locHelper->validationNotEmpty($str_namespace))
             ->add('namespace', [
-                'unique' => [
-                    'rule'     => 'validateUnique',
-                    'provider' => 'table',
-                    'message'  => 'This instance shortname is already in use.'
-                ],
-                'minLength' => [
-                    'rule' => ['minLength', 3],
-                    'message' => 'Instance shortname must be longer (min: 3 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 10],
-                    'message' => 'Instance shortname is too long (max: 10 characters)',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_namespace , 3),
+                'maxLength' => $locHelper->validationMaxLength($str_namespace , 10),
+                'unique'    => $locHelper->validationUnique($str_passphrase)
             ]);
 
         $validator
             ->requirePresence('description', 'create')
-            ->notEmpty('description', 'Please, give this instance a description (english)')
+            ->notEmpty('description', $locHelper->validationNotEmpty($str_description_en))
             ->add('description', [
-                'minLength' => [
-                    'rule' => ['minLength', 80],
-                    'message' => 'Instance description is too short (min: 80 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 500],
-                    'message' => 'Instance description is too long (max: 500 characters)',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_description_en , 80),
+                'maxLength' => $locHelper->validationMaxLength($str_description_en , 500)
             ]);
-
         $validator
             ->requirePresence('description_es', 'create')
-            ->notEmpty('description_es', 'Please, give this instance a description (spanish)')
+            ->notEmpty('description_es', $locHelper->validationNotEmpty($str_description_es))
             ->add('description_es', [
-                'minLength' => [
-                    'rule' => ['minLength', 80],
-                    'message' => 'Instance description (spanish) is too short (min: 80 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 500],
-                    'message' => 'Instance description (spanish) is too long (max: 500 characters)',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_description_es , 80),
+                'maxLength' => $locHelper->validationMaxLength($str_description_es , 500)
             ]);
-
-        $validator
-            ->allowEmpty('logo');
 
         $validator
             ->requirePresence('passphrase', 'create')
-            ->notEmpty('passphrase', 'Please, give this instance a passphrase.')
+            ->notEmpty('passphrase', $locHelper->validationNotEmpty($str_passphrase))
             ->add('passphrase', [
-                'minLength' => [
-                    'rule' => ['minLength', 5],
-                    'message' => 'Instance passphrase is too short (min: 5 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 40],
-                    'message' => 'Instance passphrase is too long (max: 40 characters)',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_passphrase , 5),
+                'maxLength' => $locHelper->validationMaxLength($str_passphrase , 40)
             ]);
+
+
+        $validator->allowEmpty('logo');
 
         $validator
             ->boolean('use_org_types')
@@ -251,15 +188,9 @@ class InstancesTable extends Table
         return $validator;
     }
 
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['id']));
         $rules->add($rules->isUnique(['name']));
         $rules->add($rules->isUnique(['name_es']));
         $rules->add($rules->isUnique(['namespace']));
