@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2016-09-30 06:54+0000\n"
+"POT-Creation-Date: 2016-10-09 04:12+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,15 +14,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: View/Helper/LocHelper.php:58
-msgid "Please, complete the \"{0}\" field."
+#: Template/Error/error400.ctp:36
+#: Template/Error/error500.ctp:41
+msgid "Error"
 msgstr ""
 
-#: View/Helper/LocHelper.php:62
-msgid "The \"{0}\" text is too long (max characters: {1})."
+#: Template/Error/error400.ctp:38
+msgid "The requested address %s was not found on this server."
 msgstr ""
 
-#: View/Helper/LocHelper.php:69
-msgid "The \"{0}\" text is too short (use at least {1} characters)."
+#: Template/Error/error500.ctp:39
+msgid "An Internal Error Has Occurred"
 msgstr ""
 

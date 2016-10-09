@@ -165,7 +165,7 @@ class UsersController extends AppController
                         $user_instance->instance_id = $this->App->getAdminInstanceId();
                         if (TableRegistry::get('InstancesUsers')->save($user_instance)) {
 
-                            $this->Flash->success(__('Welcome ') . $user->name . '!');
+                            $this->Flash->success(__('Welcome ') . ' ' .  $user->name . '!');
 
                             // log the current user out!
                             $logged_user = $this->Auth->user();

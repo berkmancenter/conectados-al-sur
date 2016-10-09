@@ -418,14 +418,14 @@ class InstancesController extends AppController
                 }
 
                 if ($ok) {
-                    $this->Flash->success(__('The instance has been saved.'));
+                    $this->Flash->success(__('The app has been saved.'));
                     return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
                 } else {
-                    $this->Flash->error(__('There was an error while trying to generate some instance data.'));
+                    $this->Flash->error(__('There was an error while trying to generate some app data.'));
                     return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
                 }
             } else {
-                $this->Flash->error(__('The instance could not be saved. Please, try again.'));
+                $this->Flash->error(__('The app could not be saved. Please, try again.'));
                 foreach ($instance->errors() as $error) {
                     $this->Flash->error(__('{0}', reset($error)));
                 }
@@ -454,10 +454,10 @@ class InstancesController extends AppController
             $instance = $this->Instances->patchEntity($instance, $this->request->data);
 
             if ($this->Instances->save($instance)) {
-                $this->Flash->success(__('The instance data has been saved.'));
+                $this->Flash->success(__('The app data has been saved.'));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance->namespace]);
             } else {
-                $this->Flash->error(__('The instance data could not be saved. Please, try again.'));
+                $this->Flash->error(__('The app data could not be saved. Please, try again.'));
                 foreach ($instance->errors() as $error) {
                     $this->Flash->error(__('{0}', reset($error)));
                 }
@@ -480,9 +480,9 @@ class InstancesController extends AppController
         $instance = $this->App->getInstance($instance_namespace);
  
         if ($this->Instances->delete($instance)) {
-            $this->Flash->success(__('The instance "{0}" has been deleted.', $instance->name));
+            $this->Flash->success(__('The app "{0}" has been deleted.', $instance->name));
         } else {
-            $this->Flash->error(__('The instance could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The app could not be deleted. Please, try again.'));
         }
         return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
     }

@@ -1,0 +1,60 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 00:34-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+
+#: View/Helper/LocHelper.php:8
+msgid "(English version)"
+msgstr "(Versión en inglés)"
+
+#: View/Helper/LocHelper.php:9
+msgid "(Spanish version)"
+msgstr "(Versión en Español)"
+
+#: View/Helper/LocHelper.php:24
+msgid "category"
+msgstr "categoría"
+
+#: View/Helper/LocHelper.php:25;26
+msgid "Category Name {0}"
+msgstr "Nombre de la Categoría {0}"
+
+#: View/Helper/LocHelper.php:30
+msgid "organization type"
+msgstr "tipo de organización"
+
+#: View/Helper/LocHelper.php:31;32
+msgid "Organization Type Name {0}"
+msgstr "Nombre del tipo de organización {0}"
+
+#: View/Helper/LocHelper.php:36
+msgid "application"
+msgstr "aplicación"
+
+#: View/Helper/LocHelper.php:37;38
+msgid "App Name {0}"
+msgstr "Nombre de la aplicación {0}"
+
+#: View/Helper/LocHelper.php:39;40
+msgid "App Description {0}"
+msgstr "Descripción de la aplicación {0}"
+
+#: View/Helper/LocHelper.php:41
+msgid "App Passphrase"
+msgstr "Código de acceso"
+
+#: View/Helper/LocHelper.php:42
+msgid "App Shortname"
+msgstr "Abreviación"

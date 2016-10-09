@@ -58,7 +58,7 @@ class UsersTable extends Table
             ->requirePresence('email', 'create')
             ->notEmpty('email', __d('users', 'Please, fill your email.'))
             ->add('email', [
-                'unique' => $locHelper->validationUnique($str_name),
+                'unique' => $locHelper->validationUnique($str_email),
                 'regex' => [
                     'rule' => 'email',
                     'message' => __d('users', 'The email is invalid.')

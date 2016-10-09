@@ -1,0 +1,188 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 00:54-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: Model/Table/InstancesUsersTable.php:43
+msgid "Organization Name"
+msgstr "Nombre de la organización"
+
+#: Model/Table/InstancesUsersTable.php:63
+msgid "Please, fill your contact email."
+msgstr "Por favor, introduzca su correo,"
+
+#: Model/Table/InstancesUsersTable.php:67
+msgid "The contact email is invalid."
+msgstr "El correo de contacto no es válido."
+
+#: Model/Table/UsersTable.php:41
+msgid "Name"
+msgstr "Nombre"
+
+#: Model/Table/UsersTable.php:42
+msgid "Email"
+msgstr "Correo"
+
+#: Model/Table/UsersTable.php:43
+msgid "Password"
+msgstr "Contraseña"
+
+#: Model/Table/UsersTable.php:51
+msgid "Please, fill your name."
+msgstr "Por favor, introduzca su nombre."
+
+#: Model/Table/UsersTable.php:59
+msgid "Please, fill your email."
+msgstr "Por favor, introduzca su correo."
+
+#: Model/Table/UsersTable.php:64
+msgid "The email is invalid."
+msgstr "Su correo es inválido."
+
+#: Model/Table/UsersTable.php:70
+msgid "Please, write a password."
+msgstr "Por favor, introduzca una contraseña."
+
+#: Template/InstancesUsers/add.ctp:11 Template/Users/view.ctp:63
+msgid "Add Profile"
+msgstr "Agregar perfil"
+
+#: Template/InstancesUsers/add.ctp:15
+msgid ""
+"To register a new profile, you need the app name and its passphrase. The app "
+"admin can give you more details about this."
+msgstr ""
+"Para registrar un nuevo perfil, necesitará el nombre de la aplicación y su "
+"clave de acceso. El administrador de la aplicación puede darle más detalles "
+"al respecto."
+
+#: Template/InstancesUsers/add.ctp:23
+msgid "App shortname"
+msgstr "Aplicación"
+
+#: Template/InstancesUsers/add.ctp:35
+msgid "App passphrase"
+msgstr "Clave de acceso"
+
+#: Template/InstancesUsers/add.ctp:46
+msgid "Create profile"
+msgstr "Crear perfil"
+
+#: Template/InstancesUsers/edit.ctp:11
+msgid "Edit Profile"
+msgstr "Editar perfil"
+
+#: Template/InstancesUsers/edit.ctp:36
+msgid "Contact email for this app. Public for everyone to see."
+msgstr "Correo de contacto para esta app. Será público."
+
+#: Template/InstancesUsers/edit.ctp:52
+msgid "Main organization you work in."
+msgstr "Organización principal a la que está asociado."
+
+#: Template/InstancesUsers/edit.ctp:67
+msgid "Type of this organization."
+msgstr "Tipo de ésta organización."
+
+#: Template/Users/edit.ctp:11
+msgid "VIEW"
+msgstr "VER"
+
+#: Template/Users/edit.ctp:12 Template/Users/view.ctp:13
+msgid "DELETE"
+msgstr "ELIMINAR"
+
+#: Template/Users/edit.ctp:14 Template/Users/view.ctp:15
+msgid ""
+"Are you sure you want to delete this user?. This operation cannot be undone. "
+"All related projects will be erased!!"
+msgstr ""
+"Está seguro que desea eliminar este usuario?. Esta operación no se puede "
+"deshacer. Todos los proyectos relacionados serán borrados!!."
+
+#: Template/Users/view.ctp:12
+msgid "EDIT"
+msgstr "EDITAR"
+
+#: Template/Users/view.ctp:27
+msgid "General"
+msgstr "General"
+
+#: Template/Users/view.ctp:30
+msgid "Profiles"
+msgstr "Perfiles"
+
+#: Template/Users/view.ctp:31
+msgid "Projects"
+msgstr "Proyectos"
+
+#: Template/Users/view.ctp:38
+msgid "General Profile"
+msgstr "Perfil general"
+
+#: Template/Users/view.ctp:42
+msgid "Email (private)"
+msgstr "Correo (privado)"
+
+#: Template/Users/view.ctp:47;104
+msgid "Contact Email"
+msgstr "Correo de contacto"
+
+#: Template/Users/view.ctp:52
+msgid "Genre"
+msgstr "Género"
+
+#: Template/Users/view.ctp:61
+msgid "Registered App Profiles: "
+msgstr "Perfiles registrados:"
+
+#: Template/Users/view.ctp:88
+msgid "Edit this profile"
+msgstr "Editar este perfil"
+
+#: Template/Users/view.ctp:89
+msgid "Delete this profile"
+msgstr "Eliminar este perfil"
+
+#: Template/Users/view.ctp:97
+msgid ""
+"Are you sure you want to delete this profile?. This operation cannot be "
+"undone. All related projects will be erased!!"
+msgstr ""
+"Está seguro que desea eliminar este perfil?. Esta operación no puede ser "
+"revertida. Todos los proyectos relacionados serán eliminados!."
+
+#: Template/Users/view.ctp:108
+msgid "Main Organization"
+msgstr "Organización principal"
+
+#: Template/Users/view.ctp:112;120
+msgid "Please, complete this profile."
+msgstr "Por favor, complete este perfil"
+
+#: Template/Users/view.ctp:116
+msgid "Organization Type"
+msgstr "Tipo de la organización"
+
+#: Template/Users/view.ctp:134
+msgid "Related Projects: "
+msgstr "Proyectos relacionados:"
+
+#: Template/Users/view.ctp:179;181
+msgid ""
+"There aren't registered projects for this app ({0}), related to this user."
+msgstr ""
+"No hay proyectos registrados para esta aplicación ({0}), relacionados a este "
+"usuario."

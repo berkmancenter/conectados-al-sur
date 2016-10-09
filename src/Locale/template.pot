@@ -1,0 +1,58 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 04:12+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: Template/Instances/home.ctp:121
+#: Template/Layout/default.ctp:85
+msgid "Sign In"
+msgstr ""
+
+#: Template/Instances/home.ctp:125
+#: Template/Layout/default.ctp:82
+msgid "Sign Up"
+msgstr ""
+
+#: Template/Layout/default.ctp:49
+msgid "Language: "
+msgstr ""
+
+#: Template/Layout/default.ctp:59
+msgid "My profile"
+msgstr ""
+
+#: Template/Layout/default.ctp:67
+msgid "Settings"
+msgstr ""
+
+#: Template/Layout/default.ctp:72
+msgid "DVINE Settings"
+msgstr ""
+
+#: Template/Layout/default.ctp:76
+msgid "Sign Out"
+msgstr ""
+
+#: Template/Layout/default.ctp:140
+msgid "Creative Commons"
+msgstr ""
+
+#: Template/Layout/default.ctp:145
+msgid "Privacy Policy"
+msgstr ""
+
+#: Template/Layout/default.ctp:150
+msgid "Contact"
+msgstr ""
+

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2016-09-30 06:54+0000\n"
+"POT-Creation-Date: 2016-10-09 04:12+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,27 +14,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: View/Helper/LocHelper.php:9
-msgid "(English version)"
+#: View/Helper/LocHelper.php:51
+msgid "The \"{0}\" is already in use, please select another value."
 msgstr ""
 
-#: View/Helper/LocHelper.php:12
-msgid "(Spanish version)"
+#: View/Helper/LocHelper.php:60
+msgid "Please, complete the \"{0}\" field."
 msgstr ""
 
-#: View/Helper/LocHelper.php:29
-msgid "category"
+#: View/Helper/LocHelper.php:64
+msgid "The \"{0}\" text is too long (max characters: {1})."
 msgstr ""
 
-#: View/Helper/LocHelper.php:32;35
-msgid "Category Name {0}"
-msgstr ""
-
-#: View/Helper/LocHelper.php:41
-msgid "organization type"
-msgstr ""
-
-#: View/Helper/LocHelper.php:45;49
-msgid "Organization Type Name {0}"
+#: View/Helper/LocHelper.php:73
+msgid "The \"{0}\" text is too short (use at least {1} characters)."
 msgstr ""
 

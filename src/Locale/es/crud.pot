@@ -1,0 +1,60 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 00:31-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: Template/Categories/add.ctp:12
+msgid "New Category:"
+msgstr "Nueva Categoría:"
+
+#: Template/Categories/edit.ctp:12
+msgid "Edit Category:"
+msgstr "Editar Categoría:"
+
+#: Template/Instances/add.ctp:11
+msgid "New Application:"
+msgstr "Nueva Aplicación:"
+
+#: Template/Instances/edit.ctp:11
+msgid "(Editing)"
+msgstr "(Editando)"
+
+#: Template/Instances/view.ctp:80
+msgid "Add Category"
+msgstr "Agregar Categoría"
+
+#: Template/OrganizationTypes/add.ctp:11
+msgid "New Organization Type:"
+msgstr "Nuevo Tipo de Organización"
+
+#: Template/OrganizationTypes/edit.ctp:11
+msgid "Edit Organization Type:"
+msgstr "Editar Tipo de Organización:"
+
+#: View/Helper/LocHelper.php:85;86
+msgid "The {0} has been saved."
+msgstr "Cambios guardados para: \"{0}\""
+
+#: View/Helper/LocHelper.php:87
+msgid "The {0} has been deleted."
+msgstr "Se ha eliminado \"{0}\""
+
+#: View/Helper/LocHelper.php:88;89
+msgid "The {0} could not be saved. Please, try again."
+msgstr "No se ha podido guardar \"{0}\". Por favor, intente nuevamente."
+
+#: View/Helper/LocHelper.php:90
+msgid "The {0} could not be deleted. Please, try again."
+msgstr "No se ha podido eliminar \"{0}\". Por favor, intente nuevamente."

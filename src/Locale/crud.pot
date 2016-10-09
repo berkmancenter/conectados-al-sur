@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2016-09-30 06:54+0000\n"
+"POT-Creation-Date: 2016-10-09 04:12+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -14,12 +14,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Template/Categories/add.ctp:11
+#: Template/Categories/add.ctp:12
 msgid "New Category:"
 msgstr ""
 
-#: Template/Categories/edit.ctp:11
+#: Template/Categories/edit.ctp:12
 msgid "Edit Category:"
+msgstr ""
+
+#: Template/Instances/add.ctp:11
+msgid "New Application:"
+msgstr ""
+
+#: Template/Instances/edit.ctp:11
+msgid "(Editing)"
+msgstr ""
+
+#: Template/Instances/view.ctp:80
+msgid "Add Category"
 msgstr ""
 
 #: Template/OrganizationTypes/add.ctp:11
@@ -30,19 +42,19 @@ msgstr ""
 msgid "Edit Organization Type:"
 msgstr ""
 
-#: View/Helper/LocHelper.php:80;83
+#: View/Helper/LocHelper.php:85;86
 msgid "The {0} has been saved."
 msgstr ""
 
-#: View/Helper/LocHelper.php:86
+#: View/Helper/LocHelper.php:87
 msgid "The {0} has been deleted."
 msgstr ""
 
-#: View/Helper/LocHelper.php:89;92
+#: View/Helper/LocHelper.php:88;89
 msgid "The {0} could not be saved. Please, try again."
 msgstr ""
 
-#: View/Helper/LocHelper.php:95
+#: View/Helper/LocHelper.php:90
 msgid "The {0} could not be deleted. Please, try again."
 msgstr ""
 

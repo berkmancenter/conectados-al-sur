@@ -69,7 +69,7 @@ class InstancesUsersController extends AppController
                         $instances_user->user_id = $user_id;
                         $instances_user->instance_id = $instance->id;
                         if ($this->InstancesUsers->save($instances_user)) {
-                            $this->Flash->success(__('The instances user has been saved. Please, complete your app data.'));
+                            $this->Flash->success(__('The user data has been saved. Please, complete your app data.'));
                             return $this->redirect([
                                     'controller' => 'InstancesUsers',
                                     'action' => 'edit',

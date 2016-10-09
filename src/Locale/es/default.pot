@@ -1,0 +1,605 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 01:40-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+
+#: Controller/CategoriesController.php:31;59
+#: Controller/InstancesController.php:409;415;430;462
+#: Controller/InstancesUsersController.php:81;170;185
+#: Controller/OrganizationTypesController.php:31;59
+#: Controller/UsersController.php:179;184;189;247;252;257
+msgid "{0}"
+msgstr "{0}"
+
+#: Controller/InstancesController.php:421
+msgid "The app has been saved."
+msgstr "La aplicación ha sido guardada."
+
+#: Controller/InstancesController.php:424
+msgid "There was an error while trying to generate some app data."
+msgstr "Hubo un error al intentar generar datos de la app."
+
+#: Controller/InstancesController.php:428
+msgid "The app could not be saved. Please, try again."
+msgstr "No se puedo guardar los datos de la app. Por favor, intente más tarde."
+
+#: Controller/InstancesController.php:457
+msgid "The app data has been saved."
+msgstr "Los datos de la aplicación han sido guardados."
+
+#: Controller/InstancesController.php:460
+msgid "The app data could not be saved. Please, try again."
+msgstr ""
+"No se pudo guardar los datos de la aplicación. Por favor, intente más tarde."
+
+#: Controller/InstancesController.php:483
+msgid "The app \"{0}\" has been deleted."
+msgstr "Se ha eliminado la aplicación \"{0}\"."
+
+#: Controller/InstancesController.php:485
+msgid "The app could not be deleted. Please, try again."
+msgstr "No se pudo borrar la aplicación. Por favor, intente más tarde."
+
+#: Controller/InstancesUsersController.php:72
+msgid "The user data has been saved. Please, complete your app data."
+msgstr ""
+"Los datos de usuario han sido guardados. Por favor, complete su perfil."
+
+#: Controller/InstancesUsersController.php:85
+msgid "Sorry, your are already registered on this app."
+msgstr "Lo sentimos, usted ya está registrado en tal aplicación."
+
+#: Controller/InstancesUsersController.php:88;91
+msgid "Sorry, your profile sign up data is invalid."
+msgstr "Ups, sus credenciales son inválidas."
+
+#: Controller/InstancesUsersController.php:128
+msgid "You are not authorized to perform this action."
+msgstr "Usted no está autorizado para realizar tal acción."
+
+#: Controller/InstancesUsersController.php:154
+msgid ""
+"Could not revoke user privileges. At least there must exist one sysadmin."
+msgstr ""
+"No se puede quitar los permisos. Al menos debe existir un administrador del "
+"sistema."
+
+#: Controller/InstancesUsersController.php:156
+msgid ""
+"Could not revoke user privileges. At least there must exist one admin for "
+"this instance."
+msgstr ""
+"No se puede quitar los pemisos. Al menos debe existir un administrador para "
+"la aplicación."
+
+#: Controller/InstancesUsersController.php:172
+msgid "Could not modify user privileges."
+msgstr "No se pueden modificar los permisos de usuario."
+
+#: Controller/InstancesUsersController.php:180
+msgid "Your profile data was saved for: "
+msgstr "Tu información de perfil ha sido guardada: "
+
+#: Controller/InstancesUsersController.php:183
+msgid ""
+"There was an error while trying to save your profile data. Please, try again."
+msgstr ""
+"Hubo un error al intentar guardar la información del perfil. Por favor, "
+"intente más tarde."
+
+#: Controller/InstancesUsersController.php:236
+msgid "Profile and related projects were deleted: "
+msgstr "Se ha eliminado el perfil y los proyectos asociados:"
+
+#: Controller/InstancesUsersController.php:238
+msgid "Failed to delete this profile. Please, try again."
+msgstr ""
+"Hubo un error al intentar eliminar el perfil. Por favor, intente más tarde."
+
+#: Controller/ProjectsController.php:452;520
+msgid "The project has been saved."
+msgstr "El proyecto ha sido guardado."
+
+#: Controller/ProjectsController.php:455;523
+msgid "The project could not be saved. Please, try again."
+msgstr "El proyecto no pudo ser guardado. Por favor, intente más tarde."
+
+#: Controller/ProjectsController.php:582
+msgid "The project has been deleted."
+msgstr "El proyecto ha sido eliminado."
+
+#: Controller/ProjectsController.php:584
+msgid "The project could not be deleted. Please, try again."
+msgstr "No se pudo eliminar el proyecto. Por favor, intente más tarde."
+
+#: Controller/UsersController.php:61
+msgid "Invalid username or password, try again"
+msgstr "Nombre de usuario o contraseña inválidos."
+
+#: Controller/UsersController.php:89;210
+msgid "This user does not exists"
+msgstr "Tal usuario no existe"
+
+#: Controller/UsersController.php:142
+msgid "Passwords must match!"
+msgstr "Las contraseñas no coinciden!"
+
+#: Controller/UsersController.php:168
+msgid "Welcome "
+msgstr "Bienvenido"
+
+#: Controller/UsersController.php:242
+msgid "User details has been saved."
+msgstr "Se han guardados los datos de usuario."
+
+#: Controller/UsersController.php:245
+msgid "There was an error. Please, try again."
+msgstr "Hubo un error. Por favor, intente más tarde."
+
+#: Controller/UsersController.php:286
+msgid "The user has been deleted."
+msgstr "El usuario ha sido eliminado."
+
+#: Controller/UsersController.php:288
+msgid "The user could not be deleted. Please, try again."
+msgstr "No se pudo eliminar el usuario. Por favor, intente más tarde."
+
+#: Template/Instances/add.ctp:84 Template/Instances/edit.ctp:92
+msgid "User Configurations:"
+msgstr "Configuraciones de Usuario:"
+
+#: Template/Instances/add.ctp:94 Template/Instances/edit.ctp:102
+msgid "Project Configurations:"
+msgstr "Configuraciones para proyectos:"
+
+#: Template/Instances/add.ctp:96 Template/Instances/edit.ctp:104
+msgid "General:"
+msgstr "General:"
+
+#: Template/Instances/add.ctp:112 Template/Instances/edit.ctp:120
+msgid "Location information:"
+msgstr ""
+
+#: Template/Instances/edit.ctp:12 Template/Instances/view.ctp:14
+msgid "Go to app home"
+msgstr "Ir a la página de inicio de la app."
+
+#: Template/Instances/edit.ctp:15 Template/Instances/view.ctp:17
+msgid "Go to app map"
+msgstr "Ir al mapa de la app."
+
+#: Template/Instances/edit.ctp:18 Template/Instances/view.ctp:20
+msgid "Go to app dots"
+msgstr "Ir a los gráficos de la app."
+
+#: Template/Instances/home.ctp:42
+msgid "Previous App"
+msgstr "App anterior"
+
+#: Template/Instances/home.ctp:45
+msgid "Next App"
+msgstr "App siguiente"
+
+#: Template/Instances/home.ctp:98
+msgid "Current Slide"
+msgstr "App actual"
+
+#: Template/Instances/index.ctp:10
+msgid "Admin Panel"
+msgstr "Panel de Administración"
+
+#: Template/Instances/index.ctp:17
+msgid "Web apps: "
+msgstr "Aplicaciones Web:"
+
+#: Template/Instances/index.ctp:20
+msgid "New app"
+msgstr "Nueva aplicación"
+
+#: Template/Instances/index.ctp:25
+msgid "App name"
+msgstr "Nombre de la App"
+
+#: Template/Instances/index.ctp:26
+msgid "App URL"
+msgstr "URL de la app"
+
+#: Template/Instances/index.ctp:27
+msgid "Logo"
+msgstr "Logo"
+
+#: Template/Instances/index.ctp:34
+msgid "View App"
+msgstr "Ver aplicación"
+
+#: Template/Instances/index.ctp:53 Template/Instances/view.ctp:308
+#: Template/Projects/index.ctp:47
+msgid "previous"
+msgstr "anterior"
+
+#: Template/Instances/index.ctp:55 Template/Instances/view.ctp:310
+#: Template/Projects/index.ctp:49
+msgid "next"
+msgstr "siguiente"
+
+#: Template/Instances/index.ctp:60
+msgid "Admins: "
+msgstr "Administradores"
+
+#: Template/Instances/index.ctp:65 Template/Instances/view.ctp:170;262
+#: Template/Users/view.ctp:158
+msgid "Name"
+msgstr "Nombre"
+
+#: Template/Instances/index.ctp:66 Template/Instances/view.ctp:171;263
+msgid "Username"
+msgstr "Nombre de usuario"
+
+#: Template/Instances/index.ctp:73 Template/Instances/view.ctp:181;210;273
+msgid "View user data"
+msgstr "Ver datos de usuario"
+
+#: Template/Instances/map.ctp:75
+msgid "New Project"
+msgstr "Nuevo proyecto"
+
+#: Template/Instances/map.ctp:83
+msgid "Graph Visualization"
+msgstr "Ver gráficos"
+
+#: Template/Instances/map.ctp:96 Template/Projects/index.ctp:10
+msgid "Project List"
+msgstr "Lista de Proyectos"
+
+#: Template/Instances/preview.ctp:42
+msgid "map"
+msgstr "mapa"
+
+#: Template/Instances/view.ctp:11
+msgid "Return to the admin panel"
+msgstr "Regresar al panel de administración"
+
+#: Template/Instances/view.ctp:48;85;127
+msgid "Name (English)"
+msgstr "Nombre (Inglés)"
+
+#: Template/Instances/view.ctp:52;86;128
+msgid "Name (Spanish)"
+msgstr "Nombre (Español)"
+
+#: Template/Instances/view.ctp:87;129;172;264 Template/Projects/index.ctp:29
+#: Template/Users/view.ctp:160
+msgid "Actions"
+msgstr "Acciones"
+
+#: Template/Instances/view.ctp:96;138 View/Helper/AppHelper.php:108
+msgid "Edit"
+msgstr "Editar"
+
+#: Template/Instances/view.ctp:99;143
+msgid "Delete"
+msgstr "Eliminar"
+
+#: Template/Instances/view.ctp:105
+msgid ""
+"Are you sure you want to delete the \"{0}\" category?. This operation cannot "
+"be undone. All related data will be erased!"
+msgstr ""
+" ¿Está seguro que desea eliminar la categoría \"{0}\"?. Esta operación no se "
+"puede revertir. Todos los datoe relacionados serán eliminados!."
+
+#: Template/Instances/view.ctp:115
+msgid "This app does not have any related Category."
+msgstr "Esta aplicación no tiene categorías relacionadas."
+
+#: Template/Instances/view.ctp:122
+msgid "Add Organization Type"
+msgstr "Agregar Tipo de Organización"
+
+#: Template/Instances/view.ctp:149
+msgid ""
+"Are you sure you want to delete the \"{0}\" organization type?. This "
+"operation cannot be undone. All related data will be erased!"
+msgstr ""
+"¿Está seguro que desea eliminar el tipo de organización \"{0}\"?. Esta "
+"operación no se puede revertir. Todos los datos relacionados serán "
+"eliminados!."
+
+#: Template/Instances/view.ctp:159
+msgid "This app does not have any related Organization Type."
+msgstr "Esta aplicación no tiene tipos de organización relacionados."
+
+#: Template/Instances/view.ctp:186
+msgid "Revoke Sysadmin Privileges"
+msgstr "Quitar permidos de administrador del sistema."
+
+#: Template/Instances/view.ctp:195
+msgid ""
+"Are you sure you want to revoke sysadmin privileges from this user: \"{0}\"? "
+"A sysadmin has complete access to the whole system."
+msgstr ""
+"¿Está seguro que desea quitar los permisos de administrador del sistema al "
+"usuario \"{0}\"?. Un administrador de sistema tiene acceso total a dvine."
+
+#: Template/Instances/view.ctp:214
+msgid "Revoke Admin Privileges"
+msgstr "Quitar permisos de administración"
+
+#: Template/Instances/view.ctp:223
+msgid ""
+"Are you sure you want to revoke admin privileges from this user: \"{0}\"?."
+msgstr ""
+"¿Está seguro que desea quitar los permisos de administración al usuario "
+"\"{0}\"?"
+
+#: Template/Instances/view.ctp:230
+msgid "Grant Sysadmin Privileges"
+msgstr "Dar permisos de administración del sistema"
+
+#: Template/Instances/view.ctp:239
+msgid ""
+"Are you sure you want to grant sysadmin privileges to this user: \"{0}\"? A "
+"sysadmin has complete access to the whole system."
+msgstr ""
+"¿Está seguro que desea dar permisos de administración del sistema al usuario "
+"\"{0}\"?. Un administrador del sistema tiene acceso total a todo dvine!."
+
+#: Template/Instances/view.ctp:251
+msgid "This app does not have any Admin."
+msgstr "Esta aplicación no "
+
+#: Template/Instances/view.ctp:277
+msgid "Delete user"
+msgstr "Eliminar usuario"
+
+#: Template/Instances/view.ctp:283
+msgid ""
+"Are you sure you want to delete this user: \"{0}\"?. This operation cannot "
+"be undone. All related projects will be erased!"
+msgstr ""
+"¿Está seguro que desea eliminar este usuario: \"{0}\"?. Esta operación no "
+"puede ser revertida. Todos los proyectos relacionados serán eliminados!."
+
+#: Template/Instances/view.ctp:287
+msgid "Grant Admin Privileges"
+msgstr "Dar permisos de administración"
+
+#: Template/Instances/view.ctp:296
+msgid "Are you sure you want to grant admin privileges to this user: \"{0}\"?."
+msgstr ""
+"¿Está seguro que desea dar permisos de administración a éste usuario: "
+"\"{0}\"?"
+
+#: Template/Instances/view.ctp:315
+msgid "This app does not have any related user."
+msgstr "Esta aplicación no tiene usuarios relacionados."
+
+#: Template/Instances/view.ctp:321
+msgid "Configuration:"
+msgstr "Configuración:"
+
+#: Template/Instances/view.ctp:323
+msgid "For Users:"
+msgstr "Usuarios:"
+
+#: Template/Instances/view.ctp:326
+msgid "Enable Genre field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:327;331;339;347;351;355;359;363;367;371;375;379;383
+msgid "Yes"
+msgstr "Si"
+
+#: Template/Instances/view.ctp:327;331;339;347;351;355;359;363;367;371;375;379;383
+msgid "No"
+msgstr "No"
+
+#: Template/Instances/view.ctp:330
+msgid "Enable Main Organization field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:335
+msgid "For Projects:"
+msgstr ""
+
+#: Template/Instances/view.ctp:338
+msgid "Enable Categories?"
+msgstr ""
+
+#: Template/Instances/view.ctp:342
+msgid "Max. Allowed Categories"
+msgstr ""
+
+#: Template/Instances/view.ctp:346
+msgid "Enable Organization Type field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:350
+msgid "Enable Organization name field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:354
+msgid "Enable Cities usage?"
+msgstr ""
+
+#: Template/Instances/view.ctp:358
+msgid "Enable exact location?"
+msgstr ""
+
+#: Template/Instances/view.ctp:362
+msgid "Enable Project Stage field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:366
+msgid "Enable external URL field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:370
+msgid "Enable Description field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:374
+msgid "Enable Contribution field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:378
+msgid "Enable Contributing field?"
+msgstr ""
+
+#: Template/Instances/view.ctp:382
+msgid "Enable start and finish dates?"
+msgstr ""
+
+#: Template/InstancesUsers/add.ctp:49 Template/InstancesUsers/edit.ctp:77
+#: View/Helper/LocHelper.php:15
+msgid "CANCEL"
+msgstr "CANCELAR"
+
+#: Template/InstancesUsers/edit.ctp:45
+msgid "e.g."
+msgstr "ej."
+
+#: Template/InstancesUsers/edit.ctp:74
+msgid "Save"
+msgstr "Guardar"
+
+#: Template/Projects/add.ctp:30 Template/Projects/edit.ctp:34
+#: Template/Projects/view.ctp:36
+msgid "Overview:"
+msgstr "Resumen:"
+
+#: Template/Projects/add.ctp:41 Template/Projects/edit.ctp:45
+#: Template/Projects/view.ctp:58
+msgid "Project Contribution:"
+msgstr "Contribución del proyecto:"
+
+#: Template/Projects/add.ctp:48 Template/Projects/edit.ctp:52
+#: Template/Projects/view.ctp:61
+msgid "Contributing to this project:"
+msgstr "Cómo contribuir a este proyecto:"
+
+#: Template/Projects/add.ctp:57 Template/Projects/edit.ctp:62
+#: Template/Projects/view.ctp:67
+msgid "Other information:"
+msgstr "Otra información:"
+
+#: Template/Projects/add.ctp:59 Template/Projects/edit.ctp:64
+#: Template/Projects/view.ctp:69
+msgid "Location:"
+msgstr "Ubicación"
+
+#: Template/Projects/add.ctp:70 Template/Projects/edit.ctp:75
+#: Template/Projects/view.ctp:89
+msgid "Project Management:"
+msgstr "??????????????????????????????????????????????"
+
+#: Template/Projects/add.ctp:81 Template/Projects/edit.ctp:87
+#: Template/Projects/view.ctp:121
+msgid "Related Categories: "
+msgstr "Categorías relacionadas:"
+
+#: Template/Projects/add.ctp:89 Template/Projects/edit.ctp:96
+#: Template/Users/edit.ctp:94 View/Helper/LocHelper.php:14
+msgid "Submit"
+msgstr "Enviar"
+
+#: Template/Projects/edit.ctp:15 Template/Projects/view.ctp:15
+msgid ""
+"Are you sure you want to delete this project?. This operation cannot be "
+"undone. All related data will be erased!"
+msgstr ""
+"¿Está seguro que desea eliminar este proyecto?. Esta operación no se puede "
+"revertir. Toda la información relacionada será eliminada!."
+
+#: Template/Projects/index.ctp:20
+msgid "Found: "
+msgstr "Encontrado:"
+
+#: Template/Projects/index.ctp:38 Template/Users/view.ctp:170
+#: View/Helper/AppHelper.php:105
+msgid "View"
+msgstr "Ver"
+
+#: Template/Projects/view.ctp:41
+msgid "User"
+msgstr "Usuario"
+
+#: Template/Projects/view.ctp:45
+msgid "External URL"
+msgstr "URL externa"
+
+#: Template/Projects/view.ctp:49 Template/Users/view.ctp:159
+msgid "Organization"
+msgstr "Organización"
+
+#: Template/Projects/view.ctp:53
+msgid "Organization Type"
+msgstr "Tipo de organización"
+
+#: Template/Projects/view.ctp:72
+msgid "Country"
+msgstr "País"
+
+#: Template/Projects/view.ctp:76
+msgid "City"
+msgstr "Ciudad"
+
+#: Template/Projects/view.ctp:80
+msgid "Latitude"
+msgstr "Latitud"
+
+#: Template/Projects/view.ctp:84
+msgid "Longitude"
+msgstr "Longitud"
+
+#: Template/Projects/view.ctp:92
+msgid "Project Stage"
+msgstr "Etapa del proyecto"
+
+#: Template/Projects/view.ctp:96
+msgid "Start Date"
+msgstr "Fecha de inicio"
+
+#: Template/Projects/view.ctp:100
+msgid "Finish Date"
+msgstr "Fecha de término"
+
+#: Template/Projects/view.ctp:105
+msgid "Platform Registry:"
+msgstr "Registro:"
+
+#: Template/Projects/view.ctp:108
+msgid "Created"
+msgstr "Fecha de creación:"
+
+#: Template/Projects/view.ctp:112
+msgid "Last Modified"
+msgstr "Última modificación"
+
+#: Template/Users/edit.ctp:10
+msgid "(EDITING)"
+msgstr "(EDITANDO)"
+
+#: View/Helper/AppHelper.php:111
+msgid "DELETE"
+msgstr "ELIMINAR"
+
+#: View/Helper/AppHelper.php:113
+msgid ""
+"Are you sure you want to delete the \"{0}\" app?. This operation cannot be "
+"undone. All related data will be erased!"
+msgstr ""
+"¿Está seguro que desea eliminar la aplicación \"{0}\". Esta operación no se "
+"puede revertir. Todos los datos relacionados serán eliminados!!."

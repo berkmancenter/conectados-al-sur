@@ -75,7 +75,7 @@
                 <div class="tabs-panel" id="panel-description">
                     <h4 class="view-subtitle"><?= __d('instances', 'Description') . ":" ?></h4>
                     <fieldset>
-                    <p><?= "Both descriptions will be displayed on the home page of this instance." ?></p>
+                    <p><?= "Both descriptions will be displayed on the home page of this app." ?></p>
                     
                     <?= $this->Form->input('description', [
                         'label' => $this->Loc->fieldInstanceDescriptionEn(),
@@ -128,7 +128,7 @@
                 <div class="tabs-panel" id="panel-logo-config">
                     <h4 class="view-subtitle"><?= __d('instances', 'Properties') . ":" ?></h4>
                     <fieldset>                        
-                    <p><?= __d('instances', "The logo will be displayed on the footer of the page and above the CAS logo.") ?></p>
+                    <p><?= __d('instances', "The logo will be displayed on the footer of the page.") ?></p>
                     <p><?= __d('instances', "Valid formats are: PNG. Max. file size: 256kB.") ?></p>
                     <p><?= __d('instances', "The displayed image will have a max height of 100px, greater images will be resized to 100px height.") ?></p>
                     <label for="logoFileUpload" class="button"><?= __d('instances', "Upload File") ?></label>

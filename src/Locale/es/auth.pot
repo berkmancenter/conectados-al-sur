@@ -4,63 +4,67 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2016-09-30 06:54+0000\n"
-"PO-Revision-Date: 2016-09-30 04:24-0300\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 01:40-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+
+#: Template/InstancesUsers/edit.ctp:29 Template/Users/add.ctp:50
+#: Template/Users/edit.ctp:43
+msgid "Contact"
+msgstr "Contacto"
 
 #: Template/Users/add.ctp:11
 msgid "New Account"
-msgstr "Nueva cuenta"
+msgstr "Registro"
 
-#: Template/Users/add.ctp:21
+#: Template/Users/add.ctp:21 Template/Users/edit.ctp:31
 msgid "Your name"
-msgstr "Tu nombre"
+msgstr "Su nombre"
 
-#: Template/Users/add.ctp:34
+#: Template/Users/add.ctp:33
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: Template/Users/add.ctp:41
+#: Template/Users/add.ctp:39
 msgid "Your email will serve as username and it will be treated as private."
-msgstr "Tu correo será tu nombre de usuario y será tratado como privado."
+msgstr ""
+"Su correo será utilizado como su nombre de usuario y será mantenido en "
+"privado."
 
-#: Template/Users/add.ctp:52
-msgid "Contact"
-msgstr "Correo de contacto"
-
-#: Template/Users/add.ctp:58
+#: Template/Users/add.ctp:56
 msgid "Contact email. Public for everyone to see."
-msgstr "Correo de contacto. Público para todos."
+msgstr "Correo de contacto. Público para todos los visitantes."
 
-#: Template/Users/add.ctp:69 Template/Users/login.ctp:34
+#: Template/Users/add.ctp:67 Template/Users/login.ctp:34
 msgid "password"
 msgstr "contraseña"
 
-#: Template/Users/add.ctp:86
+#: Template/Users/add.ctp:83
 msgid "password (again)"
 msgstr "contraseña (nuevamente)"
 
-#: Template/Users/add.ctp:108
+#: Template/Users/add.ctp:105
 msgid "Create account"
-msgstr "Crear usuario"
+msgstr "Crear cuenta"
 
-#: Template/Users/add.ctp:116
+#: Template/Users/add.ctp:113
 msgid "Already have an account?"
-msgstr "ya estás registrado?"
+msgstr "Ya tienes una cuenta?"
 
-#: Template/Users/add.ctp:118
+#: Template/Users/add.ctp:115
 msgid "Login here"
 msgstr "Accede aquí"
 
 #: Template/Users/login.ctp:11
 msgid "Welcome to dvine!"
-msgstr "Bienvenido a dvine!"
+msgstr "¡Bienvenido a dvine!"
 
 #: Template/Users/login.ctp:43
 msgid "Login"
@@ -68,8 +72,8 @@ msgstr "Acceder"
 
 #: Template/Users/login.ctp:51
 msgid "Don't have an account?"
-msgstr "No estás registrado?"
+msgstr " ¿No tienes una cuenta?"
 
 #: Template/Users/login.ctp:53
 msgid "Sign up here"
-msgstr "Crea tu cuenta aquí"
+msgstr "Regístrese aquí"

@@ -1,0 +1,56 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-09 03:11+0000\n"
+"PO-Revision-Date: 2016-10-09 01:40-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+
+#: Template/Instances/home.ctp:121 Template/Layout/default.ctp:85
+msgid "Sign In"
+msgstr "Acceder"
+
+#: Template/Instances/home.ctp:125 Template/Layout/default.ctp:82
+msgid "Sign Up"
+msgstr "Registro"
+
+#: Template/Layout/default.ctp:49
+msgid "Language: "
+msgstr "Idioma:"
+
+#: Template/Layout/default.ctp:59
+msgid "My profile"
+msgstr "Mi perfil"
+
+#: Template/Layout/default.ctp:67
+msgid "Settings"
+msgstr "Preferencias"
+
+#: Template/Layout/default.ctp:72
+msgid "DVINE Settings"
+msgstr "Preferencias (dvine)"
+
+#: Template/Layout/default.ctp:76
+msgid "Sign Out"
+msgstr "Cerrar sesión"
+
+#: Template/Layout/default.ctp:140
+msgid "Creative Commons"
+msgstr "Creative Commons"
+
+#: Template/Layout/default.ctp:145
+msgid "Privacy Policy"
+msgstr "Política de Privacidad"
+
+#: Template/Layout/default.ctp:150
+msgid "Contact"
+msgstr "Contacto"
