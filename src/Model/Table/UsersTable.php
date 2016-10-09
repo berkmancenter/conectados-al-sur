@@ -5,33 +5,11 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
-/**
- * Users Model
- *
- * @property \Cake\ORM\Association\BelongsTo $Genres
- * @property \Cake\ORM\Association\HasMany $Projects
- * @property \Cake\ORM\Association\BelongsToMany $Instances
- *
- * @method \App\Model\Entity\User get($primaryKey, $options = [])
- * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\User[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\User|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\User patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\User[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\User findOrCreate($search, callable $callback = null)
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
- */
 class UsersTable extends Table
 {
 
-    /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
-     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -56,71 +34,49 @@ class UsersTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
+
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $str_name  = __d('users','Name');
+        $str_email = __d('users','Email');
+        $str_pass  = __d('users','Password');
+
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name', 'Please, fill with your name.')
+            ->notEmpty('name', __d('users', 'Please, fill your name.'))
             ->add('name', [
-                'minLength' => [
-                    'rule' => ['minLength', 5],
-                    'message' => 'The name is too short (min: 5 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 50],
-                    'message' => 'Name is too long',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_name , 5),
+                'maxLength' => $locHelper->validationMaxLength($str_name , 50)
             ]);
 
         $validator
             ->requirePresence('email', 'create')
-            ->notEmpty('email', 'Please, fill with your email.')
+            ->notEmpty('email', __d('users', 'Please, fill your email.'))
             ->add('email', [
-                'unique' => [
-                    'rule' => 'validateUnique',
-                    'provider' => 'table',
-                    'message' => 'This email is already in use.'
-                ],
+                'unique' => $locHelper->validationUnique($str_name),
                 'regex' => [
                     'rule' => 'email',
-                    'message' => 'The email is invalid.'
+                    'message' => __d('users', 'The email is invalid.')
                 ],
             ]);
 
         $validator
             ->requirePresence('password', 'create')
-            ->notEmpty('password', 'Please, fill with your password.')
+            ->notEmpty('password', __d('users', 'Please, write a password.'))
             ->add('password', [
-                'minLength' => [
-                    'rule' => ['minLength', 5],
-                    'message' => 'Your password is too short (min length: 5 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 50],
-                    'message' => 'Your password is too long (max length: 50 characters).',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_pass , 5),
+                'maxLength' => $locHelper->validationMaxLength($str_pass , 50)
             ]);
 
         return $validator;
     }
 
-    /**
-     * Returns a rules checker object that will be used for validating
-     * application integrity.
-     *
-     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
-     * @return \Cake\ORM\RulesChecker
-     */
+
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->isUnique(['email']));

@@ -41,7 +41,7 @@ class LocHelper extends AppHelper
     public function fieldInstancePassphrase()    { return __d('fields', 'App Passphrase');                              }
     public function fieldInstanceNamespace()     { return __d('fields', 'App Shortname');                               }
 
-
+    
 
     // ////////////////////////////////////////////////////////////////////////
     /////  VALIDATION//////////////////////////////////////////////////////////

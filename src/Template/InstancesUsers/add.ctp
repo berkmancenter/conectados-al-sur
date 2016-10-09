@@ -8,11 +8,11 @@
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
-            <p class="welcome">Add Profile</p>
+            <p class="welcome"><?= __d('users', 'Add Profile') ?></p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create($instances_user) ?>
 
-            <p>To register a new profile, you need the app name and its passphrase. The app admin can give you more details about this.</p>
+            <p><?= __d('users', 'To register a new profile, you need the app name and its passphrase. The app admin can give you more details about this.') ?></p>
 
             <!-- name -->
             <div class="row collapse">
@@ -20,9 +20,8 @@
                     <span class="input-group-label"><i class="fi-puzzle"></i></span>
                     <?= $this->Form->input('instance_namespace', [
                         'label'       => '',
-                        'placeholder' => 'App shortname',
-                        'class'       => 'input-group-field',
-                        'required'
+                        'placeholder' => __d('users', 'App shortname'),
+                        'class'       => 'input-group-field'
                     ]) ?>
                 </div>
             </div>
@@ -33,10 +32,9 @@
                     <span class="input-group-label"><i class="fi-key"></i></span>
                     <?= $this->Form->input('passphrase', [
                         'label'       => '',
-                        'placeholder' => 'App passphrase',
+                        'placeholder' => __d('users', 'App passphrase'),
                         'class'       => 'input-group-field',
-                        'type'        => 'password',
-                        'required'
+                        'type'        => 'password'
                     ]) ?>
                 </div>
             </div>
@@ -45,10 +43,10 @@
             <!-- submit, cancel -->
             <div class="row">
                 <div class="small-6 columns">
-                    <?= $this->Form->button(__('Create profile'), ['class' => 'button']) ?>
+                    <?= $this->Form->button(__d('users', 'Create profile'), ['class' => 'button']) ?>
                 </div>
                 <div class="small-6 columns">
-                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user_id]) ?> class="alert hollow button">CANCEL</a>
+                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user_id]) ?> class="alert hollow button"><?= __('CANCEL') ?></a>
                 </div>
             </div>
         

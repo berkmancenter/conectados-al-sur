@@ -81,7 +81,7 @@ class UsersController extends AppController
                 'Genres',
                 'Projects',
                 'Instances' => function ($q) {
-                    return $q->select(['id', 'name', 'namespace', 'logo']);
+                    return $q->select(['id', 'name', 'name_es', 'namespace', 'logo']);
                 }
             ])
             ->first();

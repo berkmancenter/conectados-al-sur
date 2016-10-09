@@ -9,10 +9,10 @@
     <div class="small-12 column view-title">
         <h3><?= h($user->name) ?></h3>
         <?php if (isset($client_type) && $client_type == 'authorized'): ?>
-            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>><i class='fi-page-edit size-36'></i>EDIT</a>
-            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['controller' => 'Users', 'action' => 'delete', $user->id], [
+            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>><i class='fi-page-edit size-36'></i><?= __d('users', 'EDIT') ?></a>
+            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d('users', 'DELETE'), ['controller' => 'Users', 'action' => 'delete', $user->id], [
                     'escape' => false, 
-                    'confirm' => __('Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
+                    'confirm' => __d('users', 'Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
                 ])
             ?>
         <?php endif; ?>
@@ -24,32 +24,32 @@
     <div class="small-12 column">
 
         <ul class="tabs" data-tabs id="users-view-tabs">
-            <li class="tabs-title is-active"><a href="#panel-general" aria-selected="true">General</a></li>
+            <li class="tabs-title is-active"><a href="#panel-general" aria-selected="true"><?= __d('users', 'General') ?></a></li>
 
             <?php if (isset($client_type) && $client_type != 'visita'): ?>
-            <li class="tabs-title"><a href="#panel-profiles">Profiles</a></li>
-            <li class="tabs-title"><a href="#panel-projects">Projects</a></li>
+            <li class="tabs-title"><a href="#panel-profiles"><?= __d('users', 'Profiles') ?></a></li>
+            <li class="tabs-title"><a href="#panel-projects"><?= __d('users', 'Projects') ?></a></li>
             <?php endif; ?>
         </ul>
 
         <div class="tabs-content" data-tabs-content="users-view-tabs">
 
             <div class="tabs-panel is-active" id="panel-general">
-                <h4 class="view-subtitle"><?= __('General Profile:') ?></h4>
+                <h4 class="view-subtitle"><?= __d('users', 'General Profile') . ':' ?></h4>
                 <table class="hover stack vertical-table">
                     <?php if (isset($client_type) && $client_type == 'authorized'): ?>
                     <tr>
-                        <th><?= __('Email (private)') ?></th>
+                        <th><?= __d('users', 'Email (private)') ?></th>
                         <td><?= h($user->email) ?></td>
                     </tr>
                     <?php endif; ?>
                     <tr>
-                        <th><?= __('Contact Email') ?></th>
+                        <th><?= __d('users', 'Contact Email') ?></th>
                         <td><?= h($user->contact) ?></td>
                     </tr>
                     <?php if (isset($client_type) && $client_type == 'authorized'): ?>
                     <tr>
-                        <th><?= __('Genre') ?></th>
+                        <th><?= __d('users', 'Genre') ?></th>
                         <td><?= $user->has('genre') ? h($user->genre->name) : '' ?></td>
                     </tr>
                     <?php endif; ?>
@@ -58,9 +58,9 @@
 
             <?php if (isset($client_type) && $client_type != 'visita'): ?>
             <div class="tabs-panel" id="panel-profiles">
-                <h4 class="view-subtitle-related"><?= __('Registered App Profiles: ') ?></h4>
+                <h4 class="view-subtitle-related"><?= __d('users', 'Registered App Profiles: ') ?></h4>
                 <?php if (isset($client_type) && $client_type == 'authorized'): ?>
-                    <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]) ?>><i class='fi-plus size-24'></i> Add Profile</a>
+                    <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]) ?>><i class='fi-plus size-24'></i> <?= __d('users', 'Add Profile') ?></a>
                 <?php endif; ?>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                 <?php foreach ($user->instances as $instance): ?>
@@ -72,15 +72,21 @@
                         $this->App->isUserRegisteredInInstance($client_id, $instance->id)
                     ): ?>
                     <li class="accordion-item" data-accordion-item>
-                        <a href="#" class="accordion-title"><?= $instance->name ?></a>
+                        <a href="#" class="accordion-title">
+                            <?php if ($lang_current == "en"): ?>
+                                <?= $instance->name ?>
+                            <?php else: ?>
+                                <?= $instance->name_es ?>
+                            <?php endif; ?>
+                        </a>
                         <div class="accordion-content" data-tab-content>
                             
                             <!-- admin and user can modify this item -->
                             <?php if ($client_type == 'authorized' || 
                                 $this->App->isAdmin($client_id, $instance->id)
                             ): ?>
-                                <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i>Edit this profile</a>
-                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . "Delete this profile", 
+                                <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i><?= __d('users', 'Edit this profile') ?></a>
+                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . __d('users', "Delete this profile"), 
                                     [
                                         'controller' => 'InstancesUsers',
                                         'action' => 'delete',
@@ -88,30 +94,30 @@
                                         $instance->id
                                     ], [
                                         'escape' => false, 
-                                        'confirm' => __('Are you sure you want to delete this profile?. This operation cannot be undone. All related projects will be erased!!')
+                                        'confirm' => __d('users', 'Are you sure you want to delete this profile?. This operation cannot be undone. All related projects will be erased!!')
                                     ])
                                 ?>
                             <?php endif; ?>
                         
                             <table class="hover stack vertical-table">
                                 <tr>
-                                    <th><?= __('Contact Email') ?></th>
+                                    <th><?= __d('users', 'Contact Email') ?></th>
                                     <td><?= h($instance->_joinData->contact) ?></td>
                                 </tr>
                                 <tr>
-                                    <th><?= __('Main Organization') ?></th>
+                                    <th><?= __d('users', 'Main Organization') ?></th>
                                     <?php if ($instance->_joinData->main_organization != "[null]"): ?>
                                         <td><?= h($instance->_joinData->main_organization) ?></td>
                                     <?php else: ?>
-                                        <td><span class="unset-field">Please, complete this profile.</span></td>
+                                        <td><span class="unset-field"><?= __d('users', 'Please, complete this profile.') ?></span></td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <th><?= __('Organization Type') ?></th>
+                                    <th><?= __d('users', 'Organization Type') ?></th>
                                     <?php if ($instance->_joinData->organization_type->name != "[null]"): ?>
                                         <td><?= h($instance->_joinData->organization_type->name) ?></td>
                                     <?php else: ?>
-                                        <td><span class="unset-field">Please, complete this profile.</span></td>
+                                        <td><span class="unset-field"><?= __d('users', 'Please, complete this profile.') ?></span></td>
                                     <?php endif; ?>
                                 </tr>
                             </table>
@@ -125,7 +131,7 @@
 
             <div class="tabs-panel" id="panel-projects">
     
-                <h4 class="view-subtitle-related"><?= __('Related Projects: ') ?></h4>
+                <h4 class="view-subtitle-related"><?= __d('users', 'Related Projects: ') ?></h4>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                 <?php foreach ($user->instances as $instance): ?>
                     <?php if (!$this->App->isAdminInstance($instance->id)): ?>
@@ -136,7 +142,13 @@
                         $this->App->isUserRegisteredInInstance($client_id, $instance->id)
                     ): ?>
                     <li class="accordion-item" data-accordion-item>
-                        <a href="#" class="accordion-title"><?= $instance->name ?></a>
+                        <a href="#" class="accordion-title">
+                            <?php if ($lang_current == "en"): ?>
+                                <?= $instance->name ?>
+                            <?php else: ?>
+                                <?= $instance->name_es ?>
+                            <?php endif; ?>
+                        </a>
                         <div class="accordion-content" data-tab-content>
 
                             <?php if (!empty($user->projects)): ?>                            
@@ -163,7 +175,12 @@
                                 </tbody>
                             </table>
                             <?php else: ?>
-                                <p>There aren't registered projects for this app (<?= h($instance->name) ?>), related to this user.</p>
+                                <?php if ($lang_current == "en"): ?>
+                                    <p><?= __d('users', 'There aren\'t registered projects for this app ({0}), related to this user.', h($instance->name)) ?></p>
+                                <?php else: ?>
+                                    <p><?= __d('users', 'There aren\'t registered projects for this app ({0}), related to this user.', h($instance->name_es)) ?></p>
+                                <?php endif; ?>
+                                
                             <?php endif; ?>
 
                         </div>

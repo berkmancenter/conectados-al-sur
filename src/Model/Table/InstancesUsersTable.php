@@ -5,32 +5,11 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
-/**
- * InstancesUsers Model
- *
- * @property \Cake\ORM\Association\BelongsTo $Instances
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Roles
- * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
- *
- * @method \App\Model\Entity\InstancesUser get($primaryKey, $options = [])
- * @method \App\Model\Entity\InstancesUser newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\InstancesUser[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\InstancesUser|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\InstancesUser patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\InstancesUser[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\InstancesUser findOrCreate($search, callable $callback = null)
- */
 class InstancesUsersTable extends Table
 {
 
-    /**
-     * Initialize method
-     *
-     * @param array $config The configuration for the Table.
-     * @return void
-     */
     public function initialize(array $config)
     {
         parent::initialize($config);
@@ -57,41 +36,35 @@ class InstancesUsersTable extends Table
         ]);
     }
 
-    /**
-     * Default validation rules.
-     *
-     * @param \Cake\Validation\Validator $validator Validator instance.
-     * @return \Cake\Validation\Validator
-     */
+
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $str_orgname = __d('users', 'Organization Name');
+
         $validator = $this->validationContact($validator);
 
         $validator
             ->requirePresence('main_organization', 'create')
-            ->notEmpty('main_organization', 'Organization name cannot be empty')
+            ->notEmpty('main_organization', $locHelper->validationNotEmpty($str_orgname))
             ->add('main_organization', [
-                'minLength' => [
-                    'rule' => ['minLength', 3],
-                    'message' => 'The organization name is too short (min: 3 characters).',
-                ],
-                'maxLength' => [
-                    'rule' => ['maxLength', 100],
-                    'message' => 'The organization name is too long.',
-                ]
+                'minLength' => $locHelper->validationMinLength($str_orgname , 3),
+                'maxLength' => $locHelper->validationMaxLength($str_orgname , 100)
             ]);
 
         return $validator;
     }
 
     public function validationContact(Validator $validator) {
+        $locHelper = new LocHelper(new \Cake\View\View());
+
         $validator            
             ->requirePresence('contact', 'create')
-            ->notEmpty('contact', 'Please, fill with your contact email.')
+            ->notEmpty('contact', __d('users', 'Please, fill your contact email.'))
             ->add('contact', [
                 'regex' => [
                     'rule' => 'email',
-                    'message' => 'The contact email is invalid.'
+                    'message' => __d('users', 'The contact email is invalid.')
                 ],
             ]);
 

@@ -32,7 +32,7 @@
     <div class="small-12 column">
 
         <ul class="tabs" data-tabs id="instance-view-tabs">
-            <li class="tabs-title is-active"><a href="#panel-users" aria-selected="true"><?= __('Users') ?></a></li>
+            <li class="tabs-title is-active"><a href="#panel-users" aria-selected="true"><?= __d('instances', 'Users') ?></a></li>
             <li class="tabs-title"><a href="#panel-properties"><?= __d('instances', 'Properties') ?></a></li>
             <!-- <li class="tabs-title"><a href="#panel-configuration">Configuration</a></li> -->
             <li class="tabs-title"><a href="#panel-categories"><?= __d('instances', 'Categories') ?></a></li>

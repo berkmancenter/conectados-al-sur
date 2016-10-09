@@ -7,11 +7,11 @@
 
 <div class="row">
     <div class="small-12 column view-title">
-        <h3><?= h($user->name) ?> (EDITING)</h3>
-            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-36'></i>VIEW</a>
-            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . "DELETE", ['controller' => 'Users', 'action' => 'delete', $user->id], [
+        <h3><?= h($user->name) ?> <?= __('(EDITING)') ?></h3>
+            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-36'></i><?= __d('users', 'VIEW') ?></a>
+            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d('users', 'DELETE'), ['controller' => 'Users', 'action' => 'delete', $user->id], [
                     'escape' => false, 
-                    'confirm' => __('Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
+                    'confirm' => __d('users', 'Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
                 ])
             ?>
     </div>
@@ -28,9 +28,8 @@
                     <span class="input-group-label"><i class="fi-torso"></i></span>
                     <?= $this->Form->input('name', [
                         'label'       => '',
-                        'placeholder' => 'Your name: John Smith',
-                        'class'       => 'input-group-field',
-                        'required'
+                        'placeholder' => __d('auth', 'Your name') . ': John Smith',
+                        'class'       => 'input-group-field'
                     ]) ?>
                 </div>
             </div>
@@ -41,11 +40,10 @@
                     <span class="input-group-label"><i class="fi-address-book"></i></span>
                     <?= $this->Form->input('contact', [
                         'label'            => '',
-                        'placeholder'      => 'Contact: my.organization@example.com',
+                        'placeholder'      => __d('auth', 'Contact') . ': my.organization@example.com',
                         'class'            => 'input-group-field',
                         'aria-describedby' => 'contactHelpText',
-                        'type'             => 'email',
-                        'required'
+                        'type'             => 'email'
                     ]) ?>
                 </div>
                 <p class="help-text" id="contactHelpText">Contact email. Public for everyone to see.</p>
@@ -60,8 +58,7 @@
                         'placeholder'      => 'password',
                         'aria-describedby' => 'passwordHelpText',
                         'class'            => 'input-group-field',
-                        'id'               => 'password',
-                        'required'
+                        'id'               => 'password'
                     ]) ?>
                 </div>
             </div>

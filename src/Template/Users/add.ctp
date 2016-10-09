@@ -19,8 +19,7 @@
                         <?= $this->Form->input('name', [
                             'label'       => '',
                             'placeholder' => __d('auth', 'Your name') . ': John Smith',
-                            'class'       => 'input-group-field',
-                            'required'
+                            'class'       => 'input-group-field'
                         ]) ?>
                     </div>
                 </div>
@@ -34,8 +33,7 @@
                             'placeholder'      => __d('auth', 'Username') . ': john.smith@gmail.com',
                             'class'            => 'input-group-field',
                             'aria-describedby' => 'emailHelpText',
-                            'type'             => 'text',
-                            'required'
+                            'type'             => 'text'
                         ]) ?>
                     </div>      
                     <p class="help-text" id="emailHelpText"><?= __d('auth', "Your email will serve as username and it will be treated as private.") ?></p>
@@ -52,8 +50,8 @@
                             'placeholder'      => __d('auth', 'Contact') . ': my.organization@example.com',
                             'class'            => 'input-group-field',
                             'aria-describedby' => 'contactHelpText',
-                            'type'             => 'email',
-                            'required']) ?>
+                            'type'             => 'email'
+                        ]) ?>
                     </div>
                     <p class="help-text" id="contactHelpText"><?= __d('auth', "Contact email. Public for everyone to see.") ?></p>
                 </div>
@@ -68,8 +66,7 @@
                             'label'            => '',
                             'placeholder'      => __d('auth', 'password'),
                             'class'            => 'input-group-field',
-                            'id'               => 'password',
-                            'required'
+                            'id'               => 'password'
                         ]) ?>
                     </div>
                 </div>
