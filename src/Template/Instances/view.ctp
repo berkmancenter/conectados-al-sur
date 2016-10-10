@@ -162,6 +162,16 @@
 
             <div class="tabs-panel is-active" id="panel-users">
 
+                <!-- <h4 class="view-subtitle-related"><?= __d('instances', 'Actions') . ':' ?></h4> -->
+                <div id="download-link">
+                    <a 
+                        href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'exportCsv', $instance->namespace]) ?>>
+                        <i class='fi-arrow-down size-24'></i>
+                         <?= __('Download User List') ?>
+                    </a>
+                </div>
+
+
                 <h4 class="view-subtitle-related"><?= __d('instances', 'Admins') . ':' ?></h4>
                 <?php if (!empty($admins)): ?>
                 <table class="hover stack" cellpadding="0" cellspacing="0">
@@ -386,3 +396,10 @@
         </div>
     </div>
 </div>
+
+
+<style type="text/css">
+#download-link {
+    margin-bottom: 10px;
+}
+</style>

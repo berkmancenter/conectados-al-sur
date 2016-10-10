@@ -28,7 +28,11 @@ class InstancesController extends AppController
             return true;
         }
 
-        if ($this->request->action == 'view' || $this->request->action == 'edit' || $this->request->action == 'delete') {
+        if ($this->request->action == 'view' || 
+            $this->request->action == 'edit' || 
+            $this->request->action == 'delete' ||
+            $this->request->action == 'exportCsv'
+            ) {
             $instance_namespace = $this->request->params['pass'][0];
 
             $instance = $this->App->getInstance($instance_namespace, false); // do not redirect
@@ -487,4 +491,167 @@ class InstancesController extends AppController
         }
         return $this->redirect(['controller' => 'Instances', 'action' => 'index']);
     }
+
+
+    public function exportCsv($instance_namespace)
+    {
+        // block sys instance
+        if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
+
+        $instance = $this->Instances
+            ->find()
+            ->contain([])
+            ->where(['Instances.namespace' => $instance_namespace])
+            ->first();
+        if (!$instance) {
+            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+        }
+
+        $app_ns = $this->App->getAdminNamespace();
+        $sysadmins = TableRegistry::get('Users')
+            ->find()
+            ->select(['id', 'name', 'email'])
+            ->matching('Instances', function ($q) use ($app_ns) {
+                return $q
+                    ->where(['Instances.namespace' => $app_ns])
+                    ->where(['role_id' => 1]);
+            })
+            ->all();
+        // var_dump($sysadmins);
+
+        $all_admins = TableRegistry::get('Users')
+            ->find()
+            ->select(['id', 'name', 'email'])
+            ->matching('Instances', function ($q) use ($instance_namespace) {
+                return $q
+                    ->where(['Instances.namespace' => $instance_namespace])
+                    ->where(['role_id' => 1]);
+            })
+            ->all();
+        $admins = $all_admins->filter(function ($admin, $key) {
+            return !$this->App->isSysadmin($admin->id);
+        });
+
+        $users = TableRegistry::get('Users')
+            ->find()
+            ->select(['id', 'name', 'email'])
+            ->matching('Instances', function ($q) use ($instance_namespace) {
+                return $q
+                    ->where(['Instances.namespace' => $instance_namespace])
+                    ->where(['role_id' => 0]);
+            });
+        // var_dump($users);
+
+        // var_dump($instance->sysadmins);
+
+        $this->set('users', $users);
+        $this->set('admins', $admins);
+        $this->set('sysadmins', $sysadmins);
+        $this->set('instance', $instance);
+        // $this->set('_serialize', ['instance']);
+
+        $data = [];
+        foreach ($sysadmins as $user) {
+
+            // CONTACT INFO
+            $user_data = $this->App->getUserInstanceData($user->id, $instance->id);
+            $contact = null;
+            if ($user_data) {
+                // get instance contact
+                $contact = $user_data->contact;
+            } else {
+                // else: get general contact mail
+                $user_system_data = $this->App->getUserInstanceData($project->user->id, $this->App->getAdminInstanceId());
+                if ($user_system_data) {
+                    $contact = $user_system_data->contact;
+                }
+            }
+            $row = [
+                'id'   => $user->id,
+                'name' => $user->name,
+                'username' => $user->email,
+                'contact'  => $contact,
+                'role'     => 'sysadmin',
+            ];
+            array_push($data, $row);
+        }
+        foreach ($admins as $user) {
+
+            // CONTACT INFO
+            $user_data = $this->App->getUserInstanceData($user->id, $instance->id);
+            $contact = null;
+            if ($user_data) {
+                // get instance contact
+                $contact = $user_data->contact;
+            } else {
+                // else: get general contact mail
+                $user_system_data = $this->App->getUserInstanceData($project->user->id, $this->App->getAdminInstanceId());
+                if ($user_system_data) {
+                    $contact = $user_system_data->contact;
+                }
+            }
+            $row = [
+                'id'   => $user->id,
+                'name' => $user->name,
+                'username' => $user->email,
+                'contact'  => $contact,
+                'role'     => 'admin',
+            ];
+            array_push($data, $row);
+        }
+        foreach ($users as $user) {
+
+            // CONTACT INFO
+            $user_data = $this->App->getUserInstanceData($user->id, $instance->id);
+            $contact = null;
+            if ($user_data) {
+                // get instance contact
+                $contact = $user_data->contact;
+            } else {
+                // else: get general contact mail
+                $user_system_data = $this->App->getUserInstanceData($project->user->id, $this->App->getAdminInstanceId());
+                if ($user_system_data) {
+                    $contact = $user_system_data->contact;
+                }
+            }
+            $row = [
+                'id'   => $user->id,
+                'name' => $user->name,
+                'username' => $user->email,
+                'contact'  => $contact,
+                'role'     => 'user',
+            ];
+            array_push($data, $row);
+        }
+
+        $_serialize = 'data';
+        $_header = [
+            'id',
+            'name',
+            'username',
+            'contact',
+            'role',
+        ];
+        // $_footer = ['Totals', '400', '$3000'];
+        // formatting
+        // $_delimiter = chr(9); //tab  // _delimiter: ,
+        // $_enclosure = '"';  // _enclosure: "
+        // $_newline = '\r\n';  // _newline: \n
+        // $_eol = '~';  // _eol: \n
+        // $_bom = true;  // _bom: false
+        // _setSeparator: false
+        // $_null defaults to ''.
+
+
+        // File name
+        $this->response->download($instance->namespace . '_user_list.csv');
+
+        // CSV builder
+        $this->viewBuilder()->className('CsvView.Csv');
+
+        // required data
+        $this->set(compact('data', '_serialize', '_header'));
+        // '_footer', '_delimiter', '_enclosure', '_newline', '_eol', '_bom', '_enclosure'
+    }
+
 }

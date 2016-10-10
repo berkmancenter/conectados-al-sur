@@ -145,6 +145,14 @@ Router::scope('/:lang', function ($routes) {
         ['pass' => ['instance_namespace']]
     );
 
+    # csv export
+    $routes->connect(
+        '/:instance_namespace/admin/download_user_list',
+        ['controller' => 'Instances', 'action' => 'exportCsv'],
+        ['pass' => ['instance_namespace']]
+    );
+
+
 
     # Categories Controller
     # -------------------------------------------------------------------------
