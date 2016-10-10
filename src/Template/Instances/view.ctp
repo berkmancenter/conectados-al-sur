@@ -179,8 +179,7 @@
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <?php if (isset($client_type) && $client_type == 'sysadmin'): ?>
                                     <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Revoke Sysadmin Privileges') ?>">
@@ -209,7 +208,7 @@
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Revoke Admin Privileges') ?>">
                                 <?= $this->Form->postLink(
@@ -272,13 +271,13 @@
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
                                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $instance->namespace, $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Delete user') ?>">
                                 <?= $this->Form->postLink(
                                         $this->Html->tag('i', '', array('class' => 'fi-x size-24')), [
                                         'controller' => 'Users',
-                                        'action' => 'delete', $instance->namespace, $user->id], [
+                                        'action' => 'delete', $user->id], [
                                         'escape' => false,
                                         'confirm' => __('Are you sure you want to delete this user: "{0}"?. This operation cannot be undone. All related projects will be erased!', $user->email)
                                     ])

@@ -24,3 +24,13 @@ logs/
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+
+
+
+# i18n
+*.mo
+
+# other
+*.csv
+*.png
+*.ico

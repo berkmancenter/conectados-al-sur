@@ -64,7 +64,7 @@ class UsersController extends AppController
 
     public function logout()
     {
-        $user = $this->Auth->user();
+        // $user = $this->Auth->user();
         $this->Auth->logout();
         return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
     }

@@ -431,6 +431,7 @@ class InstancesController extends AppController
                 }
             }
         }
+        $this->set('instance_creating',true);
         $this->set(compact('instance'));
         $this->set('_serialize', ['instance']);
     }

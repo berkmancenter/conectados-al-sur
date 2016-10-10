@@ -22,34 +22,92 @@ use Cake\Core\Plugin;
 use Cake\Routing\RouteBuilder;
 use Cake\Routing\Router;
 
-/**
- * The default class to use for all routes
- *
- * The following route classes are supplied with CakePHP and are appropriate
- * to set as the default:
- *
- * - Route
- * - InflectedRoute
- * - DashedRoute
- *
- * If no call is made to `Router::defaultRouteClass()`, the class used is
- * `Route` (`Cake\Routing\Route\Route`)
- *
- * Note that `Route` does not do any inflections on URLs which will result in
- * inconsistently cased URLs when used with `:plugin`, `:controller` and
- * `:action` markers.
- *
- */
+
 Router::defaultRouteClass('DashedRoute');
 
-$app_routes = function (RouteBuilder $routes) {
-    
-    # =================================================================================
-    # STATIC PAGES
-    # =================================================================================
+Router::addUrlFilter(function ($params, $request) {
+    if (isset($request->params['lang']) && !isset($params['lang'])) {
+        $params['lang'] = $request->params['lang'];
+    } else if (!isset($params['lang'])) {
+        $params['lang'] = 'en'; // default language
+    }
+    return $params;
+});
+
+
+Router::scope('/:lang', function ($routes) {
     
     # home
     $routes->connect('/', ['controller' => 'Instances', 'action' => 'home']);
+
+    # =================================================================================
+    # STATIC PAGES
+    # =================================================================================
+    $routes->connect('/licence', ['controller' => 'Pages', 'action' => 'display', 'Licence']);
+    $routes->connect('/privacy', ['controller' => 'Pages', 'action' => 'display', 'PrivacyPolicy']);
+    $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'display', 'Contact']);
+
+
+    # =================================================================================
+    # users interaction
+    # =================================================================================
+
+    # login, logout, sign-up
+    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
+    $routes->connect('/sign-up', ['controller' => 'Users', 'action' => 'add']);
+
+    # view
+    $routes->connect('/users/:id', ['controller' => 'Users', 'action' => 'view'],
+        ['pass' => ['id'], 'id' => '[0-9]+']
+    );
+        
+    # edit
+    $routes->connect(
+        '/users/:id/edit',
+        ['controller' => 'Users', 'action' => 'edit'],
+        ['pass' => ['id'],'id' => '[0-9]+']
+    );
+
+    # delete
+    $routes->connect(
+        '/users/:id/delete',
+        ['controller' => 'Users', 'action' => 'delete'],
+        ['pass' => ['id'],'id' => '[0-9]+']
+    );
+
+    # =================================================================================
+    # instances_users interaction
+    # =================================================================================
+
+    # add
+    $routes->connect(
+        '/users/:id/add_profile',
+        ['controller' => 'InstancesUsers', 'action' => 'add'],
+        ['pass' => ['id'],'id' => '[0-9]+']
+    );
+
+    # edit
+    $routes->connect(
+        '/users/:id/edit_profile/:instance_namespace',
+        ['controller' => 'InstancesUsers', 'action' => 'edit'],
+        [
+            'pass' => ['id', 'instance_namespace'],
+            'id' => '[0-9]+'
+        ]
+    );
+
+    # delete
+    $routes->connect(
+        '/users/:id/delete_profile/:instance_namespace',
+        ['controller' => 'InstancesUsers', 'action' => 'delete'],
+        [
+            'pass' => ['id', 'instance_namespace'],
+            'id' => '[0-9]+'
+        ]
+    );
+    
+
 
     # =================================================================================
     # sysadmin page
@@ -233,96 +291,17 @@ $app_routes = function (RouteBuilder $routes) {
     );
 
 
-    # =================================================================================
-    # users interaction
-    # =================================================================================
-
-    # login
-    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
-    
-    # logout
-    $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
-    
-    # add
-    $routes->connect('/sign-up', ['controller' => 'Users', 'action' => 'add']);
-    
-    # view
-    $routes->connect('/users/:id', ['controller' => 'Users', 'action' => 'view'],
-        ['pass' => ['id'],'id' => '[0-9]+']
-    );
-        
-    # edit
-    $routes->connect(
-        '/users/:id/edit',
-        ['controller' => 'Users', 'action' => 'edit'],
-        ['pass' => ['id'],'id' => '[0-9]+']
-    );
-
-    # delete
-    $routes->connect(
-        '/users/:id/delete',
-        ['controller' => 'Users', 'action' => 'delete'],
-        ['pass' => ['id'],'id' => '[0-9]+']
-    );
-
-    # =================================================================================
-    # instances_users interaction
-    # =================================================================================
-
-    # add
-    $routes->connect(
-        '/users/:id/add_profile',
-        ['controller' => 'InstancesUsers', 'action' => 'add'],
-        ['pass' => ['id'],'id' => '[0-9]+']
-    );
-
-    # edit
-    $routes->connect(
-        '/users/:id/edit_profile/:instance_namespace',
-        ['controller' => 'InstancesUsers', 'action' => 'edit'],
-        [
-            'pass' => ['id', 'instance_namespace'],
-            'id' => '[0-9]+'
-        ]
-    );
-
- 
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
-
-    /**
-     * Connect catchall routes for all controllers.
-     *
-     * Using the argument `DashedRoute`, the `fallbacks` method is a shortcut for
-     *    `$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);`
-     *    `$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);`
-     *
-     * Any route class can be used with this method, such as:
-     * - DashedRoute
-     * - InflectedRoute
-     * - Route
-     * - Or your own route class
-     *
-     * You can remove these routes once you've connected the
-     * routes you want in your application.
-     */
-    $routes->fallbacks('DashedRoute');
-};
-
-
-Router::scope("/", $app_routes);
-
-$languages = ['en', 'es'];
-foreach ($languages as $lang) {
-    Router::scope("/$lang", ['lang' => $lang], $app_routes);
-}
-
-
-Router::addUrlFilter(function ($params, $request) {
-    if ($request->param('lang')) {
-        $params['lang'] = $request->param('lang');
-    }
-    return $params;
+    // $routes->fallbacks('DashedRoute');
 });
 
+// OJO!: es muy importante definir esta url al FINAL!, pues así, todas las
+// llamadas internas a ['controller' => 'Instances', 'action' => 'home'] caerán
+// sobre la versión que considera el lenguaje.
+//
+// de lo contrario, éstas serán transformadas a algo como: http://<host>/?lang=en
+// lo que desactiva el uso del lenguaje.
+Router::scope("/", function ($routes) {
+    $routes->connect('/', ['controller' => 'Instances', 'action' => 'home']);
+});
 
 Plugin::routes();

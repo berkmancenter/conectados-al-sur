@@ -29,7 +29,7 @@
                     <button class="menu-icon light" type="button" data-toggle></button>
                 </span>
                 DVINE WEB-APP
-                <?php if (isset($instance)): ?>
+                <?php if (isset($instance) && !isset($instance_creating)): ?>
                     <a href=
                     <?= $this->Url->build(['controller' => 'Instances','action' => 'preview', $instance->namespace])
                     ?>
@@ -40,7 +40,7 @@
                     <?= h($instance->name_es) ?>
                     <?php endif; ?>
                     </a>
-                <?php endif; ?>                
+                <?php endif; ?>
             </div>
             <div id="responsive-menu">
                 <div class="top-bar-right">
@@ -65,6 +65,7 @@
                                     </li>
                                     <?php if (
                                             isset($instance) &&
+                                            !isset($instance_creating) &&
                                             $instance->namespace != $this->App->getAdminNamespace() &&
                                             $this->App->isAdmin($auth_user['id'], $instance->id)
                                         ): ?>
@@ -145,7 +146,7 @@
                         <li>
                             <a
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'Licence']) ?>
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Licence']) ?>
                             >
                                 <?= __d('template', "Creative Commons") ?>
                             </a>
@@ -157,7 +158,7 @@
                         <li>
                             <a 
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'PrivacyPolicy']) ?>
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'PrivacyPolicy']) ?>
                             >
                                 <?= __d('template', "Privacy Policy") ?>
                             </a>
@@ -169,7 +170,7 @@
                         <li>
                             <a 
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'Contact']) ?>
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Contact']) ?>
                             >
                                 <?= __d('template', "Contact") ?>
                             </a>
