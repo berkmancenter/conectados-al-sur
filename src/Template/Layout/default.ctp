@@ -48,6 +48,11 @@
                         <li>
                             <a href=<?= $lang_new_url ?>> <?= __d('template', "Language: ") ?> <span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
                         </li>
+                        <li>
+                            <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home'])?>>
+                                <?= __d('template', "Home") ?>
+                            </a>
+                        </li>
                         <?= $this->fetch('available-actions') ?>
                         <?php if (isset($auth_user)): ?>
                             <li>
@@ -137,17 +142,39 @@
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
-                        <li><a class="button" href="#"><?= __d('template', "Creative Commons") ?></a></li>
+                        <li>
+                            <a
+                                class="button"
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'Licence']) ?>
+                            >
+                                <?= __d('template', "Creative Commons") ?>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
-                        <li><a class="button" href="#"><?= __d('template', "Privacy Policy") ?></a></li>
+                        <li>
+                            <a 
+                                class="button"
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'PrivacyPolicy']) ?>
+                            >
+                                <?= __d('template', "Privacy Policy") ?>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <div class="small-12 medium-3 columns footer-infoitem">
                     <ul class="menu">
-                        <li><?= $this->Html->link(__d('template', 'Contact'), "#", ['class' => 'button']) ?></li>
+                        <li>
+                            <a 
+                                class="button"
+                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'Contact']) ?>
+                            >
+                                <?= __d('template', "Contact") ?>
+                            </a>
+                        </li>
+                        <!-- <li><?= $this->Html->link(__d('template', 'Contact'), "#", ['class' => 'button']) ?></li> -->
                     </ul>
                 </div>
             </div>
