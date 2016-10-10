@@ -16,6 +16,12 @@ class AppController extends Controller
     {
         parent::initialize();
 
+        // security must be placed first
+        // $this->loadComponent('Security');
+        $this->loadComponent('Csrf'); // security
+
+
+        // other
         $this->loadComponent('RequestHandler');
         $this->loadComponent('Flash');
 
