@@ -75,7 +75,7 @@
                     <?= $this->Form->button(__('Save'), ['class' => 'button']) ?>
                 </div>
                 <div class="small-6 columns">
-                    <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user_id]) ?> class="alert hollow button"><?= __('CANCEL') ?></a>
+                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user_id]) ?>" class="alert hollow button"><?= __('CANCEL') ?></a>
                 </div>
             </div>
         
@@ -104,9 +104,11 @@
     line-height: 45px;
     color: #999;
 }
-.signup-panel .fi-heart {
-    /*color: red;*/
+
+.signup-panel .input-group-label {
+    width: 70px; /* same width to each label */
 }
+
 .signup-panel .welcome {
     font-size: 26px;
     text-align: center;

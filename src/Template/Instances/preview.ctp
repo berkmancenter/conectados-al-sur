@@ -30,7 +30,7 @@
         <div class="row preview-imgs">
 
             <div class="small-12 medium-6 columns">
-                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'dots', $instance->namespace]) ?> >
+                <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'dots', $instance->namespace]) ?>" >
                     <figure>
                         <?= $this->Html->image('graph_preview.png', ['alt' => 'View dotplot']) ?>
                         <figcaption>dots</figcaption>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="small-12 medium-6 columns">
-                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?> >
+                <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>" >
                     <figure>
                         <?= $this->Html->image('map_preview.png', ['alt' => 'View map']) ?>
                         <figcaption><?=  __("map") ?></figcaption>

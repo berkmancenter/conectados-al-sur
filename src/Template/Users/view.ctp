@@ -9,7 +9,7 @@
     <div class="small-12 column view-title">
         <h3><?= h($user->name) ?></h3>
         <?php if (isset($client_type) && $client_type == 'authorized'): ?>
-            <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>><i class='fi-page-edit size-36'></i><?= __d('users', 'EDIT') ?></a>
+            <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>"><i class='fi-page-edit size-36'></i><?= __d('users', 'EDIT') ?></a>
             <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d('users', 'DELETE'), ['controller' => 'Users', 'action' => 'delete', $user->id], [
                     'escape' => false, 
                     'confirm' => __d('users', 'Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
@@ -50,7 +50,13 @@
                     <?php if (isset($client_type) && $client_type == 'authorized'): ?>
                     <tr>
                         <th><?= __d('users', 'Genre') ?></th>
-                        <td><?= $user->has('genre') ? h($user->genre->name) : '' ?></td>
+                        <td>
+                            <?php if ($lang_current == "en"): ?>
+                                <?= h($user->genre->name) ?>
+                            <?php else: ?>
+                                <?= h($user->genre->name_es) ?>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <?php endif; ?>
                 </table>
@@ -60,7 +66,7 @@
             <div class="tabs-panel" id="panel-profiles">
                 <h4 class="view-subtitle-related"><?= __d('users', 'Registered App Profiles: ') ?></h4>
                 <?php if (isset($client_type) && $client_type == 'authorized'): ?>
-                    <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]) ?>><i class='fi-plus size-24'></i> <?= __d('users', 'Add Profile') ?></a>
+                    <a href="<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]) ?>"><i class='fi-plus size-24'></i> <?= __d('users', 'Add Profile') ?></a>
                 <?php endif; ?>
                 <ul class="accordion" data-accordion data-allow-all-closed="true">
                 <?php foreach ($user->instances as $instance): ?>
@@ -85,7 +91,7 @@
                             <?php if ($client_type == 'authorized' || 
                                 $this->App->isAdmin($client_id, $instance->id)
                             ): ?>
-                                <a href=<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>><i class='fi-page-edit size-24'></i><?= __d('users', 'Edit this profile') ?></a>
+                                <a href="<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>"><i class='fi-page-edit size-24'></i><?= __d('users', 'Edit this profile') ?></a>
                                 <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . __d('users', "Delete this profile"), 
                                     [
                                         'controller' => 'InstancesUsers',
@@ -115,7 +121,14 @@
                                 <tr>
                                     <th><?= __d('users', 'Organization Type') ?></th>
                                     <?php if ($instance->_joinData->organization_type->name != "[null]"): ?>
-                                        <td><?= h($instance->_joinData->organization_type->name) ?></td>
+                                        <td>
+                                            <?php if ($lang_current == "en"): ?>
+                                                <?= h($instance->_joinData->organization_type->name) ?>
+                                            <?php else: ?>
+                                                <?= h($instance->_joinData->organization_type->name_es) ?>
+                                            <?php endif; ?>
+                                        </td>
+
                                     <?php else: ?>
                                         <td><span class="unset-field"><?= __d('users', 'Please, complete this profile.') ?></span></td>
                                     <?php endif; ?>

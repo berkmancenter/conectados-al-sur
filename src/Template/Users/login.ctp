@@ -43,13 +43,13 @@
                         <?= $this->Form->button(__d('auth', 'Login'), ['class' => 'button']) ?>
                     </div>
                     <div class="small-6 columns">
-                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
+                        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?>" class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
                     </div>
                 </div>  
 
             <?= $this->Form->end() ?>
             <p><?= __d("auth", "Don't have an account?") ?>
-                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>">
                     <?= __d("auth", "Sign up here") ?> &raquo
                 </a>
             </p>
@@ -72,6 +72,10 @@
 .signup-panel form input,
 .signup-panel form span {
     height: 50px;
+}
+
+.signup-panel .input-group-label {
+    width: 60px; /* same width to each label */
 }
 
 .signup-panel i {

@@ -15,7 +15,7 @@
         <div class="small-12 column">
 
             <h4 class="view-subtitle-related"><?= __('Web apps: ') ?></h4>
-            <a href=<?= $this->Url->build(['action' => 'add']) ?>>
+            <a href="<?= $this->Url->build(['action' => 'add']) ?>">
                 <i class='fi-plus size-36'></i>
                 <?= __('New app') ?>
             </a>
@@ -32,7 +32,7 @@
                     <tr>
                         <td>
                             <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View App') ?>">
-                                <a href=<?= $this->Url->build(['action' => 'view', $instance->namespace]) ?>>
+                                <a href="<?= $this->Url->build(['action' => 'view', $instance->namespace]) ?>">
                                     <?= h($instance->name) ?>
                                 </a>
                             </span>
@@ -54,7 +54,11 @@
                     <?= $this->Paginator->numbers() ?>
                     <?= $this->Paginator->next(__('next') . ' >') ?>
                 </ul>
-                <p><?= $this->Paginator->counter() ?></p>
+                <p><?= $this->Paginator->counter(
+                            __('Page') . ' {{page}} ' . __('of') . ' {{pages}}'
+                        )
+                    ?>
+                </p>
             </div>
 
             <h4 class="view-subtitle-related"><?= __('Admins: ') ?></h4>
@@ -71,7 +75,7 @@
                     <tr>
                         <td>
                             <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>">
                                     <i class='fi-crown size-24'></i>
                                     <?= h($user->name) ?>
                                 </a>

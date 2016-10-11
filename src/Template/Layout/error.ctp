@@ -17,7 +17,7 @@
             <!--
              <?= $this->fetch('content') ?>
             -->
-            <p>An error has occurred, please return to <a href=<?= echo " . $this->Url->build(['controller' => 'Instances', 'action' => 'index']) . " ?> >Home</a> </p>
+            <p>An error has occurred, please return to <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>" ><?= __('Home') ?> </a> </p>
         </div>
         <div id="footer">
         </div>

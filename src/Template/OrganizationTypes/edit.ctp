@@ -32,7 +32,7 @@
                     <?= $this->Form->button($this->Loc->formSubmit(), ['class' => 'warning button']) ?>
                 </div>
                 <div class="small-12 columns">
-                    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?> class="alert hollow button">
+                    <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>" class="alert hollow button">
                         <?= $this->Loc->formCancel() ?>
                     </a>
                 </div>

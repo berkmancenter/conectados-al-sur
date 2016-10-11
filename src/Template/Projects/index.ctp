@@ -18,8 +18,8 @@
     <div class="small-12 column">
 
         <h4 class="view-subtitle-related"><?= __('Found: ' . $this->request->params['paging']['Projects']['count'] ) ?></h4>
-        <a href=<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-36'></i>New Project</a>
-        <a href=<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>><i class='fi-arrow-down size-36'></i>Download</a>
+        <a href="<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-36'></i>New Project</a>
+        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>"><i class='fi-arrow-down size-36'></i>Download</a>
 
         <table class="hover stack" cellpadding="0" cellspacing="0">
             <thead>
@@ -48,7 +48,11 @@
                 <?= $this->Paginator->numbers() ?>
                 <?= $this->Paginator->next(__('next') . ' >') ?>
             </ul>
-            <p><?= $this->Paginator->counter() ?></p>
+            <p><?= $this->Paginator->counter(
+                        __('Page') . ' {{page}} ' . __('of') . ' {{pages}}'
+                    )
+                ?>
+            </p>
         </div>
     </div>
 </div>

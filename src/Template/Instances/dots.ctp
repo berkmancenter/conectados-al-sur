@@ -2,7 +2,7 @@
 <!-- Available Actions -->
 <?php $this->start('available-actions'); ?>
 <li>
-    <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>><i class='fi-home size-16'></i></a>
+    <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>"><i class='fi-home size-16'></i></a>
 </li>
 <?php $this->end(); ?>
 

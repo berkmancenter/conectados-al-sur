@@ -46,10 +46,10 @@
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <li>
-                            <a href=<?= $lang_new_url ?>> <?= __d('template', "Language: ") ?> <span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
+                            <a href="<?= $lang_new_url ?>"> <?= __d('template', "Language: ") ?> <span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
                         </li>
                         <li>
-                            <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home'])?>>
+                            <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home'])?>">
                                 <?= __d('template', "Home") ?>
                             </a>
                         </li>
@@ -61,7 +61,7 @@
                                     <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span>
                                     </li>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>> <?= __d('template', 'My profile') ?></a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $auth_user['id']]) ?>"> <?= __d('template', 'My profile') ?></a>
                                     </li>
                                     <?php if (
                                             isset($instance) &&
@@ -70,25 +70,25 @@
                                             $this->App->isAdmin($auth_user['id'], $instance->id)
                                         ): ?>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>> <?= __d('template', 'Settings') ?> </a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'view', $instance->namespace]) ?>"> <?= __d('template', 'Settings') ?> </a>
                                     </li>
                                     <?php endif; ?>
                                     <?php if ($this->App->isSysadmin($auth_user['id'])): ?>
                                     <li>
-                                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>> <?= __d('template', 'DVINE Settings') ?> </a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'index']) ?>"> <?= __d('template', 'DVINE Settings') ?> </a>
                                     </li>
                                     <?php endif; ?>
                                     <li id="top-bar-logout-li">
-                                        <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>> <?= __d('template', 'Sign Out') ?> </a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>"> <?= __d('template', 'Sign Out') ?> </a>
                                     </li>
                                 </ul>
                             </li>
                         <?php else: ?>
                             <li>
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>> <?= __d('template', 'Sign Up') ?> </a>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>"> <?= __d('template', 'Sign Up') ?> </a>
                             </li>
                             <li>
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>> <?= __d('template', 'Sign In') ?> </a>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"> <?= __d('template', 'Sign In') ?> </a>
                             </li>
                         <?php endif; ?>
                     </ul>
@@ -146,7 +146,7 @@
                         <li>
                             <a
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Licence']) ?>
+                                href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Licence']) ?>"
                             >
                                 <?= __d('template', "Creative Commons") ?>
                             </a>
@@ -158,7 +158,7 @@
                         <li>
                             <a 
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'PrivacyPolicy']) ?>
+                                href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'PrivacyPolicy']) ?>"
                             >
                                 <?= __d('template', "Privacy Policy") ?>
                             </a>
@@ -170,7 +170,7 @@
                         <li>
                             <a 
                                 class="button"
-                                href=<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Contact']) ?>
+                                href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Contact']) ?>"
                             >
                                 <?= __d('template', "Contact") ?>
                             </a>

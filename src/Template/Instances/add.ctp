@@ -9,7 +9,7 @@
 <div class="row">
     <div class="small-12 medium-12 column view-title">
         <h3><?= __d('crud', 'New Application:') ?></h3>
-        <a href=<?= $this->Url->build(['action' => 'index']) ?>>
+        <a href="<?= $this->Url->build(['action' => 'index']) ?>">
             <i class='fi-arrow-left size-36'></i>
             <?= __d('instances', 'Back to admin panel') ?>
         </a>
@@ -66,7 +66,7 @@
                 <div class="tabs-panel" id="panel-description">
                     <h4 class="view-subtitle"><?= __d('instances', 'Description') . ':' ?></h4>
                     <fieldset>
-                    <p><?= __d('instances', 'Both descriptions will be displayed on the home page of this instance.') ?></p>
+                    <p><?= __d('instances', 'Both descriptions will be displayed on the home page of this app.') ?></p>
                     
                     <?= $this->Form->input('description', [
                         'label' => $this->Loc->fieldInstanceDescriptionEn(),

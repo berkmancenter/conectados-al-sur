@@ -68,7 +68,7 @@ class InstancesController extends AppController
                     ->contain([
                         'Instances' => function ($q) use ($app_ns) {
                             return $q
-                                ->select(['id', 'name', 'namespace', 'logo'])
+                                ->select(['id', 'name', 'name_es', 'namespace', 'logo'])
                                 ->where(['Instances.namespace !=' => $app_ns]);
                         }
                     ])

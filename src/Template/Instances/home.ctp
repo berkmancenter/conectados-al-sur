@@ -44,7 +44,7 @@
                         <?php foreach ($auth_user_instances as $instance): ?>
                             <tr>
                                 <td>
-                                <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>
+                                <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'preview', $instance->namespace]) ?>"
                                 >
                                 <?php if ($lang_current == "en"): ?>
                                     <?= $instance->name ?>
@@ -63,11 +63,11 @@
 
             <?php else: ?>
             <div class="button-group large stacked">
-                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>"
                      class="secondary button">
                      <?= __d('template', 'Sign In') ?>
                  </a>
-                 <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>
+                 <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>"
                      class="secondary button">
                      <?= __d('template', 'Sign Up') ?>
                  </a>

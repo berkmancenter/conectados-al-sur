@@ -77,7 +77,7 @@
             <div class="tabs-panel" id="panel-categories">
 
                 <h4 class="view-subtitle-related"><?= __d('instances', 'Related Project Categories') . ': ' . count($instance->categories) ?></h4>
-                <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-24'></i> <?= __d('crud', 'Add Category') ?></a>
+                <a href="<?= $this->Url->build(['controller' => 'Categories', 'action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-24'></i> <?= __d('crud', 'Add Category') ?></a>
                 <?php if (!empty($instance->categories)): ?>
                 <table class="hover stack" cellpadding="0" cellspacing="0">
                     <thead>
@@ -94,7 +94,7 @@
                             <td><?= h($category->name_es) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Edit') ?>">
-                                    <a href=<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $instance->namespace, $category->id]) ?>><i class='fi-page-edit size-24'></i></a>
+                                    <a href="<?= $this->Url->build(['controller' => 'Categories', 'action' => 'edit', $instance->namespace, $category->id]) ?>"><i class='fi-page-edit size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Delete') ?>">
                                 <?= $this->Form->postLink(
@@ -119,7 +119,7 @@
             <div class="tabs-panel" id="panel-organization_types">
 
                 <h4 class="view-subtitle-related"><?= __d('instances', 'Related Organization Types') . ': ' . count($instance->organization_types) ?></h4>
-                <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance->namespace]) ?>><i class='fi-plus size-24'></i> <?= __('Add Organization Type') ?></a>
+                <a href="<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-24'></i> <?= __('Add Organization Type') ?></a>
                 <?php if (!empty($instance->organization_types)): ?>
                 <table class="hover stack" cellpadding="0" cellspacing="0">
                     <thead>
@@ -136,7 +136,7 @@
                             <td><?= h($organization_type->name_es) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Edit') ?>">
-                                    <a href=<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', $instance->namespace, $organization_type->id]) ?>>
+                                    <a href="<?= $this->Url->build(['controller' => 'OrganizationTypes', 'action' => 'edit', $instance->namespace, $organization_type->id]) ?>">
                                         <i class='fi-page-edit size-24'></i>
                                     </a>
                                 </span>
@@ -165,7 +165,7 @@
                 <!-- <h4 class="view-subtitle-related"><?= __d('instances', 'Actions') . ':' ?></h4> -->
                 <div id="download-link">
                     <a 
-                        href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'exportCsv', $instance->namespace]) ?>>
+                        href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'exportCsv', $instance->namespace]) ?>">
                         <i class='fi-arrow-down size-24'></i>
                          <?= __('Download User List') ?>
                     </a>
@@ -189,7 +189,7 @@
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>"><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <?php if (isset($client_type) && $client_type == 'sysadmin'): ?>
                                     <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Revoke Sysadmin Privileges') ?>">
@@ -217,8 +217,7 @@
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>"><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Revoke Admin Privileges') ?>">
                                 <?= $this->Form->postLink(
@@ -280,8 +279,7 @@
                             <td><?= h($user->email) ?></td>
                             <td class="actions">
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('View user data') ?>">
-                                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', 
-                                $user->id]) ?>><i class='fi-magnifying-glass size-24'></i></a>
+                                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'view', $user->id]) ?>"><i class='fi-magnifying-glass size-24'></i></a>
                                 </span>
                                 <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Delete user') ?>">
                                 <?= $this->Form->postLink(
@@ -318,7 +316,11 @@
                         <?= $this->Paginator->numbers() ?>
                         <?= $this->Paginator->next(__('next') . ' >') ?>
                     </ul>
-                    <p><?= $this->Paginator->counter() ?></p>
+                    <p><?= $this->Paginator->counter(
+                                __('Page') . ' {{page}} ' . __('of') . ' {{pages}}'
+                            )
+                        ?>
+                    </p>
                 </div>
                 <?php else: ?>
                     <p><?= __('This app does not have any related user.') ?></p>

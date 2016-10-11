@@ -75,7 +75,7 @@
                 <div class="tabs-panel" id="panel-description">
                     <h4 class="view-subtitle"><?= __d('instances', 'Description') . ":" ?></h4>
                     <fieldset>
-                    <p><?= "Both descriptions will be displayed on the home page of this app." ?></p>
+                    <p><?= __d('instances', 'Both descriptions will be displayed on the home page of this app.') ?></p>
                     
                     <?= $this->Form->input('description', [
                         'label' => $this->Loc->fieldInstanceDescriptionEn(),

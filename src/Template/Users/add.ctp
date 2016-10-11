@@ -80,7 +80,7 @@
                                 name="repassword"
                                 type="password"
                                 class="input-group-field"
-                                placeholder= <?= __d('auth', "password (again)") ?>
+                                placeholder="<?= __d('auth', 'password (again)') ?>"
                             >
                         </div>
                     </div>
@@ -105,13 +105,13 @@
                         <?= $this->Form->button(__d('auth', 'Create account'), ['class' => 'button']) ?>
                     </div>
                     <div class="small-6 columns">
-                        <a href=<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?> class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
+                        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?>" class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
                     </div>
                 </div>
 
             <?= $this->Form->end() ?>
             <p><?= __d('auth', "Already have an account?") ?>
-                <a href=<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>>
+                <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">
                     <?= __d('auth', "Login here") ?> &raquo
                 </a>
             </p>
@@ -132,6 +132,10 @@
 .signup-panel form select,
 .signup-panel form span {
     height: 50px;
+}
+
+.signup-panel .input-group-label {
+    width: 60px; /* same width to each label */
 }
 
 .signup-panel i {
