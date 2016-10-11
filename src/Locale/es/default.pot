@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-09 03:11+0000\n"
-"PO-Revision-Date: 2016-10-09 01:40-0300\n"
+"PO-Revision-Date: 2016-10-10 20:19-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -603,3 +603,17 @@ msgid ""
 msgstr ""
 "¿Está seguro que desea eliminar la aplicación \"{0}\". Esta operación no se "
 "puede revertir. Todos los datos relacionados serán eliminados!!."
+
+#: Template/Instances/view.ctp:170
+msgid "Download User List"
+msgstr "Descargar lista de usuarios"
+
+#: Template/Instances/index.ctp:58 Template/Instances/view.ctp:322
+#: Template/Projects/index.ctp:52
+msgid "Page"
+msgstr "Página"
+
+#: Template/Instances/index.ctp:58 Template/Instances/view.ctp:322
+#: Template/Projects/index.ctp:52
+msgid "of"
+msgstr "de"

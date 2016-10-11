@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-09 03:11+0000\n"
-"PO-Revision-Date: 2016-10-09 01:40-0300\n"
+"PO-Revision-Date: 2016-10-10 20:26-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -54,3 +54,7 @@ msgstr "Política de Privacidad"
 #: Template/Layout/default.ctp:150
 msgid "Contact"
 msgstr "Contacto"
+
+#: Template/Layout/default.ctp:53
+msgid "Home"
+msgstr "Inicio"
