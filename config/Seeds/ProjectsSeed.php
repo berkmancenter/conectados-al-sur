@@ -61,6 +61,14 @@ class ProjectsSeed extends AbstractSeed
             } else {
                 $country_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
             }
+            $country2_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
+            $country3_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
+            while ($country2_id == $country_id) {
+                $country2_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
+            }
+            while ($country3_id == $country_id || $country3_id == $country2_id) {
+                $country3_id = $country_ids[$faker->numberBetween(1,count($country_ids)-1)];
+            }
 
             $instance_id = 2;
             $min_org_id = 3;
@@ -90,6 +98,8 @@ class ProjectsSeed extends AbstractSeed
                 'organization_type_id' => $faker->numberBetween($min_org_id,$max_org_id),
                 'project_stage_id'     => $faker->numberBetween(1,5),
                 'country_id'           => $country_id,
+                'country2_id'           => $country2_id,
+                'country3_id'           => $country3_id,
                 'city_id'              => 0,//$city_ids[$faker->numberBetween(0,count($city_ids)-1)],
                 'latitude'      => $faker->randomFloat(4, -70, 70),
                 'longitude'     => $faker->randomFloat(4, -170,170),

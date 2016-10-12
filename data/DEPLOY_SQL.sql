@@ -259,6 +259,8 @@ CREATE TABLE projects (
     organization_type_id INT NOT NULL DEFAULT 1 REFERENCES organization_types(id) ON DELETE SET DEFAULT,
     project_stage_id     INT NOT NULL DEFAULT 0 REFERENCES project_stages(id) ON DELETE SET DEFAULT,
     country_id           INT NOT NULL REFERENCES countries(id),
+    country2_id           INT NOT NULL DEFAULT 0 REFERENCES countries(id),
+    country3_id           INT NOT NULL DEFAULT 0 REFERENCES countries(id),
     city_id              INT DEFAULT 0 REFERENCES cities(id) ON DELETE SET DEFAULT,
     latitude  REAL,
     longitude REAL,

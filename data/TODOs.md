@@ -52,7 +52,6 @@ acceso a admin tools
 - mejorar sistema de back to previous... sin tener que pasar por edits/view/edits/view/...
 	- ejemplo: botón para volver a lista
 - mejorar redirecciones.. ejemplo; al eliminar un proyecto, volver a la lista, mapa o gráfico, no al preview
-- editar fechas correctamente: project
 sanitizar queries!
 probar queries con parametros raros
 sql transsacciones encakephp
