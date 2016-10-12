@@ -6,6 +6,24 @@ use Cake\ORM\TableRegistry;
 
 class CategoriesController extends AppController
 {
+    public function isAuthorized($user) {
+        
+        if (parent::isAuthorized($user)) { return true; }
+
+        if ($this->request->action == 'add' || 
+            $this->request->action == 'edit' || 
+            $this->request->action == 'delete'
+        ) {
+            $instance_namespace = $this->request->params['pass'][0];
+
+            $instance = $this->App->getInstance($instance_namespace, false); // do not redirect
+            if ($instance && $this->App->isAdmin($user['id'], $instance->id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function add($instance_namespace = null)
     {
         // block sys instance

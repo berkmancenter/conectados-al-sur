@@ -296,8 +296,6 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'delete']);
 
-        $logged_user = $this->Auth->user();
-
         // delete user
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
@@ -306,13 +304,7 @@ class UsersController extends AppController
             $this->Flash->error(__('The user could not be deleted. Please, try again.'));
         }
 
-        // redirect to view when deleting by admin, preview otherwise
         $this->Auth->logout();
-        // if($logged_user['id'] != $user->id) {
-        //     $view_url = Router::url(['controller' => 'Instances', 'action' => 'home', '_full' => true]);
-        //     $this->redirect($view_url);
-        // } else {
         $this->redirect(['controller' => 'Instances', 'action' => 'home']);
-        // }
     }
 }

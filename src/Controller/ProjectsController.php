@@ -27,35 +27,29 @@ class ProjectsController extends AppController
             return true;
         }
         
-        // All registered users can add projects to their instance!
+        // All registered users can add projects to their app!
         if ($this->request->action === 'add') {
-
-            // real ns
-            $instance_namespace = TableRegistry::get('Instances')
-                ->find()
-                ->select(['id', 'namespace'])
-                ->where(['id' => $user['instance_id']])
-                ->first()
-                ->namespace;
-
-            // url namespace
-            $url_namespace = $this->request->params['pass'][0];
-
-            // same namespace
-            if ($url_namespace == $instance_namespace) {
+            $instance_namespace = $this->request->params['pass'][0];
+            $instance = $this->App->getInstance($instance_namespace, false); // do not redirect
+            if ($this->App->isUserRegistered($user['id'], $instance->id)) {
                 return true;
             }
         }
 
-        // The owner of a project can edit and delete it
+        // The project owner or an app admin can edit and delete it
         if (in_array($this->request->action, ['edit', 'delete'])) {
+
             $instance_namespace = (int)$this->request->params['pass'][0];
-            $project_id = (int)$this->request->params['pass'][1];
-            if ($this->Projects->isOwnedBy($project_id, $user['id'])) {
+            $project_id         = (int)$this->request->params['pass'][1];
+            $instance = $this->App->getInstance($instance_namespace, false); // do not redirect
+
+            if (
+                $this->Projects->isOwnedBy($project_id, $user['id']) ||
+                ($instance && $this->App->isAdmin($user['id'], $instance->id))
+            ) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -408,11 +402,25 @@ class ProjectsController extends AppController
         ]);
         // var_dump($project);
 
+        $is_authorized = false;
+        $user = $this->Auth->user();
+        if ($user) {
+            if (
+                $this->Projects->isOwnedBy($id, $user['id']) ||
+                $this->App->isAdmin($user['id'], $instance->id) ||
+                $this->App->isSysadmin($user['id'])
+            ) {
+                $is_authorized = true;
+            }
+        }
+        $this->set('is_authorized', $is_authorized);
+
         $download_query = "p=" . $project->id;
         $this->set('download_query', $download_query);
         $this->set('project', $project);
         $this->set('instance', $instance);
         $this->set('_serialize', ['project']);
+        
     }
 
 

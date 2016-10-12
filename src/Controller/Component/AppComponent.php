@@ -91,6 +91,17 @@ class AppComponent extends Component
             ->first();
         return $data;
     }
+    public function isUserRegistered($user_id, $instance_id) {
+        $data = TableRegistry::get('InstancesUsers')
+            ->find()
+            ->where(['user_id' => $user_id])
+            ->where(['instance_id' => $instance_id])
+            ->first();
+        if ($data) {
+            return true;
+        }
+        return false;
+    }
 
     public function isAdmin($user_id, $instance_id)
     {

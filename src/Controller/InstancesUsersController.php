@@ -11,15 +11,35 @@ class InstancesUsersController extends AppController
     {
         if (parent::isAuthorized($user)) { return true; }
         
-        // can add, edit and delete to himself
-        if ($this->request->action == 'add' || $this->request->action == 'edit' || $this->request->action == 'delete') {
+        // add: to himself
+        if ($this->request->action == 'add') {
             $requested_id = $this->request->params['pass'][0];
             if ($requested_id == $user['id']) {
                 return true;
             }
         }
+
+        // edit: himself, app users
+        if ($this->request->action == 'edit') {
+            $requested_id       = $this->request->params['pass'][0];
+            $instance_namespace = $this->request->params['pass'][1];
+            $instance = $this->App->getInstance($instance_namespace, false); // do not redirect
+            if ($requested_id == $user['id'] || $this->App->isAdmin($user['id'], $instance->id)) {
+                return true;
+            }
+        }
+
+        // can edit and delete to himself and app users
+        if ($this->request->action == 'delete') {
+            $requested_id = $this->request->params['pass'][0];
+            $instance_id  = $this->request->params['pass'][1];
+            if ($requested_id == $user['id'] || $this->App->isAdmin($user['id'], $instance_id)) {
+                return true;
+            }
+        }
         return false;
     }
+    
 
     public function add($user_id = null)
     {

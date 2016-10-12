@@ -27,9 +27,16 @@ Router::defaultRouteClass('DashedRoute');
 
 Router::addUrlFilter(function ($params, $request) {
     if (isset($request->params['lang']) && !isset($params['lang'])) {
-        $params['lang'] = $request->params['lang'];
+        $params['lang'] = $request->params['lang']; // use previous lang
     } else if (!isset($params['lang'])) {
         $params['lang'] = 'en'; // default language
+    }
+
+    // forbid other languages
+    if (isset($request->params['lang']) &&
+       !in_array($request->params['lang'], ['en', 'es'])) 
+    {
+        unset($params['lang']);
     }
     return $params;
 });

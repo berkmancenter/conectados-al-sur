@@ -234,7 +234,7 @@
                                     )
                                 ?>
                                 </span>
-                                <?php if (isset($client_type) && $client_type == 'sysadmin'): ?>
+                                <?php if (isset($client_type) && ($client_type == 'sysadmin')): ?>
                                     <span data-tooltip aria-haspopup="true" class="has-tip" data-disable-hover="false" tabindex="1" title="<?= __('Grant Sysadmin Privileges') ?>">
                                     <?= $this->Form->postLink(
                                             $this->Html->tag('i', '', array('class' => 'fi-upload-cloud size-24')),

@@ -298,6 +298,7 @@ class InstancesController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
+        
         $instance = $this->Instances
             ->find()
             ->contain([
@@ -366,6 +367,9 @@ class InstancesController extends AppController
         $auth_client = $this->Auth->user();
         if ($auth_client && $this->App->isSysadmin($auth_client['id'])) {
             $this->set('client_type', 'sysadmin');
+
+        } elseif ($auth_client && $this->App->isAdmin($auth_client['id'], $instance->id)) {
+            $this->set('client_type', 'admin');
         } else {
             // common client (should not happen!)
             $this->set('client_type', 'other');
