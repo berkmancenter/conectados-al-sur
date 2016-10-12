@@ -2,6 +2,7 @@
 <?php $this->start('available-actions'); ?>
 <?php $this->end(); ?>
 
+
 <!-- Page Content -->
 <div class="fullwidth page-content">
 
@@ -76,9 +77,24 @@
                     <fieldset>
                         <?php
                             echo $this->Form->input('project_stage_id', ['options' => $projectStages]);
-                            echo $this->Form->input('start_date', ['empty' => true]);
-                            echo $this->Form->input('finish_date', ['empty' => true]);
                         ?>
+                        <div class="row">
+                            <div class="small-12 medium-6 columns">
+                                <?= $this->Form->input('start_date', [
+                                    'empty'            => true,
+                                    'id'               => 'dp_start',
+                                    'type'             => 'text'
+                                ]) ?>
+                            </div>
+                            <div class="small-12 medium-6 columns">
+                                <?= $this->Form->input('finish_date', [
+                                    'empty'            => true,
+                                    'id'               => 'dp_finish',
+                                    'type'             => 'text'
+                                ]) ?>
+                            </div>
+                        </div>
+
                     </fieldset>
                 </div>
 
@@ -98,3 +114,27 @@
         </div>
     </div>
 </div>
+
+<?= $this->Html->css('https://cdnjs.cloudflare.com/ajax/libs/foundation-datepicker/1.5.0/css/foundation-datepicker.min.css') ?>
+<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/foundation-datepicker/1.5.0/js/foundation-datepicker.min.js') ?>
+
+<script type="text/javascript">
+    window.prettyPrint && prettyPrint();
+    $('#dp_start').fdatepicker({
+      format: 'mm/dd/yy',
+      disableDblClickSelection: true
+    });
+    $('#dp_finish').fdatepicker({
+      format: 'mm/dd/yy',
+      disableDblClickSelection: true
+    });
+</script>
+
+<style type="text/css">
+.datepicker table tr th {
+    color: black;
+}
+.fa-remove {
+    width: 30px;
+}
+</style>

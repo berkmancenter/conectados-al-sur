@@ -25,8 +25,6 @@ DETALLES:
 - Primer mensaje flash se ve muy mal.. incluso desaparece en dispositivos pequeños
 
 
-- view projects.. mostrar info de que no hay proyectos registrados para cierta instancia y user... en vez de mostrar tabla en blanco
-
 logo:
 -formatos aceptados y chequeo de tamaño y tipo
 -posibilidad de borrar el logo?
@@ -41,18 +39,11 @@ logo:
 
 - que hacer al borrar categoria u org type? 
 
-- user view no muestra todos los proyectos para users sysadmin... habría que registrar a los sysadmins en otras instancias, para que puedan agregar proyectos.
-- sysadmin debe poder ver sus proyectos, ordenados por instancia.. sólo el y otros sysadmins, el resto no debe poder verlos.
-- verificar que datos de edit y add calcen con valores de la base de datos... ej> no agregar cat Id de otra instancia
-
-- secure login data https
 - ojo ccon los max limit del paginate!, puede limitar info de proyectos y otros
 - project delete check instance
 - evitar filtrar datos de instancia 0
 - instance add --> agregar datos dummy
-- buscar todos en el código
 - add project tiene user fijo a 0!
-- check de que al hablar de sysadmins haya coherencia con eso del instance_id... pues no debiera haber ese check
 - agregar tooltips a todos los botones. ejemplo: instances index > users
 -verificar cadena de eliminaciones al borrar user, instancia, proyecto, org_type, category, ...
 acceso a admin tools
