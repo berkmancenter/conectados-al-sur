@@ -6,27 +6,6 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-/**
- * Projects Model
- *
- * @property \Cake\ORM\Association\BelongsTo $Users
- * @property \Cake\ORM\Association\BelongsTo $Instances
- * @property \Cake\ORM\Association\BelongsTo $OrganizationTypes
- * @property \Cake\ORM\Association\BelongsTo $ProjectStages
- * @property \Cake\ORM\Association\BelongsTo $Countries
- * @property \Cake\ORM\Association\BelongsTo $Cities
- * @property \Cake\ORM\Association\BelongsToMany $Categories
- *
- * @method \App\Model\Entity\Project get($primaryKey, $options = [])
- * @method \App\Model\Entity\Project newEntity($data = null, array $options = [])
- * @method \App\Model\Entity\Project[] newEntities(array $data, array $options = [])
- * @method \App\Model\Entity\Project|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Project patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
- * @method \App\Model\Entity\Project[] patchEntities($entities, array $data, array $options = [])
- * @method \App\Model\Entity\Project findOrCreate($search, callable $callback = null)
- *
- * @mixin \Cake\ORM\Behavior\TimestampBehavior
- */
 class ProjectsTable extends Table
 {
 
@@ -64,6 +43,14 @@ class ProjectsTable extends Table
         ]);
         $this->belongsTo('Countries', [
             'foreignKey' => 'country_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Countries', [
+            'foreignKey' => 'country2_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Countries', [
+            'foreignKey' => 'country3_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Cities', [
@@ -146,6 +133,8 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
         $rules->add($rules->existsIn(['project_stage_id'], 'ProjectStages'));
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
+        $rules->add($rules->existsIn(['country2_id'], 'Countries'));
+        $rules->add($rules->existsIn(['country3_id'], 'Countries'));
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
 
         return $rules;

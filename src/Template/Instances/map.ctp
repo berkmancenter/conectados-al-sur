@@ -4,121 +4,142 @@
 <?php $this->end(); ?>
 
 <!-- Page Content -->
-<div class="fullwidth page-content-with-sidebar">
-
-    <div class="off-convas-wrapper">
-        <div class="off-convas-wrapper-inner" data-off-canvas-wrapper>
-
-            <div class="off-canvas position-left" id="offCanvas" data-off-canvas>
-                <button class="close-button" aria-label="Close menu" type="button" data-close>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-
-                <div class="row">
-                    <div class="small-12 columns">
-                        <div class="form">
-                            <p><strong>Filtering options</strong></p>
-                            
-                            <form id="filter-form">
-                                <?php 
-                                echo $this->Form->input('Organization Type', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-orgtype',
-                                    'empty' => '---',
-                                    'options' => $_organization_types]
-                                    //, 'multiple' => true
-                                );
-                                echo $this->Form->input('Category', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-category',
-                                    'empty' => '---',
-                                    'options' => $_categories]
-                                );
-                                echo $this->Form->input('Stage', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-stage',
-                                    'empty' => '---',
-                                    'options' => $project_stages_f]
-                                );
-                                echo $this->Form->input('Collaborator genre', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-genre',
-                                    'empty' => '---',
-                                    'options' => $genres_f]
-                                );
-                                echo $this->Form->input('Region', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-region',
-                                    'empty' => '---',
-                                    'options' => $continents_f]
-                                );
-                                echo $this->Form->input('Country', [
-                                    // 'class' => 'filter-select',
-                                    'id' => 'filter-country',
-                                    'empty' => '---',
-                                    'options' => []]
-                                );
-                                ?>
-                            </form>
-                            <button type="button" class="button" id="filter-clear">Clear Filters</button>
-                            <button type="button" class="warning button" id="filter-apply">Apply</button>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
-
-            <div class="off-cavas-content" data-off-canvas-content>
-                <div class="row projects-index expanded" data-equalizer="container">
-                    <nav class="medium-4 large-3 columns side-nav" id="actions-sidebar" data-equalizer-watch="container">
-                        <div class="side-links" data-equalizer="links">
-                            <ul class="expanded button-group">
-                            <?= $this->Html->link(__('New Project'), [
-                                'controller' => 'Projects',
-                                'action' => 'add',
-                                 $instance->namespace
-                            ], [
-                                 'class' => 'secondary button',
-                                 'data-equalizer-watch' => 'links'
-                            ]) ?>
-                            <?= $this->Html->link(__('Graph Visualization'), [
-                                'controller' => 'Instances',
-                                'action' => 'dots', $instance->namespace
-                            ], [
-                                'class' => 'secondary button',
-                                'data-equalizer-watch' => 'links'
-                            ]) ?>
-                        </ul>
-                        </div>
-                        <hr>
-                        <div class="side-filters">
-                            <p id="info-nprojects"></p>
-                            <button type="button" class="button" data-toggle="offCanvas">Filter Panel</button>
-                            <?= $this->Html->link(__('Project List'), [
-                                'controller' => 'Projects',
-                                'action' => 'index', $instance->namespace
-                            ], [
-                                'id' => 'map_project_list_button',
-                                'class' => 'secondary button',
-                                'target' => '_blank'
-                            ]) ?>
-                        </div>
-                        <hr>
-                        <div class="side-nav-info">
-                            <p id="info-country-label"></p>
-                        </div>
-                    </nav>
-                    <div class="medium-8 large-9 columns projects-map" data-equalizer-watch="container">
-                        <div id="tooltip-container"></div>
-                        <div id="svg-map">
-                            <div class="zoom_buttons">
-                                <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
-                                <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
-                            </div>
-                        </div>
-                    </div>
+<div class="fullwidth page-content-map">
+    <div class="row expanded">
+        <div class="small-12 columns" id="map-column">
+            <div id="tooltip-container"></div>
+            <div id="svg-div">
+                <div class="zoom_buttons">
+                    <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
+                    <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="row expanded" id="map-navbar">
+        <div class="small-3 medium-2 large-1 columns" id="map-left-controls" data-equalizer="links">
+            <ul class="button-group">
+            <?= $this->Html->link("<i class='fi-plus size-36'></i>", [
+                'controller' => 'Projects',
+                'action' => 'add',
+                 $instance->namespace
+            ], [
+                 'class' => 'secondary button',
+                 'escape' => false
+                 // 'data-equalizer-watch' => 'links'
+            ]) ?>
+            <?= $this->Html->link("<i class='fi-graph-pie size-36'></i>", [
+                'controller' => 'Instances',
+                'action' => 'dots', $instance->namespace
+            ], [
+                'class' => 'secondary button',
+                'escape' => false
+                // 'data-equalizer-watch' => 'links'
+            ]) ?>
+            </ul>
+        </div>
+        <div class="small-6 medium-8 large-10 columns" id="map-middle-controls">
+            <span id="info-country-label"></span>
+            <ul id="info-country-ul">
+            </ul>
+        </div>
+        <div class="small-3 medium-2 large-1 columns" id="map-right-controls">
+            <button type="button" class="button" id="show-filters-button">
+                <i class='fi-widget size-36'></i>
+            </button>
+            <span id="info-nprojects-txt"><?= __('total projects') ?></span>
+            <span id="info-nprojects">0</span>
+            <?= $this->Html->link(__('View All'), [
+                'controller' => 'Projects',
+                'action' => 'index', $instance->namespace
+            ], [
+                'id' => 'map_project_list_button',
+                'target' => '_blank'
+            ]) ?>
+        </div>
+    </div>
+    <div class="form" id="filters-div">
+        <div class="row expanded">
+            <div class="small-12 columns">
+                <span id="filters-title"><?= __('Filtering Options') ?></span>
+            </div>
+        </div>
+        <form id="filter-form">
+            <div class="row expanded">
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Organization Type', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-orgtype',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => $_organization_types]
+                        //, 'multiple' => true
+                    );
+                    ?>
+                </div>
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Category', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-category',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => $_categories]
+                    );
+                    ?>
+                </div>
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Stage', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-stage',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => $project_stages_f]
+                    );
+                    ?>
+                </div>
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Collaborator genre', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-genre',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => $genres_f]
+                    );
+                    ?>
+                </div>
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Region', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-region',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => $continents_f]
+                    );
+                    ?>
+                </div>
+                <div class="small-6 medium-4 large-3 columns">
+                    <?php 
+                    echo $this->Form->input('Country', [
+                        // 'class' => 'filter-select',
+                        'id' => 'filter-country',
+                        'empty' => '---',
+                        'class' => 'filter-input',
+                        'options' => []]
+                    );
+                    ?>
+                </div>
+                <div class="small-12 large-6 columns">
+                    <button type="button" class="hollow button" id="filter-clear">Clear Filters</button>
+                    <button type="button" class="hollow button" id="filter-apply">Apply</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -155,7 +176,12 @@
     // console.log(_data_categories);
     // console.log(_data_organization_types);
 
-
+    var height_footer_logo = 0;
+    <?php if (isset($instance) &&
+              isset($instance->logo) &&
+              !empty($instance->logo)): ?>
+        height_footer_logo = 80;
+    <?php endif; ?>
 
     ///////////////////////////////////////////////////////////////////////////////
     //////////////////// GET DATA HELPERS /////////////////////////////////////////
@@ -343,17 +369,6 @@
 
 <!-- CSS -->
 <?= $this->Html->css('app/map.css') ?>
-<?php if (isset($instance_namespace) 
-    && isset($instance_logo)
-    && !empty($instance_logo)): ?>
-    
-    <style type="text/css">
-    div#content {
-        /* bottom padding for footer: prevents overlaping; */
-        padding-bottom: 103px;
-    }
-    </style>
-<?php endif; ?>
 
 
 <!-- JAVASCRIPT -->

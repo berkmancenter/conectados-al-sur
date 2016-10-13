@@ -23,18 +23,13 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
-
-// classical margin convention
-var availableWidth  = document.getElementById('svg-map').clientWidth;
-var availableHeight = document.getElementById('svg-map').clientHeight;
-var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width  = availableWidth - margin.left - margin.right,
-    height = 700 - margin.top  - margin.bottom;
+var context = {}
+context.svg_div = document.getElementById('svg-div');
 
 
 // zooming behavior
 var zoom = d3.zoom()
-    .scaleExtent([0.5, 5])
+    .scaleExtent([0.8, 5])
     .translateExtent([[-400, -500], [2500, 900]])
     .on("zoom", zoomed);
 
@@ -51,23 +46,16 @@ var path = d3.geoPath()
 
 
 // svg viewport
-var svg = d3.select("#svg-map")
-    .append("svg")
-        .attr("width" , width  + margin.left + margin.right )
-        .attr("height", height + margin.top  + margin.bottom);
-
+var svg = d3.select("#svg-div").append("svg")
+    .attr("id", "svg-root");
 
 // create inner viewport and enable zooming
-var outer_g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-    .call(zoom);
+var outer_g = svg.append("g").call(zoom);
 
 // svg background for zomming
-outer_g.append("g").attr("class", "svg-g-background")
-    .append("rect")
-        .attr("class", "svg-background")
-        .attr("width", width)
-        .attr("height", height);
+var svg_background = outer_g
+    .append("g").attr("class", "svg-g-background")
+    .append("rect").attr("class", "svg-background");
 
 d3.selectAll("button[data-zoom]")
     .on("click", zoomButtonListener);
@@ -79,6 +67,69 @@ var g = outer_g.append("g").attr("class", "svg-draws");
 d3.queue()
     .defer(d3.json, topojson_file)
     .await(ready);
+
+
+// window resize listener
+update_window();
+window.addEventListener("resize", update_window);
+
+// show filters button
+var showingFilters = false;
+function filterShowListener() {
+    // d3.select('#map-navbar').style("display", 'none');
+
+    if (showingFilters) {
+        d3.select('#filters-div').style("display", 'none');
+    } else {
+        d3.select('#filters-div').style("display", 'block');
+    };
+    showingFilters = !showingFilters;
+    update_window();
+}
+document.getElementById('show-filters-button').addEventListener("click", filterShowListener);
+
+function update_window() {
+
+    var totalWidth  = window.innerWidth;
+    var totalHeight = window.innerHeight;
+    var height_topbar = document.getElementById("top-bar-div").clientHeight;
+    var height_infodiv = 150;
+    var height_filterdiv = 205;
+    var height_footer = 37;
+    height_footer_logo = 0; // hide footer logo
+    if (totalWidth < 640) {
+        height_footer = 228 - 75;  // footer is taller on small devices;
+        height_filterdiv = 342;    // filter window is 342px height on small
+    } else if (totalWidth < 1024) {
+        height_filterdiv = 262;    // filter window is 262px height on medium
+    };
+
+    var height_footer_full = height_footer + height_footer_logo + height_infodiv;
+    if (showingFilters) { height_footer_full += height_filterdiv; }
+
+    // current size
+    var width  = context.svg_div.clientWidth;
+    var height = totalHeight - height_topbar - height_footer_full;
+    // classical margin convention
+    var margin = {top: 0, right: 0, bottom: 0, left: 0};
+    var padded_width  = width  - margin.left - margin.right;
+    var padded_height = height - margin.top  - margin.bottom;
+
+    svg
+        .attr("width" , padded_width  + margin.left + margin.right )
+        .attr("height", padded_height + margin.top  + margin.bottom);
+
+    outer_g
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    svg_background
+        .attr("width",  padded_width)
+        .attr("height", padded_height);
+
+    // set sizes
+    context.width  = padded_width;
+    context.height = padded_height;
+}
 
 
 function ready(error, world) {
@@ -215,7 +266,7 @@ function update_world(options) {
     }
 
     // update information
-    d3.select("#info-nprojects").text("Found " + n_filtered_projects + " projects");
+    d3.select("#info-nprojects").text(n_filtered_projects);
 
     // update view all button link
     filter_query = "projects?";
@@ -241,7 +292,7 @@ function zoomToCountry(country_id) {
     // zoom
     point = projection([country.longitude, country.latitude]);
     transform = d3.zoomIdentity
-      .translate(width / 2, height / 2)
+      .translate(context.width / 2, context.height / 2)
       .scale(6)
       .translate(-point[0], -point[1]);
     outer_g.transition().duration(750).call(zoom.transform, transform);

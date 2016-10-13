@@ -23,7 +23,7 @@
     <div id="outer-container">
         
         <!-- header -->
-        <nav class="top-bar" role="navigation">
+        <nav class="top-bar" role="navigation" id="top-bar-div">
             <div class="top-bar-title">
                 <span data-responsive-toggle="responsive-menu" data-hide-for="medium">  
                     <button class="menu-icon light" type="button" data-toggle></button>
@@ -104,13 +104,13 @@
         </div>
 
         <!-- footer -->
-        <footer>
+        <footer id="footer-div">
             
             <?php if (
                 isset($instance) &&
                 !empty($instance->logo)):  
             ?>
-                <div class="row expanded">
+                <div class="row expanded" id="footer-imgdiv">
                     <div class="small-12 columns footer-imgdiv">
                         <span class="footer-logo-helper"></span>
                         <?= 
@@ -125,7 +125,7 @@
                 <script>
                     var curr_padding = parseInt($("#content").css("padding-bottom"));
                     var img_div_height = parseInt($(".footer-imgdiv").css("height"));
-                    $("#content").css("padding-bottom", curr_padding + img_div_height);
+                    // $("#content").css("padding-bottom", curr_padding + img_div_height);
                     // console.log(curr_padding);
                     // var new_padding = $("#content").css("padding-bottom");
                     // console.log(new_padding);

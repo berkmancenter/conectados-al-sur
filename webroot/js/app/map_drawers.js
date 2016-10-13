@@ -145,7 +145,7 @@ function drawer_tooltip_remove() {
     d3.select(".country_tooltip")
         .style("opacity", 1e-6)
         // trick to desapear from svg!
-        .attr("transform", d3.zoomIdentity.translate(10*width,10*height));
+        .attr("transform", d3.zoomIdentity.translate(10*context.width,10*context.height));
 }
 
 function drawer_tooltip_zoom_update(transform) {
@@ -163,8 +163,7 @@ function drawer_tooltip_zoom_update(transform) {
 
 function projects_info_set_country_label(codN3) {
 
-    var label = d3.select("#info-country-label")
-            .style("font-weight", "bold");
+    var label = d3.select("#info-country-label");
 
     if (codN3 != null) {
         var country = getCountryById(codN3);
@@ -177,7 +176,8 @@ function projects_info_set_country_label(codN3) {
 
 
 function projects_info_clear() {
-    d3.select("#country-info").remove();
+    d3.select("#info-country-ul").selectAll("*").remove();
+
     projects_info_set_country_label(null);
 }
 
@@ -202,35 +202,33 @@ function projects_info_display(codN3) {
 
     //console.log(curr_projects);
 
-    var infolist = d3.select(".side-nav-info")
-        .append("ul").attr("id","country-info")
-
+    var infolist = d3.select("#info-country-ul");
 
     if (nProjects > 1) {
 
-        categories = {};
-        last_update = new Date(0);
+        // categories = {};
+        // last_update = new Date(0);
 
-        curr_projects.forEach(function (item, index) {
+        // curr_projects.forEach(function (item, index) {
             
             // console.log(item);
             // console.log(item);
 
             // fill categories
-            Object.keys(item.categories).forEach(function (cat_item_id, cat_index) {
-                cat_id = item.categories[cat_item_id].id;
-                cat_name = item.categories[cat_item_id].name;
-                categories[cat_id] = cat_name;
-            });
+            // Object.keys(item.categories).forEach(function (cat_item_id, cat_index) {
+            //     cat_id = item.categories[cat_item_id].id;
+            //     cat_name = item.categories[cat_item_id].name;
+            //     categories[cat_id] = cat_name;
+            // });
 
-            modified = new Date(item.modified);
-            last_update = last_update > modified ? last_update : modified;
-        });
+            // modified = new Date(item.modified);
+            // last_update = last_update > modified ? last_update : modified;
+        // });
         // console.log(categories);
 
         infolist.append("li").text("Projects: " + nProjects);
-        infolist.append("li").text("Last Update: " + last_update.toDateString());
-        infolist.append("li").text("Categories: " + Object.keys(categories).length);
+        // infolist.append("li").text("Categories: " + Object.keys(categories).length);
+        // infolist.append("li").text("Last Update: " + last_update.toDateString());
         
 
         // console.log(filtering_options);
@@ -240,7 +238,6 @@ function projects_info_display(codN3) {
         if (filtering_options.hasOwnProperty('category_id'))          { filter_query += "&t=" + filtering_options.category_id            }
         if (filtering_options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + filtering_options.project_stage_id       }
         // if (filtering_options.hasOwnProperty('region_id'))            { filter_query += "&r=" + filtering_options.region_id              }
-
 
         infolist.append("li").append("a")
             .text("Complete info ...")
@@ -253,15 +250,15 @@ function projects_info_display(codN3) {
         // console.log(project);
         // console.log(curr_projects);
 
-        var proj_description_max = 100;
-        var proj_description = project.description.substring(0,proj_description_max);
-        if (project.description.length > proj_description_max) {
-            proj_description += "...";
-        };
+        // var proj_description_max = 100;
+        // var proj_description = project.description.substring(0, proj_description_max);
+        // if (project.description.length > proj_description_max) {
+        //     proj_description += "...";
+        // };
 
-        infolist.append("li").append("strong").text(project.name);
-        infolist.append("li").text(proj_description);
-        infolist.append("li").text("Organization: " + project.organization);
+        infolist.append("li").text(project.name);
+        // infolist.append("li").text(proj_description);
+        infolist.append("li").text(project.organization);
         // infolist.append("li").text("stage: " + project.project_stage.name);
         // infolist.append("li").text("org type: " + project.organization_type.name);
         // infolist.append("li").text("user name: " + project.user.name);
@@ -269,14 +266,14 @@ function projects_info_display(codN3) {
         // infolist.append("li").text("user main org: " + project.user.main_organization);
         // infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
         // infolist.append("li").text("last modification: " + project.modified.substr(0,10));
-        var cats = infolist.append("li").text("Categories: ")
-            .append("ul");
+        // var cats = infolist.append("li").text("Categories: ")
+        //     .append("ul");
 
 
-        project.categories.forEach(function(item, index) {
-            category = getCategoryById(item.id);
-            cats.append("li").text("#" + (index + 1) + ": " + category.name);
-        });
+        // project.categories.forEach(function(item, index) {
+        //     category = getCategoryById(item.id);
+        //     cats.append("li").text("#" + (index + 1) + ": " + category.name);
+        // });
         infolist.append("li").append("a")
             .text("Complete info ...")
             .attr("href", "projects/" + project.id)
