@@ -93,18 +93,19 @@ function update_window() {
     var totalWidth  = window.innerWidth;
     var totalHeight = window.innerHeight;
     var height_topbar = document.getElementById("top-bar-div").clientHeight;
-    var height_infodiv = 150;
+    var height_infodiv = 120;
     var height_filterdiv = 205;
-    var height_footer = 37;
-    height_footer_logo = 0; // hide footer logo
+    // var height_footer = 37;
+    // height_footer_logo = 0; // hide footer logo
     if (totalWidth < 640) {
-        height_footer = 228 - 75;  // footer is taller on small devices;
+        // height_footer = 228 - 75;  // footer is taller on small devices;
         height_filterdiv = 342;    // filter window is 342px height on small
     } else if (totalWidth < 1024) {
         height_filterdiv = 262;    // filter window is 262px height on medium
     };
 
-    var height_footer_full = height_footer + height_footer_logo + height_infodiv;
+    // var height_footer_full = height_footer + height_footer_logo + height_infodiv;
+    var height_footer_full = height_infodiv;
     if (showingFilters) { height_footer_full += height_filterdiv; }
 
     // current size
@@ -125,6 +126,10 @@ function update_window() {
     svg_background
         .attr("width",  padded_width)
         .attr("height", padded_height);
+
+
+    // ensure 0 padding.. ensure for removed footer
+    $("#content").css("padding-bottom", 0);
 
     // set sizes
     context.width  = padded_width;
@@ -201,6 +206,9 @@ function ready(error, world) {
     //// info bar
     /////////////////////////////////////////////
     projects_info_clear();
+
+    // hook this here for resolving a bug with the scrollbar
+    update_window();
 }
 
 

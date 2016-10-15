@@ -20,7 +20,7 @@
     <div class="row expanded" id="map-navbar">
         <div class="small-3 medium-2 large-1 columns" id="map-left-controls" data-equalizer="links">
             <ul class="button-group">
-            <?= $this->Html->link("<i class='fi-plus size-36'></i>", [
+            <?= $this->Html->link("<i class='fi-plus'></i>", [
                 'controller' => 'Projects',
                 'action' => 'add',
                  $instance->namespace
@@ -29,7 +29,7 @@
                  'escape' => false
                  // 'data-equalizer-watch' => 'links'
             ]) ?>
-            <?= $this->Html->link("<i class='fi-graph-pie size-36'></i>", [
+            <?= $this->Html->link("<i class='fi-graph-pie'></i>", [
                 'controller' => 'Instances',
                 'action' => 'dots', $instance->namespace
             ], [
@@ -40,13 +40,14 @@
             </ul>
         </div>
         <div class="small-6 medium-8 large-10 columns" id="map-middle-controls">
-            <span id="info-country-label"></span>
+            <p id="info-country-select"></p>
+            <p id="info-country-label"></p>
             <ul id="info-country-ul">
             </ul>
         </div>
         <div class="small-3 medium-2 large-1 columns" id="map-right-controls">
             <button type="button" class="button" id="show-filters-button">
-                <i class='fi-widget size-36'></i>
+                <i class='fi-widget'></i>
             </button>
             <span id="info-nprojects-txt"><?= __('total projects') ?></span>
             <span id="info-nprojects">0</span>

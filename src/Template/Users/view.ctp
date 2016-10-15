@@ -170,18 +170,17 @@
                                     <tr>
                                         <th><?= __('Name') ?></th>
                                         <th><?= __('Organization') ?></th>
-                                        <th class="actions"><?= __('Actions') ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($user->projects as $project): ?>
                                         <?php if ($project->instance_id == $instance->id): ?>
                                         <tr>
-                                            <td><?= h($project->name) ?></td>
-                                            <td><?= h($project->organization) ?></td>
-                                            <td class="actions">
-                                                <?= $this->Html->link(__('View'), ['controller' => 'Projects', 'action' => 'view', $instance->namespace, $project->id]) ?>
+                                            <td>
+                                                <?= $this->Html->link("<i class='fi-magnifying-glass'></i>", ['controller' => 'Projects', 'action' => 'view', $instance->namespace, $project->id], ['escape' => false]) ?>
+                                                <?= h($project->name) ?>
                                             </td>
+                                            <td><?= h($project->organization) ?></td>
                                         </tr>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
@@ -208,9 +207,3 @@
     </div>
 </div>
 </div>
-
-<style type="text/css">
-.unset-field {
-    color: red;
-}
-</style>

@@ -40,6 +40,7 @@
     position: absolute;
     left: 10px;
     top: 10px;
+    z-index: 0;
 }
 
 /* ****************************************************************************
@@ -53,10 +54,6 @@
     border: 0px;
     border-top: 5px solid #363640;
     margin: 0px;
-}
-
-#footer-imgdiv {
-  display: none;
 }
 
 #map-column {
@@ -73,8 +70,11 @@
 #map-navbar {
   padding: 5px 0px;
   background-color: #fff;
-  height: 150px;
+  /*background-color: gray;*/
+  height: 110px;
   /*display: none;*/
+  position: relative;
+  z-index: 1;
 }
 
 #map-left-controls {
@@ -88,20 +88,23 @@
 }
 #map-left-controls .button {
   display: block;
-  border-radius: 30px;
-  height: 60px;
-  width: 60px;
+  border-radius: 20px;
+  height: 40px;
+  width: 40px;
   background-color: #fff;
   border: 2px solid #39a0ea;
   color: #39a0ea;
-  line-height: 54px;
+  line-height: 34px;
   padding: 0;
   margin: 4px auto;
+}
+#map-navbar i {
+  font-size: 28px;
 }
 #map-left-controls .button:hover {
   border: 4px solid #ed7d31;
   color: #ed7d31;
-  line-height: 50px;
+  line-height: 30px;
 }
 
 
@@ -112,6 +115,63 @@
  - Futura Light (#F26621)  -  lighter version: #ed7d31
 */
 
+#map-right-controls {
+  /*background-color: orange;*/
+  height: 100%;
+  padding: 0px;
+}
+#map-right-controls .button {
+  color: #39a0ea;
+  background-color: #fff;
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  border: 2px solid #39a0ea;
+  border-radius: 25px;
+  
+  display: block;
+  margin: 2px auto;
+  position: relative;
+  line-height: 0px;
+  top: -42px;
+}
+#map-right-controls .button:hover {
+  border: 4px solid #ed7d31;
+  color: #ed7d31;
+}
+#info-nprojects-txt {
+  font-size: 14px;
+  font-family: Futura;
+  text-align: center;
+  
+  display: block;
+  position: relative;
+  line-height: 0;
+  top: -25px;
+}
+
+#info-nprojects {
+  color: #39a0ea;
+  font-family: Futura;
+  font-weight: bold;
+  text-align: center;
+  font-size: 32px;
+  
+  display: block;
+  position: relative;
+  line-height: 0;
+  top: 0px;
+}
+#map_project_list_button {
+  font-size: 14px;
+  text-align: center;
+  display: block;
+  position: relative;
+  line-height: 0;
+  top: 25px;
+}
+
+
 #map-middle-controls {
   /*background-color: orange;*/
   height: 100%;
@@ -119,65 +179,26 @@
   border-left: 1px solid #808080;
 }
 
-#map-right-controls {
-  /*background-color: orange;*/
-  height: 100%;
-  padding: 0px;
-}
-#map-right-controls .button {
-  display: block;
-  border-radius: 30px;
-  height: 60px;
-  width: 60px;
-  background-color: #fff;
-  border: 2px solid #39a0ea;
-  color: #39a0ea;
-  line-height: 54px;
-  padding: 0;
-  margin: 2px auto;
-  position: relative;
-  top: -36px;
-}
-#map-right-controls .button:hover {
-  border: 4px solid #ed7d31;
-  color: #ed7d31;
-  line-height: 50px;
-}
-#info-nprojects-txt {
-  text-align: center;
-  display: block;
-  font-family: Futura;
-  position: relative;
-  font-size: 14px;
-  top: -20px;
-}
-
-#info-nprojects {
-  display: block;
-  text-align: center;
-  font-family: Futura;
-  font-weight: bold;
-  font-size: 36px;
-  color: #39a0ea;
-  position: relative;
-  top: -30px;
-}
-#map_project_list_button {
-  display: block;
-  text-align: center;
-  position: relative;
-  font-size: 14px;
-  top: -40px;
-}
-
 #info-country-label {
   font-family: Futura;
   font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;     /* IE 6+, FF 7+, Op 11+, Saf 1.3+, Chr 1+ */
+  -o-text-overflow: ellipsis;  /* for Opera 9 & 10 */
+  padding: 0;
+  margin: 0;
+}
+#info-country-select {
+  font-family: Futura;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
 }
 
 #info-country-ul {
   list-style-type: circle;
-  font-family: Futura;
+  font-family: Futura;  
 }
 #info-country-ul li {
   white-space: nowrap;
@@ -187,6 +208,7 @@
   color: #808080;
   font-size: 16px;
   font-style: italic;
+  line-height: 20px;
 }
 #info-country-ul li:first-child {
   color: black;
@@ -244,7 +266,15 @@
   text-transform: none;
 }
 */
-div#content {
+#content {
     /* bottom padding for footer: prevents overlaping; */
     padding-bottom: 0px;
+}
+#outer-container {
+  /*background-color: blue;*/
+  padding-bottom: 0px;
+}
+
+footer {
+  display: none;
 }

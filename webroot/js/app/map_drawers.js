@@ -163,14 +163,17 @@ function drawer_tooltip_zoom_update(transform) {
 
 function projects_info_set_country_label(codN3) {
 
-    var label = d3.select("#info-country-label");
+    var label  = d3.select("#info-country-label");
+    var select = d3.select("#info-country-select");
 
     if (codN3 != null) {
         var country = getCountryById(codN3);
         if (country == null) { return; };
         label.text(country.name);
+        select.text("");
     } else {
-        label.text("Please select a country");
+        select.text("Please select a country");
+        label.text("");
     }
 }
 
