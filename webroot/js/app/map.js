@@ -300,6 +300,8 @@ function update_world(options) {
     if (options.hasOwnProperty('organization_type_id')) { filter_query += "&o=" + options.organization_type_id   }
     if (options.hasOwnProperty('category_id'))          { filter_query += "&t=" + options.category_id            }
     if (options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + options.project_stage_id       }
+    if (options.hasOwnProperty('region_id'))            { filter_query += "&r=" + options.region_id              }
+    if (options.hasOwnProperty('country_id'))           { filter_query += "&c=" + options.country_id             }
     var view_all_button = document.getElementById('map_project_list_button');
     view_all_button.href =  filter_query;
     // console.log(view_all_button);

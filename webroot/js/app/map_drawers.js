@@ -252,7 +252,7 @@ function projects_info_display(codN3) {
         if (filtering_options.hasOwnProperty('organization_type_id')) { filter_query += "&o=" + filtering_options.organization_type_id   }
         if (filtering_options.hasOwnProperty('category_id'))          { filter_query += "&t=" + filtering_options.category_id            }
         if (filtering_options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + filtering_options.project_stage_id       }
-        // if (filtering_options.hasOwnProperty('region_id'))            { filter_query += "&r=" + filtering_options.region_id              }
+        if (filtering_options.hasOwnProperty('region_id'))            { filter_query += "&r=" + filtering_options.region_id              }
 
         if (_useSpanish()) {
             infolist.append("li").append("a")

@@ -45,14 +45,14 @@ class ProjectsTable extends Table
             'foreignKey' => 'country_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'country2_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Countries', [
-            'foreignKey' => 'country3_id',
-            'joinType' => 'INNER'
-        ]);
+        // $this->belongsTo('Countries', [
+        //     'foreignKey' => 'country2_id',
+        //     'joinType' => 'INNER'
+        // ]);
+        // $this->belongsTo('Countries', [
+        //     'foreignKey' => 'country3_id',
+        //     'joinType' => 'INNER'
+        // ]);
         $this->belongsTo('Cities', [
             'foreignKey' => 'city_id'
         ]);
@@ -133,8 +133,8 @@ class ProjectsTable extends Table
         $rules->add($rules->existsIn(['organization_type_id'], 'OrganizationTypes'));
         $rules->add($rules->existsIn(['project_stage_id'], 'ProjectStages'));
         $rules->add($rules->existsIn(['country_id'], 'Countries'));
-        $rules->add($rules->existsIn(['country2_id'], 'Countries'));
-        $rules->add($rules->existsIn(['country3_id'], 'Countries'));
+        // $rules->add($rules->existsIn(['country2_id'], 'Countries'));
+        // $rules->add($rules->existsIn(['country3_id'], 'Countries'));
         $rules->add($rules->existsIn(['city_id'], 'Cities'));
 
         return $rules;

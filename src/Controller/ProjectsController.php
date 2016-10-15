@@ -71,29 +71,107 @@ class ProjectsController extends AppController
         $category_conditions = array();
         $conditions = array('Projects.instance_id' => $instance->id);
 
-        // country_id
+        // region_id && country_id
+        $region_id = (int)$this->request->query("r");
         $country_id = (int)$this->request->query("c");
-        if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
+
+        $valid_subcontients = [];
+        if ($region_id && $country_id) {        // both => country
+            array_push($conditions, array('Projects.country_id' => $country_id));
+        } elseif ($region_id && !$country_id) { // only region
+            $continent = TableRegistry::get('Continents')
+                ->find()
+                ->where(['Continents.id =' => $region_id])
+                ->first();
+            if ($continent) {
+                $this->set("filter_continent", $continent);
+
+                $subcontinents = TableRegistry::get('Subcontinents')
+                    ->find()
+                    ->select('id', 'continent_id')
+                    ->where(['continent_id' => $region_id])
+                    ->extract('id')->toArray();
+                if ($subcontinents) {
+                    $valid_subcontients = $subcontinents;
+                    // var_dump($valid_subcontients);
+                }
+            }
+
+            // var_dump($continent);
+        } elseif (!$region_id && $country_id) { // only country
+            array_push($conditions, array('Projects.country_id' => $country_id));
+        } else {
+            // do nothing
+        }
+
+        if ($country_id) {
+            $country = TableRegistry::get('Countries')
+                ->find()
+                ->where(['id =' => $country_id])
+                ->first();
+            array_push($conditions, array('Projects.country_id' => $country_id));
+            if ($country) {
+                $this->set("filter_country", $country);
+            }
+        }
 
         // organization_type_id
         $organization_type_id = (int)$this->request->query("o");
-        if ($organization_type_id) { array_push($conditions, array('Projects.organization_type_id' => $organization_type_id)); }
+        if ($organization_type_id) {
+            $orgtype = TableRegistry::get('OrganizationTypes')
+                ->find()
+                ->where(['id =' => $organization_type_id])
+                ->where(['instance_id' => $instance->id])
+                ->first();
+            array_push($conditions, array('Projects.organization_type_id' => $organization_type_id));
+            if ($orgtype) {
+                $this->set("filter_orgtype", $orgtype);
+            }
+        }
 
         // project_stage_id
         $project_stage_id = (int)$this->request->query("s");
-        if ($project_stage_id) { array_push($conditions, array('Projects.project_stage_id' => $project_stage_id)); }
+        if ($project_stage_id) {
+            $stage = TableRegistry::get('ProjectStages')
+                ->find()
+                ->where(['id =' => $project_stage_id])
+                ->first();
+            array_push($conditions, array('Projects.project_stage_id' => $project_stage_id));
+            if ($stage) {
+                $this->set("filter_project_stage", $stage);
+            }
+        }
 
         // genre_id
         $genre_id = (int)$this->request->query("g");
-        if ($genre_id) { $user_conditions = array('genre_id' => $genre_id); }
+        if ($genre_id) {
+            $genre = TableRegistry::get('Genres')
+                ->find()
+                ->where(['id =' => $genre_id])
+                ->first();
+            $user_conditions = array('genre_id' => $genre_id);
+            if ($genre) {
+                $this->set("filter_genre", $genre);
+            }
+        }
 
         // category_id
         $category_id = (int)$this->request->query("t");
-        if ($category_id) { $category_conditions = array('Categories.id' => $category_id); }
+        if ($category_id) {
+            $category = TableRegistry::get('Categories')
+                ->find()
+                ->where(['id =' => $category_id])
+                ->where(['instance_id' => $instance->id])
+                ->first();
+            $category_conditions = array('Categories.id' => $category_id);
+            if ($category && $category->name != "[null]") {
+                $this->set("filter_category", $category);
+            }
+        }
         
 
         $this->paginate = [
-            'limit'      => 5,
+            'limit'      => 10,
             'contain'    => [
                 'Users' => function ($q) use ($user_conditions) {
                    return $q
@@ -107,7 +185,20 @@ class ProjectsController extends AppController
             $this->Projects
                 ->find()
                 ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
-                    return $q->where($category_conditions);
+                    if ($category_conditions) {
+                        return $q->where($category_conditions);
+                    }
+                    return $q;
+                })
+                ->matching('Countries', function(\Cake\ORM\Query $q) use ($valid_subcontients) {
+                    if ($valid_subcontients) {
+                        return $q->where(
+                            function ($exp, $q) use ($valid_subcontients) {
+                                return $exp->in('subcontinent_id', $valid_subcontients);
+                            }
+                        );
+                    }
+                    return $q;
                 })
                 ->distinct(['Projects.id'])
         );
@@ -135,30 +226,104 @@ class ProjectsController extends AppController
         $category_conditions = array();
         $conditions = array('Projects.instance_id' => $instance->id);
 
-        // project_id
-        $project_id = (int)$this->request->query("p");
-        if ($project_id) { array_push($conditions, array('Projects.id' => $project_id)); }
-
-        // country_id
+        // region_id && country_id
+        $region_id = (int)$this->request->query("r");
         $country_id = (int)$this->request->query("c");
-        if ($country_id) { array_push($conditions, array('Projects.country_id' => $country_id)); }
+
+        $valid_subcontients = [];
+        if ($region_id && $country_id) {        // both => country
+            array_push($conditions, array('Projects.country_id' => $country_id));
+        } elseif ($region_id && !$country_id) { // only region
+            $continent = TableRegistry::get('Continents')
+                ->find()
+                ->where(['Continents.id =' => $region_id])
+                ->first();
+            if ($continent) {
+                $this->set("filter_continent", $continent);
+
+                $subcontinents = TableRegistry::get('Subcontinents')
+                    ->find()
+                    ->select('id', 'continent_id')
+                    ->where(['continent_id' => $region_id])
+                    ->extract('id')->toArray();
+                if ($subcontinents) {
+                    $valid_subcontients = $subcontinents;
+                    // var_dump($valid_subcontients);
+                }
+            }
+
+            // var_dump($continent);
+        } elseif (!$region_id && $country_id) { // only country
+            array_push($conditions, array('Projects.country_id' => $country_id));
+        } else {
+            // do nothing
+        }
+
+        if ($country_id) {
+            $country = TableRegistry::get('Countries')
+                ->find()
+                ->where(['id =' => $country_id])
+                ->first();
+            array_push($conditions, array('Projects.country_id' => $country_id));
+            if ($country) {
+                $this->set("filter_country", $country);
+            }
+        }
 
         // organization_type_id
         $organization_type_id = (int)$this->request->query("o");
-        if ($organization_type_id) { array_push($conditions, array('Projects.organization_type_id' => $organization_type_id)); }
+        if ($organization_type_id) {
+            $orgtype = TableRegistry::get('OrganizationTypes')
+                ->find()
+                ->where(['id =' => $organization_type_id])
+                ->where(['instance_id' => $instance->id])
+                ->first();
+            array_push($conditions, array('Projects.organization_type_id' => $organization_type_id));
+            if ($orgtype) {
+                $this->set("filter_orgtype", $orgtype);
+            }
+        }
 
         // project_stage_id
         $project_stage_id = (int)$this->request->query("s");
-        if ($project_stage_id) { array_push($conditions, array('Projects.project_stage_id' => $project_stage_id)); }
+        if ($project_stage_id) {
+            $stage = TableRegistry::get('ProjectStages')
+                ->find()
+                ->where(['id =' => $project_stage_id])
+                ->first();
+            array_push($conditions, array('Projects.project_stage_id' => $project_stage_id));
+            if ($stage) {
+                $this->set("filter_project_stage", $stage);
+            }
+        }
 
         // genre_id
         $genre_id = (int)$this->request->query("g");
-        if ($genre_id) { $user_conditions = array('Users.genre_id' => $genre_id); }
+        if ($genre_id) {
+            $genre = TableRegistry::get('Genres')
+                ->find()
+                ->where(['id =' => $genre_id])
+                ->first();
+            $user_conditions = array('genre_id' => $genre_id);
+            if ($genre) {
+                $this->set("filter_genre", $genre);
+            }
+        }
 
         // category_id
         $category_id = (int)$this->request->query("t");
-        if ($category_id) { $category_conditions = array('Categories.id' => $category_id); }
-        
+        if ($category_id) {
+            $category = TableRegistry::get('Categories')
+                ->find()
+                ->where(['id =' => $category_id])
+                ->where(['instance_id' => $instance->id])
+                ->first();
+            $category_conditions = array('Categories.id' => $category_id);
+            if ($category && $category->name != "[null]") {
+                $this->set("filter_category", $category);
+            }
+        }
+
 
         // BUILD CSV
         // --------------------------------------------------------------------------
@@ -199,6 +364,17 @@ class ProjectsController extends AppController
             ])
             ->where(['instance_id' => $instance->id])
             ->where($conditions)
+            ->matching('Countries', function(\Cake\ORM\Query $q) use ($valid_subcontients) {
+                    if ($valid_subcontients) {
+                        return $q->where(
+                            function ($exp, $q) use ($valid_subcontients) {
+                                return $exp->in('subcontinent_id', $valid_subcontients);
+                            }
+                        );
+                    }
+                    return $q;
+                })
+            ->distinct(['Projects.id'])
             ->all();
 
         // $projects = $this->paginate(
