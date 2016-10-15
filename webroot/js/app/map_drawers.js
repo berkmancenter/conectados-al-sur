@@ -109,6 +109,9 @@ function drawer_tooltip(codN3) {
     var nodeFontSize = 12/k;
 
     d3.select("#country_tooltip_rect")
+        .style("stroke-width", 5.0/k)
+        .attr("rx", 10.0/k)
+        .attr("ry", 10.0/k)
         .attr("x", coords[0]+dx)
         .attr("y", coords[1]-(th+dy))
         .attr("width", tw)
@@ -169,10 +172,14 @@ function projects_info_set_country_label(codN3) {
     if (codN3 != null) {
         var country = getCountryById(codN3);
         if (country == null) { return; };
-        label.text(country.name);
-        select.text("");
+        if (_useSpanish()) {
+            label.text(country.name_es);
+        } else {
+            label.text(country.name);
+        }
+        select.style("display", 'none');
     } else {
-        select.text("Please select a country");
+        select.style("display", 'block');
         label.text("");
     }
 }
@@ -229,7 +236,12 @@ function projects_info_display(codN3) {
         // });
         // console.log(categories);
 
-        infolist.append("li").text("Projects: " + nProjects);
+        if (_useSpanish()) {
+            infolist.append("li").text("Projectos: " + nProjects);
+        } else {
+            infolist.append("li").text("Projects: " + nProjects);
+        }
+        
         // infolist.append("li").text("Categories: " + Object.keys(categories).length);
         // infolist.append("li").text("Last Update: " + last_update.toDateString());
         
@@ -242,10 +254,17 @@ function projects_info_display(codN3) {
         if (filtering_options.hasOwnProperty('project_stage_id'))     { filter_query += "&s=" + filtering_options.project_stage_id       }
         // if (filtering_options.hasOwnProperty('region_id'))            { filter_query += "&r=" + filtering_options.region_id              }
 
-        infolist.append("li").append("a")
-            .text("Complete info ...")
-            .attr("href", filter_query)
-            .attr("target", "_blank");
+        if (_useSpanish()) {
+            infolist.append("li").append("a")
+                .text("Ver más ...")
+                .attr("href", filter_query)
+                .attr("target", "_blank");
+        } else {
+            infolist.append("li").append("a")
+                .text("Complete info ...")
+                .attr("href", filter_query)
+                .attr("target", "_blank");
+        }
 
     } else if (nProjects == 1) {
 
@@ -253,36 +272,27 @@ function projects_info_display(codN3) {
         // console.log(project);
         // console.log(curr_projects);
 
-        // var proj_description_max = 100;
-        // var proj_description = project.description.substring(0, proj_description_max);
-        // if (project.description.length > proj_description_max) {
-        //     proj_description += "...";
-        // };
-
         infolist.append("li").text(project.name);
-        // infolist.append("li").text(proj_description);
         infolist.append("li").text(project.organization);
-        // infolist.append("li").text("stage: " + project.project_stage.name);
-        // infolist.append("li").text("org type: " + project.organization_type.name);
-        // infolist.append("li").text("user name: " + project.user.name);
-        // infolist.append("li").text("user mail: " + project.user.email);
-        // infolist.append("li").text("user main org: " + project.user.main_organization);
-        // infolist.append("li").text("proj start date: " + project.start_date.substr(0,10));
-        // infolist.append("li").text("last modification: " + project.modified.substr(0,10));
-        // var cats = infolist.append("li").text("Categories: ")
-        //     .append("ul");
 
+        if (_useSpanish()) {
+            infolist.append("li").append("a")
+                .text("Ver más ...")
+                .attr("href", "projects/" + project.id)
+                .attr("target", "_blank");
+        } else {
+            infolist.append("li").append("a")
+                .text("Complete info ...")
+                .attr("href", "projects/" + project.id)
+                .attr("target", "_blank");
+        }
 
-        // project.categories.forEach(function(item, index) {
-        //     category = getCategoryById(item.id);
-        //     cats.append("li").text("#" + (index + 1) + ": " + category.name);
-        // });
-        infolist.append("li").append("a")
-            .text("Complete info ...")
-            .attr("href", "projects/" + project.id)
-            .attr("target", "_blank");
     } else {
-        infolist.append("li").text("Projects: 0");
+        if (_useSpanish()) {
+            infolist.append("li").text("No hay proyectos");
+        } else {
+            infolist.append("li").text("No projects");
+        }
     }
 }
 

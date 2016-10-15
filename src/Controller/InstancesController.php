@@ -233,40 +233,67 @@ class InstancesController extends AppController
         // var_dump($projects->categories);
 
         // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
+        }
+
         $countries_f = TableRegistry::get('Countries')
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Countries.id !=' => '0'])
-            ->order(['name' =>'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $genres_f = TableRegistry::get('Genres')
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Genres.name !=' => '[null]'])
-            ->order(['name' =>'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $project_stages_f = TableRegistry::get('ProjectStages')
-            ->find('list')
+            ->find('list', [
+                    'keyField' => 'id',
+                    'valueField' => $field_loc
+                ])
             ->where(['ProjectStages.name !=' => '[null]'])
             ->all();
         $_categories = $this->Instances->Categories
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
-            ->order(['name' =>'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $_organization_types = $this->Instances->OrganizationTypes
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
-            ->order(['name' =>'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $continents_f = TableRegistry::get('Continents')
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Continents.id !=' => '0'])
             ->all();
         $subcontinents_f = TableRegistry::get('Subcontinents')
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Subcontinents.id !=' => '0'])
             ->all();
+
 
         $this->set('continents_f', $continents_f);
         $this->set('subcontinents_f', $subcontinents_f);

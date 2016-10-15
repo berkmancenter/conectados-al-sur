@@ -10,16 +10,15 @@
             <div id="tooltip-container"></div>
             <div id="svg-div">
                 <div class="zoom_buttons">
-                    <button type="button" class="warning button" data-zoom="+1">Zoom In</button>
-                    <button type="button" class="warning button" data-zoom="-1">Zoom Out</button>
+                    <button type="button" class="warning button" data-zoom="+1"><?= __d('map', 'Zoom In') ?></button>
+                    <button type="button" class="warning button" data-zoom="-1"><?= __d('map', 'Zoom Out') ?></button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row expanded" id="map-navbar">
-        <div class="small-3 medium-2 large-1 columns" id="map-left-controls" data-equalizer="links">
-            <ul class="button-group">
+        <div class="small-3 medium-2 large-1 columns" id="map-left-controls">
             <?= $this->Html->link("<i class='fi-plus'></i>", [
                 'controller' => 'Projects',
                 'action' => 'add',
@@ -27,7 +26,6 @@
             ], [
                  'class' => 'secondary button',
                  'escape' => false
-                 // 'data-equalizer-watch' => 'links'
             ]) ?>
             <?= $this->Html->link("<i class='fi-graph-pie'></i>", [
                 'controller' => 'Instances',
@@ -35,12 +33,10 @@
             ], [
                 'class' => 'secondary button',
                 'escape' => false
-                // 'data-equalizer-watch' => 'links'
             ]) ?>
-            </ul>
         </div>
         <div class="small-6 medium-8 large-10 columns" id="map-middle-controls">
-            <p id="info-country-select"></p>
+            <p id="info-country-select"><?= __d('map', "Please select a country") ?></p>
             <p id="info-country-label"></p>
             <ul id="info-country-ul">
             </ul>
@@ -49,9 +45,9 @@
             <button type="button" class="button" id="show-filters-button">
                 <i class='fi-widget'></i>
             </button>
-            <span id="info-nprojects-txt"><?= __('total projects') ?></span>
+            <span id="info-nprojects-txt"><?= __d('map', 'total projects') ?></span>
             <span id="info-nprojects">0</span>
-            <?= $this->Html->link(__('View All'), [
+            <?= $this->Html->link(__d('map', 'View All'), [
                 'controller' => 'Projects',
                 'action' => 'index', $instance->namespace
             ], [
@@ -63,7 +59,7 @@
     <div class="form" id="filters-div">
         <div class="row expanded">
             <div class="small-12 columns">
-                <span id="filters-title"><?= __('Filtering Options') ?></span>
+                <span id="filters-title"><?= __d('map', 'Filtering Options') ?></span>
             </div>
         </div>
         <form id="filter-form">
@@ -72,6 +68,7 @@
                     <?php 
                     echo $this->Form->input('Organization Type', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Organization Type'),
                         'id' => 'filter-orgtype',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -84,6 +81,7 @@
                     <?php 
                     echo $this->Form->input('Category', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Project Category'),
                         'id' => 'filter-category',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -95,6 +93,7 @@
                     <?php 
                     echo $this->Form->input('Stage', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Project Stage'),
                         'id' => 'filter-stage',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -106,6 +105,7 @@
                     <?php 
                     echo $this->Form->input('Collaborator genre', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Collaborator Genre'),
                         'id' => 'filter-genre',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -117,6 +117,7 @@
                     <?php 
                     echo $this->Form->input('Region', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Region'),
                         'id' => 'filter-region',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -128,6 +129,7 @@
                     <?php 
                     echo $this->Form->input('Country', [
                         // 'class' => 'filter-select',
+                        'label' => __d('map', 'Country'),
                         'id' => 'filter-country',
                         'empty' => '---',
                         'class' => 'filter-input',
@@ -136,8 +138,8 @@
                     ?>
                 </div>
                 <div class="small-12 large-6 columns">
-                    <button type="button" class="hollow button" id="filter-clear">Clear Filters</button>
-                    <button type="button" class="hollow button" id="filter-apply">Apply</button>
+                    <button type="button" class="hollow button" id="filter-clear"><?= __d('map', 'Clear Filters') ?></button>
+                    <button type="button" class="hollow button" id="filter-apply"><?= __d('map', 'Apply') ?></button>
                 </div>
             </div>
         </form>
@@ -177,13 +179,13 @@
     // console.log(_data_categories);
     // console.log(_data_organization_types);
 
-    var height_footer_logo = 0;
-    <?php if (isset($instance) &&
-              isset($instance->logo) &&
-              !empty($instance->logo)): ?>
-        height_footer_logo = 80;
-    <?php endif; ?>
-
+    var _language = "<?= $lang_current ?>";
+    function _useSpanish() {
+        if (_language == "es") {
+            return true;
+        };
+        return false;
+    }
     ///////////////////////////////////////////////////////////////////////////////
     //////////////////// GET DATA HELPERS /////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////

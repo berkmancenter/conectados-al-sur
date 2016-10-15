@@ -4,11 +4,29 @@
 
 var country_pin = {};
 country_pin.normal = {}; country_pin.hover = {}; country_pin.active = {};
-country_pin.normal.stroke = "#000000"; country_pin.normal.stroke_width = 0;
+country_pin.normal.stroke = "#000000"; country_pin.normal.stroke_width = 1;
 country_pin.hover.stroke  = "#ffffff"; country_pin.hover.stroke_width  = 2;
-country_pin.active.stroke = "#086f91"; country_pin.active.stroke_width = 3;
+country_pin.active.stroke = "#ffffff"; country_pin.active.stroke_width = 4;
 
+// // azules
+// var color_low  = "#deebf7";
+// var color_mid  = "#9ecae1";
+// var color_high = "#3182bd";
 
+// // rojos
+// var color_low  = "#fee0d2";
+// var color_mid  = "#fc9272";
+// var color_high = "#de2d26";
+
+// // verdes
+// var color_low  = "#e5f5e0";
+// var color_mid  = "#a1d99b";
+// var color_high = "#31a354";
+
+// naranjos
+var color_low  = "#fee6ce";
+var color_mid  = "#fdae6b";
+var color_high = "#e6550d";
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////// D3 ///////////////////////////////////////////////////////
@@ -95,16 +113,12 @@ function update_window() {
     var height_topbar = document.getElementById("top-bar-div").clientHeight;
     var height_infodiv = 120;
     var height_filterdiv = 205;
-    // var height_footer = 37;
-    // height_footer_logo = 0; // hide footer logo
     if (totalWidth < 640) {
-        // height_footer = 228 - 75;  // footer is taller on small devices;
         height_filterdiv = 342;    // filter window is 342px height on small
     } else if (totalWidth < 1024) {
         height_filterdiv = 262;    // filter window is 262px height on medium
     };
 
-    // var height_footer_full = height_footer + height_footer_logo + height_infodiv;
     var height_footer_full = height_infodiv;
     if (showingFilters) { height_footer_full += height_filterdiv; }
 
@@ -199,8 +213,12 @@ function ready(error, world) {
         .style("opacity", 0)
         .on("mouseover", tooltipMouseOverListener)
         .on("mouseout", tooltipMouseOutListener);
-    tooltip.append("rect").attr("id", "country_tooltip_rect");
-    tooltip.append("text").attr("id", "country_tooltip_text");
+    tooltip.append("rect")
+        .attr("rx", "10")
+        .attr("ry", "10")
+        .attr("id", "country_tooltip_rect");
+    tooltip.append("text")
+        .attr("id", "country_tooltip_text");
 
 
     //// info bar
@@ -240,16 +258,16 @@ function update_world(options) {
             return 9*scale/current_transform.k;
         })
         .style("fill", function(d,i) {
-            var max_projs = 10.0;
-            var h_maxcolor = 0;
-            var h_mincolor = 60;
 
-            var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
-            var n = h_mincolor - m*1;
-
-            var h_value = Math.min(d.projects.length, max_projs);
-            h_value = m*h_value + n;
-            return "hsl(" + h_value + ", 60%, 50%)";
+            var lower_th   = Math.max(1, n_filtered_projects*0.01); // /100
+            var highest_th = Math.max(1, n_filtered_projects*0.1);  // /10
+            if (d.projects.length > highest_th) {
+                return color_high;
+            } else if (d.projects.length > lower_th) {
+                return color_mid;
+            } else {
+                return color_low;
+            }
         })
         .style("stroke", "black")
         .style("stroke-width", country_pin.normal.stroke_width/current_transform.k)
@@ -420,6 +438,9 @@ function filterUpdateCountriesSelector(country_ids) {
             .text(function(d,i) {
                 country = getCountryById(d);
                 // console.log("id: " + d + ", name: " + country.name);
+                if (_useSpanish()) {
+                    return country.name_es;
+                }
                 return country.name;
             });
 

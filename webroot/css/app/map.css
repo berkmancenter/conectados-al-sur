@@ -28,6 +28,7 @@
 #country_tooltip_rect {
     fill: white;
     stroke: gray;
+    /*stroke-width: 5;*/
 }
 
 
@@ -81,10 +82,6 @@
   /*background-color: blue;*/
   height: 100%;
   padding: 0px;
-}
-#map-left-controls ul {
-  margin: 0px;
-  padding: 0px 0px 0px 0px;
 }
 #map-left-controls .button {
   display: block;
