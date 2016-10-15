@@ -1,6 +1,5 @@
-<!-- Available Actions -->
-<?php $this->start('available-actions'); ?>
-<?php $this->end(); ?>
+<!-- CSS -->
+<?= $this->Html->css('app_orange.css') ?>
 
 <!-- Page Content -->
 <div class="fullwidth page-content">
@@ -31,42 +30,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .home-title {
-        color: rgb(54,54,55);
-        margin-top: 30px;
-        margin-bottom: 30px;
-    }
-    #home-title-b {
-        font-family: Futura;
-        font-weight: bold;
-        font-size: 36px;
-    }
-    #home-title-l {
-        font-family: Futura;
-        font-weight: normal;
-        font-size: 36px;
-    }
-    .home-text {
-        font-family: Futura;
-        font-weight: normal;
-        font-size: 16px;
-        text-align: justify;
-    }
-
-    .home-text p {
-        margin: 20px 0px;
-        color: black;
-    }
-
-    .top-bar-title {
-        color: rgb(54,54,55);
-    }
-    
-</style>
-<script>
-    $("body").css("background-color", "#ed7d31");
-    $("#outer-container").css("background-color", "#ed7d31");
-    // $("#content").css("padding-bottom", "170px");
-</script>

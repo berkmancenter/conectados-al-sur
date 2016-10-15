@@ -1,0 +1,93 @@
+/* ****************************************************************************
+* DEFS
+**************************************************************************** */
+/*
+ Colors considered:
+ - black: #808080
+ - white: #fff;
+ - Futura Bold (#46C7F4)   -  darker version : #39a0ea
+ - Futura Light (#F26621)  -  lighter version: #ed7d31
+ */
+
+/* -------------------------------------  TOPBAR ------------------------------------- */
+body {
+    background-color: #ed7d31;
+}
+
+#outer-container {
+    background-color: #ed7d31;
+}
+
+.top-bar {
+    background: #ed7d31;
+    color: rgb(54,54,55);
+}
+.top-bar-title {
+    color: rgb(54,54,55);
+}
+.top-bar-title a {
+    color: rgb(54,54,55);
+}
+.top-bar-right {
+    background-color: transparent;
+}
+.top-bar-right a {
+    background: #ed7d31;
+    color: rgb(54,54,55);
+}
+.top-bar-right a:hover {
+    background: #c56828;
+}
+.top-bar-right .dropdown {
+    background-color: transparent;
+}
+/* menu arrow */
+.top-bar-right .dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+    border-color: rgb(54,54,55) transparent;
+}
+#top-bar-username-li {
+    background-color: #ed7d31;
+}
+
+#top-bar-username-li span {
+}
+
+#top-bar-logout-li {
+    border-top: 1px solid rgb(54,54,55);
+}
+#top-bar-menu-icon {
+
+}
+.top-bar i {
+    color: rgb(54,54,55);
+}
+
+
+/* -------------------------------------  TEXT ------------------------------------- */
+.home-title {
+    color: rgb(54,54,55);
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+#home-title-b {
+    font-family: Futura;
+    font-weight: bold;
+    font-size: 36px;
+}
+#home-title-l {
+    font-family: Futura;
+    font-weight: normal;
+    font-size: 36px;
+}
+.home-text {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    text-align: justify;
+}
+
+.home-text p {
+    margin: 20px 0px;
+    color: rgb(54,54,55);
+}
+

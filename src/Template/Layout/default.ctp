@@ -26,7 +26,7 @@
         <nav class="top-bar" role="navigation" id="top-bar-div">
             <div class="top-bar-title">
                 <span data-responsive-toggle="responsive-menu" data-hide-for="medium">  
-                    <button class="menu-icon light" type="button" data-toggle></button>
+                    <button id="top-bar-menu-icon" type="button" data-toggle><i class='fi-list'></i></button>
                 </span>
                 DVINE WEB-APP
                 <?php if (isset($instance) && !isset($instance_creating)): ?>
@@ -46,7 +46,7 @@
                 <div class="top-bar-right">
                     <ul class="dropdown menu" data-dropdown-menu>
                         <li>
-                            <a href="<?= $lang_new_url ?>"> <?= __d('template', "Language: ") ?> <span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
+                            <a href="<?= $lang_new_url ?>"><i class='fi-comments'></i><span id="current-lang-button"><?= $lang_current ?></span> | <span id="lang-button"><?= $lang_alternative ?></span></a>
                         </li>
                         <li>
                             <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home'])?>">
@@ -56,7 +56,7 @@
                         <?= $this->fetch('available-actions') ?>
                         <?php if (isset($auth_user)): ?>
                             <li>
-                                <a href="#"><i class='fi-torso size-16'></i></a>
+                                <a href="#"><i class='fi-torso'></i></a>
                                 <ul class="menu vertical">
                                     <li class="menu-text" id="top-bar-username-li"><span><?php echo $auth_user['email'] ?></span>
                                     </li>
@@ -125,11 +125,10 @@
                 <script>
                     var curr_padding = parseInt($("#content").css("padding-bottom"));
                     var img_div_height = parseInt($(".footer-imgdiv").css("height"));
-                    // $("#content").css("padding-bottom", curr_padding + img_div_height);
+                    $("#content").css("padding-bottom", curr_padding + img_div_height);
                     // console.log(curr_padding);
                     // var new_padding = $("#content").css("padding-bottom");
                     // console.log(new_padding);
-                    
 
                 </script>
 
