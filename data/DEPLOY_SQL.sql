@@ -252,7 +252,7 @@ CREATE TABLE projects (
     user_id      INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     instance_id  INT NOT NULL REFERENCES instances(id) ON DELETE CASCADE,
     description  TEXT NOT NULL,
-    url          VARCHAR(255) NOT NULL,
+    url          VARCHAR(255),
     contribution TEXT NOT NULL,
     contributing TEXT NOT NULL,
     organization VARCHAR(255),

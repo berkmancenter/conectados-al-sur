@@ -5,6 +5,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use App\View\Helper\LocHelper;
 
 class ProjectsTable extends Table
 {
@@ -71,6 +72,16 @@ class ProjectsTable extends Table
      */
     public function validationDefault(Validator $validator)
     {
+        $locHelper = new LocHelper(new \Cake\View\View());
+        $str_name  = __d('projects','Name');
+        $str_description   = __d('projects','Description');
+        $str_contribution  = __d('projects','Project Contribution');
+        $str_contributing  = __d('projects','Contributing to this project');
+        $str_organization  = __d('projects','Organization');
+        $str_country       = __d('projects','Country');
+        $str_organization_type  = __d('projects','Organization Type');
+        $str_project_stage      = __d('projects','Project Stage');
+
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create')
@@ -78,26 +89,56 @@ class ProjectsTable extends Table
 
         $validator
             ->requirePresence('name', 'create')
-            ->notEmpty('name');
+            ->notEmpty('name', __d('projects', 'Please, fill the project name.'))
+            ->add('name', [
+                'minLength' => $locHelper->validationMinLength($str_name , 5),
+                'maxLength' => $locHelper->validationMaxLength($str_name , 50)
+            ]);
+
+        $validator
+            ->allowEmpty('url');
+
+        $validator
+            ->requirePresence('organization', 'create')
+            ->notEmpty('organization', __d('projects', 'Please, write the related Organization name.'))
+            ->add('organization', [
+                'minLength' => $locHelper->validationMinLength($str_organization , 3),
+                'maxLength' => $locHelper->validationMaxLength($str_organization , 20)
+            ]);
 
         $validator
             ->requirePresence('description', 'create')
-            ->notEmpty('description');
-
-        $validator
-            ->requirePresence('url', 'create')
-            ->notEmpty('url');
+            ->notEmpty('description', $locHelper->validationNotEmpty($str_description))
+            ->add('description', [
+                'minLength' => $locHelper->validationMinLength($str_description , 40),
+                'maxLength' => $locHelper->validationMaxLength($str_description , 500)
+            ]);
 
         $validator
             ->requirePresence('contribution', 'create')
-            ->notEmpty('contribution');
+            ->notEmpty('contribution', $locHelper->validationNotEmpty($str_contribution))
+            ->add('contribution', [
+                'minLength' => $locHelper->validationMinLength($str_contribution , 10),
+                'maxLength' => $locHelper->validationMaxLength($str_contribution , 500)
+            ]);
 
         $validator
             ->requirePresence('contributing', 'create')
-            ->notEmpty('contributing');
+            ->notEmpty('contributing', $locHelper->validationNotEmpty($str_contributing))
+            ->add('contributing', [
+                'minLength' => $locHelper->validationMinLength($str_contributing , 10),
+                'maxLength' => $locHelper->validationMaxLength($str_contributing , 500)
+            ]);
+
+
 
         $validator
-            ->allowEmpty('organization');
+            ->date('start_date')
+            ->allowEmpty('start_date');
+
+        $validator
+            ->date('finish_date')
+            ->allowEmpty('finish_date');
 
         $validator
             ->numeric('latitude')
@@ -108,12 +149,16 @@ class ProjectsTable extends Table
             ->allowEmpty('longitude');
 
         $validator
-            ->date('start_date')
-            ->allowEmpty('start_date');
+            ->requirePresence('country_id', 'create')
+            ->notEmpty('country_id', $locHelper->validationNotEmpty($str_country));
 
         $validator
-            ->date('finish_date')
-            ->allowEmpty('finish_date');
+            ->requirePresence('organization_type_id', 'create')
+            ->notEmpty('organization_type_id', $locHelper->validationNotEmpty($str_organization_type));
+
+        $validator
+            ->requirePresence('project_stage_id', 'create')
+            ->notEmpty('project_stage_id', $locHelper->validationNotEmpty($str_project_stage));
 
         return $validator;
     }

@@ -41,6 +41,17 @@ class LocHelper extends AppHelper
     public function fieldInstancePassphrase()    { return __d('fields', 'App Passphrase');                              }
     public function fieldInstanceNamespace()     { return __d('fields', 'App Shortname');                               }
 
+    // PROJECT
+    // ////////////////////////////////////////////////////////////////////////
+
+    public function fieldProjectName()             { return __d('fields', 'Project Name'); }
+    public function fieldProjectDescription()      { return __d('fields', 'Project Description'); }
+    public function fieldProjectURL()              { return __d('fields', 'External URL'); }
+    public function fieldProjectOrganizationType() { return __d('fields', 'Organization Type'); }
+    public function fieldProjectCountry()          { return __d('fields', 'Main country'); }
+    public function fieldProjectStage()            { return __d('fields', 'Project Stage'); }
+    public function fieldProjectStartDate()        { return __d('fields', 'Start Date'); }
+    public function fieldProjectFinishDate()       { return __d('fields', 'Finish Date'); }
     
 
     // ////////////////////////////////////////////////////////////////////////

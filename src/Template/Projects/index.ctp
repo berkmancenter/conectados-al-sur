@@ -1,6 +1,3 @@
-<!-- Available Actions -->
-<?php $this->start('available-actions'); ?>
-<?php $this->end(); ?>
 
 <!-- Page Content -->
 <div class="fullwidth page-content">
@@ -14,8 +11,8 @@
             <?= $this->App->displayInstanceDotsShortcut($instance->namespace) ?>
         </div>
         <div class="small-12 column">
-        <a href="<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-36'></i>New Project</a>
-        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>"><i class='fi-arrow-down size-36'></i>Download</a>
+        <a href="<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-36'></i><?= __d('projects', 'New Project') ?></a>
+        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>"><i class='fi-arrow-down size-36'></i><?= __d('projects', 'Download') ?></a>
         </div>
     </div>
     <div class="small-12 column">
@@ -25,7 +22,7 @@
 
 <div class="row">
     <div class="small-12 column">
-        <h4 class="view-subtitle-related"><?= __('Configuration (Found: ' . $this->request->params['paging']['Projects']['count'] . ")" ) ?></h4>
+        <h4 class="view-subtitle-related"><?= __d('projects', 'Configuration (Found: ' . $this->request->params['paging']['Projects']['count'] . ")" ) ?></h4>
         <ul id="ul-settings">
             <?php if (isset($filter_continent)): ?>
             <li>

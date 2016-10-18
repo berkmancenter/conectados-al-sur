@@ -6,11 +6,7 @@ use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
 
-/**
- * Projects Controller
- *
- * @property \App\Model\Table\ProjectsTable $Projects
- */
+
 class ProjectsController extends AppController
 {
     public function beforeFilter(Event $event)
@@ -54,11 +50,7 @@ class ProjectsController extends AppController
     }
 
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Network\Response|null
-     */
+
     public function index($instance_namespace = null)
     {
         // block sys instance
@@ -553,10 +545,6 @@ class ProjectsController extends AppController
         // '_footer', '_delimiter', '_enclosure', '_newline', '_eol', '_bom', '_enclosure'
     }
 
-    /**
-     * View method
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($instance_namespace = null, $id = null)
     {
         // block sys instance
@@ -600,11 +588,6 @@ class ProjectsController extends AppController
     }
 
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|void Redirects on successful add, renders view otherwise.
-     */
     public function add($instance_namespace = null)
     {
         // block sys instance
@@ -616,59 +599,73 @@ class ProjectsController extends AppController
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {
 
-            # NO ES ATÓMICO!
-            $last_id = $this->Projects
-                ->find()
-                ->select(['id'])
-                ->order(['id' =>'DESC'])
-                ->first()->id;
-            #var_dump($last_id);
-
             $project = $this->Projects->patchEntity($project, $this->request->data);
-            $project->id = $last_id + 1;
             $project->instance_id = $instance->id;
 
-            // OJO!: MIENTRAS
-            $project->user_id = 0;
-            // 
+            $client = $this->Auth->user();
+            if (!$client) {
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+            }
+            $project->user_id = $client['id'];
 
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
                 return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
-                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+                // $this->Flash->error($this->locHelper->crudAddError($loc_field));
+                foreach ($project->errors() as $error) {
+                    $this->Flash->error(__('{0}', reset($error)));
+                }
             }
+        }
+
+        // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
         }
 
         // OrganizationTypes
         $organizationTypes = $this->Projects->OrganizationTypes
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
-
+            
         // countries
         $countries = $this->Projects->Countries
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Countries.id !=' => '0'])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
 
         // ProjectStages
         $projectStages = $this->Projects->ProjectStages
-            ->find('list')
+            ->find('list', [
+                    'keyField' => 'id',
+                    'valueField' => $field_loc
+                ])
             ->where(['ProjectStages.name !=' => '[null]'])
             ->order(['id' => 'ASC'])
             ->all();
 
         // Categories
         $categories = $this->Projects->Categories
-            ->find('list', ['limit' => 200])
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
 
 
@@ -680,13 +677,7 @@ class ProjectsController extends AppController
         $this->set('_serialize', ['project']);
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Project id.
-     * @return \Cake\Network\Response|void Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
+
     public function edit($instance_namespace = null, $id = null)
     {
         // block sys instance
@@ -705,40 +696,70 @@ class ProjectsController extends AppController
                 return $this->redirect(['controller' => 'Projects', 'action' => 'view', $instance_namespace, $id]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
-                return $this->redirect(['controller' => 'Projects', 'action' => 'view', $instance_namespace, $id]);
+                foreach ($project->errors() as $error) {
+                    $this->Flash->error(__('{0}', reset($error)));
+                }
+                // set variables for reedit
+                if (isset($this->request->data['name']))          { $project->name         = $this->request->data['name'];         }
+                if (isset($this->request->data['url']))           { $project->url          = $this->request->data['url'];          }
+                if (isset($this->request->data['organization']))  { $project->organization = $this->request->data['organization']; }
+                if (isset($this->request->data['start_date']))    { $project->start_date   = $this->request->data['start_date'];   }
+                if (isset($this->request->data['finish_date']))   { $project->finish_date  = $this->request->data['finish_date'];  }
+                if (isset($this->request->data['description']))   { $project->description  = $this->request->data['description'];  }
+                if (isset($this->request->data['contribution']))  { $project->contribution = $this->request->data['contribution']; }
+                if (isset($this->request->data['contributing']))  { $project->contributing = $this->request->data['contributing']; }
             }
+        }
+
+        // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
         }
 
         // OrganizationTypes
         $organizationTypes = $this->Projects->OrganizationTypes
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['OrganizationTypes.name !=' => '[null]'])
             ->where(['OrganizationTypes.instance_id' => $instance->id])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
-
+            
         // countries
         $countries = $this->Projects->Countries
-            ->find('list')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Countries.id !=' => '0'])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
 
         // ProjectStages
         $projectStages = $this->Projects->ProjectStages
-            ->find('list')
+            ->find('list', [
+                    'keyField' => 'id',
+                    'valueField' => $field_loc
+                ])
             ->where(['ProjectStages.name !=' => '[null]'])
             ->order(['id' => 'ASC'])
             ->all();
 
         // Categories
         $categories = $this->Projects->Categories
-            ->find('list', ['limit' => 200])
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
             ->where(['Categories.name !=' => '[null]'])
             ->where(['Categories.instance_id' => $instance->id])
-            ->order(['name' => 'ASC'])
+            ->order([$field_loc =>'ASC'])
             ->all();
 
+        // var_dump($project->categories);
         // $users = $this->Projects->Users->find('list', ['limit' => 200]);
         // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
 
@@ -747,13 +768,7 @@ class ProjectsController extends AppController
         $this->set('_serialize', ['project']);
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Project id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
+
     public function delete($instance_namespace = null, $id = null)
     {
         $this->request->allowMethod(['post', 'delete']);

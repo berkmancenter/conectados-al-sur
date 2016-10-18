@@ -61,7 +61,6 @@ class CategoriesController extends AppController
 
         // get instance
         $instance = $this->App->getInstance($instance_namespace);
-        if (!$instance) { return $this->redirect(['controller' => 'Instances', 'action' => 'home']); }
 
         $category = $this->Categories->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
