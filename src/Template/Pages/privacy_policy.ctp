@@ -21,14 +21,14 @@
             <?php else: ?>
                 <!-- SPANISH VERSION -->
 
-                <h4 class="view-subtitle"><?= __('General:') ?></h4>
+                <h4 class="view-subtitle">General:</h4>
 
                 <p>Al acceder al sitio <a href="<?= $this->Url->build('/',["full" => true])?>"><?= $this->Url->build('/',["full" => true])?></a> el usuario está aceptando y reconoce que ha revisado y esta de acuerdo con su Política de Privacidad.</p>
 
                 <p>Las políticas de privacidad podrán modificarse y será responsabilidad del usuario la lectura y acatamiento de esta cada vez que ingrese al sitio.</p>
 
                 
-                <h4 class="view-subtitle"><?= __('Acceso a la Información:') ?></h4>
+                <h4 class="view-subtitle">Acceso a la Información:</h4>
 
                 <p>Los contenidos del sitio <a href="<?= $this->Url->build('/',["full" => true])?>"><?= $this->Url->build('/',["full" => true])?></a> tienen carácter de acceso libre gratuito para los usuarios, sin embargo hay información que está limitada para miembros de los proyectos incluidos en la aplicación web.</p>
                 
@@ -36,7 +36,7 @@
 
 
 
-                <h4 class="view-subtitle"><?= __('Información de los Usuarios:') ?></h4>
+                <h4 class="view-subtitle">Información de los Usuarios:</h4>
 
                 <p>El sitio recopila datos de los suscriptores, usuarios y/o visitantes que hagan uso de la aplicación web. Esto puede ser a través de procesos informáticos  para realizar registros de actividades (patrones de actividad, navegación y audiencia). Para ello no será necesaria la identificación personal de usuarios y/o visitantes.</p>
                 
@@ -44,12 +44,12 @@
 
 
 
-                <h4 class="view-subtitle"><?= __('Información a terceros:') ?></h4>
+                <h4 class="view-subtitle">Información a terceros:</h4>
 
                 <p>No se comunicará ni transferirá a terceros los datos personales de sus usuarios sin el consentimiento expreso del titular. Solo tienen acceso a la base de datos completa, los administradores del sitio. No obstante lo anterior, en caso de ser requerido judicialmente se hará entrega de la información solicitada.</p>
 
 
-                <h4 class="view-subtitle"><?= __('Uso de la información:') ?></h4>
+                <h4 class="view-subtitle">Uso de la información:</h4>
 
                 <p>Al acceder al sitio, el visitante tendrá derecho a revisar toda la información que esté disponible en él, así como descargar bases de datos de carácter público, sólo pudiendo utilizarla para fines particulares, de investigación educativa o social y no comerciales. Sin perjuicio de lo anterior, la veracidad o exactitud de la información volcada por los usuarios sobre sus proyectos, no es responsabilidad de los administradores del sitio.</p>
 

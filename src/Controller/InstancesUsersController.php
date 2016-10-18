@@ -173,7 +173,7 @@ class InstancesUsersController extends AppController
                         if ($is_admin_instance) {
                             $this->Flash->error(__('Could not revoke user privileges. At least there must exist one sysadmin.'));
                         } else {
-                            $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this instance.'));
+                            $this->Flash->error(__('Could not revoke user privileges. At least there must exist one admin for this app.'));
                         }
                         return $this->redirect(['controller' => 'Instances', 'action' => 'view', $instance_namespace]);
                     }

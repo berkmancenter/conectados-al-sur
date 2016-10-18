@@ -1,0 +1,80 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-18 05:33+0000\n"
+"PO-Revision-Date: 2016-10-18 02:56-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: es\n"
+
+#: Template/Instances/dots.ctp:11
+msgid "Order By"
+msgstr "Ordenar Por"
+
+#: Template/Instances/dots.ctp:15;36
+msgid "Category"
+msgstr "Categoría"
+
+#: Template/Instances/dots.ctp:16;37;111
+msgid "Organization Type"
+msgstr "Tipo de Organización"
+
+#: Template/Instances/dots.ctp:17;38;160
+msgid "Region"
+msgstr "Continente"
+
+#: Template/Instances/dots.ctp:18;39
+msgid "Genre"
+msgstr "Género"
+
+#: Template/Instances/dots.ctp:19;40
+msgid "Stage"
+msgstr "Etapa"
+
+#: Template/Instances/dots.ctp:32
+msgid "Merge with"
+msgstr "Comparar con"
+
+#: Template/Instances/dots.ctp:87
+msgid "total projects"
+msgstr "proyectos"
+
+#: Template/Instances/dots.ctp:89
+msgid "View All"
+msgstr "Ver Todos"
+
+#: Template/Instances/dots.ctp:102
+msgid "Filtering Options"
+msgstr "Configuración de filtrado"
+
+#: Template/Instances/dots.ctp:124
+msgid "Project Category"
+msgstr "Categoría del proyecto"
+
+#: Template/Instances/dots.ctp:136
+msgid "Project Stage"
+msgstr "Etapa del proyecto"
+
+#: Template/Instances/dots.ctp:148
+msgid "Collaborator Genre"
+msgstr "Género del colaborador"
+
+#: Template/Instances/dots.ctp:172
+msgid "Country"
+msgstr "País"
+
+#: Template/Instances/dots.ctp:181
+msgid "Clear Filters"
+msgstr "Limpiar Filtros"
+
+#: Template/Instances/dots.ctp:182
+msgid "Apply"
+msgstr "Aplicar"

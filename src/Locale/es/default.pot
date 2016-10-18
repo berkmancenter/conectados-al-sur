@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-09 03:11+0000\n"
-"PO-Revision-Date: 2016-10-10 20:19-0300\n"
+"PO-Revision-Date: 2016-10-18 02:53-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -14,6 +14,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 "Language: es\n"
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-18 05:33+0000\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: Controller/CategoriesController.php:31;59
 #: Controller/InstancesController.php:409;415;430;462
@@ -79,7 +88,7 @@ msgstr ""
 #: Controller/InstancesUsersController.php:156
 msgid ""
 "Could not revoke user privileges. At least there must exist one admin for "
-"this instance."
+"this app."
 msgstr ""
 "No se puede quitar los pemisos. Al menos debe existir un administrador para "
 "la aplicación."
@@ -170,7 +179,7 @@ msgstr "General:"
 
 #: Template/Instances/add.ctp:112 Template/Instances/edit.ctp:120
 msgid "Location information:"
-msgstr ""
+msgstr "Ubicación:"
 
 #: Template/Instances/edit.ctp:12 Template/Instances/view.ctp:14
 msgid "Go to app home"
@@ -394,10 +403,6 @@ msgstr "Configuración:"
 msgid "For Users:"
 msgstr "Usuarios:"
 
-#: Template/Instances/view.ctp:326
-msgid "Enable Genre field?"
-msgstr ""
-
 #: Template/Instances/view.ctp:327;331;339;347;351;355;359;363;367;371;375;379;383
 msgid "Yes"
 msgstr "Si"
@@ -405,62 +410,6 @@ msgstr "Si"
 #: Template/Instances/view.ctp:327;331;339;347;351;355;359;363;367;371;375;379;383
 msgid "No"
 msgstr "No"
-
-#: Template/Instances/view.ctp:330
-msgid "Enable Main Organization field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:335
-msgid "For Projects:"
-msgstr ""
-
-#: Template/Instances/view.ctp:338
-msgid "Enable Categories?"
-msgstr ""
-
-#: Template/Instances/view.ctp:342
-msgid "Max. Allowed Categories"
-msgstr ""
-
-#: Template/Instances/view.ctp:346
-msgid "Enable Organization Type field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:350
-msgid "Enable Organization name field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:354
-msgid "Enable Cities usage?"
-msgstr ""
-
-#: Template/Instances/view.ctp:358
-msgid "Enable exact location?"
-msgstr ""
-
-#: Template/Instances/view.ctp:362
-msgid "Enable Project Stage field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:366
-msgid "Enable external URL field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:370
-msgid "Enable Description field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:374
-msgid "Enable Contribution field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:378
-msgid "Enable Contributing field?"
-msgstr ""
-
-#: Template/Instances/view.ctp:382
-msgid "Enable start and finish dates?"
-msgstr ""
 
 #: Template/InstancesUsers/add.ctp:49 Template/InstancesUsers/edit.ctp:77
 #: View/Helper/LocHelper.php:15
@@ -617,3 +566,15 @@ msgstr "Página"
 #: Template/Projects/index.ctp:52
 msgid "of"
 msgstr "de"
+
+#: Template/Instances/home.ctp:38
+msgid "Your Apps"
+msgstr "Tus apps"
+
+#: Template/Instances/home.ctp:58
+msgid "You don't have any registered app."
+msgstr "No tienes apps registradas."
+
+#: Template/Layout/error.ctp:20
+msgid "Home"
+msgstr "Inicio"

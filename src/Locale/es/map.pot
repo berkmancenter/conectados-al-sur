@@ -1,0 +1,76 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-18 05:33+0000\n"
+"PO-Revision-Date: 2016-10-18 02:59-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: Template/Instances/map.ctp:9
+msgid "Zoom In"
+msgstr "Acercar"
+
+#: Template/Instances/map.ctp:10
+msgid "Zoom Out"
+msgstr "Alejar"
+
+#: Template/Instances/map.ctp:35
+msgid "Please select a country"
+msgstr "Por favor, seleccione un país"
+
+#: Template/Instances/map.ctp:44
+msgid "total projects"
+msgstr "proyectos"
+
+#: Template/Instances/map.ctp:46
+msgid "View All"
+msgstr "Ver todo"
+
+#: Template/Instances/map.ctp:58
+msgid "Filtering Options"
+msgstr "Configuraciones de filtrado"
+
+#: Template/Instances/map.ctp:67 Template/Projects/index.ctp:51
+msgid "Organization Type"
+msgstr "Tipo de organización"
+
+#: Template/Instances/map.ctp:80
+msgid "Project Category"
+msgstr "Categoría del proyecto"
+
+#: Template/Instances/map.ctp:92 Template/Projects/index.ctp:62
+msgid "Project Stage"
+msgstr "Etapa del proyecto"
+
+#: Template/Instances/map.ctp:104 Template/Projects/index.ctp:73
+msgid "Collaborator Genre"
+msgstr "Género del colaborador"
+
+#: Template/Instances/map.ctp:116 Template/Projects/index.ctp:29
+msgid "Region"
+msgstr "Continente"
+
+#: Template/Instances/map.ctp:128 Template/Projects/index.ctp:40
+msgid "Country"
+msgstr "País"
+
+#: Template/Instances/map.ctp:137
+msgid "Clear Filters"
+msgstr "Limpiar filtros"
+
+#: Template/Instances/map.ctp:138
+msgid "Apply"
+msgstr "Aplicar"
+
+#: Template/Projects/index.ctp:84
+msgid "Category"
+msgstr "Categoría"
