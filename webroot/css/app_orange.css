@@ -91,3 +91,10 @@ body {
     color: rgb(54,54,55);
 }
 
+.home-text a {
+    color: #054cbf;
+}
+
+.home-text a:hover {
+    color: #4286f4;
+}

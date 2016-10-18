@@ -50,7 +50,7 @@
                         </li>
                         <li>
                             <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home'])?>">
-                                <?= __d('template', "Home") ?>
+                                <i class='fi-home'></i>
                             </a>
                         </li>
                         <?= $this->fetch('available-actions') ?>
