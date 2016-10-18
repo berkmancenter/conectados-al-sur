@@ -1,4 +1,20 @@
 ///////////////////////////////////////////////////////////////////////////////
+//////////////////// CONFIGS //////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+// show filters button
+var showingFilters = false;
+
+
+var context = {}
+context.svg_div = document.getElementById('dots-div');
+
+// svg viewports
+var svg1 = d3.select("#svg-left").append("svg").attr("id", "svg-left-root");
+var svg2 = d3.select("#svg-right").append("svg").attr("id", "svg-right-root");
+
+
+///////////////////////////////////////////////////////////////////////////////
 //////////////////// D3 ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -12,61 +28,148 @@ d3.selection.prototype.moveToFront = function() {
 };
 
 
-// classical margin convention
-var availableWidth  = document.getElementById('svg-left').clientWidth;
-var availableHeight = document.getElementById('svg-right').clientHeight;
-var margin = {top: 0, right: 0, bottom: 0, left: 0},
-    width  = availableWidth - margin.left - margin.right,
-    height = 700 - margin.top  - margin.bottom;
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+update_window();
+
+// window resize listener
+window.addEventListener("resize", update_window);
+
+document.getElementById('show-filters-button').addEventListener("click", filterShowListener);
 
 
-// svg viewports
-var svg_left = d3.select("#svg-left")
-    .append("svg")
-        .attr("width" , width  + margin.left + margin.right )
-        .attr("height", height + margin.top  + margin.bottom);
-var svg_right = d3.select("#svg-right")
-    .append("svg")
-        .attr("width" , width  + margin.left + margin.right )
-        .attr("height", height + margin.top  + margin.bottom);
+var nodes = d3.range(50).map(function(i) {
+  return {
+    id: i
+  };
+});
 
-var sim_left = d3.forceSimulation()
-    .force("link", d3.forceLink().id(function(d) { return d.id; }))
-    .force("charge", d3.forceManyBody())
-    .force("center", d3.forceCenter(width / 2, height / 2));
+var links = d3.range(nodes.length).map(function(i) {
+  return {
+    source: i,
+    target: i%10
+  };
+});
 
 
-d3.json("miserables.json", function(error, graph) {
-  if (error) throw error;
+var width  = +svg1.node().getBoundingClientRect().width,
+    height = +svg1.node().getBoundingClientRect().height;
 
-  var link = svg.append("g")
-      .attr("class", "links")
+
+
+// force simulator
+var simulation = d3.forceSimulation();
+
+
+// svg objects
+var link, node;
+// the data - an object with nodes and links
+var graph = {};
+graph.nodes = nodes;
+graph.links = links;
+
+// values for all forces
+forceProperties = {
+    center: { x: 0.5, y: 0.5},
+    charge: { enabled: true, strength: -45, distanceMin: 0, distanceMax: 200 },
+    collide: { enabled: true, strength: 20, iterations: 1, radius: 8 },
+    link: {  enabled: true, distance: 30, iterations: 1 }
+}
+
+initializeDisplay();
+initializeSimulation();
+
+
+
+// set up the simulation and event to update locations after each tick
+function initializeSimulation() {
+  simulation.nodes(graph.nodes);
+  initializeForces();
+  simulation.on("tick", ticked);
+}
+
+// add forces to the simulation
+function initializeForces() {
+    // add forces and associate each with a name
+    simulation
+        .force("link", d3.forceLink())
+        .force("charge", d3.forceManyBody())
+        .force("collide", d3.forceCollide())
+        .force("center", d3.forceCenter());
+    // apply properties to each of the forces
+    updateForces();
+}
+
+// apply new force properties
+function updateForces() {
+    // get each force by name and update the properties
+    simulation.force("center")
+        .x(width * forceProperties.center.x)
+        .y(height * forceProperties.center.y);
+    simulation.force("charge")
+        .strength(forceProperties.charge.strength * forceProperties.charge.enabled)
+        .distanceMin(forceProperties.charge.distanceMin)
+        .distanceMax(forceProperties.charge.distanceMax);
+    simulation.force("collide")
+        .strength(forceProperties.collide.strength * forceProperties.collide.enabled)
+        .radius(forceProperties.collide.radius)
+        .iterations(forceProperties.collide.iterations);
+    simulation.force("link")
+        .id(function(d) {return d.id;})
+        .distance(forceProperties.link.distance)
+        .iterations(forceProperties.link.iterations)
+        .links(forceProperties.link.enabled ? graph.links : []);
+
+    // updates ignored until this is run
+    // restarts the simulation (important if simulation has already slowed down)
+    simulation.alpha(1).restart();
+}
+
+//////////// DISPLAY ////////////
+
+// generate the svg objects and force simulation
+function initializeDisplay() {
+  // set the data and properties of link lines
+  link = svg1.append("g")
+        .attr("class", "links")
     .selectAll("line")
     .data(graph.links)
     .enter().append("line");
 
-  var node = svg.append("g")
-      .attr("class", "nodes")
+  // set the data and properties of node circles
+  node = svg1.append("g")
+        .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
     .enter().append("circle")
-      .attr("r", 2.5)
-      .call(d3.drag()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended));
 
+  // node tooltip
   node.append("title")
       .text(function(d) { return d.id; });
+  // visualize the graph
+  updateDisplay();
+}
 
-  simulation
-      .nodes(graph.nodes)
-      .on("tick", ticked);
+// update the display based on the forces (but not positions)
+function updateDisplay() {
+    node
+        .attr("r", forceProperties.collide.radius)
+        .attr("stroke", forceProperties.charge.strength > 0 ? "blue" : "red")
+        .attr("stroke-width", forceProperties.charge.enabled==false ? 0 : Math.abs(forceProperties.charge.strength)/15);
 
-  simulation.force("link")
-      .links(graph.links);
+    link
+        .attr("stroke-width", forceProperties.link.enabled ? 1 : .5)
+        .attr("opacity", forceProperties.link.enabled ? 1 : 0);
+}
 
-  function ticked() {
+// update the display positions after each simulation tick
+function ticked() {
     link
         .attr("x1", function(d) { return d.source.x; })
         .attr("y1", function(d) { return d.source.y; })
@@ -76,8 +179,10 @@ d3.json("miserables.json", function(error, graph) {
     node
         .attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
-  }
-});
+}
+
+
+//////////// UI EVENTS ////////////
 
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
@@ -91,119 +196,86 @@ function dragged(d) {
 }
 
 function dragended(d) {
-  if (!d3.event.active) simulation.alphaTarget(0);
+  if (!d3.event.active) simulation.alphaTarget(0.0001);
   d.fx = null;
   d.fy = null;
 }
 
 
-// ///// countries
-// ///////////////////////////////////////////
-// // add countries
-// g.selectAll(".country")
-//         .data(countries_geojson)
-//     .enter().append("path")
-//         .attr("class", "country")       // class: "country"
-//         .attr("id", function(d,i) {     // id   : "country-<codN3>"
-//             return "country-" + d.id;
-//         })
-//         .attr("d", path)
-//         .on("click", countryClickListener)
-//         .on("mouseover", countryMouseOverListener)
-//         .on("mouseout", countryMouseOutListener);
-
-// // add countries country boundaries
-// g.append("path")
-//     .datum(borders)
-//     .attr("d", path)
-//     .attr("class", "country-boundary");
-// g.append("path")
-//     .datum(borders_coast)
-//     .attr("d", path)
-//     .attr("class", "country-coastline");
-
-
-
-// ///// pins
-// ///////////////////////////////////////////
-// update_world();
-
-
-// ///// tooltip 
-// /////////////////////////////////////////////
-// var tooltip = g.append("g")
-//     .datum(null)
-//     .attr("class", "country_tooltip")
-//     .style("opacity", 0)
-//     .on("mouseover", tooltipMouseOverListener)
-//     .on("mouseout", tooltipMouseOutListener);
-// tooltip.append("rect").attr("id", "country_tooltip_rect");
-// tooltip.append("text").attr("id", "country_tooltip_text");
-
-
-// //// info bar
-// /////////////////////////////////////////////
-// projects_info_clear();
-
-
-// function update_world(map_by_country) {
-
-//     // data join
-//     var markers = g.selectAll(".country_pin")
-//             .data(actual_map_by_country, function(d) { return d.id; });
-
-//     // update
-//     // markers.attr("class", "updated");
-
-//     // enter
-//     markers.enter().append("circle")
-//         .attr("class","country_pin node")  // class: "country_pin"
-//         .attr("id", function(d,i) {        // id   : "country_pin-<codN3>"
-//             return "country_pin-" + d.id;
-//         })
-//         .attr("cx", function(d,i) {
-//             var country = getCountryById(d.id);
-//             if (country == null) { return 0; };
-//             return projection([country.longitude, country.latitude])[0]; 
-//         })
-//         .attr("cy", function(d,i) {
-//             var country = getCountryById(d.id);
-//             if (country == null) { return 0; };
-//             return projection([country.longitude, country.latitude])[1];
-//         })
-//         .attr("r" , function(d,i) {
-//             var scale = Math.max(Math.min(d.projects.length, 10)*0.15,1.0);
-//             return 9*scale/current_transform.k;
-//         })
-//         .style("fill", function(d,i) {
-//             var max_projs = 10.0;
-//             var h_maxcolor = 0;
-//             var h_mincolor = 60;
-
-//             var m = (h_mincolor - h_maxcolor)/(1 - max_projs);
-//             var n = h_mincolor - m*1;
-
-//             var h_value = Math.min(d.projects.length, max_projs);
-//             h_value = m*h_value + n;
-//             return "hsl(" + h_value + ", 60%, 50%)";
-//         })
-//         .style("stroke", "black")
-//         .style("stroke-width", country_pin.normal.stroke_width/current_transform.k)
-//         .on("click", pinClickListener)
-//         .on("mouseover", pinMouseOverListener)
-//         .on("mouseout", pinMouseOutListener);
-
-
-//     // enter + update
-//     // markers.merge(markers)
-//         // .foo
-
-//     // exit
-//     markers.exit().remove();
-
-//     projects_info_display(active_country_id);
-// }
+// convenience function to update everything (run after UI input)
+function updateAll() {
+    updateForces();
+    updateDisplay();
+}
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function filterShowListener() {
+    // d3.select('#map-navbar').style("display", 'none');
+
+    if (showingFilters) {
+        d3.select('#filters-div').style("display", 'none');
+    } else {
+        d3.select('#filters-div').style("display", 'block');
+    };
+    showingFilters = !showingFilters;
+    update_window();
+}
+function update_window() {
+
+    var totalWidth  = window.innerWidth;
+    var totalHeight = window.innerHeight;
+    var height_topbar = document.getElementById("top-bar-div").clientHeight;
+    var height_filter_header = 70 + 30;
+    var height_infodiv = 120;
+    var height_filterdiv = 205;
+    if (totalWidth < 640) {
+        height_filterdiv = 342;    // filter window is 342px height on small
+    } else if (totalWidth < 1024) {
+        height_filterdiv = 262;    // filter window is 262px height on medium
+    };
+
+    var height_footer_full = height_infodiv;
+    if (showingFilters) { height_footer_full += height_filterdiv; }
+
+    // current size
+    var width  = context.svg_div.clientWidth;
+    var height = totalHeight - height_topbar - height_filter_header - height_footer_full;
+    
+    var svg_width = document.getElementById("svg-left").clientWidth;
+    svg1
+        .attr("width" , svg_width)
+        .attr("height", height);
+    svg2
+        .attr("width" , svg_width)
+        .attr("height", height);
+
+    // $("#dots-div").css("width", padded_width);
+    $("#viz-dots-div").css("height", height);
+
+    // ensure 0 padding.. ensure for removed footer
+    $("#content").css("padding-bottom", 0);
+
+
+    // set sizes
+    context.width  = width;
+    context.height = height;
+}

@@ -128,20 +128,171 @@ class InstancesController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
         
+        // ----- instance independent data --------
+
+        // location data
+        // available continents
+        $continents = TableRegistry::get('Continents')
+            ->find()
+            ->where(['Continents.id !=' => '0'])
+            ->all();
+        // var_dump($continents);
+
+        // available subcontinents
+        $subcontinents = TableRegistry::get('Subcontinents')
+            ->find()
+            ->where(['Subcontinents.id !=' => '0'])
+            ->all();
+        // var_dump($subcontinents);
+
+        // available countries
+        $countries = TableRegistry::get('Countries')
+            ->find()
+            ->where(['Countries.id !=' => '0'])
+            ->all();
+        // var_dump($countries);
+
+        // available genres
+        $genres = TableRegistry::get('Genres')
+            ->find()
+            ->where(['Genres.name !=' => '[null]'])
+            ->all();
+
+        // available project_stages
+        $project_stages = TableRegistry::get('ProjectStages')
+            ->find()
+            ->where(['ProjectStages.name !=' => '[null]'])
+            ->all();
+        
+        // var_dump($genres);
+        // var_dump($project_stages);
+
+
+        // ----- instance dependent data --------
+        // instance data
         $instance = $this->Instances
             ->find()
-            ->select(['id', 'name', 'name_es', 'namespace', 'logo'])
             ->where(['Instances.namespace' => $instance_namespace])
-            ->contain([])
+            ->contain([
+                'OrganizationTypes' => function ($q) {
+                   return $q->where(['OrganizationTypes.name !=' => '[null]']);
+                },
+                'Categories' => function ($q) {
+                   return $q->where(['Categories.name !=' => '[null]']);
+                }
+            ])
             ->first();
         if (!$instance) {
             // $this->Flash->error(__('Invalid instance'));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
+        // available categories
+        // var_dump($instance->categories);
 
+        $projects = TableRegistry::get('Projects')
+            ->find()
+            ->where(['Projects.instance_id' => $instance->id])
+            ->select([
+                    'id', 'name', 'user_id', 'instance_id', 'description',
+                     'organization', 'organization_type_id', 'project_stage_id',
+                     'country_id', 'city_id', 'latitude', 'longitude', 'created',
+                     'modified', 'start_date', 'finish_date'
+                ])
+            ->contain([
+                    'Users' => function ($q) {
+                       return $q->select(['Users.genre_id']);
+                    },
+                    'Categories' => function ($q) {
+                        return $q->select(['Categories.id']);
+                    },
+                ])
+            ->all();
+        // ->first();
+        // var_dump($projects->categories);
+
+        // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
+        }
+
+        $countries_f = TableRegistry::get('Countries')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['Countries.id !=' => '0'])
+            ->order([$field_loc =>'ASC'])
+            ->all();
+        $genres_f = TableRegistry::get('Genres')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['Genres.name !=' => '[null]'])
+            ->order([$field_loc =>'ASC'])
+            ->all();
+        $project_stages_f = TableRegistry::get('ProjectStages')
+            ->find('list', [
+                    'keyField' => 'id',
+                    'valueField' => $field_loc
+                ])
+            ->where(['ProjectStages.name !=' => '[null]'])
+            ->all();
+        $_categories = $this->Instances->Categories
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['Categories.name !=' => '[null]'])
+            ->where(['Categories.instance_id' => $instance->id])
+            ->order([$field_loc =>'ASC'])
+            ->all();
+        $_organization_types = $this->Instances->OrganizationTypes
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['OrganizationTypes.name !=' => '[null]'])
+            ->where(['OrganizationTypes.instance_id' => $instance->id])
+            ->order([$field_loc =>'ASC'])
+            ->all();
+        $continents_f = TableRegistry::get('Continents')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['Continents.id !=' => '0'])
+            ->all();
+        $subcontinents_f = TableRegistry::get('Subcontinents')
+            ->find('list', [
+                'keyField' => 'id',
+                'valueField' => $field_loc
+            ])
+            ->where(['Subcontinents.id !=' => '0'])
+            ->all();
+
+
+        $this->set('continents_f', $continents_f);
+        $this->set('subcontinents_f', $subcontinents_f);
+        $this->set('countries_f', $countries_f);
+        $this->set('genres_f', $genres_f);
+        $this->set('project_stages_f', $project_stages_f);
+        $this->set('_organization_types', $_organization_types);
+        $this->set('_categories', $_categories);
+
+        // independent data
+        $this->set('genres', $genres);
+        $this->set('project_stages', $project_stages);
+
+        // instance data
         $this->set('instance', $instance);
-        // $this->set(compact('instance', 'instance_namespace'));
-        // $this->set('_serialize', ['instance']);
+        $this->set('projects', $projects);
+        $this->set('continents', $continents);
+        $this->set('subcontinents', $subcontinents);
+        $this->set('countries', $countries);
+        // $this->set(compact('projects', 'instance_namespace'));
+        // $this->set('_serialize', ['projects']);        
     }
 
  

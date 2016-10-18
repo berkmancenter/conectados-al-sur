@@ -193,6 +193,8 @@ function projects_info_clear() {
 
 function projects_info_display(codN3) {
 
+    if (codN3 == null) {return};
+
     projects_info_clear();
     projects_info_set_country_label(codN3);
     
