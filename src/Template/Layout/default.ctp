@@ -169,7 +169,7 @@
                         <li>
                             <a 
                                 class="button"
-                                href="<?= $this->Url->build(['controller' => 'Pages', 'action' => 'display', 'Contact']) ?>"
+                                href="<?= $this->Url->build(['controller' => 'Contact', 'action' => 'contact']) ?>"
                             >
                                 <?= __d('template', "Contact") ?>
                             </a>

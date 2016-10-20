@@ -52,7 +52,7 @@ Router::scope('/:lang', function ($routes) {
     # =================================================================================
     $routes->connect('/licence', ['controller' => 'Pages', 'action' => 'display', 'Licence']);
     $routes->connect('/privacy', ['controller' => 'Pages', 'action' => 'display', 'PrivacyPolicy']);
-    $routes->connect('/contact', ['controller' => 'Pages', 'action' => 'display', 'Contact']);
+    $routes->connect('/contact', ['controller' => 'Contact', 'action' => 'contact']);
 
 
     # =================================================================================

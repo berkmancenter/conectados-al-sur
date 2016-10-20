@@ -5,7 +5,11 @@
 <div class="fullwidth page-content">
     <div class="row">
         <div class="small-12 column home-title">
-            <h3> <span id="home-title-b">Privacy</span> <span id="home-title-l">Policy</span></h3>
+            <?php if ($lang_current == "en"): ?>
+                <h3> <span id="home-title-b">Privacy</span> <span id="home-title-l">Policy</span></h3>
+            <?php else: ?>
+                <h3> <span id="home-title-b">Política </span> <span id="home-title-l">de Privacidad</span></h3>
+            <?php endif; ?>
         </div>
     </div>
     <div class="row">
