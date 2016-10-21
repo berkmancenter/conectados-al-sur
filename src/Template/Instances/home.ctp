@@ -13,16 +13,16 @@
             <?php if ($lang_current == "en"): ?>
                 <!-- ENGLISH VERSION -->
 
-                <p>DVINE WEB APP is a tool that allows to visualize and geolocalize projects in a given field. It helps to map projects that are being developed in different countries around the world, allowing the visualization of categories, networks and relevant information.</p>
+                <p>DVINE WEB APP is a tool that allows to visualize and geolocalize projects in a given field.</p>
 
-                <p>It includes DOTPLOT, a visualization tool that allows to tell stories about data. DVINE WEB APP and DOTPLOT work together to map and visualize a complex and diverse network of projects and people in an easy and intuitive way.</p>
+                <p>It helps to map and explore projects that are being developed in different countries around the world, allowing the visualization of categories, networks and relevant information.</p>
 
             <?php else: ?>
                 <!-- SPANISH VERSION -->
 
-                <p>DVINE WEB APP es una herramienta que permite visualizar y geolocalizar proyectos a nivel global, en un campo determinado. Ayuda a mapear proyectos realizados o en curso en diferentes países del mundo, permitiendo la visualización de categorías, redes e información relevante.</p>
+                <p>DVINE WEB APP es una herramienta que permite visualizar y geolocalizar proyectos a nivel global, en un campo determinado.</p>
 
-                <p>Incluye DOTPLOT, una herramienta de visualización que permite contar historias a partir de datos. DVINE WEB APP y DOTPLOT trabajan juntas para mapear y visualizar una compleja y diversa red de proyectos y personas, de una manera fácil e intuitiva.</p>
+                <p>Ayuda a mapear proyectos realizados o en curso en diferentes países del mundo, permitiendo la visualización de categorías, redes e información relevante.</p>
 
             <?php endif; ?>
         </div>

@@ -10,7 +10,7 @@
         <h3><?= h($user->name) ?></h3>
         <?php if (isset($client_type) && $client_type == 'authorized'): ?>
             <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'edit', $user->id]) ?>"><i class='fi-page-edit size-36'></i><?= __d('users', 'EDIT') ?></a>
-            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d('users', 'DELETE'), ['controller' => 'Users', 'action' => 'delete', $user->id], [
+            <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . ' ' . __d('users', 'DELETE'), ['controller' => 'Users', 'action' => 'delete', $user->id], [
                     'escape' => false, 
                     'confirm' => __d('users', 'Are you sure you want to delete this user?. This operation cannot be undone. All related projects will be erased!!')
                 ])
@@ -91,8 +91,9 @@
                             <?php if ($client_type == 'authorized' || 
                                 $this->App->isAdmin($client_id, $instance->id)
                             ): ?>
-                                <a href="<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>"><i class='fi-page-edit size-24'></i><?= __d('users', 'Edit this profile') ?></a>
-                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . __d('users', "Delete this profile"), 
+                                <div class="profile-links">
+                                <a href="<?= $this->Url->build(['controller' => 'InstancesUsers', 'action' => 'edit', $user->id, $instance->namespace]) ?>"><i class='fi-page-edit size-24'></i><?= ' ' . __d('users', 'Edit this profile') ?></a>
+                                <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-24')) . ' ' . __d('users', "Delete this profile"), 
                                     [
                                         'controller' => 'InstancesUsers',
                                         'action' => 'delete',
@@ -103,6 +104,7 @@
                                         'confirm' => __d('users', 'Are you sure you want to delete this profile?. This operation cannot be undone. All related projects will be erased!!')
                                     ])
                                 ?>
+                                </div>
                             <?php endif; ?>
                         
                             <table class="hover stack vertical-table">
@@ -207,3 +209,14 @@
     </div>
 </div>
 </div>
+
+
+<style type="text/css">
+.view-title a {
+    margin-left: 20px;
+}
+
+.profile-links a {
+    margin-left: 20px;
+}
+</style>

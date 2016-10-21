@@ -39,7 +39,8 @@
         </div>
         <div class="small-3 medium-2 large-1 columns" id="map-right-controls">
             <button type="button" class="button" id="show-filters-button">
-                <i class='fi-widget'></i>
+                <!-- <i class='fi-widget'></i> -->
+                <?= __d('map', 'Options') ?>
             </button>
             <span id="info-nprojects-txt"><?= __d('map', 'total projects') ?></span>
             <span id="info-nprojects">0</span>

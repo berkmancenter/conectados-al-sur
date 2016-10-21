@@ -5,17 +5,19 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= h($project->name) ?></h3>
-        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>"><i class='fi-map size-36'></i><?= __d('projects', 'Back to map') ?></a>
+        <div class="page-links">
+        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>"><i class='fi-map size-36'></i><?= ' ' . __d('projects', 'Back to map') ?></a>
 
         <?php if (isset($is_authorized) && $is_authorized == true): ?>
-        <a href="<?= $this->Url->build(['action' => 'edit', $instance->namespace, $project->id]) ?>"><i class='fi-page-edit size-36'></i><?= __d('projects', 'Edit') ?></a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d('projects', 'delete'), ['action' => 'delete', $instance->namespace, $project->id], [
+        <a href="<?= $this->Url->build(['action' => 'edit', $instance->namespace, $project->id]) ?>"><i class='fi-page-edit size-36'></i><?= ' ' . __d('projects', 'Edit') ?></a>
+        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . ' ' . __d('projects', 'delete'), ['action' => 'delete', $instance->namespace, $project->id], [
                 'escape' => false, 
                 'confirm' => __d('projects', 'Are you sure you want to delete this project?. This operation cannot be undone. All related data will be erased!')
             ])
         ?>
         <?php endif; ?>
-        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $download_query ?>"><i class='fi-arrow-down size-36'></i><?= __d('projects', 'Download') ?></a>
+        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $download_query ?>"><i class='fi-arrow-down size-36'></i><?= ' ' . __d('projects', 'Download') ?></a>
+        </div>
     </div>
 </div>
 
@@ -136,3 +138,10 @@
             </div>
     </div>
 </div>
+
+
+<style type="text/css">
+.page-links a {
+    margin-left: 20px;
+}
+</style>

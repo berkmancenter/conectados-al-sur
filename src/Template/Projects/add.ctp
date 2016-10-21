@@ -77,6 +77,7 @@
 
                     <h5 class="view-subsubtitle"><?= __d('projects', 'Location:') ?></h5>
                     <fieldset>
+                        <p><?= __d('projects', 'Please, select the main country of work. You can use the description to mention other related countries.') ?></p>
                         <?= $this->Form->input('country_id', [
                                 'label' => $this->Loc->fieldProjectCountry(),
                                 'options' => $countries,
@@ -140,7 +141,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <?= $this->Html->css('foundation-datepicker.min.css') ?>
 <?= $this->Html->script('foundation-datepicker.min.js') ?>
 

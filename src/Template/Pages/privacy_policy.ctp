@@ -14,13 +14,38 @@
     </div>
     <div class="row">
         <div class="small-12 column home-text">
-            <?php if (false && $lang_current == "en"): ?>
+            <?php if ($lang_current == "en"): ?>
                 <!-- ENGLISH VERSION -->
 
-                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean mollis auctor interdum. Duis ut dolor felis. Nam scelerisque cursus dictum. Nunc in scelerisque felis. Cras vitae diam vitae urna laoreet semper. Donec ut dui ac felis semper euismod. Vivamus et turpis ut est posuere mollis sed et diam. Integer mattis condimentum vulputate.
-                </p>
+                <h4 class="view-subtitle">General:</h4>
 
-                <p>Quisque in eros vel arcu auctor fringilla. Morbi lorem leo, luctus sit amet arcu vitae, volutpat dapibus leo. Proin rhoncus facilisis vehicula. Aenean finibus enim eros, in fermentum dolor accumsan quis. Praesent eget lorem porttitor, auctor tortor eu, luctus nulla. Aliquam volutpat eu sem eu laoreet. Duis rhoncus blandit nulla non laoreet. </p>
+                <p>By accessing the site <a href="<?= $this->Url->build('/',["full" => true])?>"><?= $this->Url->build('/',["full" => true])?></a> the user accepts and acknowledges that has reviewed and agree with its Privacy Policy.</p>
+
+                <p>The privacy policies may be amended and is the user responsibility to read and accept them each time he or she enters the site.</p>
+
+                
+                <h4 class="view-subtitle">Access to information:</h4>
+                
+                <p>The contents of the site <a href="<?= $this->Url->build('/',["full" => true])?>"><?= $this->Url->build('/',["full" => true])?></a> is free and open access for users, however there are edition features that is only allowed to registered members.  Registered users can access with their user names and passwords allocated in their membership.</p>
+
+
+
+                <h4 class="view-subtitle">User information:</h4>
+                
+                <p>No commercial use of information collected from users is made. User e-mails are not listed in the site. Only the contact e-mails of their project introduced by users.</p>
+
+
+
+                <h4 class="view-subtitle">Information to third parties:</h4>
+
+                <p>Personal e-mails of users, will not be communicated or transferred to third parties without the express consent of the owner.</p>
+
+
+                <h4 class="view-subtitle">Use of information:</h4>
+
+                <p>By accessing the site, visitors will have the right to review all available information on it, and download databases of public nature, and they can only be used for social and educational or non-commercial research or purposes. Notwithstanding the foregoing, the truth or accuracy of the information overturned by users on their projects, is not responsibility of the administrators of the site.</p>
+
+
 
             <?php else: ?>
                 <!-- SPANISH VERSION -->

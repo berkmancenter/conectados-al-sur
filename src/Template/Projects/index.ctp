@@ -10,9 +10,9 @@
             <?= $this->App->displayInstanceMapShortcut($instance->namespace) ?>
             <?= $this->App->displayInstanceDotsShortcut($instance->namespace) ?>
         </div>
-        <div class="small-12 column">
-        <a href="<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-36'></i><?= __d('projects', 'New Project') ?></a>
-        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>"><i class='fi-arrow-down size-36'></i><?= __d('projects', 'Download') ?></a>
+        <div class="small-12 column page-links">
+        <a href="<?= $this->Url->build(['action' => 'add', $instance->namespace]) ?>"><i class='fi-plus size-36'></i><?= ' ' .  __d('projects', 'New Project') ?></a>
+        <a href="<?= $this->Url->build(['action' => 'exportCsv', $instance->namespace]) . "?" . $filter_query ?>"><i class='fi-arrow-down size-36'></i><?= ' ' . __d('projects', 'Download') ?></a>
         </div>
     </div>
     <div class="small-12 column">
@@ -137,6 +137,10 @@
 .ul-title {
     font-weight: bold;
 
+}
+
+.page-links a {
+    margin-left: 20px;
 }
 
 </style>

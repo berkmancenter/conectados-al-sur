@@ -5,13 +5,15 @@
 <div class="row">
     <div class="small-12 column view-title">
         <h3><?= h($project->name) ?> <?= __d('projects', '(Editing)') ?></h3>
-        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>"><i class='fi-map size-36'></i><?= __d('projects', 'Back to Map') ?></a>
-        <a href="<?= $this->Url->build(['action' => 'view', $instance->namespace, $project->id]) ?>"><i class='fi-magnifying-glass size-36'></i><?= __d('projects', 'View') ?></a>
-        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . __d("projects", 'DELETE'), ['action' => 'delete', $instance->namespace, $project->id], [
+        <div class="page-links">
+        <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'map', $instance->namespace]) ?>"><i class='fi-map size-36'></i><?= ' ' . __d('projects', 'Back to Map') ?></a>
+        <a href="<?= $this->Url->build(['action' => 'view', $instance->namespace, $project->id]) ?>"><i class='fi-magnifying-glass size-36'></i><?= ' ' . __d('projects', 'View') ?></a>
+        <?= $this->Form->postLink($this->Html->tag('i', '', array('class' => 'fi-x size-36')) . ' ' . __d("projects", 'DELETE'), ['action' => 'delete', $instance->namespace, $project->id], [
                 'escape' => false, 
                 'confirm' => __d("projects", 'Are you sure you want to delete this project?. This operation cannot be undone. All related data will be erased!')
             ])
         ?>
+        </div>
     </div>
 </div>
 
@@ -156,7 +158,7 @@
         </div>
     </div>
 </div>
-
+</div>
 <?= $this->Html->css('foundation-datepicker.min.css') ?>
 <?= $this->Html->script('foundation-datepicker.min.js') ?>
 
@@ -187,5 +189,8 @@
 a.button.alert {
     font-size: 18px;
     float: right;
+}
+.page-links a {
+    margin-left: 20px;
 }
 </style>

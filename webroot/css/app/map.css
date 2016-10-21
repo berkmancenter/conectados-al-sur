@@ -120,17 +120,17 @@
 #map-right-controls .button {
   color: #39a0ea;
   background-color: #fff;
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 100px;
   padding: 0;
   border: 2px solid #39a0ea;
-  border-radius: 25px;
+  border-radius: 70px 70px 10px 10px;
   
   display: block;
   margin: 2px auto;
   position: relative;
   line-height: 0px;
-  top: -42px;
+  top: -45px;
 }
 #map-right-controls .button:hover {
   border: 4px solid #ed7d31;
@@ -211,6 +211,12 @@
   color: black;
   font-style: normal;
   text-transform: uppercase;
+}
+#info-country-ul a {
+  color: #F26722;
+  font-family: Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
+  font-style: normal;
+  font-weight: normal;
 }
 
 #filters-div {

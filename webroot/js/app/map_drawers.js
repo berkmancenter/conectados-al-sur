@@ -239,7 +239,7 @@ function projects_info_display(codN3) {
         // console.log(categories);
 
         if (_useSpanish()) {
-            infolist.append("li").text("Projectos: " + nProjects);
+            infolist.append("li").text("Proyectos: " + nProjects);
         } else {
             infolist.append("li").text("Projects: " + nProjects);
         }
