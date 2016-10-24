@@ -120,30 +120,19 @@ footer {
 }
 
 #svg-left {
-	border: 1px dashed red;
+	border-right: 1px dashed #808080;
+  /*border-bottom: 1px dashed #808080;*/
 }
 
 #svg-left-root {
 
 }
 #svg-right {
-	border: 1px dashed blue;
+	/*border: 1px solid #808080;*/
 }
 
 #svg-right-root {
 
-}
-
-/* SVG styles */
-svg {
-  flex-basis: 100%;
-  min-width: 200px;
-}
-.links line {
-  stroke: #aaa;
-}
-.nodes circle {
-  pointer-events: all;
 }
 
 
@@ -345,4 +334,18 @@ svg {
   text-transform: none;
 }
 */
+
+
+/* ****************************************************************************
+* DOTS
+**************************************************************************** */
+
+/*
+- 10 colores diferentes 
+- 11-20: borde blanco, margen negro;
+- 21-30: borde negro, margen blanco;
+
+
+*/
+
 
