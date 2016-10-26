@@ -68,6 +68,11 @@
 
 }
 
+
+/* ****************************************************************************
+* NAV BAR
+**************************************************************************** */
+
 #map-navbar {
   padding: 5px 0px;
   background-color: #fff;
@@ -76,10 +81,23 @@
   /*display: none;*/
   position: relative;
   z-index: 1;
+
+
 }
 
 #map-left-controls {
   /*background-color: blue;*/
+  height: 100%;
+  padding: 0px;
+}
+#map-middle-controls {
+  /*background-color: orange;*/
+  height: 100%;
+  border-right: 1px solid #808080;
+  border-left: 1px solid #808080;
+}
+#map-right-controls {
+  /*background-color: orange;*/
   height: 100%;
   padding: 0px;
 }
@@ -102,20 +120,6 @@
   border: 4px solid #ed7d31;
   color: #ed7d31;
   line-height: 30px;
-}
-
-
-
-/* - black: #808080
- - white: #fff;
- - Futura Bold (#46C7F4)   -  darker version : #39a0ea
- - Futura Light (#F26621)  -  lighter version: #ed7d31
-*/
-
-#map-right-controls {
-  /*background-color: orange;*/
-  height: 100%;
-  padding: 0px;
 }
 #map-right-controls .button {
   color: #39a0ea;
@@ -169,13 +173,6 @@
 }
 
 
-#map-middle-controls {
-  /*background-color: orange;*/
-  height: 100%;
-  border-right: 1px solid #808080;
-  border-left: 1px solid #808080;
-}
-
 #info-country-label {
   font-family: Futura;
   font-weight: bold;
@@ -218,6 +215,10 @@
   font-style: normal;
   font-weight: normal;
 }
+
+/* ****************************************************************************
+* FILTERS
+**************************************************************************** */
 
 #filters-div {
   background-color: #fff;

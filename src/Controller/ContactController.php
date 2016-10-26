@@ -27,7 +27,7 @@ class ContactController extends AppController
                 foreach ($contact->errors() as $error) {
                     $this->Flash->error(__('{0}', reset($error)));
                 }
-                // return $this->redirect(['controller' => 'Contact', 'action' => 'contact']);
+                return $this->redirect(['controller' => 'Contact', 'action' => 'contact']);
             }
         }
 

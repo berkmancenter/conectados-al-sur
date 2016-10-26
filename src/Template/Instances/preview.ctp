@@ -122,7 +122,7 @@ and (min-width : 640px) {
 .preview-imgs img {
     margin-top: 10px;
     border-radius: 100px;
-    border: 0px;
+    border: 1px solid black;
     width: 150px;
     height: 150px;
     display: block;
@@ -136,6 +136,7 @@ and (min-width : 640px) {
 }
 
 .preview-imgs img:hover, .preview-imgs img:focus {
+    border: 0px;
     /*box-shadow: 0 0 0px 7px #46C7F4;*/
     box-shadow: 0 0 0px 7px #ed7d31;
 }

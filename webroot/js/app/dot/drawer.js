@@ -15,30 +15,43 @@ function computeClassStrokeWidth(class_id) {
     return context.node_styles[class_id].stroke_width;
 }
 
-function computeClassCentroids(classes) {
+
+function computeEfectiveSVGSize(n_classes) {
+    var class_width  = context.min_class_width;
+    var class_height = context.min_class_height;
+    n_classes = Math.max(1, n_classes)
+    return { 
+        width: class_width*(1 + 1/n_classes),
+        height: class_height*(1 + 1/n_classes),
+    }
+}
+
+function computeClassCentroids(classes, current_grid) {
 
     var n_classes = classes.length;
-    var max_x = context.svg_width;
-    var max_y = context.svg_height;
+    var max_width = context.svg_div.clientWidth;
 
-    // class grid
-    var rows = Math.ceil(Math.sqrt(n_classes));
-    var cols = Math.ceil(Math.sqrt(n_classes));
+    var svg = computeEfectiveSVGSize(classes.length);
+
+    var cols = Math.max(Math.floor(max_width/svg.width),1);
+    var rows = Math.ceil(n_classes/cols);
 
     var idx = 0;
     for (var i = 0; i < rows; i++) {
         var remaining_classes = n_classes - (i * cols);
         var this_row_cols = Math.min(cols, remaining_classes);
         for (var j = 0; j < this_row_cols; j++) {
-            classes[idx].cx = Math.ceil((max_x / (this_row_cols + 1)) * (j + 1));
-            classes[idx].cy = Math.ceil((max_y / (rows + 1)) * (i + 1));
+            classes[idx].cx = Math.ceil((max_width / (this_row_cols + 1)) * (j + 1));
+            classes[idx].cy = Math.ceil(context.svg_padding + (i + 0.5)*svg.height);
             idx++;
         }
     }
+
+    current_grid.rows = rows;
+    current_grid.cols = cols;
+
     return classes;
 }
-
-
 
 
 

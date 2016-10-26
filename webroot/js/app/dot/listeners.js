@@ -4,46 +4,74 @@
 
 function update_window() {
 
+    var max_small_width  = 640;  // px
+    var max_medium_width = 1024; // px
+
     var totalWidth  = window.innerWidth;
     var totalHeight = window.innerHeight;
+    
+    // page:
+    // top bar
+    // top filters
+    // svg a
+    // svg b
+    // info bar
+    // filters (can be hidden)
+
     var height_topbar = document.getElementById("top-bar-div").clientHeight;
-    var height_filter_header = 70 + 30;
-    var height_infodiv = 120;
-    var height_filterdiv = 205;
-    if (totalWidth < 640) {
-        height_filterdiv = 342;    // filter window is 342px height on small
-    } else if (totalWidth < 1024) {
-        height_filterdiv = 262;    // filter window is 262px height on medium
+    var height_filter_header = 70 + 10 + 10 + 3; // (height + padding + margin)
+    var height_infodiv = 110 + 5 + 5 + 1;        // (height + padding)
+
+    // filter height depends upon screen width
+    var height_filterdiv = 205 + 1;    // filter window is 205px height on large
+    if (totalWidth < max_small_width) {
+        height_filterdiv = 342 + 1;    // filter window is 342px height on small
+    } else if (totalWidth < max_medium_width) {
+        height_filterdiv = 262 + 1;    // filter window is 262px height on medium
     };
 
     var height_footer_full = height_infodiv;
     if (context.showingFilters) { height_footer_full += height_filterdiv; }
 
-    // current size
-    var width  = context.svg_div.clientWidth;
-    var height = totalHeight - height_topbar - height_filter_header - height_footer_full;
     
-    var svg_width = document.getElementById("svg-left").clientWidth;
-    svg_height = height;
-    svg_a
-        .attr("width" , svg_width)
-        .attr("height", svg_height);
-    svg_b
-        .attr("width" , svg_width)
-        .attr("height", svg_height);
+    // current size
+    var viz_width  = context.svg_div.clientWidth;
+    if (typeof a_classes !== 'undefined' && typeof b_classes !== 'undefined') {
+        var svg_a_size = computeEfectiveSVGSize(a_classes.length);
+        var svg_b_size = computeEfectiveSVGSize(b_classes.length);
+        var svg_a_efective_height = svg_a_size.height*context.grid_a.rows + 2*context.svg_padding + 1;
+        var svg_b_efective_height = svg_b_size.height*context.grid_b.rows + 2*context.svg_padding;
+
+
+        var remaining_height = totalHeight 
+            - height_topbar 
+            - height_filter_header 
+            - height_footer_full 
+            - svg_a_efective_height
+            - svg_b_efective_height;
+
+        // expand svg_b if there is some remaining space
+        if (remaining_height > 0) {
+            svg_b_efective_height += remaining_height;
+        }
+
+        
+
+
+
+        svg_a
+            .attr("width" , viz_width)
+            .attr("height", svg_a_efective_height);
+        svg_b
+            .attr("width" , viz_width)
+            .attr("height", svg_b_efective_height);
+    }
 
     // $("#dots-div").css("width", padded_width);
-    $("#viz-dots-div").css("height", height);
+    // $("#viz-dots-div").css("height", height);
 
     // ensure 0 padding.. ensure for removed footer
     $("#content").css("padding-bottom", 0);
-
-
-    // set sizes
-    context.width  = width;
-    context.height = height;
-    context.svg_width   = svg_width;
-    context.svg_height  = svg_height;
 }
 
 

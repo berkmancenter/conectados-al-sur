@@ -6,7 +6,7 @@
 // show filters button
 context.showingFilters = false;
 
-context.svg_div = document.getElementById('dots-div');
+context.svg_div = document.getElementById('viz-dots-row');
 
 // svg viewports
 var svg_a = d3.select("#svg-left").append("svg").attr("id", "svg-left-root");
@@ -22,9 +22,6 @@ var label_group_b = svg_b.append("g").attr("class", "labels_group");
 
 // load default filter options
 filtersUpdate();
-
-// prepare viewport
-update_window();
 
 
 ///////////////////////////////////////////////////////////////////////////////

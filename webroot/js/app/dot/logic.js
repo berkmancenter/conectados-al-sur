@@ -230,8 +230,8 @@ function updateSVGs() {
     [nodes_a, nodes_b] = computeNodes(context.a_option, context.b_option);
 
     // compute centroids
-    a_classes = computeClassCentroids(a_classes);
-    b_classes = computeClassCentroids(b_classes);
+    a_classes = computeClassCentroids(a_classes, context.grid_a);
+    b_classes = computeClassCentroids(b_classes, context.grid_b);
 
     // draw nodes
     d3_nodes_a = updateNodes(nodes_group_a, nodes_a);
@@ -242,6 +242,8 @@ function updateSVGs() {
     simulation_b.nodes(nodes_b);
     restartSimulation(simulation_a);
     restartSimulation(simulation_b);
+
+    update_window();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

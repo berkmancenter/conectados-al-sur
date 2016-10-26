@@ -13,7 +13,7 @@
             <?php if ($lang_current == "en"): ?>
                 <!-- ENGLISH VERSION -->
 
-                <p>DVINE WEB APP is a tool that allows to visualize and geolocalize projects in a given field.</p>
+                <p>DVINE WEB APP is a tool that helps to visualize and geolocalize projects in a given field.</p>
 
                 <p>It helps to map and explore projects that are being developed in different countries around the world, allowing the visualization of categories, networks and relevant information.</p>
 
