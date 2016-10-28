@@ -32,12 +32,17 @@ class ContactForm extends Form
     protected function _execute(array $data)
     {
 
+        $message = "Name: " . $data["name"] . "\n" 
+                . "Email: " . $data["email"] . "\n"
+                . "---" . "\n"
+                . $data["body"];
+
         $email = new Email('default');
         $email->from(['contacto@app.dvine.cl' => 'Contact Dvine Web App'])
             ->sender($data["email"], $data["name"]) // original sender
-            ->to('matias.pavez@ing.uchile.cl')      // admin
+            ->to('lionelbrossi@gmail.com')          // admin
             ->subject('Contact message from app.dvine.cl')
-            ->send($data["body"]);
+            ->send($message);
 
         return true;
     }

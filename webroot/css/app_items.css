@@ -191,6 +191,7 @@ div.message {
     overflow: hidden;
     height: 50px;
     line-height: 2.5em;
+    width: 100%;
 }
 
 div.message:before {
