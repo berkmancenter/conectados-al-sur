@@ -5,11 +5,17 @@
 function computeClasses (option) {
     var set = getDataset(option);
 
+    field = "name";
+    if (_useSpanish()) {
+        field = "name_es";
+    }
+
     classes = [];    
     set.forEach(function (item, idx) {
+
         classes[idx] = {
             id: item.id,
-            label: item.name
+            label: item[field]
         }
     });
 
@@ -20,7 +26,7 @@ function computeMapping(a_option, b_option) {
 
     // A := Project Stages
     // B := Genres
-    var P = _data_projects;
+    var P = context.projects;
     var A = getDataset(a_option);
     var B = getDataset(b_option);
     var nA = A.length;
@@ -34,6 +40,7 @@ function computeMapping(a_option, b_option) {
         aMapInv[idx] = item.id;
         aMap[item.id] = idx;
     });
+    context.aMapInv = aMapInv;
     // console.log(bMap);
     // console.log(bMapInv);
 
@@ -52,6 +59,9 @@ function computeMapping(a_option, b_option) {
     var mapping = createMatrixZeros(nA, nB);
 
     // create mapping
+    a_classes.forEach(function (item, idx) {
+        item.count = 0;
+    })
     P.forEach(function (item, idx) {
         var a_ids = getProjectPropertyIds(item, a_option);
         var b_ids = getProjectPropertyIds(item, b_option);
@@ -62,6 +72,7 @@ function computeMapping(a_option, b_option) {
         		var col = bMap[item];
 		        mapping[row][col] += 1;
         	});
+            a_classes[row].count += 1;
         });
     });
     // console.log(mapping);
@@ -95,21 +106,12 @@ function percentToNodes(percent, nNodes) {
 
     for (var i = rows-1; i >= 0; i--) {
         for (var j = cols-1; j >= 0; j--) {
-            nodes[i][j] = Math.round(percent[i][j]*nNodes);
-        };
-    };
-    return nodes;
-}
 
-function percentToNodes(percent, nNodes) {
-
-    var rows = percent.length;
-    var cols = percent[0].length;
-    var nodes = createMatrixZeros(rows, cols);
-
-    for (var i = rows-1; i >= 0; i--) {
-        for (var j = cols-1; j >= 0; j--) {
-            nodes[i][j] = Math.round(percent[i][j]*nNodes);
+            var pieces = percent[i][j]*nNodes;
+            if (0 < pieces  && pieces < 1) {
+                pieces = 1;
+            }
+            nodes[i][j] = Math.round(pieces);
         };
     };
     return nodes;
@@ -163,7 +165,7 @@ function nodesToD3(nodes_map) {
 function computeNodes(a_option, b_option) {
     var mapping  = computeMapping(a_option, b_option);
     var percents_map = mapToPercent(mapping);
-    var nodes_map    = percentToNodes(percents_map, context.max_nodes);
+    var nodes_map    = percentToNodes(percents_map, context.current_max_nodes);
     a_nodes = nodesToD3(nodes_map); // we need a deep copy 
     b_nodes = nodesToD3(nodes_map); // we need a deep copy
     return [a_nodes, b_nodes];

@@ -2,6 +2,8 @@
 //////////////////// CONFIGS //////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+context.current_max_nodes = context.max_nodes;
+context.projects = _data_projects;
 
 // show filters button
 context.showingFilters = false;
@@ -21,7 +23,7 @@ var label_group_b = svg_b.append("g").attr("class", "labels_group");
 ///////////////////////////////////////////////////////////////////////////////
 
 // load default filter options
-filtersUpdate();
+topSelectorsUpdate();
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -41,15 +43,37 @@ var d3_nodes_b = d3.select(null);
 var simulation_a = createSimulation(nodes_a, "a");
 var simulation_b = createSimulation(nodes_b, "b");
 
-updateSVGs();
+
+//// info bar
+/////////////////////////////////////////////
+infobar_clear();
+
+
+///// filters
+///////////////////////////////////////////
+filterClearOptions();
+filterApplyOptions();
+
+
+// update_window();
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // EVENTS
 ///////////////////////////////////////////////////////////////////////////////
 
-window.addEventListener("resize", update_window);
-document.getElementById('show-filters-button').addEventListener("click", filterShowListener);
+// resize
+window.addEventListener("resize", updateSVGs);
+
+// top bar selectors
 document.getElementById('switch_button').addEventListener("click", filterSwitchListener);
 document.getElementById('filter_a').addEventListener("change", filterChangeListener);
 document.getElementById('filter_b').addEventListener("change", filterChangeListener);
+
+// data filters
+document.getElementById('show-filters-button').addEventListener("click", filterShowListener);
+document.getElementById('filter-clear').addEventListener("click", filterClearOptions);
+document.getElementById('filter-apply').addEventListener("click", filterApplyOptions);
+document.getElementById('filter-region').addEventListener("change", filterUpdateRegion);
+

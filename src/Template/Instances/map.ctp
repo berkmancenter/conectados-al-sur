@@ -40,7 +40,7 @@
         <div class="small-3 medium-2 large-1 columns" id="map-right-controls">
             <button type="button" class="button" id="show-filters-button">
                 <!-- <i class='fi-widget'></i> -->
-                <?= __d('map', 'Options') ?>
+                <?= __d('map', 'Filters') ?>
             </button>
             <span id="info-nprojects-txt"><?= __d('map', 'total projects') ?></span>
             <span id="info-nprojects">0</span>
@@ -154,7 +154,6 @@
     var _data_continents    = <?php echo json_encode($continents); ?>;
     var _data_subcontinents = <?php echo json_encode($subcontinents); ?>;
     var _data_countries     = <?php echo json_encode($countries); ?>;
-    var _data_countries_f   = <?php echo json_encode($countries_f); ?>;
 
     // independent
     var _data_genres         = <?php echo json_encode($genres); ?>;

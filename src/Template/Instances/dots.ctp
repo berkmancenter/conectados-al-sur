@@ -58,14 +58,13 @@
             ]) ?>
         </div>
         <div class="small-6 medium-8 large-10 columns" id="dots-middle-controls">
-            <p id="info-country-label"></p>
-            <ul id="info-country-ul">
-            </ul>
+            <p id="info-title"></p>
+            <ul id="info-ul"></ul>
         </div>
         <div class="small-3 medium-2 large-1 columns" id="dots-right-controls">
             <button type="button" class="button" id="show-filters-button">
                 <!-- <i class='fi-widget'></i> -->
-                <?= __d('dots', 'Options') ?>
+                <?= __d('dots', 'Filters') ?>
             </button>
             <span id="info-nprojects-txt"><?= __d('dots', 'total projects') ?></span>
             <span id="info-nprojects">0</span>
@@ -180,7 +179,6 @@
     var _data_continents    = <?php echo json_encode($continents); ?>;
     var _data_subcontinents = <?php echo json_encode($subcontinents); ?>;
     var _data_countries     = <?php echo json_encode($countries); ?>;
-    var _data_countries_f   = <?php echo json_encode($countries_f); ?>;
 
     // independent
     var _data_genres         = <?php echo json_encode($genres); ?>;
@@ -194,7 +192,7 @@
     var _filter_options = <?php 
         echo json_encode(
             [
-                'c' => __d('dots', 'Category'),
+                't' => __d('dots', 'Category'),
                 'o' => __d('dots', 'Organization Type'),
                 'r' => __d('dots', 'Region'),
                 'g' => __d('dots', 'Genre'),

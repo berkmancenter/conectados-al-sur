@@ -201,10 +201,7 @@ function projects_info_display(codN3) {
     var project_idxs = getCountryProjectIds(codN3);
     
     var curr_projects = [];
-    // console.log("n3: " + codN3);
-    // console.log(project_idxs);
 
-    // console.log(project_idxs);
     if (project_idxs != null) {
         project_idxs.forEach(function (item, index) {
             curr_projects.push(getProjectById(item));
@@ -212,31 +209,9 @@ function projects_info_display(codN3) {
     }
     var nProjects = curr_projects.length;
 
-    //console.log(curr_projects);
-
     var infolist = d3.select("#info-country-ul");
 
     if (nProjects > 1) {
-
-        // categories = {};
-        // last_update = new Date(0);
-
-        // curr_projects.forEach(function (item, index) {
-            
-            // console.log(item);
-            // console.log(item);
-
-            // fill categories
-            // Object.keys(item.categories).forEach(function (cat_item_id, cat_index) {
-            //     cat_id = item.categories[cat_item_id].id;
-            //     cat_name = item.categories[cat_item_id].name;
-            //     categories[cat_id] = cat_name;
-            // });
-
-            // modified = new Date(item.modified);
-            // last_update = last_update > modified ? last_update : modified;
-        // });
-        // console.log(categories);
 
         if (_useSpanish()) {
             infolist.append("li").text("Proyectos: " + nProjects);
@@ -244,11 +219,7 @@ function projects_info_display(codN3) {
             infolist.append("li").text("Projects: " + nProjects);
         }
         
-        // infolist.append("li").text("Categories: " + Object.keys(categories).length);
-        // infolist.append("li").text("Last Update: " + last_update.toDateString());
-        
 
-        // console.log(filtering_options);
         filter_query = "projects?c=" + codN3;
         if (filtering_options.hasOwnProperty('user_genre_id'))        { filter_query += "&g=" + filtering_options.user_genre_id;         }
         if (filtering_options.hasOwnProperty('organization_type_id')) { filter_query += "&o=" + filtering_options.organization_type_id   }
@@ -271,8 +242,6 @@ function projects_info_display(codN3) {
     } else if (nProjects == 1) {
 
         var project = curr_projects[0];
-        // console.log(project);
-        // console.log(curr_projects);
 
         infolist.append("li").text(project.name);
         infolist.append("li").text(project.organization);

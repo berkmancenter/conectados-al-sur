@@ -128,6 +128,13 @@ class InstancesController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
         
+        // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
+        }
+
+
         // ----- instance independent data --------
 
         // location data
@@ -149,6 +156,7 @@ class InstancesController extends AppController
         $countries = TableRegistry::get('Countries')
             ->find()
             ->where(['Countries.id !=' => '0'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         // var_dump($countries);
 
@@ -210,20 +218,7 @@ class InstancesController extends AppController
         // ->first();
         // var_dump($projects->categories);
 
-        // filter trick
-        $field_loc = "name";
-        if ($this->request->lang == "es") {
-            $field_loc = "name_es";    
-        }
-
-        $countries_f = TableRegistry::get('Countries')
-            ->find('list', [
-                'keyField' => 'id',
-                'valueField' => $field_loc
-            ])
-            ->where(['Countries.id !=' => '0'])
-            ->order([$field_loc =>'ASC'])
-            ->all();
+        /// FILTERS /////////////////////////////////////////////////
         $genres_f = TableRegistry::get('Genres')
             ->find('list', [
                 'keyField' => 'id',
@@ -263,6 +258,7 @@ class InstancesController extends AppController
                 'valueField' => $field_loc
             ])
             ->where(['Continents.id !=' => '0'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $subcontinents_f = TableRegistry::get('Subcontinents')
             ->find('list', [
@@ -275,7 +271,6 @@ class InstancesController extends AppController
 
         $this->set('continents_f', $continents_f);
         $this->set('subcontinents_f', $subcontinents_f);
-        $this->set('countries_f', $countries_f);
         $this->set('genres_f', $genres_f);
         $this->set('project_stages_f', $project_stages_f);
         $this->set('_organization_types', $_organization_types);
@@ -301,6 +296,12 @@ class InstancesController extends AppController
         // block sys instance
         if ($instance_namespace == $this->App->getAdminNamespace()) { $this->redirect($this->referer()); }
 
+        // filter trick
+        $field_loc = "name";
+        if ($this->request->lang == "es") {
+            $field_loc = "name_es";    
+        }
+
         // ----- instance independent data --------
 
         // location data
@@ -322,6 +323,7 @@ class InstancesController extends AppController
         $countries = TableRegistry::get('Countries')
             ->find()
             ->where(['Countries.id !=' => '0'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         // var_dump($countries);
 
@@ -383,20 +385,8 @@ class InstancesController extends AppController
         // ->first();
         // var_dump($projects->categories);
 
-        // filter trick
-        $field_loc = "name";
-        if ($this->request->lang == "es") {
-            $field_loc = "name_es";    
-        }
 
-        $countries_f = TableRegistry::get('Countries')
-            ->find('list', [
-                'keyField' => 'id',
-                'valueField' => $field_loc
-            ])
-            ->where(['Countries.id !=' => '0'])
-            ->order([$field_loc =>'ASC'])
-            ->all();
+        // FILTERS ////////////////////////////////////////////////
         $genres_f = TableRegistry::get('Genres')
             ->find('list', [
                 'keyField' => 'id',
@@ -436,6 +426,7 @@ class InstancesController extends AppController
                 'valueField' => $field_loc
             ])
             ->where(['Continents.id !=' => '0'])
+            ->order([$field_loc =>'ASC'])
             ->all();
         $subcontinents_f = TableRegistry::get('Subcontinents')
             ->find('list', [
@@ -448,7 +439,6 @@ class InstancesController extends AppController
 
         $this->set('continents_f', $continents_f);
         $this->set('subcontinents_f', $subcontinents_f);
-        $this->set('countries_f', $countries_f);
         $this->set('genres_f', $genres_f);
         $this->set('project_stages_f', $project_stages_f);
         $this->set('_organization_types', $_organization_types);

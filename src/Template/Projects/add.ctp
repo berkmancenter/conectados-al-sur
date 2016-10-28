@@ -148,13 +148,13 @@
 <script type="text/javascript">
     window.prettyPrint && prettyPrint();
     $('#dp_start').fdatepicker({
-        format: 'dd/mm/yy',
+        format: 'yy/mm/dd',
         disableDblClickSelection: true,
         startDate: '1989-01-01',
         endDate:   '2050-01-01',
     });
     $('#dp_finish').fdatepicker({
-        format: 'dd/mm/yy',
+        format: 'yy/mm/dd',
         disableDblClickSelection: true,
         startDate: '1989-01-01',
         endDate:   '2050-01-01',

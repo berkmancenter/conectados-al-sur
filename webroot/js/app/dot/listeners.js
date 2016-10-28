@@ -37,11 +37,12 @@ function update_window() {
     // current size
     var viz_width  = context.svg_div.clientWidth;
     if (typeof a_classes !== 'undefined' && typeof b_classes !== 'undefined') {
-        var svg_a_size = computeEfectiveSVGSize(a_classes.length);
-        var svg_b_size = computeEfectiveSVGSize(b_classes.length);
+        var svg_a_size = computeSVGClassSize(a_classes.length);
+        var svg_b_size = computeSVGClassSize(b_classes.length);
         var svg_a_efective_height = svg_a_size.height*context.grid_a.rows + 2*context.svg_padding + 1;
         var svg_b_efective_height = svg_b_size.height*context.grid_b.rows + 2*context.svg_padding;
-
+        // var svg_a_efective_height = computeEfectiveSVGHeight(d3_nodes_a);
+        // var svg_b_efective_height = computeEfectiveSVGHeight(d3_nodes_b);
 
         var remaining_height = totalHeight 
             - height_topbar 
@@ -54,9 +55,6 @@ function update_window() {
         if (remaining_height > 0) {
             svg_b_efective_height += remaining_height;
         }
-
-        
-
 
 
         svg_a
@@ -88,7 +86,7 @@ function filterChangeListener() {
     context.a_option = selected_a;
     context.b_option = selected_b;
 
-    filtersUpdate(); // update upon context options
+    topSelectorsUpdate(); // update upon context options
     updateSVGs();
 }
 
@@ -101,7 +99,7 @@ function filterSwitchListener() {
     context.a_option = selected_b;
     context.b_option = selected_a;
 
-    filtersUpdate(); // update upon context options
+    topSelectorsUpdate(); // update upon context options
     updateSVGs();
 }
 
@@ -110,15 +108,107 @@ function filterSwitchListener() {
 ///////////////////////////////////////////////////////////////////////////////
 
 function filterShowListener() {
-    // d3.select('#map-navbar').style("display", 'none');
-
-    if (context.showingFilters) {
+     if (context.showingFilters) {
         d3.select('#filters-div').style("display", 'none');
     } else {
         d3.select('#filters-div').style("display", 'block');
     };
     context.showingFilters = !context.showingFilters;
     update_window();
+}
+
+// -------------------------- clear  -------------------------------
+function filterClearOptions() {
+    document.getElementById("filter-form").reset();
+    filterUpdateRegion();
+}
+
+// -------------------------- apply  -------------------------------
+function filterApplyOptions() {
+
+    options = filterParseOptions();
+
+    filterProjectsData(options);
+    update_world(options);
+}
+
+
+
+// -------------------------- location interaction -------------------------------
+
+function filterClearSelectOption(selector_id) {
+    $('#' + selector_id + ' option').prop('selected', function() {
+        return this.defaultSelected;
+    });
+}
+
+function getRegionSubcontinentIds(region_id) {
+    var valid_subcontinent_ids = [];
+    _data_subcontinents.map(
+        function(subcontinent) {
+            var continent_id = subcontinent.continent_id;
+            if (region_id == "" || region_id == continent_id) {
+                valid_subcontinent_ids.push(subcontinent.id);
+            }
+        }
+    );
+    // console.log(valid_subcontinent_ids);
+    return valid_subcontinent_ids;
+}
+
+function getSubcontinentCountryIds(subcontinent_ids) {
+    var valid_country_ids = [];
+    _data_countries.map(
+        function(country) {
+            var subcontinent_id = country.subcontinent_id;
+            if (subcontinent_ids.includes(subcontinent_id)) {
+                valid_country_ids.push(country.id);
+            }
+        }
+    );
+    // console.log(valid_country_ids);
+    return valid_country_ids;
+}
+
+function filterUpdateCountriesSelector(country_ids) {
+
+    var countries = d3.select("#filter-country")
+        .selectAll(".country_selector")
+        .data(country_ids);
+
+    // append options and update value, text
+    countries
+        .enter().append("option")
+            .attr("class", "country_selector")
+        .merge(countries)
+            .attr("value", function(d,i) {
+                return d;
+            })
+            .text(function(d,i) {
+                country = getCountryById(d);
+                // console.log("id: " + d + ", name: " + country.name);
+                if (_useSpanish()) {
+                    return country.name_es;
+                }
+                return country.name;
+            });
+
+    // remove remaining options
+    countries.exit().remove();
+}
+
+function filterUpdateRegion() {
+
+    // reset country selector
+    filterClearSelectOption("filter-country");
+
+    // get valid countries
+    var region_id = document.getElementById("filter-region").value;
+    valid_subcontinent_ids = getRegionSubcontinentIds(region_id);
+    valid_country_ids      = getSubcontinentCountryIds(valid_subcontinent_ids);
+
+    // update selector
+    filterUpdateCountriesSelector(valid_country_ids);
 }
 
 
@@ -156,4 +246,48 @@ function simulation_ticked() {
             d.y += (center.cy - d.y) * 0.09 * alpha;
             return d.y;
         });
+}
+
+
+
+context.selected_class = null;
+function classOverListener (d) {
+    var class_id = d.class_id;
+    if (context.selected_class != null) {
+        drawerDisableClass();
+    };
+    drawerEnableClass(class_id);
+}
+
+function classOutListener (d) {
+    drawerDisableClass();
+    if (context.selected_class != null) {
+        // restore class
+        drawerEnableClass(context.selected_class);
+    }
+}
+
+function classClickedListener (d) {
+    
+    if (context.selected_class == null) {
+        // select
+        context.selected_class = d.class_id;
+        drawerEnableClass(d.class_id);
+    } else {
+
+
+        if (context.selected_class == d.class_id) {
+            // disable this one
+            context.selected_class = null;
+            drawerDisableClass();
+
+        } else {
+            // disable old one
+            drawerDisableClass();
+
+            // select new one
+            context.selected_class = d.class_id;
+            drawerEnableClass(d.class_id);
+        };
+    }
 }

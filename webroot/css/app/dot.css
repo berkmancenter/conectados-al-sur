@@ -227,7 +227,7 @@ footer {
 }
 
 
-#info-country-label {
+#info-title {
   font-family: Futura;
   font-weight: bold;
   white-space: nowrap;
@@ -237,18 +237,18 @@ footer {
   padding: 0;
   margin: 0;
 }
-#info-country-select {
+#info-select {
   font-family: Futura;
   font-weight: bold;
   padding: 0;
   margin: 0;
 }
 
-#info-country-ul {
+#info-ul {
   list-style-type: circle;
   font-family: Futura;  
 }
-#info-country-ul li {
+#info-ul li {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;     /* IE 6+, FF 7+, Op 11+, Saf 1.3+, Chr 1+ */
@@ -258,12 +258,12 @@ footer {
   font-style: italic;
   line-height: 20px;
 }
-#info-country-ul li:first-child {
+#info-ul li:first-child {
   color: black;
   font-style: normal;
   text-transform: uppercase;
 }
-#info-country-ul a {
+#info-ul a {
   color: #F26722;
   font-family: Helvetica Neue,Helvetica,Roboto,Arial,sans-serif;
   font-style: normal;

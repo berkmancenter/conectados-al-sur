@@ -3,7 +3,7 @@
 var context = {}
 
 // defaults
-context.a_option = "c"; // categories
+context.a_option = "t"; // categories
 context.b_option = "g"; // genres
 
 
@@ -13,7 +13,7 @@ context.b_option = "g"; // genres
 
 context.svg_padding = 20; // top, bottom padding [px]
 context.min_class_width  = 140; // minimum class width  [px]
-context.min_class_height = 140; // minimum class height [px] (account some space for the label!)
+context.min_class_height = 100; // minimum class height [px] (account some space for the label!)
 
 context.label_separation = 25; // vertical separation from label to the lowest related node
 context.label_max_length = 13; // max characters to be displayed for each label

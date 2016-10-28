@@ -103,7 +103,7 @@ class ProjectsTable extends Table
             ->notEmpty('organization', __d('projects', 'Please, write the related Organization name.'))
             ->add('organization', [
                 'minLength' => $locHelper->validationMinLength($str_organization , 3),
-                'maxLength' => $locHelper->validationMaxLength($str_organization , 20)
+                'maxLength' => $locHelper->validationMaxLength($str_organization , 40)
             ]);
 
         $validator

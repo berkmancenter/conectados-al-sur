@@ -143,10 +143,8 @@ function filterValidateCountry(project, country_id) {
 // create map with {country_id, project_ids_array}
 function filterProjectsData(options) {
 
-    var count = 0;
-
     // object version
-    var _map_by_country = {};
+    var filtered_projects = [];
     _data_projects.map(function (project, index) {
         // console.log(project);
 
@@ -159,24 +157,10 @@ function filterProjectsData(options) {
 
         // ----------------------------------------------------------------
         // project is valid!
-
-        count++;
-
-        // append
-        if (_map_by_country[project.country_id] != null) {
-            return _map_by_country[project.country_id].push(project.id);
-        }
-        return _map_by_country[project.country_id] = [project.id];
+        return filtered_projects.push(project);
     });
-
-    // array version
-    var map_by_country = []
-    Object.keys(_map_by_country).map(function(value, index) {
-        map_by_country.push({'id':value, 'projects':_map_by_country[value]});
-    });
-    
-    n_filtered_projects = count;
-    return map_by_country;
+    context.projects = filtered_projects;
+    context.current_max_nodes = Math.min(filtered_projects.length, context.max_nodes);
 }
 
 
@@ -202,9 +186,9 @@ function getCountryProjectIds(id) {
 // "name_es"
 
 function getDataset(option) {
-    if (option == "c") {
+    if (option == "t") {
         return _data_categories;
-    } else if (option == "o") {
+    } else if (option == "t") {
         return _data_organization_types;
     } else if (option == "r") {
         return _data_continents;
@@ -218,12 +202,12 @@ function getDataset(option) {
 }
 
 function getProjectPropertyIds(project, property) {
-    if (property == "c") { 
+    if (property == "t") { 
         return project.categories.map(function (item, key) {
             return item.id;
         });
 
-    } else if (property == "o") {
+    } else if (property == "t") {
         return [project.organization_type_id];
 
     } else if (property == "r") {
@@ -240,4 +224,40 @@ function getProjectPropertyIds(project, property) {
     }
     console.log("invalid property: " + property);
     return null;
+}
+
+
+
+
+// -------------------------- parse form ---------------------------
+function filterParseOptions() {
+    
+    var options = {};
+
+    // organization type
+    var orgtype = document.getElementById("filter-orgtype").value;
+    if (orgtype) { options.organization_type_id = orgtype; };
+    
+    // category
+    var category = document.getElementById("filter-category").value;
+    if (category) { options.category_id = category; };
+
+    // project_stage
+    var stage = document.getElementById("filter-stage").value;
+    if (stage) { options.project_stage_id = stage; };
+    
+    // user genre
+    var genre = document.getElementById("filter-genre").value;
+    if (genre) { options.user_genre_id = genre; };
+
+    // region
+    var region = document.getElementById("filter-region").value;
+    if (region) { options.region_id = region; };
+
+    // country
+    var country = document.getElementById("filter-country").value;
+    if (country) { options.country_id = country; };
+
+    // console.log(options);
+    return options;
 }
