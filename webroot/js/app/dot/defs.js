@@ -12,7 +12,7 @@ context.b_option = "g"; // genres
 ///////////////////////////////////////////////////////////////////////////////
 
 context.svg_padding = 20; // top, bottom padding [px]
-context.min_class_width  = 140; // minimum class width  [px]
+context.min_class_width  = 150; // minimum class width  [px]
 context.min_class_height = 100; // minimum class height [px] (account some space for the label!)
 
 context.label_separation = 25; // vertical separation from label to the lowest related node
@@ -63,7 +63,7 @@ context.node_style_radius = 7;
 // SIMULATION
 ///////////////////////////////////////////////////////////////////////////////
 
-context.min_alpha = 0.2;
+context.min_alpha = 0.8;
 context.alpha_init = 2.0;
 
 context.max_nodes = 50;

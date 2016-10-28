@@ -64,7 +64,21 @@ filterApplyOptions();
 ///////////////////////////////////////////////////////////////////////////////
 
 // resize
-window.addEventListener("resize", updateSVGs);
+window.addEventListener("resize", function () {
+	
+	if (context.last_window_width !== undefined) {
+    
+        // prevent update if resize is too small 
+        var width_diff = Math.abs(context.last_window_width - window.innerWidth);
+        var height_diff = Math.abs(context.last_window_height - window.innerHeight);
+        if (Math.max(height_diff, width_diff) < 100) {
+            return;
+        }
+    }
+    context.last_window_width = window.innerWidth;
+    context.last_window_height = window.innerHeight;
+    updateSVGs();
+});
 
 // top bar selectors
 document.getElementById('switch_button').addEventListener("click", filterSwitchListener);

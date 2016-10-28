@@ -188,7 +188,7 @@ function getCountryProjectIds(id) {
 function getDataset(option) {
     if (option == "t") {
         return _data_categories;
-    } else if (option == "t") {
+    } else if (option == "o") {
         return _data_organization_types;
     } else if (option == "r") {
         return _data_continents;
@@ -207,7 +207,7 @@ function getProjectPropertyIds(project, property) {
             return item.id;
         });
 
-    } else if (property == "t") {
+    } else if (property == "o") {
         return [project.organization_type_id];
 
     } else if (property == "r") {

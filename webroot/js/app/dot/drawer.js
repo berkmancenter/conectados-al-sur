@@ -71,7 +71,17 @@ function computeSVGClassSize(n_classes) {
 
 function computeClassCentroids(classes, current_grid) {
 
-    var n_classes = classes.length;
+    var n_classes = 0; // = classes.length;
+    classes.forEach(function (item, idx) {
+        // console.log(item);
+        item.cx = 0;
+        item.cy = 0;
+        if (item.count > 0) {
+            n_classes += 1;
+        };
+    });
+
+    
     var max_width = context.svg_div.clientWidth;
 
     var svg = computeSVGClassSize(classes.length);
@@ -84,6 +94,9 @@ function computeClassCentroids(classes, current_grid) {
         var remaining_classes = n_classes - (i * cols);
         var this_row_cols = Math.min(cols, remaining_classes);
         for (var j = 0; j < this_row_cols; j++) {
+
+            while (classes[idx].count == 0) idx++;
+
             classes[idx].cx = Math.ceil((max_width / (this_row_cols + 1)) * (j + 1));
             classes[idx].cy = Math.ceil(context.svg_padding + (i + 0.5)*svg.height);
             idx++;
@@ -125,7 +138,7 @@ function updateNodes (svg, nodes) {
     var field = "class_id";
 
     var d3_nodes = svg.selectAll(".node")
-            .data(nodes);
+        .data(nodes);
 
     // update
     //

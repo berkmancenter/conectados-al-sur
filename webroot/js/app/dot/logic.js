@@ -62,6 +62,9 @@ function computeMapping(a_option, b_option) {
     a_classes.forEach(function (item, idx) {
         item.count = 0;
     })
+    b_classes.forEach(function (item, idx) {
+        item.count = 0;
+    })
     P.forEach(function (item, idx) {
         var a_ids = getProjectPropertyIds(item, a_option);
         var b_ids = getProjectPropertyIds(item, b_option);
@@ -73,6 +76,11 @@ function computeMapping(a_option, b_option) {
 		        mapping[row][col] += 1;
         	});
             a_classes[row].count += 1;
+        });
+
+        b_ids.forEach(function (item, idx) {
+            var index = bMap[item];
+            b_classes[index].count += 1;
         });
     });
     // console.log(mapping);

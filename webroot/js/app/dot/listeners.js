@@ -6,7 +6,7 @@ function update_window() {
 
     var max_small_width  = 640;  // px
     var max_medium_width = 1024; // px
-
+    
     var totalWidth  = window.innerWidth;
     var totalHeight = window.innerHeight;
     
@@ -115,6 +115,7 @@ function filterShowListener() {
     };
     context.showingFilters = !context.showingFilters;
     update_window();
+    window.scrollTo(0,document.body.scrollHeight);
 }
 
 // -------------------------- clear  -------------------------------
