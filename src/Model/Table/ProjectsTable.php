@@ -92,7 +92,7 @@ class ProjectsTable extends Table
             ->notEmpty('name', __d('projects', 'Please, fill the project name.'))
             ->add('name', [
                 'minLength' => $locHelper->validationMinLength($str_name , 5),
-                'maxLength' => $locHelper->validationMaxLength($str_name , 50)
+                'maxLength' => $locHelper->validationMaxLength($str_name , 80)
             ]);
 
         $validator
@@ -103,7 +103,7 @@ class ProjectsTable extends Table
             ->notEmpty('organization', __d('projects', 'Please, write the related Organization name.'))
             ->add('organization', [
                 'minLength' => $locHelper->validationMinLength($str_organization , 3),
-                'maxLength' => $locHelper->validationMaxLength($str_organization , 40)
+                'maxLength' => $locHelper->validationMaxLength($str_organization , 80)
             ]);
 
         $validator
@@ -111,7 +111,7 @@ class ProjectsTable extends Table
             ->notEmpty('description', $locHelper->validationNotEmpty($str_description))
             ->add('description', [
                 'minLength' => $locHelper->validationMinLength($str_description , 40),
-                'maxLength' => $locHelper->validationMaxLength($str_description , 500)
+                'maxLength' => $locHelper->validationMaxLength($str_description , 1000)
             ]);
 
         $validator
@@ -119,7 +119,7 @@ class ProjectsTable extends Table
             ->notEmpty('contribution', $locHelper->validationNotEmpty($str_contribution))
             ->add('contribution', [
                 'minLength' => $locHelper->validationMinLength($str_contribution , 10),
-                'maxLength' => $locHelper->validationMaxLength($str_contribution , 500)
+                'maxLength' => $locHelper->validationMaxLength($str_contribution , 1000)
             ]);
 
         $validator
@@ -127,7 +127,7 @@ class ProjectsTable extends Table
             ->notEmpty('contributing', $locHelper->validationNotEmpty($str_contributing))
             ->add('contributing', [
                 'minLength' => $locHelper->validationMinLength($str_contributing , 10),
-                'maxLength' => $locHelper->validationMaxLength($str_contributing , 500)
+                'maxLength' => $locHelper->validationMaxLength($str_contributing , 1000)
             ]);
 
 

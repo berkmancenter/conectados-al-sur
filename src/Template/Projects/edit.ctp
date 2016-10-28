@@ -143,12 +143,16 @@
                             ]) ?>
                     </fieldset>
             </div>
+            <div class="row">
+                <div class="small-12 columns slide-buttons">
+                    <button type="button" class="button" onclick="previousListener()"><?= __d('projects', 'Previous') ?></button>
+                    <button type="button" class="button" onclick="nextListener()"><?= __d('projects', 'Next') ?></button>
+                </div>
+            </div>
             <!-- submit, cancel -->
             <div class="row">
-                <div class="small-12 columns">
+                <div class="small-12 columns form-buttons">
                     <?= $this->Form->button($this->Loc->formSubmit(), ['class' => 'warning button']) ?>
-                </div>
-                <div class="small-12 columns">
                     <a href="<?= $this->Url->build(['controller' => 'Projects', 'action' => 'view', $instance->namespace, $project->id]) ?>" class="alert hollow button">
                         <?= $this->Loc->formCancel() ?>
                     </a>
@@ -176,6 +180,52 @@
         startDate: '1989-01-01',
         endDate:   '2050-01-01',
     });
+
+
+    var all_tabs = [
+        "panel-overview",
+        "panel-info",
+        "panel-categories"
+    ]
+
+    function getCurrentId() {
+        var current_id = all_tabs[0];
+        var selector = $('.tabs-panel.is-active');
+        if (selector.length > 0) {
+            current_id = selector[0].id;
+        };
+        return current_id;
+    }
+
+    function previousListener () {
+
+        var current_id = getCurrentId();
+        var current_idx = all_tabs.indexOf(current_id);
+
+        var new_idx = Math.max(0, current_idx - 1);
+        var new_id = all_tabs[new_idx];
+        // console.log(current_id);
+        // console.log(current_idx);
+        // console.log(new_id);
+        // console.log(new_idx);
+        $('#projects-view-tabs').foundation('selectTab', $("#" + new_id));
+    }
+
+    function nextListener () {
+        var current_id = getCurrentId();
+        var current_idx = all_tabs.indexOf(current_id);
+
+        var new_idx = Math.min(all_tabs.length-1, current_idx + 1);
+        var new_id = all_tabs[new_idx];
+        // console.log(current_id);
+        // console.log(current_idx);
+        // console.log(new_id);
+        // console.log(new_idx);
+
+        $('#projects-view-tabs').foundation('selectTab', $("#" + new_id));
+    }
+
+
 </script>
 
 <style type="text/css">
@@ -189,6 +239,20 @@
 a.button.alert {
     font-size: 18px;
     float: right;
+}
+
+.form-buttons .button {
+    float: left;
+    /*height: 60px;*/
+    width: 120px;
+    margin: 10px;
+}
+
+.slide-buttons button {
+    float: left;
+    height: 50px;
+    width: 150px;
+    margin: 10px;
 }
 .page-links a {
     margin-left: 20px;

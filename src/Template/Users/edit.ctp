@@ -29,7 +29,8 @@
                     <?= $this->Form->input('name', [
                         'label'       => '',
                         'placeholder' => __d('auth', 'Your name') . ': John Smith',
-                        'class'       => 'input-group-field'
+                        'class'       => 'input-group-field',
+                        'value'       => $user->name,
                     ]) ?>
                 </div>
             </div>
@@ -43,7 +44,8 @@
                         'placeholder'      => __d('auth', 'Contact') . ': my.organization@example.com',
                         'class'            => 'input-group-field',
                         'aria-describedby' => 'contactHelpText',
-                        'type'             => 'email'
+                        'type'             => 'email',
+                        'value'            => $user->contact,
                     ]) ?>
                 </div>
                 <p class="help-text" id="contactHelpText"><?= __d('auth', "Contact email. Public for everyone to see.") ?></p>
