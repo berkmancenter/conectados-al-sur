@@ -52,7 +52,7 @@
             </div>
 
             <!-- password -->
-           <!--  <div class="row collapse">
+            <div class="row collapse">
                 <div class="input-group">
                     <span class="input-group-label"><i class="fi-lock"></i></span>
                     <?= $this->Form->input('password', [
@@ -60,11 +60,12 @@
                         'placeholder'      => 'password',
                         'aria-describedby' => 'passwordHelpText',
                         'class'            => 'input-group-field',
-                        'id'               => 'password'
+                        'id'               => 'password',
                     ]) ?>
                 </div>
+                <p class="help-text" id="passwordHelpText"><?= __d('auth', "New Password. Leave this empty if you don't want to change your current password.") ?></p>
             </div>
- -->
+ 
             <!-- password repeat -->
       <!--       <div class="row collapse">
                 <div class="input-group">

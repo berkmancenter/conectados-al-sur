@@ -63,6 +63,8 @@ Router::scope('/:lang', function ($routes) {
     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login']);
     $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
     $routes->connect('/sign-up', ['controller' => 'Users', 'action' => 'add']);
+    $routes->connect('/password_recovery', ['controller' => 'Users', 'action' => 'passwordRecovery']);
+    $routes->connect('/password_reset', ['controller' => 'Users', 'action' => 'passwordReset']);
 
     # view
     $routes->connect('/users/:id', ['controller' => 'Users', 'action' => 'view'],

@@ -658,7 +658,7 @@ class ProjectsController extends AppController
         // filter trick
         $field_loc = "name";
         if ($this->request->lang == "es") {
-            $field_loc = "name_es";    
+            $field_loc = "name_es";
         }
 
         // OrganizationTypes

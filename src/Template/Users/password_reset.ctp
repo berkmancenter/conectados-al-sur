@@ -8,23 +8,12 @@
 <div class="row">
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
-            <p class="welcome"><?= __d("auth", "Welcome to dvine!") ?></p>
+            <p class="welcome"><?= __d("auth", "Reset Password") ?></p>
+            <!--  Restablece tu contraseña  -->
+            <p><?= __d("auth", "Hi " . $user->name . ", please type a new password for your account.") ?></p>
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
                 
-                <!-- email -->
-                <div class="row collapse">
-                    <div class="input-group">
-                        <span class="input-group-label"><i class="fi-mail"></i></span>
-                        <?= $this->Form->input('email', [
-                            'label'       => '',
-                            'placeholder' => 'john.smith@gmail.com',
-                            'class'       => 'input-group-field', 
-                            'required'
-                        ]) ?>
-                    </div>
-                </div>
-
                 <!-- password -->
                 <div class="row collapse">
                     <div class="input-group">
@@ -32,34 +21,38 @@
                         <?= $this->Form->input('password', [
                             'label'            => '',
                             'placeholder'      => __d('auth', 'password'),
-                            'aria-describedby' => 'passwordHelpText',
                             'class'            => 'input-group-field',
-                            'required'
+                            'id'               => 'password'
                         ]) ?>
                     </div>
                 </div>
+
+                <!-- password repeat -->
+                <div class="row collapse">
+                    <div class="input-group">
+                        <span class="input-group-label"><i class="fi-lock"></i></span>
+                        <div class="input password">
+                            <input
+                                name="repassword"
+                                type="password"
+                                class="input-group-field"
+                                placeholder="<?= __d('auth', 'repeat your password') ?>"
+                            >
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="small-6 columns">
-                        <?= $this->Form->button(__d('auth', 'Login'), ['class' => 'button']) ?>
+                        <?= $this->Form->button(__d('auth', 'Change Password'), ['class' => 'button']) ?>
                     </div>
+                    <!-- Enviar el enlace -->
                     <div class="small-6 columns">
                         <a href="<?= $this->Url->build(['controller' => 'Instances', 'action' => 'home']) ?>" class="alert hollow button"><?= $this->Loc->formCancel() ?></a>
                     </div>
                 </div>  
 
             <?= $this->Form->end() ?>
-            <div class="bottom-p">
-                <p><?= __d("auth", "Don't have an account?") ?>
-                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'add']) ?>">
-                        <?= __d("auth", "Sign up here") ?> &raquo
-                    </a>
-                </p>
-                <p>
-                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'passwordRecovery']) ?>">
-                        <?= __d("auth", "Forgot your password?") ?> &raquo
-                    </a>
-                </p>
-            </div>
         </div>
     </div>
 </div>
@@ -106,8 +99,5 @@
 }
 .signup-panel a.alert {
     float: right;
-}
-.bottom-p p {
-    margin: 0px;
 }
 </style>

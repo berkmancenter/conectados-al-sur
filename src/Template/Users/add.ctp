@@ -80,7 +80,7 @@
                                 name="repassword"
                                 type="password"
                                 class="input-group-field"
-                                placeholder="<?= __d('auth', 'password (again)') ?>"
+                                placeholder="<?= __d('auth', 'repeat your password') ?>"
                             >
                         </div>
                     </div>

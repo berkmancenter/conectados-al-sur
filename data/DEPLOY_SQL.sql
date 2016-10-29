@@ -231,7 +231,12 @@ CREATE TABLE users (
     modified  TIMESTAMP,
     PRIMARY KEY (id)
 );
-
+CREATE TABLE users_recovery (
+    user_id   INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    random    VARCHAR(128) NOT NULL,
+    modified  TIMESTAMP,
+    PRIMARY KEY (user_id)
+);
 
 -- TABLE belongsToMany Join
 CREATE TABLE instances_users (
