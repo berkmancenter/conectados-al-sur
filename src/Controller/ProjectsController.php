@@ -5,7 +5,8 @@ use App\Controller\AppController;
 use Cake\Collection\Collection;
 use Cake\ORM\TableRegistry;
 use Cake\Event\Event;
-
+use Cake\I18n\Time;
+use Cake\I18n\Date;
 
 class ProjectsController extends AppController
 {
@@ -599,6 +600,34 @@ class ProjectsController extends AppController
         $project = $this->Projects->newEntity();
         if ($this->request->is('post')) {
 
+            $output_date_format = "Y-m-d";
+            $incomming_date_format = "M/dd/yy";
+            if ($this->request->lang == "es") {
+                $incomming_date_format = "dd/M/yy";
+            }
+            
+            if (isset($this->request->data['start_date'])) {
+
+                $old_date = $this->request->data['start_date'];
+                if ($old_date == "") {
+                    unset($this->request->data['finish_date']);
+                } else {
+                    $datetime = Date::parseDate($old_date, $incomming_date_format);
+                    $new_date = $datetime->format($output_date_format);
+                    $this->request->data['start_date'] = $new_date;
+                }
+            }
+            if (isset($this->request->data['finish_date'])) {
+                $old_date = $this->request->data['finish_date'];
+                if ($old_date == "") {
+                    unset($this->request->data['finish_date']);
+                } else {
+                    $datetime = Date::parseDate($old_date, $incomming_date_format);
+                    $new_date = $datetime->format($output_date_format);
+                    $this->request->data['finish_date'] = $new_date;
+                }
+            }
+
             $project = $this->Projects->patchEntity($project, $this->request->data);
             $project->instance_id = $instance->id;
 
@@ -610,7 +639,7 @@ class ProjectsController extends AppController
 
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));
-                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
+                return $this->redirect(['controller' => 'Projects', 'action' => 'view', $instance_namespace, $project->id]);
             } else {
                 $this->Flash->error(__('The project could not be saved. Please, try again.'));
                 // $this->Flash->error($this->locHelper->crudAddError($loc_field));
@@ -689,7 +718,37 @@ class ProjectsController extends AppController
         $project = $this->Projects->get($id, [
             'contain' => ['Categories']
         ]);
+        // var_dump($project->finish_date);
         if ($this->request->is(['patch', 'post', 'put'])) {
+
+            $output_date_format = "Y-m-d";
+            $incomming_date_format = "M/dd/yy";
+            if ($this->request->lang == "es") {
+                $incomming_date_format = "dd/M/yy";
+            }
+            
+            if (isset($this->request->data['start_date'])) {
+
+                $old_date = $this->request->data['start_date'];
+                if ($old_date == "") {
+                    unset($this->request->data['finish_date']);
+                } else {
+                    $datetime = Date::parseDate($old_date, $incomming_date_format);
+                    $new_date = $datetime->format($output_date_format);
+                    $this->request->data['start_date'] = $new_date;
+                }
+            }
+            if (isset($this->request->data['finish_date'])) {
+                $old_date = $this->request->data['finish_date'];
+                if ($old_date == "") {
+                    unset($this->request->data['finish_date']);
+                } else {
+                    $datetime = Date::parseDate($old_date, $incomming_date_format);
+                    $new_date = $datetime->format($output_date_format);
+                    $this->request->data['finish_date'] = $new_date;
+                }
+            }
+         
             $project = $this->Projects->patchEntity($project, $this->request->data);
             if ($this->Projects->save($project)) {
                 $this->Flash->success(__('The project has been saved.'));

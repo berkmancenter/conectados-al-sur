@@ -150,20 +150,28 @@
 <?= $this->Html->script('foundation-datepicker.min.js') ?>
 
 <script type="text/javascript">
+    
+    var _language = "<?= $lang_current ?>";
+    function _useSpanish() {
+        if (_language == "es") {
+            return true;
+        };
+        return false;
+    }
+
     window.prettyPrint && prettyPrint();
     $('#dp_start').fdatepicker({
-        format: 'yy/mm/dd',
+        format: _useSpanish() ? 'dd/mm/yy' : 'mm/dd/yy',
         disableDblClickSelection: true,
         startDate: '1989-01-01',
         endDate:   '2050-01-01',
     });
     $('#dp_finish').fdatepicker({
-        format: 'yy/mm/dd',
+        format: _useSpanish() ? 'dd/mm/yy' : 'mm/dd/yy',
         disableDblClickSelection: true,
         startDate: '1989-01-01',
         endDate:   '2050-01-01',
     });
-
 
 
     var all_tabs = [
