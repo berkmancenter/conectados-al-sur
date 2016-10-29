@@ -317,6 +317,12 @@ class ProjectsController extends AppController
             }
         }
 
+        // project id
+        $project_id = (int)$this->request->query("p");
+        if ($project_id) {
+            array_push($conditions, array('Projects.id' => $project_id));
+        }
+
 
         // BUILD CSV
         // --------------------------------------------------------------------------
