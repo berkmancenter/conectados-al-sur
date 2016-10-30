@@ -45,7 +45,7 @@
                     </tr>
                     <tr>
                         <th><?= __('External URL') ?></th>
-                        <td><?= $this->Html->link($project->url) ?></td>
+                        <td><a href="<?= $project->url ?>"><?= $project->url ?></a>
                     </tr>
                     <tr>
                         <th><?= __('Organization') ?></th>

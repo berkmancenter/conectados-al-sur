@@ -634,6 +634,14 @@ class ProjectsController extends AppController
                 }
             }
 
+            if (isset($this->request->data['url'])) {
+                $url = $this->request->data['url'];
+                if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+                    $url = "http://" . $url;
+                }
+                $this->request->data['url'] = $url;
+            }
+
             $project = $this->Projects->patchEntity($project, $this->request->data);
             $project->instance_id = $instance->id;
 
@@ -753,6 +761,14 @@ class ProjectsController extends AppController
                     $new_date = $datetime->format($output_date_format);
                     $this->request->data['finish_date'] = $new_date;
                 }
+            }
+
+            if (isset($this->request->data['url'])) {
+                $url = $this->request->data['url'];
+                if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+                    $url = "http://" . $url;
+                }
+                $this->request->data['url'] = $url;
             }
          
             $project = $this->Projects->patchEntity($project, $this->request->data);
