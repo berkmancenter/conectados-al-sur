@@ -46,7 +46,7 @@ class UsersController extends AppController
         $user_id = (int)$this->request->query("u");
         $random = $this->request->query("r");
         if (!$user_id || !$random) {
-            $this->Flash->error(__d("auth", "MISSING GET PARAMETERS"));
+            //$this->Flash->error(__d("auth", "MISSING GET PARAMETERS"));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
@@ -76,7 +76,7 @@ class UsersController extends AppController
             ->select(['id','name','email'])
             ->first();
         if (!$user) {
-            $this->Flash->error(__d("auth", "INVALID USER ID"));
+            //$this->Flash->error(__d("auth", "INVALID USER ID"));
             return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
         }
 
@@ -107,22 +107,22 @@ class UsersController extends AppController
                     $text = "";
                     $subject = "";
                     if ($this->request->lang == "en") {
-                        $subject = "DVINE WEB APP. Password recovery OK";
+                        $subject = "DVINE WEB APP. Password recovery succeeded";
                         $text = "" .
                         "Hello " . $user->name . ",\n" .
                         "\n" .
-                        "Your password for <a href='" . $dvine_link . "'>DVINE WEB APP</a> has been updated.\n" .
+                        "Your password for DVINE WEB APP (" . $dvine_link . ") has been updated.\n" .
                         "\n" .
                         "Please, don't reply to this message.\n" .
                         "\n" .
                         "Bye!\n" .
                         "dvine web app\n";
                     } else {
-                        $subject = "DVINE WEB APP. Recuperación de contraseña OK";
+                        $subject = "DVINE WEB APP. Recuperación de contraseña exitoso";
                         $text = "" .
                         "Hola " . $user->name . ",\n" .
                         "\n" .
-                        "Tu contraseña de <a href='" . $dvine_link . "'>DVINE WEB APP</a> ha sido modificada correctamente.\n" .
+                        "Tu contraseña de DVINE WEB APP (" . $dvine_link . ") ha sido modificada correctamente.\n" .
                         "\n" .
                         "Por favor, no responda a este mensaje.\n" .
                         "\n" .
@@ -218,9 +218,9 @@ class UsersController extends AppController
                                 "Here is the link for the password recovery process you have just requested.\n" . 
                                 "There you must provide a new password for your account.\n" .
                                 "\n" .
-                                "<a href='" . $recovery_link . "'>" . $recovery_link . "</a>" .
+                                $recovery_link . "\n" .
                                 "\n" .
-                                "If you have not requested a password request, maybe someone is trying to access\n" .
+                                "If you have not requested a password reset, maybe someone is trying to access\n" .
                                 "to your account. You can ignore this email.\n" .
                                 "\n" .
                                 "Please, don't reply to this message.\n" .
@@ -235,7 +235,7 @@ class UsersController extends AppController
                                 "Aquí está el link que pediste para recuperar la contraseña de tu cuenta. Ahí\n" .
                                 "tendrás que introducir una nueva contraseña para tu cuenta.\n" .
                                 "\n" .
-                                "<a href='" . $recovery_link . "'>" . $recovery_link . "</a>" .
+                                $recovery_link . "\n" .
                                 "\n" .
                                 "Si tu no has pedido una recuperación de contraseña, puede ser que alguien\n" .
                                 "esté intentando acceder a tu cuenta. Puedes ignorar este correo.\n" .
@@ -251,7 +251,7 @@ class UsersController extends AppController
                                 ->subject($subject)
                                 ->send($text);
 
-                            $this->Flash->success(__d("auth", "WOW!"));
+                            $this->Flash->success(__d("auth", "Check your email, we have send you some instructions."));
                         } else {
                             $this->Flash->error(__d("auth", "An error ocurred, please try again"));
                         }
@@ -408,7 +408,7 @@ class UsersController extends AppController
                                 $text = "" .
                                 "Hello " . $user->name . ",\n" .
                                 "\n" .
-                                "Welcome to <a href='" . $dvine_link . "'>DVINE WEB APP</a>, a tool that\n" .
+                                "Welcome to DVINE WEB-APP (" . $dvine_link . "), a tool that\n" .
                                 "helps to visualize and geolocalize projects in a given field.\n" .
                                 "\n" .
                                 "\n" .
@@ -421,7 +421,7 @@ class UsersController extends AppController
                                 $text = "" .
                                 "Hola " . $user->name . ",\n" .
                                 "\n" .
-                                "Bienvenido a <a href='" . $dvine_link . "'>DVINE WEB APP</a>, una herramienta\n" .
+                                "Bienvenido a DVINE WEB-APP (" . $dvine_link . "), una herramienta\n" .
                                 "que permite visualizar y geolocalizar proyectos a nivel global, en un campo determinado.\n" .
                                 "\n" .
                                 "\n" .
