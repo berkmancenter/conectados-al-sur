@@ -9,9 +9,7 @@
     <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
         <div class="signup-panel">
             <p class="welcome"><?= __d("auth", "Reset Password") ?></p>
-            <!--  Restablece tu contraseña  -->
             <p><?= __d("auth", "Enter the email address associated with your account, and we’ll email you a link to reset your password.") ?></p>
-            <!-- Introduce la dirección de correo electrónico asociada a tu cuenta y te enviaremos un enlace para restablecer tu contraseña.  -->
             <?= $this->Flash->render('auth') ?>
             <?= $this->Form->create() ?>
                 

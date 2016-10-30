@@ -11,40 +11,19 @@ rm -f  myapp_cake_core_translations_*
 COSAS IMPORTANTES:
 - portada embebible
 - tablas con hd celeste
-- describr filtro en projects index
-- error views!
 
-
-REUNION: Ah! lo otro que me sugirió, es que hagamos bien claro en el correo que se va a publicar de los proyectos, que diga algo así cómo ¿Cuál es el correo de contacto que puede publicarse del proyecto?
-
-
-
-
-DETALLES:
-=====================================================
-- Primer mensaje flash se ve muy mal.. incluso desaparece en dispositivos pequeños
 
 
 logo:
 -formatos aceptados y chequeo de tamaño y tipo
 -posibilidad de borrar el logo?
 
-# routes: 
-# - probablemente graph, map, index y download puedan ser abstraídos al 
-# mismo controlador!, pero con distintas vistas
-#
-# - limitar acceso con urls originales, que no ocupan el mapeo que propongo
-# - bloquear acceso a vistas de Entidades Bloqueadas:
 
-
-- que hacer al borrar categoria u org type? 
 
 - ojo ccon los max limit del paginate!, puede limitar info de proyectos y otros
 - project delete check instance
 - evitar filtrar datos de instancia 0
 - instance add --> agregar datos dummy
-- add project tiene user fijo a 0!
-- agregar tooltips a todos los botones. ejemplo: instances index > users
 -verificar cadena de eliminaciones al borrar user, instancia, proyecto, org_type, category, ...
 acceso a admin tools
 
@@ -55,7 +34,6 @@ acceso a admin tools
 sanitizar queries!
 probar queries con parametros raros
 sql transsacciones encakephp
-página no tiene resize de footer ni topbar
 
 <!-- TODO: mostrar filtro actual -->
 - aviso de max zoom

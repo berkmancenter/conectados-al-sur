@@ -4,6 +4,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-30 05:42+0000\n"
+"PO-Revision-Date: 2016-10-30 02:52-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-18 05:33+0000\n"
 "PO-Revision-Date: 2016-10-18 03:06-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
@@ -99,6 +108,14 @@ msgstr "Otra información"
 msgid "Location:"
 msgstr "Ubicación:"
 
+#: Template/Projects/add.ctp:80
+msgid ""
+"Please, select the main country of work. You can use the description to "
+"mention other related countries."
+msgstr ""
+"Por favor, seleccione el país principal de su trabajo. Puede utilizar la "
+"descripción para mencionar otros países relacionados."
+
 #: Template/Projects/add.ctp:88 Template/Projects/edit.ctp:100
 msgid "Project Management"
 msgstr "Manejo del proyecto"
@@ -110,6 +127,14 @@ msgid ""
 msgstr ""
 "Para seleccionar más de una categoría, mantenga presionado el botón "
 "<kbd>Ctrl</kbd> o <kbd>Cmd</kbd>"
+
+#: Template/Projects/add.ctp:131 Template/Projects/edit.ctp:148
+msgid "Previous"
+msgstr "Anterior"
+
+#: Template/Projects/add.ctp:132 Template/Projects/edit.ctp:149
+msgid "Next"
+msgstr "Siguiente"
 
 #: Template/Projects/edit.ctp:7
 msgid "(Editing)"

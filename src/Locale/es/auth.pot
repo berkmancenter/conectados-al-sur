@@ -4,6 +4,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2016-10-30 05:42+0000\n"
+"PO-Revision-Date: 2016-10-30 03:01-0300\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-09 03:11+0000\n"
 "PO-Revision-Date: 2016-10-18 02:44-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
@@ -14,6 +23,48 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 "Language: es\n"
+
+#: Controller/UsersController.php:65
+msgid "Your recovery key is invalid, request another one"
+msgstr ""
+"Tu link para recuperación de contraseña es inválido, por favor pide uno "
+"nuevo."
+
+#: Controller/UsersController.php:69
+msgid "This recovery key has expired, request another one"
+msgstr "Su link de recuperación de contraseña ha expirado, pida uno nuevo"
+
+#: Controller/UsersController.php:89;369
+msgid "Passwords must match!"
+msgstr "Las contraseñas no coinciden"
+
+#: Controller/UsersController.php:138
+msgid "Your password has been modified"
+msgstr "Su contraseña ha sido modificada"
+
+#: Controller/UsersController.php:180
+msgid "Sorry, we don't know an account with this email."
+msgstr "Lo sentimos, no conocemos una cuenta asociada a este correo."
+
+#: Controller/UsersController.php:254
+msgid "Check your email, we have send you some instructions."
+msgstr "Chequee su correo, le enviamos algunas instrucciones."
+
+#: Controller/UsersController.php:256
+msgid "An error ocurred, please try again"
+msgstr "Ha ocurrido un error, intente más tarde."
+
+#: Controller/UsersController.php:260
+msgid "The email address is invalid"
+msgstr "La dirección de correo es inválida."
+
+#: Controller/UsersController.php:263
+msgid "The email address cannot be empty"
+msgstr "Debe proveer una dirección de correo"
+
+#: Controller/UsersController.php:288
+msgid "Invalid username or password, try again"
+msgstr "Correo o contraseña inválidos, intente nuevamente."
 
 #: Template/InstancesUsers/edit.ctp:29 Template/Users/add.ctp:50
 #: Template/Users/edit.ctp:43
@@ -46,9 +97,9 @@ msgstr "Correo de contacto. Público para todos los visitantes."
 msgid "password"
 msgstr "contraseña"
 
-#: Template/Users/add.ctp:83
-msgid "password (again)"
-msgstr "contraseña (nuevamente)"
+#: Template/Users/add.ctp:83 Template/Users/password_reset.ctp:39
+msgid "repeat your password"
+msgstr "repita su contraseña"
 
 #: Template/Users/add.ctp:105
 msgid "Create account"
@@ -61,6 +112,14 @@ msgstr "Ya tienes una cuenta?"
 #: Template/Users/add.ctp:115
 msgid "Login here"
 msgstr "Accede aquí"
+
+#: Template/Users/edit.ctp:66
+msgid ""
+"New Password. Leave this empty if you don't want to change your current "
+"password."
+msgstr ""
+"Nueva contraseña. Deje este campo vacío si no desea modificar su contraseña "
+"actual."
 
 #: Template/Users/login.ctp:11
 msgid "Welcome to dvine!"
@@ -77,3 +136,36 @@ msgstr " ¿No tienes una cuenta?"
 #: Template/Users/login.ctp:53
 msgid "Sign up here"
 msgstr "Regístrese aquí"
+
+#: Template/Users/login.ctp:59
+msgid "Forgot your password?"
+msgstr "¿Olvidó su contraseña?"
+
+#: Template/Users/password_recovery.ctp:11
+#: Template/Users/password_reset.ctp:11
+msgid "Reset Password"
+msgstr "Restablece tu contraseña"
+
+#: Template/Users/password_recovery.ctp:13
+msgid ""
+"Enter the email address associated with your account, and we’ll email you a "
+"link to reset your password."
+msgstr ""
+"Introduce la dirección de correo electrónico asociada a tu cuenta y te "
+"enviaremos un enlace para restablecer tu contraseña."
+
+#: Template/Users/password_recovery.ctp:32
+msgid "Send Reset Link"
+msgstr "Enviar el enlace"
+
+#: Template/Users/password_reset.ctp:13
+msgid "Hi "
+msgstr "Hola "
+
+#: Template/Users/password_reset.ctp:47
+msgid "Change Password"
+msgstr "Modificar contraseña"
+
+#: Template/Users/add.ctp:83
+msgid "password (again)"
+msgstr "contraseña (nuevamente)"
