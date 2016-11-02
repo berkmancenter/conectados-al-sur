@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "POT-Creation-Date: 2016-10-30 05:42+0000\n"
-"PO-Revision-Date: 2016-10-30 02:52-0300\n"
+"PO-Revision-Date: 2016-11-02 01:01-0300\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "MIME-Version: 1.0\n"
@@ -121,12 +121,8 @@ msgid "Project Management"
 msgstr "Manejo del proyecto"
 
 #: Template/Projects/add.ctp:121 Template/Projects/edit.ctp:136
-msgid ""
-"Hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> to select more than one project "
-"category"
-msgstr ""
-"Para seleccionar más de una categoría, mantenga presionado el botón "
-"<kbd>Ctrl</kbd> o <kbd>Cmd</kbd>"
+msgid "Select at most 4 categories for this project"
+msgstr "Seleccione hasta 4 categorías para el proyecto"
 
 #: Template/Projects/add.ctp:131 Template/Projects/edit.ctp:148
 msgid "Previous"

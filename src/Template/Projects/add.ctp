@@ -119,10 +119,11 @@
                 <div class="tabs-panel" id="panel-categories">
                     <h4 class="view-subtitle-related"><?= __d('projects', 'Related Categories') ?></h4>
                     <fieldset>
-                        <p><?= __d('projects', 'Hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> to select more than one project category') ?></p>
+                        <p><?= __d('projects', 'Select at most 4 categories for this project') ?></p>
                         <?= $this->Form->input('categories._ids', [
                                 'label' => '',
                                 'options' => $categories,
+                                'multiple' => "checkbox",
                             ]) ?>
                     </fieldset>
             </div>
@@ -159,6 +160,70 @@
         return false;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CATEGORIES
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    var selected_categories = [];
+    
+    // checkboxes listener
+    var checkboxes = $("#panel-categories :checkbox");
+    checkboxes.change(function() {
+
+        var idx = selected_categories.indexOf(this.value);
+        if (this.checked) {
+
+            if (selected_categories.length >= 4) {
+                // MAX REACHED
+                this.checked = false;
+            } else {
+                // VALID
+                if (idx == -1) {
+                    selected_categories.push(this.value);
+                };
+            }
+
+        } else {
+            // delete
+            if (idx > -1) {
+                selected_categories.splice(idx, 1);
+            };
+        }
+        updateCheckboxes();
+        // console.log(selected_categories);
+    });
+
+    function updateCheckboxes () {
+       // disable others if max is reached
+        if (selected_categories.length >= 4) {
+            disableCheckboxes();
+        } else {
+            enableCheckboxes();
+        }
+    }
+
+    function disableCheckboxes () {
+        checkboxes.each(function (item, idx) {
+            checkbox = checkboxes[item];
+            if (selected_categories.indexOf(checkbox.value) == -1) {
+                checkbox.disabled = true;
+            }
+        });
+    }
+
+    function enableCheckboxes () {
+        checkboxes.each(function (item, idx) {
+            checkbox = checkboxes[item];
+            if (selected_categories.indexOf(checkbox.value) == -1) {
+                checkbox.disabled = false;
+            }
+        });
+    }
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // DATES
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     window.prettyPrint && prettyPrint();
     $('#dp_start').fdatepicker({
         format: _useSpanish() ? 'dd/mm/yy' : 'mm/dd/yy',
@@ -174,6 +239,10 @@
     });
 
 
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // TABS
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     var all_tabs = [
         "panel-overview",
         "panel-info",

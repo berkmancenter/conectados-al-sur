@@ -660,6 +660,21 @@ class ProjectsController extends AppController
                 $this->request->data['url'] = $url;
             }
 
+            // LIMITAR CANTIDAD DE CATEGORIAS
+            if (isset($this->request->data["categories"]) && isset($this->request->data["categories"]["_ids"])) {
+                // var_dump($this->request->data["categories"]["_ids"]);
+                $req_category_ids = $this->request->data["categories"]["_ids"];
+                $total_categories = count($req_category_ids);
+                if ($total_categories > 4) {
+                    $cropped_categories = [];
+                    for ($i=0; $i <4 ; $i++) { 
+                        array_push($cropped_categories, $req_category_ids[$i]);
+                    }
+                    $this->request->data["categories"]["_ids"] = $cropped_categories;
+                }
+                // var_dump($this->request->data["categories"]["_ids"]);
+            }
+
             $project = $this->Projects->patchEntity($project, $this->request->data);
             $project->instance_id = $instance->id;
 
@@ -753,12 +768,12 @@ class ProjectsController extends AppController
         // var_dump($project->finish_date);
         if ($this->request->is(['patch', 'post', 'put'])) {
 
+            // PARSEAR FECHAS Y PERMITIR VALORES NULL
             $output_date_format = "Y-m-d";
             $incomming_date_format = "M/dd/yy";
             if ($this->request->lang == "es") {
                 $incomming_date_format = "dd/M/yy";
             }
-            
             if (isset($this->request->data['start_date'])) {
 
                 $old_date = $this->request->data['start_date'];
@@ -781,12 +796,26 @@ class ProjectsController extends AppController
                 }
             }
 
+            // MODIFICAR URL PARA QUE INCLUYA HTTP://
             if (isset($this->request->data['url'])) {
                 $url = $this->request->data['url'];
                 if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
                     $url = "http://" . $url;
                 }
                 $this->request->data['url'] = $url;
+            }
+
+            // LIMITAR CANTIDAD DE CATEGORIAS
+            if (isset($this->request->data["categories"]) && isset($this->request->data["categories"]["_ids"])) {
+                $req_category_ids = $this->request->data["categories"]["_ids"];
+                $total_categories = count($req_category_ids);
+                if ($total_categories > 4) {
+                    $cropped_categories = [];
+                    for ($i=0; $i <4 ; $i++) { 
+                        array_push($cropped_categories, $req_category_ids[$i]);
+                    }
+                    $this->request->data["categories"]["_ids"] = $cropped_categories;
+                }
             }
          
             $project = $this->Projects->patchEntity($project, $this->request->data);
@@ -858,9 +887,11 @@ class ProjectsController extends AppController
             ->order([$field_loc =>'ASC'])
             ->all();
 
-        // var_dump($project->categories);
+        #var_dump($project->categories);
         // $users = $this->Projects->Users->find('list', ['limit' => 200]);
         // $cities = $this->Projects->Cities->find('list', ['limit' => 200]);
+
+
 
         $this->set('instance', $instance);
         $this->set(compact('project', 'organizationTypes', 'projectStages', 'countries', 'categories', 'instance'));
