@@ -174,27 +174,45 @@ class ProjectsController extends AppController
             ],
             'conditions' => $conditions
         ];
-        $projects = $this->paginate(
-            $this->Projects
-                ->find()
-                ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
-                    if ($category_conditions) {
+
+
+        $projects = null;
+        if (count($category_conditions) > 0) {
+            $projects = $this->paginate(
+                $this->Projects
+                    ->find()
+                    ->matching('Categories', function(\Cake\ORM\Query $q) use ($category_conditions) {
                         return $q->where($category_conditions);
-                    }
-                    return $q;
-                })
-                ->matching('Countries', function(\Cake\ORM\Query $q) use ($valid_subcontients) {
-                    if ($valid_subcontients) {
-                        return $q->where(
-                            function ($exp, $q) use ($valid_subcontients) {
-                                return $exp->in('subcontinent_id', $valid_subcontients);
-                            }
-                        );
-                    }
-                    return $q;
-                })
-                ->distinct(['Projects.id'])
-        );
+                    })
+                    ->matching('Countries', function(\Cake\ORM\Query $q) use ($valid_subcontients) {
+                        if ($valid_subcontients) {
+                            return $q->where(
+                                function ($exp, $q) use ($valid_subcontients) {
+                                    return $exp->in('subcontinent_id', $valid_subcontients);
+                                }
+                            );
+                        }
+                        return $q;
+                    })
+                    ->distinct(['Projects.id'])
+            );
+        } else {
+            $projects = $this->paginate(
+                $this->Projects
+                    ->find()
+                    ->matching('Countries', function(\Cake\ORM\Query $q) use ($valid_subcontients) {
+                        if ($valid_subcontients) {
+                            return $q->where(
+                                function ($exp, $q) use ($valid_subcontients) {
+                                    return $exp->in('subcontinent_id', $valid_subcontients);
+                                }
+                            );
+                        }
+                        return $q;
+                    })
+                    ->distinct(['Projects.id'])
+            );
+        }
 
         // var_dump($_SERVER['QUERY_STRING']);
         $this->set('filter_query', $_SERVER['QUERY_STRING']);
