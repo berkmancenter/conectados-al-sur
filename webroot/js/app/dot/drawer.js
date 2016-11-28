@@ -183,6 +183,7 @@ function updateNodes (svg, nodes) {
 
 function removeLabels () {
     d3.selectAll(".class_label").remove();
+    d3.selectAll(".class_label_background").remove();
 }
 
 function showLabels (simulation_label) {
@@ -231,6 +232,13 @@ function showLabels (simulation_label) {
     //
     d3_labels.enter().append("text")
         .attr("class", "class_label")
+        .attr("id", function (d) {
+
+            // append current_sim_label
+            d.current_sim_label = simulation_label;
+
+            return "class_label-" + simulation_label + "-" + d.trimmed_label;
+        })
         .style("opacity", 0.7)
         .style("font-family", "Open Sans")
         .text(function (d) {
@@ -250,9 +258,9 @@ function showLabels (simulation_label) {
         .attr("dy", function (d) {
             d.label_y = d.cy_max  + context.label_separation;
             return d.label_y;
-        });
-        // .on('mouseover', function (d) { classOverListener(d) })
-        // .on('mouseout', function (d) { classOutListener(d) })
+        })
+        .on('mouseover', function (d) { classLabelOverListener(d) })
+        .on('mouseout', function (d) { classLabelOutListener(d) });
         // .on('click', function (d) { classClickedListener(d) });
 
     // Fade-in effect. (not working)
@@ -261,6 +269,23 @@ function showLabels (simulation_label) {
     //     .style("opacity", 0.7);
 
     // console.log("Showing labels for simulation: " + simulation_label);
+
+    // insert rectangle for displaying class names
+    var label_background = d3.select("#" + simulation_label + "-class_label_background");
+    if (label_background.empty()) {
+        // console.log("undefined");
+        selection.append("rect")
+            .attr("class", "class_label_background")
+            .attr("id", simulation_label + "-class_label_background")
+            .attr("stroke", "#808080")
+            .attr("stroke-width", "3")
+            .attr("rx", "3")
+            .attr("ry", "3")
+            .attr("fill", "white");
+    }
+    // else{
+        // console.log("defined");
+    // };
 }
 
 
@@ -386,6 +411,7 @@ function drawerEnableClass(class_id) {
 
 }
 
+
 function drawerDisableClass() {
     infobar_clear();
 
@@ -400,5 +426,89 @@ function drawerDisableClass() {
             return "node node-class-" + d.class_id;
         })
         .attr("r", context.node_style_radius);
+}
+
+
+
+function drawerHighlightLabel(d) {
+
+    var d3_labels = d3.selectAll(".class_label");
+    var this_label = d3.select("#class_label-" + d.current_sim_label + "-" + d.trimmed_label);
+    var element = document.getElementById("class_label-" + d.current_sim_label + "-" + d.trimmed_label);
+    var label_background = d3.select("#" + d.current_sim_label + "-class_label_background");
+
+    // set the text before computing the bbox
+    this_label.text(d.label);
+    var bbox = element.getBBox();
+
+    var x_pos = 0;
+    // console.log("x_pos = " + x_pos);
+    var x_width = bbox.width;
+    var make_font_smaller = false;
+    this_label.attr("dx", function (d) {
+
+        x_pos = d.label_x;
+
+        var viz_width  = context.svg_div.clientWidth;
+        var delta = d.label_x + bbox.width + 5 - viz_width;
+        
+        // text is too long and overflows on both sides
+        if (viz_width < bbox.width) {
+            // console.log("out of screen");
+            x_pos = 5;
+            x_width = viz_width - 10;
+            make_font_smaller = true;
+            return x_pos;
+        }
+
+        // text overflows to the right
+        if (delta > 0) {
+            // console.log("out of screen");
+            x_pos -= delta;
+        };
+        return x_pos;
+    });
+
+    if (make_font_smaller) {
+        this_label.attr("font-size", "12px");
+        bbox = element.getBBox();
+        x_width = bbox.width;
+    }
+
+    label_background
+        .attr("x", x_pos - 5)
+        .attr("y", d.label_y - bbox.height)
+        .attr("width", x_width + 10)
+        .attr("height", bbox.height * 1.4);
+
+    label_background.moveToFront();
+    this_label.moveToFront();
+}
+
+
+function drawerDefaultLabel(d) {
+
+    var this_label = d3.select("#class_label-" + d.current_sim_label + "-" + d.trimmed_label);
+    var label_background = d3.select("#" + d.current_sim_label + "-class_label_background");
+
+    this_label
+        .text(function (d) {
+            var text = d.label;
+            if (text.length > context.label_max_length) {
+                text = text.substring(0,context.label_max_length - 3);
+                text += "...";
+            };
+            return text;
+        })
+        .attr("font-size", "16px")
+        .attr("dx", function (d) {
+            return d.label_x;
+        });
+
+    label_background
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", 0)
+        .attr("height", 0);
 }
 

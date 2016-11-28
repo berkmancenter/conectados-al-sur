@@ -292,3 +292,11 @@ function classClickedListener (d) {
         };
     }
 }
+
+function classLabelOverListener (d) {
+    drawerHighlightLabel(d);
+}
+
+function classLabelOutListener (d) {
+    drawerDefaultLabel(d);
+}

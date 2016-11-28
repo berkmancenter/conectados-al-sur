@@ -15,7 +15,8 @@ function computeClasses (option) {
 
         classes[idx] = {
             id: item.id,
-            label: item[field]
+            label: item[field],
+            trimmed_label: item[field].toLowerCase().replace(/[^abcdefghijklmnopqrstuvwxyz]/g, '')
         }
     });
 
