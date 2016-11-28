@@ -21,7 +21,8 @@
                     <?= $this->Form->input('instance_namespace', [
                         'label'       => '',
                         'placeholder' => __d('users', 'App shortname'),
-                        'class'       => 'input-group-field'
+                        'class'       => 'input-group-field',
+                        'value'       => 'cas'
                     ]) ?>
                 </div>
             </div>
@@ -34,7 +35,8 @@
                         'label'       => '',
                         'placeholder' => __d('users', 'App passphrase'),
                         'class'       => 'input-group-field',
-                        'type'        => 'password'
+                        'type'        => 'password',
+                        'value'       => 'token'
                     ]) ?>
                 </div>
             </div>

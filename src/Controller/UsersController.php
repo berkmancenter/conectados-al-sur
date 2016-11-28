@@ -445,7 +445,7 @@ class UsersController extends AppController
 
                             // log the new user in
                             $this->Auth->setUser($user->toArray());
-                            return $this->redirect(['controller' => 'Instances', 'action' => 'home']);
+                            return $this->redirect(['controller' => 'InstancesUsers', 'action' => 'add', $user->id]);
                         } else {
                             foreach ($user_instance->errors() as $error) {
                                 $this->Flash->error(__('{0}', reset($error)));
