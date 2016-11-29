@@ -4,7 +4,7 @@ DVINE WEB APP es una aplicación web, capaz de gestionar proyectos de diversas �
 
 La aplicación funciona como un gestor de subaplicaciones, cada una con las funcionalidades descritas anteriormente, para así tener redes de locaboración respecto a diversas áreas, por ejemplo: música, educación, congresos, etc.
 
-Actualmente la app corre en el sitio [app.dvine.cl](app.dvine.cl). Puede visitar la sub aplicación "Conectados Al Sur" [aquí](app.dvine.cl/en/cas).
+Actualmente la app corre en el sitio [app.dvine.cl](http://www.app.dvine.cl). Puede visitar la sub aplicación "Conectados Al Sur" [aquí](http://www.app.dvine.cl/en/cas).
 
 
 ## Deploy
