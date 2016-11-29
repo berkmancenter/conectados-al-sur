@@ -66,6 +66,8 @@ return [
     'Security' => [
         'salt' => env('SECURITY_SALT', '__SALT__'),
     ],
+    
+
 
     /**
      * Apply timestamps with the last modified time to static assets (js, css, images).
@@ -179,10 +181,10 @@ return [
         'default' => [
             'className' => 'Mail',
             // The following keys are used in SMTP transports
-            'host' => 'localhost',
+            'host' => 'mail.app.dvine.cl',
             'port' => 25,
             'timeout' => 30,
-            'username' => 'user',
+            'username' => 'contacto@app.dvine.cl',
             'password' => 'secret',
             'client' => null,
             'tls' => null,
@@ -202,7 +204,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            'from' => 'contacto@app.dvine.cl',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],
@@ -217,18 +219,13 @@ return [
     'Datasources' => [
         'default' => [
             'className' => 'Cake\Database\Connection',
-            'driver' => 'Cake\Database\Driver\Mysql',
+            'driver' => 'Cake\Database\Driver\Postgres',
             'persistent' => false,
             'host' => 'localhost',
-            /**
-             * CakePHP will use the default DB port based on the driver selected
-             * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
-             * the following line and set the port accordingly
-             */
-            //'port' => 'non_standard_port_number',
-            'username' => 'my_app',
+            'port' => 5432,
+            'username' => 'my_username',
             'password' => 'secret',
-            'database' => 'my_app',
+            'database' => 'my_database',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'flags' => [],
