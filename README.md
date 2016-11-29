@@ -13,7 +13,7 @@ A continuación se presenta una breve descripción de los requerimientos para co
 
 ### Prerequisitos
 
-La aplicación fue desarrollada en con `php 7.0`, `postgresql 9.3` y utilizando los siguientes módulos de php: `mbstring`, `intl`, `pgsql`, `mcrypt`.
+La aplicación fue desarrollada en con `php 7.0`, `postgresql 9.3` y utilizando los siguientes módulos de php: `mbstring`, `intl`, `pgsql`, `mcrypt`. Se utilizó el framework CakePHP 3.
 
 El resto de las dependencias corresponden a paquetes para cakephp, manejados mediante `composer`.
 
