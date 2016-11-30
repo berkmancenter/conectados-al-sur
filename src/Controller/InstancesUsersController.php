@@ -198,7 +198,7 @@ class InstancesUsersController extends AppController
             $instances_user = $this->InstancesUsers->patchEntity($instances_user, $this->request->data);
             if ($this->InstancesUsers->save($instances_user)) {
                 $this->Flash->success(__('Your profile data was saved for: ' . $instance->name));
-                return $this->redirect(['controller' => 'Users', 'action' => 'view', $user_id]);
+                return $this->redirect(['controller' => 'Instances', 'action' => 'preview', $instance_namespace]);
             } else {
                 $this->Flash->error(__('There was an error while trying to save your profile data. Please, try again.'));
                 foreach ($instances_user->errors() as $error) {
